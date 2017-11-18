@@ -1,0 +1,28 @@
+package main.game;
+
+import main.io.FileSystem;
+import main.window.Window;
+
+/**
+ * Represents the external interface of a game, as seen by the main game loop.
+ */
+public interface Game {
+    
+	/**
+     * Initialises game state.
+     * @param window context to use, not null
+     * @param fileSystem file system to use, not null
+     * @return whether the game was successfully started
+     */
+    public abstract boolean begin(Window window, FileSystem fileSystem);
+    
+    /**
+     * Simulates a single time step.
+     * @param deltaTime elapsed time since last update, in seconds, non-negative
+     */
+    public abstract void update(float deltaTime);
+    
+    /** Cleans up things, called even if initialisation failed. */
+    public abstract void end();
+    
+}
