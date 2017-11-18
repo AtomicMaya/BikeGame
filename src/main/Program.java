@@ -2,6 +2,7 @@ package main;
 
 import main.game.Game;
 import main.game.tutorial.HelloWorldGame;
+import main.game.tutorial.SimpleCrateGame;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;
@@ -31,7 +32,8 @@ public class Program {
 		try {
 
 			// Create a demo game
-			Game game = new HelloWorldGame();
+			//Game game = new HelloWorldGame();
+			Game game = new SimpleCrateGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

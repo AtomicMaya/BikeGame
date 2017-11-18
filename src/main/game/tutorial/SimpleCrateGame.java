@@ -1,10 +1,18 @@
+/**
+ *	Author: Clément Jeannet
+ *	Date: 	18 nov. 2017
+ */
 package main.game.tutorial;
+
+import java.util.ArrayList;
 
 import main.game.Game;
 import main.game.actor.ImageGraphics;
 import main.io.FileSystem;
 import main.math.Entity;
 import main.math.EntityBuilder;
+import main.math.PartBuilder;
+import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
 import main.math.World;
@@ -13,7 +21,7 @@ import main.window.Window;
 /**
  * Simple game, to show basic the basic architecture
  */
-public class HelloWorldGame implements Game {
+public class SimpleCrateGame implements Game {
 
 	// Store context
 	private Window window;
@@ -22,12 +30,9 @@ public class HelloWorldGame implements Game {
 	private World world;
 
 	// And we need to keep references on our game objects
-	private Entity body;
+	private ArrayList<Entity> alEntity = new ArrayList<Entity>();
 
-	private ImageGraphics graphics, g2;
-
-	private float alpha = 0f;
-	private boolean increasing = true;
+	private ArrayList<ImageGraphics> alImageGraphics = new ArrayList<ImageGraphics>();
 
 	// This event is raised when game has just started
 	@Override
@@ -38,23 +43,10 @@ public class HelloWorldGame implements Game {
 
 		world = new World();
 		world.setGravity(new Vector(0.0f, -9.81f));
-
-		EntityBuilder entityBuilder = world.createEntityBuilder();
-		entityBuilder.setFixed(true);
-		entityBuilder.setPosition(new Vector(2f, -1.5f));
-		body = entityBuilder.build();
-
-		graphics = new ImageGraphics("res/stone.broken.4.png", 1, 1);
-		graphics.setParent(body);
-		graphics.setAlpha(0.5f);
-		graphics.setDepth(0.0f);
-		graphics.setParent(body);
-
-		g2 = new ImageGraphics("res/bow.png", 1, 1);
-		g2.setAlpha(0.5f);
-		g2.setDepth(1.0f);
-
-		g2.setParent(body);
+		CrateObject.init(world, alEntity, alImageGraphics);
+		
+		CrateObject.newCarre(new Vector(1.0f, 0.5f), "res/stone.broken.4.png", 1, true);
+		CrateObject.newCarre(new Vector(0.2f, 4.0f), "res/box.4.png", 1, false);
 
 		// Successfully initiated
 		return true;
@@ -65,24 +57,10 @@ public class HelloWorldGame implements Game {
 	public void update(float deltaTime) {
 		window.setRelativeTransform(Transform.I.scaled(7.0f));
 
-		if (increasing) {
-			if (alpha < 2)
-				alpha += 0.01f;
-			else
-				increasing = false;
-		} else {
-			if (alpha > -1f)
-				alpha -= 0.01f;
-			else
-				increasing = true;
-		}
-
 		world.update(deltaTime);
-
-		g2.setAlpha(alpha);
-		graphics.setAlpha(1f - alpha);
-		graphics.draw(window);
-		g2.draw(window);
+		for (ImageGraphics ig : alImageGraphics) {
+			ig.draw(window);
+		}
 		// The actual rendering will be done now, by the program loop
 	}
 
