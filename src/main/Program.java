@@ -2,6 +2,8 @@ package main;
 
 import main.game.Game;
 import main.game.tutorial.HelloWorldGame;
+import main.game.tutorial.RopeGame;
+import main.game.tutorial.ScaleGame;
 import main.game.tutorial.SimpleCrateGame;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
@@ -20,7 +22,9 @@ public class Program {
 
 	/**
 	 * Main entry point.
-	 * @param args ignored
+	 * 
+	 * @param args
+	 *            ignored
 	 */
 	public static void main(String[] args) {
 
@@ -32,8 +36,10 @@ public class Program {
 		try {
 
 			// Create a demo game
-			//Game game = new HelloWorldGame();
-			Game game = new SimpleCrateGame();
+			// Game game = new HelloWorldGame();
+			// Game game = new SimpleCrateGame();
+			// Game game = new RopeGame();
+			Game game = new ScaleGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression
@@ -49,7 +55,7 @@ public class Program {
 					float deltaTime = (now - before);
 
 					try {
-						int timeDiff = Math.max(0, (int) (1E9/300 - deltaTime));
+						int timeDiff = Math.max(0, (int) (1E9 / 300 - deltaTime));
 						Thread.sleep((int) (timeDiff / 1E6), (int) (timeDiff % 1E6));
 					} catch (InterruptedException e) {
 					}
