@@ -7,9 +7,9 @@ package main.game.tutorial;
 import java.awt.event.KeyEvent;
 
 import main.game.Game;
+import main.game.actor.Storage;
 import main.io.FileSystem;
 import main.math.Entity;
-import main.math.PartBuilder;
 import main.math.RevoluteConstraintBuilder;
 import main.math.Transform;
 import main.math.Vector;
@@ -45,28 +45,23 @@ public class ScaleGame implements Game {
 		storage.newRectangle(new Vector(-5f, 0.8f), "res/wood.3.png", 5f, 0.2f, false, 1);
 		storage.newSphere(new Vector(0.5f, 4.0f), .6f, "res/explosive.11.png", false, 2);
 
-		System.out.println(storage.size());
-		// float radius = .5f;
-		// EntityBuilder entityBuilder = world.createEntityBuilder();
-		// entityBuilder.setFixed(false);
-		// entityBuilder.setPosition(new Vector(0.5f, 4.0f));
-		// Entity entity = entityBuilder.build();
-		//
-		//// Circle circle = new Circle(radius);
-		////
-		//// PartBuilder partBuilder = entity.createPartBuilder();
-		//// partBuilder.setShape(circle);
-		//// partBuilder.setFriction(.4f);
-		//// partBuilder.build();
-		//
-		// ImageGraphics image = new ImageGraphics("res/explosive.11.png", radius * 2f,
-		// radius * 2f, new Vector(.5f, .5f));
-		// image.setParent(entity);
-		//
-		// storage.add(entity, image, null, 3);
+//		float radius = .5f;
+//		EntityBuilder entityBuilder = world.createEntityBuilder();
+//		entityBuilder.setFixed(false);
+//		entityBuilder.setPosition(new Vector(0.5f, 4.0f));
+//		Entity entity = entityBuilder.build();
+//
+//		Circle circle = new Circle(radius);
+//
+//		PartBuilder partBuilder = entity.createPartBuilder();
+//		partBuilder.setShape(circle);
+//		partBuilder.setFriction(.4f);
+//		partBuilder.build();
+//
+//		ImageGraphics image = new ImageGraphics("res/explosive.11.png", radius * 2f, radius * 2f, new Vector(.5f, .5f));
+//		image.setParent(entity);
 
-		// allEntity.add(entity);
-		// alImageGraphics.add(image);
+		
 
 		RevoluteConstraintBuilder revoluteConstraintBuilder = world.createRevoluteConstraintBuilder();
 		revoluteConstraintBuilder.setFirstEntity((Entity) storage.getEntity(0));
@@ -86,9 +81,7 @@ public class ScaleGame implements Game {
 		world.update(deltaTime);
 
 		if (window.getKeyboard().get(KeyEvent.VK_1).isDown()) {
-			PartBuilder pb = storage.getPartBuilder(0);
-			pb.setFriction(100);
-			pb.build();
+			storage.setFriction(0, 10);
 		}
 		// Keyboard Control
 		if (window.getKeyboard().get(KeyEvent.VK_LEFT).isDown()) {

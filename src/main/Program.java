@@ -3,6 +3,7 @@ package main;
 import main.game.Game;
 import main.game.tutorial.ContactGame;
 import main.game.tutorial.HelloWorldGame;
+import main.game.tutorial.PolyLineGame;
 import main.game.tutorial.RopeGame;
 import main.game.tutorial.ScaleGame;
 import main.game.tutorial.SimpleCrateGame;
@@ -41,8 +42,9 @@ public class Program {
 			// Game game = new HelloWorldGame();
 			// Game game = new SimpleCrateGame();
 			// Game game = new RopeGame();
-			Game game = new ScaleGame();
+			// Game game = new ScaleGame();
 			// Game game = new ContactGame();
+			Game game = new PolyLineGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

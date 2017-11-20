@@ -8,6 +8,7 @@ import java.awt.Color;
 
 import main.game.Game;
 import main.game.actor.ShapeGraphics;
+import main.game.actor.Storage;
 import main.io.FileSystem;
 import main.math.BasicContactListener;
 import main.math.Transform;
