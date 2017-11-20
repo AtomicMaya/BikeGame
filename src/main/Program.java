@@ -1,6 +1,7 @@
 package main;
 
 import main.game.Game;
+import main.game.tutorial.ContactGame;
 import main.game.tutorial.HelloWorldGame;
 import main.game.tutorial.RopeGame;
 import main.game.tutorial.ScaleGame;
@@ -15,6 +16,7 @@ import main.window.swing.SwingWindow;
 /**
  * Main entry point.
  */
+@SuppressWarnings("unused")
 public class Program {
 
 	/** Maximal time step allowed for a single frame. */
@@ -40,6 +42,7 @@ public class Program {
 			// Game game = new SimpleCrateGame();
 			// Game game = new RopeGame();
 			Game game = new ScaleGame();
+			// Game game = new ContactGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression
@@ -52,6 +55,7 @@ public class Program {
 					// Compute time interval
 					before = now;
 					now = System.nanoTime();
+
 					float deltaTime = (now - before);
 
 					try {

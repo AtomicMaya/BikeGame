@@ -19,26 +19,24 @@ import main.math.Shape;
 import main.math.Vector;
 import main.math.World;
 
-public class CreateObject {
-
-	private static World world;
-	private static ArrayList<Entity> alE;
-	private static ArrayList<Graphics> alIG;
+public class Storage extends Stock {
 
 	/**
-	 * Initialize the references to the world, entities and ImagesGraphics so we
-	 * don't need to always give it in parameters
+	 * Because a serialVersionUID is needed
+	 */
+	private static final long serialVersionUID = 42L;
+
+	/** The physical engine */
+	private static World world;
+
+	/**
+	 * Create a new instance of a Storage
 	 * 
 	 * @param w
-	 *            The world
-	 * @param allEntities
-	 *            The ArrayList containing all the entities of the game
-	 * @param allImagesGraphics
-	 *            The ArrayList containing all the associated images
+	 *            the physical engine
 	 */
-	public static void init(World w, ArrayList<Entity> allEntities, ArrayList<Graphics> allImagesGraphics) {
-		alE = allEntities;
-		alIG = allImagesGraphics;
+	public Storage(World w) {
+		super();
 		world = w;
 	}
 
@@ -54,9 +52,11 @@ public class CreateObject {
 	 *            The length of the square, has to be positive
 	 * @param fixed
 	 *            Whether or not the entity is fixed
+	 * @param id
+	 *            the id, to find later the entity
 	 */
-	public static void newSquare(Vector position, String imagePath, float size, boolean fixed) {
-		newRectangle(position, imagePath, size, size, fixed);
+	public void newSquare(Vector position, String imagePath, float size, boolean fixed, int id) {
+		newRectangle(position, imagePath, size, size, fixed, id);
 	}
 
 	/**
@@ -73,8 +73,10 @@ public class CreateObject {
 	 *            Height of the rectangle, has to be positive
 	 * @param fixed
 	 *            Whether or not the entity is fixed
+	 * @param id
+	 *            the id, to find later the entity
 	 */
-	public static void newRectangle(Vector position, String imagePath, float width, float height, boolean fixed) {
+	public void newRectangle(Vector position, String imagePath, float width, float height, boolean fixed, int id) {
 
 		// Create a shape
 		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(width, 0.0f), new Vector(width, height),
@@ -85,7 +87,7 @@ public class CreateObject {
 		if (imagePath != null && imagePath != "") {
 			image = new ImageGraphics(imagePath, Math.abs(width), Math.abs(height));
 		}
-		newThing(position, fixed, polygon, image);
+		newThing(position, fixed, polygon, image, id);
 	}
 
 	/**
@@ -100,8 +102,10 @@ public class CreateObject {
 	 *            The radius of the sphere
 	 * @param fixed
 	 *            Whether or not the entity is fixed
+	 * @param id
+	 *            the id, to find later the entity
 	 */
-	public static void newSphere(Vector position, float radius, String imagePath, boolean fixed) {
+	public void newSphere(Vector position, float radius, String imagePath, boolean fixed, int id) {
 
 		// Create a shape
 		Circle circle = new Circle(radius);
@@ -112,7 +116,7 @@ public class CreateObject {
 			image = new ImageGraphics(imagePath, radius * 2f, radius * 2f, new Vector(0.5f, 0.5f));
 		}
 		// Create the entity
-		newThing(position, fixed, circle, image);
+		newThing(position, fixed, circle, image, id);
 	}
 
 	/**
@@ -124,21 +128,39 @@ public class CreateObject {
 	 *            The radius of the sphere, has to be positive
 	 * @param fixed
 	 *            Whether or not the entity is fixed
+	 * @param fillColor
+	 *            fill color, may be null
+	 * @param outlineColor
+	 *            outline color, may be null
+	 * @param thickness
+	 *            outline thickness
+	 * @param alpha
+	 *            transparency, between 0 (invisible) and 1 (opaque)
+	 * @param depth
+	 *            render priority, lower-values drawn first
+	 * @param id
+	 *            the id, to find later the entity
 	 */
-	public static void newSphere(Vector position, float radius, boolean fixed, Color innerColor, Color borderColor,
-			float thickness, float alpha, float depth) {
+	public void newSphere(Vector position, float radius, boolean fixed, Color fillColor, Color outlineColor,
+			float thickness, float alpha, float depth, int id) {
 
 		// create shape
 		Circle circle = new Circle(radius);
 
 		// Create graphics
-		ShapeGraphics ballGraphics = new ShapeGraphics(circle, innerColor, borderColor, thickness, alpha, depth);
+		ShapeGraphics ballGraphics = new ShapeGraphics(circle, fillColor, outlineColor, thickness, alpha, depth);
 
 		// Create the entity
-		newThing(position, fixed, circle, ballGraphics);
+		newThing(position, fixed, circle, ballGraphics, id);
 	}
 
-	private static void newThing(Vector position, boolean fixed, Shape s, Graphics g) {
+	/**
+	 * Private general method to build an entity
+	 */
+	private void newThing(Vector position, boolean fixed, Shape s, Graphics g, int id) {
+
+		// Storage
+		ArrayList<Object> alO = new ArrayList<Object>();
 
 		// create entity
 		EntityBuilder entityBuilder = world.createEntityBuilder();
@@ -146,28 +168,30 @@ public class CreateObject {
 		entityBuilder.setPosition(position);
 		Entity entity = entityBuilder.build();
 
+		// store entity
+		alO.add(entity);
+
+		// give graphics to the entity
+		addGraphics(entity, g);
+		ArrayList<Graphics> g33 = new ArrayList<Graphics>();
+		g33.add(g);
+		alO.add(g33);
+
+		PartBuilder partBuilder = null;
 		// give the entity a shape
 		if (s != null) {
-			PartBuilder partBuilder = entity.createPartBuilder();
+			partBuilder = entity.createPartBuilder();
 			partBuilder.setShape(s);
 			partBuilder.setFriction(.4f);
 			partBuilder.build();
 		}
+		// store PartBuilder
+		alO.add(partBuilder);
 
-		// give graphics to the entity
-		if (g != null) {
-			if (g instanceof ShapeGraphics) {
-				ShapeGraphics g2 = (ShapeGraphics) g;
-				g2.setParent(entity);
-				alIG.add(g2);
-			} else if (g instanceof ImageGraphics) {
-				ImageGraphics g2 = (ImageGraphics) g;
-				g2.setParent(entity);
-				alIG.add(g2);
-			}
-		}
+		// Store the id
+		alO.add(id);
 
-		// add the entity to the ArrayList of entity
-		alE.add(entity);
+		// add everything to this
+		this.add(alO);
 	}
 }

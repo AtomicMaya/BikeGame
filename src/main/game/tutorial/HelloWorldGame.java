@@ -24,7 +24,7 @@ public class HelloWorldGame implements Game {
 	// And we need to keep references on our game objects
 	private Entity body;
 
-	private ImageGraphics graphics, g2;
+	private ImageGraphics g, g2;
 
 	private float alpha = 0f;
 	private boolean increasing = true;
@@ -44,11 +44,11 @@ public class HelloWorldGame implements Game {
 		entityBuilder.setPosition(new Vector(2f, -1.5f));
 		body = entityBuilder.build();
 
-		graphics = new ImageGraphics("res/stone.broken.4.png", 1, 1);
-		graphics.setParent(body);
-		graphics.setAlpha(0.5f);
-		graphics.setDepth(0.0f);
-		graphics.setParent(body);
+		g = new ImageGraphics("res/stone.broken.4.png", 1, 1);
+		g.setParent(body);
+		g.setAlpha(0.5f);
+		g.setDepth(0.0f);
+		g.setParent(body);
 
 		g2 = new ImageGraphics("res/bow.png", 1, 1);
 		g2.setAlpha(0.5f);
@@ -80,8 +80,9 @@ public class HelloWorldGame implements Game {
 		world.update(deltaTime);
 
 		g2.setAlpha(alpha);
-		graphics.setAlpha(1f - alpha);
-		graphics.draw(window);
+		g.setAlpha(1f - alpha);
+		
+		g.draw(window);
 		g2.draw(window);
 		// The actual rendering will be done now, by the program loop
 	}

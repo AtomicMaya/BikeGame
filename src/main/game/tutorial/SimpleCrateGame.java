@@ -4,15 +4,9 @@
  */
 package main.game.tutorial;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import main.game.Game;
-import main.game.actor.Graphics;
 import main.game.actor.ImageGraphics;
-import main.game.actor.ShapeGraphics;
 import main.io.FileSystem;
-import main.math.Circle;
 import main.math.Entity;
 import main.math.EntityBuilder;
 import main.math.PartBuilder;
@@ -34,9 +28,8 @@ public class SimpleCrateGame implements Game {
 	private World world;
 
 	// And we need to keep references on our game objects
-	private ArrayList<Entity> alEntity = new ArrayList<Entity>();
-
-	private ArrayList<Graphics> alImageGraphics = new ArrayList<Graphics>();
+	private static Entity block, crate;
+	private static ImageGraphics blockAsset, crateAsset;
 
 	// This event is raised when game has just started
 	@Override
@@ -47,13 +40,35 @@ public class SimpleCrateGame implements Game {
 
 		world = new World();
 		world.setGravity(new Vector(0.0f, -9.81f));
-		CreateObject.init(world, alEntity, alImageGraphics);
 
-		// Create th stone cube
-		CreateObject.newSquare(new Vector(1.0f, 0.5f), "res/stone.broken.4.png", 1, true);
-		// Create the box
-		CreateObject.newSquare(new Vector(0.2f, 4.0f), "res/box.4.png", 1, false);
+		// Create the block
+		EntityBuilder ebBlock = world.createEntityBuilder();
+		ebBlock.setFixed(true);
+		ebBlock.setPosition(new Vector(1.0f, 0.5f));
+		block = ebBlock.build();
+ 
+		PartBuilder pbBlock = block.createPartBuilder();
+		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(1.0f, 0.0f), new Vector(1.0f, 1.0f),
+				new Vector(0.0f, 1.0f));
+		pbBlock.setShape(polygon);
+		pbBlock.build();
+
+		blockAsset = new ImageGraphics("res/stone.broken.4.png", 1, 1);
+		blockAsset.setParent(block);
 		
+		// Create the crate
+		EntityBuilder ebCrate = world.createEntityBuilder();
+		ebCrate.setFixed(false);
+		ebCrate.setPosition(new Vector(0.2f, 4.0f));
+		crate = ebCrate.build();
+
+		PartBuilder pbCrate = crate.createPartBuilder();
+		pbCrate.setShape(polygon);
+		pbCrate.build();
+		
+		crateAsset = new ImageGraphics("res/box.4.png", 1, 1);
+		crateAsset.setParent(crate);
+
 		// Successfully initiated
 		return true;
 	}
@@ -64,10 +79,10 @@ public class SimpleCrateGame implements Game {
 		window.setRelativeTransform(Transform.I.scaled(10.0f));
 
 		world.update(deltaTime);
-		for (Graphics ig : alImageGraphics) {
-			ig.draw(window);
-		}
+
 		// The actual rendering will be done now, by the program loop
+		crateAsset.draw(window);
+		blockAsset.draw(window);
 	}
 
 	// This event is raised after game ends, to release additional resources
