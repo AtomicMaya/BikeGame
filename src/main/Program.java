@@ -41,10 +41,10 @@ public class Program {
 			// Create a demo game
 			// Game game = new HelloWorldGame();
 			// Game game = new SimpleCrateGame();
-			// Game game = new RopeGame();
+			 Game game = new RopeGame();
 			// Game game = new ScaleGame();
 			// Game game = new ContactGame();
-			Game game = new PolyLineGame();
+			//Game game = new PolyLineGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

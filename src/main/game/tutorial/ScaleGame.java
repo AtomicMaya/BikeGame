@@ -7,9 +7,13 @@ package main.game.tutorial;
 import java.awt.event.KeyEvent;
 
 import main.game.Game;
+import main.game.actor.ImageGraphics;
 import main.game.actor.Storage;
 import main.io.FileSystem;
+import main.math.Circle;
 import main.math.Entity;
+import main.math.EntityBuilder;
+import main.math.PartBuilder;
 import main.math.RevoluteConstraintBuilder;
 import main.math.Transform;
 import main.math.Vector;
@@ -29,6 +33,7 @@ public class ScaleGame implements Game {
 
 	// And we need to keep references on our game objects
 	private Storage storage;
+//	private ImageGraphics image;
 
 	// This event is raised when game has just started
 	@Override
@@ -58,10 +63,8 @@ public class ScaleGame implements Game {
 //		partBuilder.setFriction(.4f);
 //		partBuilder.build();
 //
-//		ImageGraphics image = new ImageGraphics("res/explosive.11.png", radius * 2f, radius * 2f, new Vector(.5f, .5f));
+//		image = new ImageGraphics("res/explosive.11.png", radius * 2f, radius * 2f, new Vector(.5f, .5f));
 //		image.setParent(entity);
-
-		
 
 		RevoluteConstraintBuilder revoluteConstraintBuilder = world.createRevoluteConstraintBuilder();
 		revoluteConstraintBuilder.setFirstEntity((Entity) storage.getEntity(0));
@@ -92,6 +95,7 @@ public class ScaleGame implements Game {
 
 		// The actual rendering will be done now, by the program loop
 		storage.drawAll(window);
+//		image.draw(window);
 	}
 
 	// This event is raised after game ends, to release additional resources
