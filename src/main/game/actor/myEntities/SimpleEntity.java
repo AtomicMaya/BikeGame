@@ -8,39 +8,23 @@ import java.util.ArrayList;
 
 import main.game.actor.Graphics;
 import main.game.actor.ImageGraphics;
+import main.game.actor.MyGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Entity;
-import main.math.EntityBuilder;
 import main.math.PartBuilder;
 import main.math.Shape;
 import main.math.Vector;
-import main.math.World;
 import main.window.Canvas;
 
-public abstract class EntityExtended {
+public abstract class SimpleEntity extends ComplexObject {
 
 	private Entity entity;
 	private ArrayList<Graphics> graphics = new ArrayList<Graphics>();
 	private PartBuilder partBuilder = null;
 	private Shape shape = null; // in case we need it
 
-	public final int ID;
-
-	public EntityExtended(Entity e, Graphics g, PartBuilder pb, int id) {
-		this.entity = e;
-		this.graphics.add(g);
-		this.partBuilder = pb;
-		this.ID = id;
-	}
-
-	protected EntityExtended(World world, Vector position, boolean fixed, int id) {
-		// create entity
-		EntityBuilder entityBuilder = world.createEntityBuilder();
-		entityBuilder.setFixed(fixed);
-		entityBuilder.setPosition(position);
-		entity = entityBuilder.build();
-
-		this.ID = id;
+	protected SimpleEntity(MyGame game, Vector position, boolean fixed) {
+		entity = game.newEntity(position, fixed);
 	}
 
 	public Entity getEntity() {
@@ -51,10 +35,7 @@ public abstract class EntityExtended {
 		return graphics;
 	}
 
-	public int getId() {
-		return ID;
-	}
-
+	@Override
 	public void draw(Canvas window) {
 		for (Graphics g : graphics)
 			g.draw(window);
@@ -84,6 +65,13 @@ public abstract class EntityExtended {
 		partBuilder.build();
 	}
 
+	public void setGohst(boolean ghost) {
+		partBuilder = entity.createPartBuilder();
+		partBuilder.setShape(shape);
+		partBuilder.setGhost(ghost);
+		partBuilder.build();
+	}
+
 	/**
 	 * Add Graphics to a given entity
 	 */
@@ -101,5 +89,20 @@ public abstract class EntityExtended {
 			}
 			this.graphics.add(g);
 		}
+	}
+
+	@Override
+	public Vector getPosition() {
+		return entity.getPosition();
+
+	}
+
+	@Override
+	public void update(float deltaTime) {
+	}
+
+	@Override
+	public Vector getVelocity() {
+		return entity.getVelocity();
 	}
 }

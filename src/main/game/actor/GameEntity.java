@@ -5,12 +5,16 @@
 package main.game.actor;
 
 import main.math.Entity;
+import main.math.Node;
 import main.math.Vector;
 
-public abstract class GameEntity {
+public abstract class GameEntity extends Node implements Actor { // Extend Node non???? Je veux pas redéfinir les
+																	// methodes de Attachable alors que c'est deja fait
+																	// dans Node surtout que je vois pas lutilite du
+																	// extend positionable dans actor pour ca...
 	private Entity entity;
 
-	private ActorGame actorGame;
+	private ActorGame actorGame;// utilité de ca? ca fait une boucle jai l'impression
 
 	public GameEntity(ActorGame game, boolean fixed, Vector position) {
 		if (game == null)
@@ -38,7 +42,11 @@ public abstract class GameEntity {
 		return actorGame;
 	}
 
-	protected void destroy() {
+	public void destroy() {
 		entity.destroy();
+	}
+	@Override
+	public void update(float deltaTime) {
+		//entity.setPosition(this.getPosition());
 	}
 }

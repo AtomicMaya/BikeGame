@@ -17,7 +17,8 @@ public interface Actor extends Positionable, Graphics {
 		// By default , actors have nothing to update
 	}
 
-	public default void destroy() {
-		// By default , actors have nothing to destroy
-	}
+	public abstract void destroy();// pk pas en abstract? si lactor a rien a destroy, on mettra rien dans sa methode
+									// a lui, pas rien dans elle la
+	// By default , actors have nothing to destroy
+
 }

@@ -7,19 +7,19 @@ package main.game.actor.myEntities;
 import java.awt.Color;
 
 import main.game.actor.ImageGraphics;
+import main.game.actor.MyGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Circle;
 import main.math.Vector;
-import main.math.World;
 
-public class SphereEntity extends EntityExtended {
+public class SphereEntity extends SimpleEntity {
 
-	public SphereEntity(World world, Vector position, boolean fixed, int id) {
-		super(world, position, fixed, id);
+	public SphereEntity(MyGame game, Vector position, boolean fixed) {
+		super(game, position, fixed);
 	}
 
-	public SphereEntity(World world, Vector position, float radius, String imagePath, boolean fixed, int id) {
-		super(world, position, fixed, id);
+	public SphereEntity(MyGame game, Vector position, float radius, String imagePath, boolean fixed) {
+		super(game, position, fixed);
 
 		// Create a shape
 		Circle circle = new Circle(radius);
@@ -33,9 +33,9 @@ public class SphereEntity extends EntityExtended {
 		super.setGraphics(image);
 	}
 
-	public SphereEntity(World world, Vector position, float radius, boolean fixed, Color fillColor, Color outlineColor,
-			float thickness, float alpha, float depth, int id) {
-		super(world, position, fixed, id);
+	public SphereEntity(MyGame game, Vector position, float radius, boolean fixed, Color fillColor, Color outlineColor,
+			float thickness, float alpha, float depth) {
+		super(game, position, fixed);
 
 		// create shape
 		Circle circle = new Circle(radius);

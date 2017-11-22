@@ -1,6 +1,9 @@
 package main;
 
 import main.game.Game;
+import main.game.actor.ActorGame;
+import main.game.actor.TestGame;
+import main.game.actor.crate.CrateGame;
 import main.game.tutorial.ContactGame;
 import main.game.tutorial.HelloWorldGame;
 import main.game.tutorial.PolyLineGame;
@@ -41,10 +44,13 @@ public class Program {
 			// Create a demo game
 			// Game game = new HelloWorldGame();
 			// Game game = new SimpleCrateGame();
-			 Game game = new RopeGame();
+			// Game game = new RopeGame();
 			// Game game = new ScaleGame();
 			// Game game = new ContactGame();
 			//Game game = new PolyLineGame();
+			// Game game = new CrateGame();
+			
+			Game game = new TestGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

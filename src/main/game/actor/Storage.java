@@ -7,7 +7,7 @@ package main.game.actor;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import main.game.actor.myEntities.EntityExtended;
+import main.game.actor.myEntities.SimpleEntity;
 import main.game.actor.myEntities.RectangleEntity;
 import main.game.actor.myEntities.SphereEntity;
 import main.game.actor.myEntities.SquareEntity;
@@ -17,7 +17,7 @@ import main.math.Vector;
 import main.math.World;
 import main.window.Canvas;
 
-public class Storage extends ArrayList<EntityExtended> {
+public class Storage extends ArrayList<SimpleEntity> {
 
 	World world;
 
@@ -29,7 +29,7 @@ public class Storage extends ArrayList<EntityExtended> {
 	}
 
 	@Override
-	public boolean add(EntityExtended ee) {
+	public boolean add(SimpleEntity ee) {
 		return super.add(ee);
 
 	}
@@ -64,40 +64,40 @@ public class Storage extends ArrayList<EntityExtended> {
 	}
 
 	public void newGround(Vector position, ArrayList<Vector> alV, Color color, float thickness, int id) {
-		this.add(new Ground(world, position, alV, color, thickness, id));
+		this.add(new PolyLineEntity(world, position, alV, color, thickness, id));
 	}
 
 	public void newGround(Vector position, Polyline p, Color color, float thickness, int id) {
-		this.add(new Ground(world, position, p, color, thickness, id));
+		this.add(new PolyLineEntity(world, position, p, color, thickness, id));
 	}
 
-	public Entity getEntity(int id) {
-		for (EntityExtended e : this) {
-			if (e.getId() == id)
-				return e.getEntity();
-		}
-		return null;
-	}
+//	public Entity getEntity(int id) {
+//		for (SimpleEntity e : this) {
+//			if (e.getId() == id)
+//				return e.getEntity();
+//		}
+//		return null;
+//	}
 
 	public void drawAll(Canvas window) {
-		for (EntityExtended e : this) {
+		for (SimpleEntity e : this) {
 			e.draw(window);
 		}
 	}
 
 	// TODO setStuff instead of getGraphics
-	public ArrayList<Graphics> getGraphics(int id) {
-		for (EntityExtended e : this) {
-			if (e.getId() == id)
-				return e.getGraphics();
-		}
-		return null;
-	}
-
-	public void setFriction(int id, float friction) {
-		for (EntityExtended e : this) {
-			if (e.getId() == id)
-				e.setFriction(friction);
-		}
-	}
+//	public ArrayList<Graphics> getGraphics(int id) {
+//		for (SimpleEntity e : this) {
+//			if (e.getId() == id)
+//				return e.getGraphics();
+//		}
+//		return null;
+//	}
+//
+//	public void setFriction(int id, float friction) {
+//		for (SimpleEntity e : this) {
+//			if (e.getId() == id)
+//				e.setFriction(friction);
+//		}
+//	}
 }

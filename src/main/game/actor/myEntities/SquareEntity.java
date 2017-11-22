@@ -4,17 +4,17 @@
  */
 package main.game.actor.myEntities;
 
+import main.game.actor.MyGame;
 import main.math.Vector;
-import main.math.World;
 
 public class SquareEntity extends RectangleEntity {
 
-	public SquareEntity(World world, Vector position, float size, boolean fixed, int id) {
-		super(world, position, size, size, fixed, id);
+	public SquareEntity(MyGame game, Vector position, float size, boolean fixed) {
+		super(game, position, size, size, fixed);
 	}
 
-	public SquareEntity(World world, Vector position, String imagePath, float size, boolean fixed, int id) {
-		super(world, position, imagePath, size, size, fixed, id);
+	public SquareEntity(MyGame game, Vector position, String imagePath, float size, boolean fixed) {
+		super(game, position, imagePath, size, size, fixed);
 	}
 
 }

@@ -1,12 +1,11 @@
 package main.game.actor;
 
-import main.math.Attachable;
 import main.window.Canvas;
 
 /**
  * Represents a drawable element.
  */
-public interface Graphics extends Attachable { // j'ai rajouté le extend pour la methode setParent, de toute facon tout
+public interface Graphics { // j'ai rajouté le extend pour la methode setParent, de toute facon tout
 												// les Objets implementant Graphics implementent aussi Attachable
 
 	/**
