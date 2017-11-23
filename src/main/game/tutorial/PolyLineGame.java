@@ -8,7 +8,6 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import main.game.Game;
-import main.game.actor.Storage;
 import main.io.FileSystem;
 import main.math.Polyline;
 import main.math.Transform;
@@ -28,7 +27,7 @@ public class PolyLineGame implements Game {
 	private World world;
 
 	// And we need to keep references on our game objects
-	private Storage storage;
+
 
 	// This event is raised when game has just started
 	@Override
@@ -39,15 +38,15 @@ public class PolyLineGame implements Game {
 
 		world = new World();
 		world.setGravity(new Vector(0.0f, -9.81f));
-		storage = new Storage(world);
+
 
 		// storage.newRectangle(new Vector(-5.0f, -1.0f), "res/stone.broken.4.png", 10f,
 		// 1f, true, 0);
 
-		storage.newSphere(new Vector(0.5f, 4.0f), .6f, "res/explosive.11.png", false, 1);
+
 
 		Polyline p = new Polyline(new Vector(-10, 3), new Vector(-10, -4), new Vector(-2, -4), new Vector(10, 0));
-		storage.newGround(Vector.ZERO, p, Color.BLUE, .2f, -1);
+
 		// EntityBuilder entityBuilder = world.createEntityBuilder();
 		// entityBuilder.setFixed(true);
 		// entityBuilder.setPosition(new Vector(0f, 0f));
@@ -72,19 +71,14 @@ public class PolyLineGame implements Game {
 		world.update(deltaTime);
 
 		if (window.getKeyboard().get(KeyEvent.VK_1).isPressed()) {
-			storage.setFriction(1, .5f);
-			// storage.setFriction(0, .7f);
+			
 
 		}
 		// Keyboard Control
-		if (window.getKeyboard().get(KeyEvent.VK_LEFT).isDown()) {
-			storage.getEntity(1).applyAngularForce(10.0f);
-		} else if (window.getKeyboard().get(KeyEvent.VK_RIGHT).isDown()) {
-			storage.getEntity(1).applyAngularForce(-10.0f);
-		}
+
 
 		// The actual rendering will be done now, by the program loop
-		storage.drawAll(window);
+
 	}
 
 	// This event is raised after game ends, to release additional resources

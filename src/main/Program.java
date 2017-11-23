@@ -46,7 +46,7 @@ public class Program {
 			// Game game = new SimpleCrateGame();
 			// Game game = new RopeGame();
 			// Game game = new ScaleGame();
-			// Game game = new ContactGame();
+//			 Game game = new ContactGame();
 			//Game game = new PolyLineGame();
 			// Game game = new CrateGame();
 			
@@ -77,8 +77,9 @@ public class Program {
 
 					// Clip time interval
 					if (deltaTime > MAX_DELTA_TIME) {
+						System.out.println("Can't keep up! "+deltaTime);
 						deltaTime = MAX_DELTA_TIME;
-						System.out.println("Can't keep up!");
+
 					}
 
 					// Let the game do its stuff

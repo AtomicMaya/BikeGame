@@ -8,12 +8,12 @@ import java.awt.event.KeyEvent;
 
 import main.game.Game;
 import main.game.actor.ImageGraphics;
-import main.game.actor.Storage;
 import main.io.FileSystem;
 import main.math.Circle;
 import main.math.Entity;
 import main.math.EntityBuilder;
 import main.math.PartBuilder;
+import main.math.Polygon;
 import main.math.RevoluteConstraintBuilder;
 import main.math.Transform;
 import main.math.Vector;
@@ -32,8 +32,10 @@ public class ScaleGame implements Game {
 	private World world;
 
 	// And we need to keep references on our game objects
-	private Storage storage;
-//	private ImageGraphics image;
+	private Entity block, plank, ball;
+	// private ImageGraphics image;
+
+	private ImageGraphics blockGraphics, plankGRaphics, ballGraphics;
 
 	// This event is raised when game has just started
 	@Override
@@ -44,32 +46,58 @@ public class ScaleGame implements Game {
 
 		world = new World();
 		world.setGravity(new Vector(0.0f, -9.81f));
-		storage = new Storage(world);
 
-		storage.newRectangle(new Vector(-5.0f, -1.0f), "res/stone.broken.4.png", 10f, 1f, true, 0);
-		storage.newRectangle(new Vector(-5f, 0.8f), "res/wood.3.png", 5f, 0.2f, false, 1);
-		storage.newSphere(new Vector(0.5f, 4.0f), .6f, "res/explosive.11.png", false, 2);
+		// Create the block
+		EntityBuilder ebBlock = world.createEntityBuilder();
+		ebBlock.setFixed(true);
+		ebBlock.setPosition(new Vector(-5.0f, -1.0f));
+		block = ebBlock.build();
 
-//		float radius = .5f;
-//		EntityBuilder entityBuilder = world.createEntityBuilder();
-//		entityBuilder.setFixed(false);
-//		entityBuilder.setPosition(new Vector(0.5f, 4.0f));
-//		Entity entity = entityBuilder.build();
-//
-//		Circle circle = new Circle(radius);
-//
-//		PartBuilder partBuilder = entity.createPartBuilder();
-//		partBuilder.setShape(circle);
-//		partBuilder.setFriction(.4f);
-//		partBuilder.build();
-//
-//		image = new ImageGraphics("res/explosive.11.png", radius * 2f, radius * 2f, new Vector(.5f, .5f));
-//		image.setParent(entity);
+		PartBuilder pbBlock = block.createPartBuilder();
+		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(10.0f, 0.0f), new Vector(10.0f, 1.0f),
+				new Vector(0.0f, 1.0f));
+		pbBlock.setShape(polygon);
+		pbBlock.build();
 
+		blockGraphics = new ImageGraphics("res/stone.broken.4.png", 10, 1);
+		blockGraphics.setParent(block);
+
+		// Create the plank
+		EntityBuilder ebPlank = world.createEntityBuilder();
+		ebPlank.setFixed(false);
+		plank = ebPlank.build();
+
+		PartBuilder pbPlank = plank.createPartBuilder();
+		Polygon p2 = new Polygon(new Vector(0.0f, 0.0f), new Vector(5.0f, 0f), new Vector(5.0f, .2f),
+				new Vector(0.0f, .2f));
+		pbPlank.setShape(p2);
+		pbPlank.build();
+
+		plankGRaphics = new ImageGraphics("res/wood.4.png", 5, .2f);
+		plankGRaphics.setParent(plank);
+
+		// ball
+		float radius = .5f;
+		EntityBuilder entityBuilder = world.createEntityBuilder();
+		entityBuilder.setFixed(false);
+		entityBuilder.setPosition(new Vector(0.5f, 4.0f));
+		ball = entityBuilder.build();
+
+		Circle circle = new Circle(radius);
+
+		PartBuilder partBuilder = ball.createPartBuilder();
+		partBuilder.setShape(circle);
+		partBuilder.setFriction(.4f);
+		partBuilder.build();
+
+		ballGraphics = new ImageGraphics("res/explosive.11.png", radius * 2f, radius * 2f, new Vector(.5f, .5f));
+		ballGraphics.setParent(ball);
+
+		// link them
 		RevoluteConstraintBuilder revoluteConstraintBuilder = world.createRevoluteConstraintBuilder();
-		revoluteConstraintBuilder.setFirstEntity((Entity) storage.getEntity(0));
+		revoluteConstraintBuilder.setFirstEntity(block);
 		revoluteConstraintBuilder.setFirstAnchor(new Vector(10f / 2, (1f * 7) / 4));
-		revoluteConstraintBuilder.setSecondEntity((Entity) storage.getEntity(1));
+		revoluteConstraintBuilder.setSecondEntity(plank);
 		revoluteConstraintBuilder.setSecondAnchor(new Vector(5f / 2, .2f / 2));
 		revoluteConstraintBuilder.setInternalCollision(true);
 		revoluteConstraintBuilder.build();
@@ -83,19 +111,17 @@ public class ScaleGame implements Game {
 		window.setRelativeTransform(Transform.I.scaled(10.0f));
 		world.update(deltaTime);
 
-		if (window.getKeyboard().get(KeyEvent.VK_1).isDown()) {
-			storage.setFriction(0, 10);
-		}
 		// Keyboard Control
 		if (window.getKeyboard().get(KeyEvent.VK_LEFT).isDown()) {
-			storage.getEntity(2).applyAngularForce(10.0f);
+			ball.applyAngularForce(10.0f);
 		} else if (window.getKeyboard().get(KeyEvent.VK_RIGHT).isDown()) {
-			storage.getEntity(2).applyAngularForce(-10.0f);
+			ball.applyAngularForce(-10.0f);
 		}
 
 		// The actual rendering will be done now, by the program loop
-		storage.drawAll(window);
-//		image.draw(window);
+		ballGraphics.draw(window);
+		blockGraphics.draw(window);
+		plankGRaphics.draw(window);
 	}
 
 	// This event is raised after game ends, to release additional resources

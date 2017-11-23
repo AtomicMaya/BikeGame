@@ -7,10 +7,15 @@ package main.game.tutorial;
 import java.awt.Color;
 
 import main.game.Game;
+import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
-import main.game.actor.Storage;
 import main.io.FileSystem;
 import main.math.BasicContactListener;
+import main.math.Circle;
+import main.math.Entity;
+import main.math.EntityBuilder;
+import main.math.PartBuilder;
+import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
 import main.math.World;
@@ -28,12 +33,14 @@ public class ContactGame implements Game {
 	private World world;
 
 	// And we need to keep references on our game objects
-	private Storage storage;
-	
-	// Our contactListener
-	private BasicContactListener contactListener;
+	private Entity block, ball;
 
+	private ImageGraphics blockGraphics;
+	private ShapeGraphics ballGraphics;
+
+	private BasicContactListener contactListener;
 	// This event is raised when game has just started
+
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 
@@ -42,17 +49,42 @@ public class ContactGame implements Game {
 
 		world = new World();
 		world.setGravity(new Vector(0.0f, -9.81f));
-		storage = new Storage(world);
 
-		// Create the stone block
-		storage.newRectangle(new Vector(-5.0f, -1.0f), "res/stone.broken.4.png", 10f, 1f, true, 0);
-		// Create the falling spheres
-		storage.newSphere(new Vector(0.5f, 4.0f), .6f, false, Color.BLUE, Color.BLUE, .1f, 1, 0, 1);
+		// Create the block
+		EntityBuilder ebBlock = world.createEntityBuilder();
+		ebBlock.setFixed(true);
+		ebBlock.setPosition(new Vector(-5.0f, -1.0f));
+		block = ebBlock.build();
+
+		PartBuilder pbBlock = block.createPartBuilder();
+		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(10.0f, 0.0f), new Vector(10.0f, 1.0f),
+				new Vector(0.0f, 1.0f));
+		pbBlock.setShape(polygon);
+		pbBlock.build();
+
+		blockGraphics = new ImageGraphics("res/stone.broken.4.png", 10, 1);
+		blockGraphics.setParent(block);
+
+		// ball
+		float radius = .5f;
+		EntityBuilder entityBuilder = world.createEntityBuilder();
+		entityBuilder.setFixed(false);
+		entityBuilder.setPosition(new Vector(0.5f, 4.0f));
+		ball = entityBuilder.build();
+
+		Circle circle = new Circle(radius);
+
+		PartBuilder partBuilder = ball.createPartBuilder();
+		partBuilder.setShape(circle);
+		partBuilder.setFriction(.4f);
+		partBuilder.build();
+
+		ballGraphics = new ShapeGraphics(circle, Color.BLUE, Color.BLUE, .1f, 1f, 0);
+		ballGraphics.setParent(ball);
 
 		// add a contact listener
 		contactListener = new BasicContactListener();
-		storage.getEntity(1).addContactListener(contactListener);
-
+		ball.addContactListener(contactListener);
 		return true;
 	}
 
@@ -65,11 +97,12 @@ public class ContactGame implements Game {
 
 		int numberOfCollisions = contactListener.getEntities().size();
 		if (numberOfCollisions > 0) {
-			((ShapeGraphics) storage.getGraphics(1).get(0)).setFillColor(Color.RED);
+			ballGraphics.setFillColor(Color.RED);
 		}
 
 		// The actual rendering will be done now, by the program loop
-		storage.drawAll(window);
+		ballGraphics.draw(window);
+		blockGraphics.draw(window);
 	}
 
 	// This event is raised after game ends, to release additional resources

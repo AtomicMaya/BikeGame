@@ -23,7 +23,8 @@ public class TestGame extends MyGame {
 
 		addActor(new Ground(this, null, p));
 
-		player = new Bike(this, new Vector(4, 5));
+		player = new Bike(this, new Vector(4, 20));
+
 		addActor(player);
 		this.setViewCandidate(player);
 		return true;

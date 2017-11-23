@@ -14,7 +14,6 @@ public class Ground extends ComplexObject {
 
 	private PolyLineEntity ground;
 	public Ground(MyGame game, Vector position, Polyline p) {
-
 		addEntity(ground = new PolyLineEntity(game, (position == null) ? Vector.ZERO : position, p, Color.black, .2f));
 	}
 
