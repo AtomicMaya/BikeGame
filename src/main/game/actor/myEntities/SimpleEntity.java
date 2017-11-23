@@ -25,7 +25,7 @@ public abstract class SimpleEntity extends GameEntity {
 
 	protected SimpleEntity(ActorGame game, Vector position, boolean fixed) {
 		super(game, fixed, position);
-		entity = super.getEntity();
+		entity = getEntity();
 	}
 
 	public ArrayList<Graphics> getGraphics() {
@@ -91,12 +91,10 @@ public abstract class SimpleEntity extends GameEntity {
 	@Override
 	public Vector getPosition() {
 		return entity.getPosition();
-
 	}
 
 	@Override
-	public void update(float deltaTime) {
-	}
+	public void update(float deltaTime) {}
 
 	@Override
 	public Vector getVelocity() {

@@ -40,6 +40,10 @@ public class ActorGame implements Game {
 
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
+		if (window == null)
+			throw new NullPointerException("Window is null");
+		if (fileSystem == null)
+			throw new NullPointerException("FileSystem is null");
 		world = new World();
 		world.setGravity(new Vector(0, -9.81f));
 		this.window = window;
@@ -53,7 +57,7 @@ public class ActorGame implements Game {
 	@Override
 	public void update(float deltaTime) {
 		world.update(deltaTime);
-		
+
 		for (Actor actor : actors) {
 			actor.update(deltaTime);
 		}
@@ -96,6 +100,7 @@ public class ActorGame implements Game {
 	public void addActor(Actor actor) {
 		actors.add(actor);
 	}
+
 	public void detroyActor(Actor actor) {
 		this.actors.remove(actor);
 	}
