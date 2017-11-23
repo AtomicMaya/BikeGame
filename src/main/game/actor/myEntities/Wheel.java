@@ -4,25 +4,24 @@
  */
 package main.game.actor.myEntities;
 
-import java.awt.Color;
-
-import main.game.actor.MyGame;
+import main.game.actor.ActorGame;
 import main.math.Vector;
 import main.math.WheelConstraint;
 import main.math.WheelConstraintBuilder;
+import main.window.Canvas;
 
-public class Wheel extends ComplexObject {
+public class Wheel extends GameEntity {
 
 	private SimpleEntity wheel;
 
 	private WheelConstraint constraint = null;
-	private MyGame game;
+	private ActorGame game;
 
-	public Wheel(MyGame game, Vector position) {
+	public Wheel(ActorGame game, Vector position) {
+		super(game, false, position);
 		this.game = game;
 		wheel = new SphereEntity(game, position, .5f, "res/explosive.11.png", false);
 		wheel.setFriction(.6f);
-		addEntity(wheel);
 	}
 
 	public void attach(SimpleEntity vehicle, Vector anchor, Vector axis) {
@@ -83,6 +82,12 @@ public class Wheel extends ComplexObject {
 	@Override
 	public Vector getVelocity() {
 		return wheel.getEntity().getVelocity();
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		wheel.draw(canvas);
+		
 	}
 
 }

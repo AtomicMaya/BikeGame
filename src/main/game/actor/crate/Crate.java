@@ -5,8 +5,9 @@
 package main.game.actor.crate;
 
 import main.game.actor.ActorGame;
-import main.game.actor.GameEntity;
 import main.game.actor.ImageGraphics;
+import main.game.actor.myEntities.GameEntity;
+import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -23,6 +24,18 @@ public class Crate extends GameEntity {
 	@Override
 	public void draw(Canvas canvas) {
 		graphic.draw(canvas);
+	}
+
+	@Override
+	public Transform getTransform() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Vector getVelocity() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

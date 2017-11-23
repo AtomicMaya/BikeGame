@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import main.game.actor.Graphics;
 import main.game.actor.ImageGraphics;
-import main.game.actor.MyGame;
+import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Entity;
 import main.math.PartBuilder;
@@ -16,19 +16,16 @@ import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
-public abstract class SimpleEntity extends ComplexObject {
+public abstract class SimpleEntity extends GameEntity {
 
 	private Entity entity;
 	private ArrayList<Graphics> graphics = new ArrayList<Graphics>();
 	private PartBuilder partBuilder = null;
 	private Shape shape = null; // in case we need it
 
-	protected SimpleEntity(MyGame game, Vector position, boolean fixed) {
-		entity = game.newEntity(position, fixed);
-	}
-
-	public Entity getEntity() {
-		return entity;
+	protected SimpleEntity(ActorGame game, Vector position, boolean fixed) {
+		super(game, fixed, position);
+		entity = super.getEntity();
 	}
 
 	public ArrayList<Graphics> getGraphics() {

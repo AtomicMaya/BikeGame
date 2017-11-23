@@ -13,12 +13,13 @@ import main.math.EntityBuilder;
 import main.math.Positionable;
 import main.math.Transform;
 import main.math.Vector;
+import main.math.WheelConstraintBuilder;
 import main.math.World;
 import main.window.Canvas;
 import main.window.Keyboard;
 import main.window.Window;
 
-public abstract class ActorGame implements Game {
+public class ActorGame implements Game {
 
 	// Viewport properties
 	private Vector viewCenter;
@@ -40,19 +41,19 @@ public abstract class ActorGame implements Game {
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		world = new World();
+		world.setGravity(new Vector(0, -9.81f));
 		this.window = window;
 		this.fileSystem = fileSystem;
 		this.viewCenter = Vector.ZERO;
 		this.viewTarget = Vector.ZERO;
-		
-		
+
 		return true;
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		world.update(deltaTime);
-
+		
 		for (Actor actor : actors) {
 			actor.update(deltaTime);
 		}
@@ -72,11 +73,11 @@ public abstract class ActorGame implements Game {
 		for (Actor actor : actors) {
 			actor.draw(window);
 		}
+
 	}
 
 	@Override
 	public void end() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -93,24 +94,27 @@ public abstract class ActorGame implements Game {
 	}
 
 	public void addActor(Actor actor) {
-		this.actors.add(actor);
+		actors.add(actor);
 	}
-
 	public void detroyActor(Actor actor) {
 		this.actors.remove(actor);
 	}
 
-	public Entity newEntity(Vector position, boolean fixed) {	
+	public Entity newEntity(Vector position, boolean fixed) {
 		EntityBuilder entityBuilder = world.createEntityBuilder();
 		entityBuilder.setFixed(fixed);
 		entityBuilder.setPosition(position);
 		return entityBuilder.build();
 	}
-	
-	public Entity newEntity(boolean fixed) {	
+
+	public Entity newEntity(boolean fixed) {
 		EntityBuilder entityBuilder = world.createEntityBuilder();
 		entityBuilder.setFixed(fixed);
 		return entityBuilder.build();
+	}
+
+	public WheelConstraintBuilder createWheelConstraintBuilder() {
+		return world.createWheelConstraintBuilder();
 	}
 
 }

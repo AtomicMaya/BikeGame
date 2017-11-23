@@ -2,19 +2,18 @@
  *	Author: Clément Jeannet
  *	Date: 	22 nov. 2017
  */
-package main.game.actor;
+package main.game.actor.myEntities;
 
+import main.game.actor.Actor;
+import main.game.actor.ActorGame;
 import main.math.Entity;
-import main.math.Node;
+import main.math.Transform;
 import main.math.Vector;
 
-public abstract class GameEntity extends Node implements Actor { // Extend Node non???? Je veux pas redéfinir les
-																	// methodes de Attachable alors que c'est deja fait
-																	// dans Node surtout que je vois pas lutilite du
-																	// extend positionable dans actor pour ca...
+public abstract class GameEntity implements Actor {
 	private Entity entity;
 
-	private ActorGame actorGame;// utilité de ca? ca fait une boucle jai l'impression
+	private ActorGame actorGame;
 
 	public GameEntity(ActorGame game, boolean fixed, Vector position) {
 		if (game == null)
@@ -45,8 +44,15 @@ public abstract class GameEntity extends Node implements Actor { // Extend Node 
 	public void destroy() {
 		entity.destroy();
 	}
+
 	@Override
-	public void update(float deltaTime) {
-		//entity.setPosition(this.getPosition());
+	public Transform getTransform() {
+		return entity.getTransform();
 	}
+
+	@Override
+	public Vector getVelocity() {
+		return entity.getVelocity();
+	}
+
 }

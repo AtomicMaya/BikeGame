@@ -7,25 +7,26 @@ package main.game.actor.myEntities;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 
-import main.game.actor.MyGame;
+import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Vector;
-import main.math.WheelConstraint;
+import main.window.Canvas;
 
-public class Bike extends ComplexObject {
+public class Bike extends GameEntity {
 
-	private MyGame game;
+	private ActorGame game;
 
 	private float MAX_WHEEL_SPEED = 20f;
 
 	private boolean lookRight = true;
 
 	private Wheel rearWheel, frontWheel;
-	private PolygonEntity cycliste;
+	public PolygonEntity cycliste;
 
-	public Bike(MyGame game, Vector position) {
+	public Bike(ActorGame game, Vector position) {
+		super(game, false, position);
 		this.game = game;
 
 		Polygon polygon = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
@@ -34,21 +35,17 @@ public class Bike extends ComplexObject {
 		Circle head = new Circle(0.2f, getHeadLocation());
 
 		cycliste.setGraphics(new ShapeGraphics(head, Color.PINK, Color.BLACK, .1f));
-		// cycliste.setGraphics(new ShapeGraphics(polygon, Color.RED, Color.BLACK,
-		// .1f));
 
 		rearWheel = new Wheel(game, new Vector(-1, 0).add(position));
 		frontWheel = new Wheel(game, position.add(new Vector(1, 0)));
 
 		rearWheel.attach(cycliste, new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		frontWheel.attach(cycliste, new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
-		System.out.println(frontWheel.getPosition());
-		System.out.println(rearWheel.getPosition());
+		
 
-		addEntity(cycliste);
-		addEntity(rearWheel);
-		addEntity(frontWheel);
-
+		game.addActor(cycliste);
+		game.addActor(frontWheel);
+		game.addActor(rearWheel);
 	}
 
 	private Vector getHeadLocation() {
@@ -92,13 +89,10 @@ public class Bike extends ComplexObject {
 	}
 
 	@Override
-	public Vector getPosition() {
-
-		return cycliste.getEntity().getPosition();
+	public void draw(Canvas canvas) {
+		// TODO Auto-generated method stub
+		
 	}
 
-	@Override
-	public Vector getVelocity() {
-		return cycliste.getEntity().getVelocity();
-	}
+
 }

@@ -4,7 +4,6 @@
  */
 package main.game.tutorial;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import main.game.Game;
