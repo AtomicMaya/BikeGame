@@ -1,7 +1,15 @@
 package main;
 
 import main.game.Game;
+import main.game.actor.ActorGame;
+import main.game.actor.TestGame;
+import main.game.actor.crate.CrateGame;
+import main.game.tutorial.ContactGame;
 import main.game.tutorial.HelloWorldGame;
+import main.game.tutorial.PolyLineGame;
+import main.game.tutorial.RopeGame;
+import main.game.tutorial.ScaleGame;
+import main.game.tutorial.SimpleCrateGame;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;
@@ -12,6 +20,7 @@ import main.window.swing.SwingWindow;
 /**
  * Main entry point.
  */
+@SuppressWarnings("unused")
 public class Program {
 
 	/** Maximal time step allowed for a single frame. */
@@ -19,7 +28,9 @@ public class Program {
 
 	/**
 	 * Main entry point.
-	 * @param args ignored
+	 * 
+	 * @param args
+	 *            ignored
 	 */
 	public static void main(String[] args) {
 
@@ -31,7 +42,15 @@ public class Program {
 		try {
 
 			// Create a demo game
-			Game game = new HelloWorldGame();
+			// Game game = new HelloWorldGame();
+			// Game game = new SimpleCrateGame();
+			// Game game = new RopeGame();
+			// Game game = new ScaleGame();
+			// Game game = new ContactGame();
+			// Game game = new PolyLineGame();
+			// Game game = new CrateGame();
+
+			Game game = new TestGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression
@@ -44,10 +63,11 @@ public class Program {
 					// Compute time interval
 					before = now;
 					now = System.nanoTime();
+
 					float deltaTime = (now - before);
 
 					try {
-						int timeDiff = Math.max(0, (int) (1E9/300 - deltaTime));
+						int timeDiff = Math.max(0, (int) (1E9 / 300 - deltaTime));
 						Thread.sleep((int) (timeDiff / 1E6), (int) (timeDiff % 1E6));
 					} catch (InterruptedException e) {
 					}
@@ -57,8 +77,9 @@ public class Program {
 
 					// Clip time interval
 					if (deltaTime > MAX_DELTA_TIME) {
+						System.out.println("Can't keep up! " + deltaTime);
 						deltaTime = MAX_DELTA_TIME;
-						System.out.println("Can't keep up!");
+
 					}
 
 					// Let the game do its stuff
