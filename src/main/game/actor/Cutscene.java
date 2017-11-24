@@ -19,6 +19,7 @@ public class Cutscene {
 	// ellipse w h filename                             is an ellipsoid of width w and height h filled with sprite
 	// break n                                          will pause the cutscene for n seconds
 	// break key                                        will pause the cutscene until key pressed
+	// button                                           next line is a button polygon
 
 
 	public Cutscene(String fileName) throws IOException {   // Handle externally for optimum smootheness
