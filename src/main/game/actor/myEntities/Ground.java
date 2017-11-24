@@ -6,27 +6,33 @@ package main.game.actor.myEntities;
 
 import main.game.actor.Actor;
 import main.game.actor.ActorGame;
+import main.game.actor.Graphics;
 import main.math.Entity;
 import main.math.Polyline;
 import main.math.Vector;
+import main.window.Canvas;
 
 import java.awt.*;
 
-public class Ground extends GameEntity {
-	public Ground(ActorGame game, Vector position, Polyline p) {
-		Entity e = game.newEntity((position == null) ? Vector.ZERO : position,true);
-		Actor a = new PolyLineEntity(e, p, Color.BLACK, .2f);
-		game.addActor(a);
-	}
+import static main.game.actor.myEntities.EntityBuilder.*;
 
-	@Override
-	public void draw(Canvas canvas) {}
+public class Ground extends GameEntity {
+	Graphics g;
+	public Ground(ActorGame game, Vector position, Polyline p) {
+		super(game, true, (position == null) ? Vector.ZERO : position);
+		build(getEntity(),p,-1,-1,false);
+		g = addGraphics(getEntity(), p,null,Color.BLACK,.1f,1,1);
+	}
 
 	@Override
 	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
+
 
 	}
 
+	@Override
+	public void draw(Canvas window){
+		g.draw(window);
+	}
 
 }

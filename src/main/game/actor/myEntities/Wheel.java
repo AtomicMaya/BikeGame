@@ -4,32 +4,31 @@
  */
 package main.game.actor.myEntities;
 
-import main.game.actor.Actor;
-import main.game.actor.ActorGame;
-import main.math.Vector;
-import main.math.WheelConstraint;
-import main.math.WheelConstraintBuilder;
+import main.game.actor.*;
+import main.math.*;
 import main.window.Canvas;
+
+import static main.game.actor.myEntities.EntityBuilder.*;
 
 public class Wheel extends GameEntity {
 
-	private SimpleEntity wheel;
-
 	private WheelConstraint constraint = null;
-	private ActorGame game;
 
-	public Wheel(ActorGame game, Vector position) {
+	private ImageGraphics g;
+
+	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
+		Circle c = new Circle(radius);
+		build(getEntity(),c); ;
+		g = addGraphics(getEntity(),"res/explosive.11.png",radius*2,radius*2);
+		g.setAnchor(new Vector(.5f,.5f));
 
-		this.game = game;
-		wheel = new SphereEntity(getEntity(), .5f, "res/explosive.11.png");
-		wheel.setFriction(.6f);
 	}
 
-	public void attach(SimpleEntity vehicle, Vector anchor, Vector axis) {
-		WheelConstraintBuilder constraintBuilder = game.createWheelConstraintBuilder();
+	public void attach(Entity vehicle, Vector anchor, Vector axis) {
+		WheelConstraintBuilder constraintBuilder = super.getOwner().createWheelConstraintBuilder();
 
-		constraintBuilder.setFirstEntity(vehicle.getEntity());
+		constraintBuilder.setFirstEntity(vehicle);
 		// point d'ancrage du véhicule :
 		constraintBuilder.setFirstAnchor(anchor);
 		// Entity associée à la roue :
@@ -77,7 +76,7 @@ public class Wheel extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-		wheel.draw(canvas);
+		g.draw(canvas);
 		
 	}
 
