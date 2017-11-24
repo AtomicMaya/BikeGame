@@ -1,6 +1,7 @@
 package main.math;
 
 import org.jbox2d.collision.shapes.ChainShape;
+import org.jbox2d.collision.shapes.PolygonShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
@@ -92,7 +93,6 @@ public final class Ellipse extends Shape {
 		int vertexCount = 32; // Magic value for quick modification
 
 		// Create Box2D polygonal shape
-		/*
 		PolygonShape ellipseApproxShape = new PolygonShape();
 
 		ellipseApproxShape.set(new Vec2[]{
@@ -117,9 +117,9 @@ public final class Ellipse extends Shape {
 				new Vec2(center.x + .75f * this.longRadius, center.y - .875f * this.shortRadius),
 				new Vec2(center.x + .5f * this.longRadius, center.y - .9375f * this.shortRadius),
 				new Vec2(center.x, center.y - this.shortRadius)
-		}, 11);
-		*/
+		}, 8);
 
+		/*
 		ChainShape ellipseApproxShape = new ChainShape();
 		Vec2[] vertices = new Vec2[vertexCount + 1];
 
@@ -135,6 +135,7 @@ public final class Ellipse extends Shape {
 
 		vertices[vertexCount + 1] = vertices[0];
 		ellipseApproxShape.createChain(vertices, vertices.length);
+		*/
 		fixtureDef.shape = ellipseApproxShape;
 
 		// Instanciate the actual body part

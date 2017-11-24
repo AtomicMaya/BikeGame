@@ -6,31 +6,24 @@ package main.game.actor.myEntities;
 
 import java.util.ArrayList;
 
-import main.game.actor.Graphics;
-import main.game.actor.ImageGraphics;
-import main.game.actor.ActorGame;
-import main.game.actor.ShapeGraphics;
-import main.math.Entity;
-import main.math.PartBuilder;
-import main.math.Shape;
-import main.math.Vector;
+import main.game.actor.*;
+import main.math.*;
 import main.window.Canvas;
 
-public abstract class SimpleEntity extends GameEntity {
+public abstract class SimpleEntity implements Actor{
 
 	private Entity entity;
 	private ArrayList<Graphics> graphics = new ArrayList<Graphics>();
 	private PartBuilder partBuilder = null;
 	private Shape shape = null; // in case we need it
 
-	protected SimpleEntity(ActorGame game, Vector position, boolean fixed) {
-		super(game, fixed, position);
-		entity = getEntity();
+	protected SimpleEntity(Entity entity, Vector position, boolean fixed) {
+		this.entity = entity;
 	}
 
-	public ArrayList<Graphics> getGraphics() {
+	/*public ArrayList<Graphics> getGraphics() {
 		return graphics;
-	}
+	}*/
 
 	@Override
 	public void draw(Canvas window) {
@@ -99,5 +92,10 @@ public abstract class SimpleEntity extends GameEntity {
 	@Override
 	public Vector getVelocity() {
 		return entity.getVelocity();
+	}
+
+	@Override
+	public Transform getTransform(){
+		return entity.getTransform();
 	}
 }
