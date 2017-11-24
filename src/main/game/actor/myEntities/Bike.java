@@ -8,11 +8,13 @@ import java.awt.Color;
 import java.awt.event.KeyEvent;
 
 import main.game.actor.ActorGame;
-import main.game.actor.ShapeGraphics;
+import main.game.actor.Graphics;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
+
+import static main.game.actor.myEntities.EntityBuilder.*;
 
 public class Bike extends GameEntity {
 
@@ -23,27 +25,28 @@ public class Bike extends GameEntity {
 	private boolean lookRight = true;
 
 	private Wheel rearWheel, frontWheel;
-	public PolygonEntity cycliste;
+
+	private Graphics headGraphic;
 
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
 		this.game = game;
 
-		Polygon polygon = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		cycliste = new PolygonEntity(this.getEntity(), polygon);
+		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
+		build(getEntity(),hitBox);
+
 
 		Circle head = new Circle(0.2f, getHeadLocation());
 
-		cycliste.setGraphics(new ShapeGraphics(head, Color.PINK, Color.BLACK, .1f));
+		headGraphic = addGraphics(getEntity(), head, Color.PINK, Color.BLACK, .1f, 1, 0);
 
-		rearWheel = new Wheel(game, new Vector(-1, 0).add(position));
-		frontWheel = new Wheel(game, position.add(new Vector(1, 0)));
 
-		rearWheel.attach(cycliste, new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
-		frontWheel.attach(cycliste, new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
-		
+		rearWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
+		frontWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
 
-		game.addActor(cycliste);
+		rearWheel.attach(getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
+		frontWheel.attach(getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
+
 		game.addActor(frontWheel);
 		game.addActor(rearWheel);
 	}
@@ -91,7 +94,7 @@ public class Bike extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-		// TODO Auto-generated method stub
+		headGraphic.draw(canvas);
 		
 	}
 
