@@ -77,7 +77,6 @@ public final class Ellipse extends Shape {
 
 	@Override
 	public Path2D toPath() {
-
 		Ellipse2D ellipse = new Ellipse2D.Float(
 				center.x - this.longRadius,
 				center.y - this.shortRadius,

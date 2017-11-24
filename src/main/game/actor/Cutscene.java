@@ -12,7 +12,7 @@ import java.util.List;
 public class Cutscene {
 	// Cutscene format :
 	// #                                                line is ignored
-	// polygon x1 y1 x1 y2 . . ... color strokeWidth    is a polygon
+	// polygon x1 y1 x1 y2 . . ... color strokeWidth alpha etc...    is a polygon
 	// polygon x1 y1 x2 y2 . . ... filename             is a polygon filled with sprite
 	// line x1 y1 x2 y3 . . ... color strokewidth       is a line with color
 	// ellipse w h color strokeWidth                    is a ellipsoid of width w and height h
@@ -41,7 +41,7 @@ public class Cutscene {
 }
 
 class Test {
-	public static void main() {
+	public static void main(String[] args) {
 		try {
 			Cutscene a = new Cutscene("");
 		} catch (IOException e) {

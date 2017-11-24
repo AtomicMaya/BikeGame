@@ -12,21 +12,14 @@ import main.math.Vector;
 
 import java.awt.*;
 
-public class Ground extends GameEntity {
+public class Ground {
 	public Ground(ActorGame game, Vector position, Polyline p) {
 		Entity e = game.newEntity((position == null) ? Vector.ZERO : position,true);
 		Actor a = new PolyLineEntity(e, p, Color.BLACK, .2f);
 		game.addActor(a);
 	}
 
-	@Override
-	public void draw(Canvas canvas) {}
 
-	@Override
-	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
-
-	}
 
 
 }

@@ -5,7 +5,7 @@
 package main.game.actor.myEntities;
 
 import main.game.actor.ImageGraphics;
-import main.game.actor.ActorGame;
+import main.game.actor.TextGraphics;
 import main.math.Entity;
 import main.math.Polygon;
 import main.math.Vector;
@@ -30,6 +30,11 @@ public class RectangleEntity extends SimpleEntity {
 		}
 		super.setGraphics(image);
 
+	}
+
+	public RectangleEntity(Entity entity, TextGraphics textGraphics, float width, float height) {
+		this(entity, width, height);
+		super.setGraphics(textGraphics);
 	}
 
 }
