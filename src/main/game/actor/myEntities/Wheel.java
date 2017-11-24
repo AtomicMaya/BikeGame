@@ -4,6 +4,7 @@
  */
 package main.game.actor.myEntities;
 
+import main.game.actor.Actor;
 import main.game.actor.ActorGame;
 import main.math.Vector;
 import main.math.WheelConstraint;
@@ -19,9 +20,9 @@ public class Wheel extends GameEntity {
 
 	public Wheel(ActorGame game, Vector position) {
 		super(game, false, position);
-		super.getEntity().destroy();
+
 		this.game = game;
-		wheel = new SphereEntity(game, position, .5f, "res/explosive.11.png", false);
+		wheel = new SphereEntity(getEntity(), .5f, "res/explosive.11.png");
 		wheel.setFriction(.6f);
 	}
 
@@ -32,7 +33,7 @@ public class Wheel extends GameEntity {
 		// point d'ancrage du véhicule :
 		constraintBuilder.setFirstAnchor(anchor);
 		// Entity associée à la roue :
-		constraintBuilder.setSecondEntity(wheel.getEntity());
+		constraintBuilder.setSecondEntity(getEntity());
 		// point d'ancrage de la roue (son centre) :
 		constraintBuilder.setSecondAnchor(Vector.ZERO);
 
@@ -72,17 +73,6 @@ public class Wheel extends GameEntity {
 	public void update(float deltaTime) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public Vector getPosition() {
-
-		return wheel.getEntity().getPosition();
-	}
-
-	@Override
-	public Vector getVelocity() {
-		return wheel.getEntity().getVelocity();
 	}
 
 	@Override

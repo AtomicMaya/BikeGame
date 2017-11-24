@@ -10,6 +10,7 @@ import main.game.actor.ImageGraphics;
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Circle;
+import main.math.Entity;
 import main.math.Vector;
 
 public class SphereEntity extends SimpleEntity {
@@ -18,8 +19,8 @@ public class SphereEntity extends SimpleEntity {
 //		super(game, position, fixed);
 //	}
 
-	public SphereEntity(ActorGame game, Vector position, float radius, String imagePath, boolean fixed) {
-		super(game, position, fixed);
+	public SphereEntity(Entity entity, float radius, String imagePath) {
+		super(entity);
 
 		// Create a shape
 		Circle circle = new Circle(radius);
@@ -33,9 +34,9 @@ public class SphereEntity extends SimpleEntity {
 		super.setGraphics(image);
 	}
 
-	public SphereEntity(ActorGame game, Vector position, float radius, boolean fixed, Color fillColor, Color outlineColor,
+	public SphereEntity(Entity entity, float radius, Color fillColor, Color outlineColor,
 			float thickness, float alpha, float depth) {
-		super(game, position, fixed);
+		super(entity);
 
 		// create shape
 		Circle circle = new Circle(radius);

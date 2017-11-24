@@ -9,13 +9,15 @@ import java.util.ArrayList;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
+import main.math.Entity;
 import main.math.Polyline;
 import main.math.Vector;
 
 public class PolyLineEntity extends SimpleEntity {
 
-	public PolyLineEntity(ActorGame game, Vector position, ArrayList<Vector> alV, Color color, float thickness) {
-		super(game, position, true);
+	public PolyLineEntity(Entity entity, ArrayList<Vector> alV, Color color, float thickness) {
+		super(entity);
+
 
 		Polyline p = new Polyline(alV);
 
@@ -26,8 +28,8 @@ public class PolyLineEntity extends SimpleEntity {
 		super.setShape(p);
 		super.setGraphics(shapeGraphic);
 	}
-	public PolyLineEntity(ActorGame game, Vector position, Polyline p, Color color, float thickness) {
-		super(game, position, true);
+	public PolyLineEntity(Entity entity, Polyline p, Color color, float thickness) {
+		super(entity);
 
 		ShapeGraphics shapeGraphic = new ShapeGraphics(p, null, color, .1f);
 		// so the thing on it are not in the line

@@ -8,14 +8,15 @@ import main.game.actor.ActorGame;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
 import main.math.Ellipse;
+import main.math.Entity;
 import main.math.Vector;
 
 import java.awt.*;
 
 public class EllipseCinematicEntity extends SimpleEntity {
 
-	public EllipseCinematicEntity(ActorGame game, Vector position, float longRadius, float shortRadius, String imagePath, boolean fixed) {
-		super(game, position, fixed);
+	public EllipseCinematicEntity(Entity entity, Vector position, float longRadius, float shortRadius, String imagePath, boolean fixed) {
+		super(entity);
 		Ellipse e = new Ellipse(shortRadius, longRadius);
 
 		// give the entity an image
@@ -23,17 +24,16 @@ public class EllipseCinematicEntity extends SimpleEntity {
 		if (imagePath != null && imagePath != "") {
 			image = new ImageGraphics(imagePath, longRadius * 2f, shortRadius * 2f, new Vector(longRadius, shortRadius));
 		}
+		super.setShape(e);
 		super.setGraphics(image);
 
 	}
-	public EllipseCinematicEntity(ActorGame game, Vector position, float longRadius, float shortRadius, boolean fixed, Color innerColor, Color outerColor, float thickness, float alpha, float depth) {
-		super(game, position, fixed);
+	public EllipseCinematicEntity(Entity entity, float longRadius, float shortRadius, Color innerColor, Color outerColor, float thickness, float alpha, float depth) {
+		super(entity);
 		Ellipse e = new Ellipse(shortRadius, longRadius);
 
-
-
 		ShapeGraphics s = new ShapeGraphics(e, innerColor, outerColor,1,1,0);
-
+		super.setShape(e);
 		super.setGraphics(s);
 	}
 

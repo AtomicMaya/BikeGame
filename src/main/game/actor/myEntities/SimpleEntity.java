@@ -17,7 +17,7 @@ public abstract class SimpleEntity implements Actor{
 	private PartBuilder partBuilder = null;
 	private Shape shape = null; // in case we need it
 
-	protected SimpleEntity(Entity entity, Vector position, boolean fixed) {
+	protected SimpleEntity(Entity entity) {
 		this.entity = entity;
 	}
 
@@ -25,6 +25,9 @@ public abstract class SimpleEntity implements Actor{
 		return graphics;
 	}*/
 
+	public Entity getEntity(){
+		return entity;
+	}
 	@Override
 	public void draw(Canvas window) {
 		for (Graphics g : graphics)

@@ -5,16 +5,17 @@
 package main.game.actor.myEntities;
 
 import main.game.actor.ActorGame;
+import main.math.Entity;
 import main.math.Vector;
 
 public class SquareEntity extends RectangleEntity {
 
-	public SquareEntity(ActorGame game, Vector position, float size, boolean fixed) {
-		super(game, position, size, size, fixed);
+	public SquareEntity(Entity entity, float size) {
+		super(entity, size, size);
 	}
 
-	public SquareEntity(ActorGame game, Vector position, String imagePath, float size, boolean fixed) {
-		super(game, position, imagePath, size, size, fixed);
+	public SquareEntity(Entity entity, String imagePath, float size) {
+		super(entity, imagePath, size, size);
 	}
 
 }

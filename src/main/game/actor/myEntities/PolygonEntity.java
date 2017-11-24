@@ -12,14 +12,14 @@ import main.math.Vector;
 
 public class PolygonEntity extends SimpleEntity {
 
-	public PolygonEntity(Entity entity, Vector position, boolean fixed, Vector... vectors) {
-		super(entity, position, fixed);
+	public PolygonEntity(Entity entity, Vector... vectors) {
+		super(entity);
 		Polygon p = new Polygon(vectors);
 		super.setShape(p);
 	}
 
-	public PolygonEntity(Entity entity, Vector position, boolean fixed, Polygon polygon) {
-		super(entity, position, fixed);
+	public PolygonEntity(Entity entity, Polygon polygon) {
+		super(entity);
 		super.setShape(polygon);
 	}
 

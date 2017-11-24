@@ -30,7 +30,7 @@ public class Bike extends GameEntity {
 		this.game = game;
 
 		Polygon polygon = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		cycliste = new PolygonEntity(game, position, false, polygon);
+		cycliste = new PolygonEntity(this.getEntity(), polygon);
 
 		Circle head = new Circle(0.2f, getHeadLocation());
 
