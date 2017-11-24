@@ -5,5 +5,3 @@
 .project
 .classpath
 /out
-src/main/game/actor/myEntities/Ground.java
-src/main/game/actor/myEntities/RectangleEntity.java
