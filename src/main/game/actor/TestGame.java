@@ -24,14 +24,13 @@ public class TestGame extends ActorGame {
 		super.begin(window, fileSystem);
 
 		// TODO creation objects du program
-		Polyline p = new Polyline(-1000.0f, -1000.0f, -1000.0f, 0.0f, 0.0f, 0.0f, 3.0f, 1.0f, 8.0f, 1.0f, 15.0f, 3.0f,
-				16.0f, 3.0f, 25.0f, 0.0f, 35.0f, -5.0f, 50.0f, -5.0f, 55.0f, -4.0f, 65.0f, 0.0f, 6500.0f, -1000.0f);
+		Polyline p = new Polyline(-50f, 0.f, 0.f, -2.f, 50.f, 0.f);
 
 		new Ground(this, null, p);
 
 		player = new Bike(this, new Vector(-0, 5));
 
-		Entity e = super.newEntity(new Vector(-25,4),false);
+		Entity e = super.newEntity(new Vector(-25,6),false);
 		this.addActor(new EllipseCinematicEntity(e, 1f, .5f, Color.BLUE,Color.BLUE,.1f,1,0));
 		this.addActor(new RectangleEntity(super.newEntity(new Vector(-28,4),false),"res/wood.4.png",1,.5f));
 

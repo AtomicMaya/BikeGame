@@ -1,6 +1,10 @@
 package main.game.actor;
 
-import org.jbox2d.common.Vec2;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created on 11/23/2017 at 7:32 PM.
@@ -10,35 +14,38 @@ public class Cutscene {
 	// #                                                line is ignored
 	// polygon x1 y1 x1 y2 . . ... color strokeWidth    is a polygon
 	// polygon x1 y1 x2 y2 . . ... filename             is a polygon filled with sprite
-	// ellipse w h color strokeWidth                     is a ellipsoid of width w and height h
-	// ellipse w h filename                              is an ellipsoid of width w and height h filled with sprite
+	// line x1 y1 x2 y3 . . ... color strokewidth       is a line with color
+	// ellipse w h color strokeWidth                    is a ellipsoid of width w and height h
+	// ellipse w h filename                             is an ellipsoid of width w and height h filled with sprite
 	// break n                                          will pause the cutscene for n seconds
 	// break key                                        will pause the cutscene until key pressed
 
-	public Cutscene(String fileName) {
+
+	public Cutscene(String fileName) throws IOException {   // Handle externally for optimum smootheness
+		FileReader fileReader = new FileReader(fileName);
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		List<ArrayList<String>> lines = new ArrayList<>();
+		String line = null;
+		while ((line = bufferedReader.readLine()) != null) {
+			ArrayList<String> splittedLine = new ArrayList<>();
+			for(String s : line.split(" ")) {
+				splittedLine.add(s);
+			}
+			lines.add(splittedLine);
+		}
+		bufferedReader.close();
+
+		System.out.println(lines);
 
 	}
 }
 
 class Test {
-	public static void main(String[] args) {
-		float longRadius = 5.f, shortRadius = 2.5f;
-		int vertexCount = 32; // Magic value for quick modification
-		Vec2[] vertices = new Vec2[vertexCount + 1];
-		for (int i = 0; i < vertexCount; i++) {
-			float angle = (float) (((Math.PI * 2) / vertexCount) * i);
-			float radiusAtAngle = (float) ((longRadius * shortRadius) /
-					Math.sqrt(Math.pow(longRadius * Math.sin(angle), 2) + Math.pow(shortRadius * Math.cos(angle), 2)));
-			float xPos = (float) (radiusAtAngle * Math.cos(angle));
-			float yPos = (float) (radiusAtAngle * Math.sin(angle));
-			vertices[i] = new Vec2(xPos, yPos);
-		}
-
-		vertices[vertexCount] = vertices[0];
-		int i = 0;
-		for(Vec2 vec : vertices) {
-			System.out.println((char) (65 + i) + " = (" + vec.x + ", " + vec.y + ")");
-			i++;
+	public static void main() {
+		try {
+			Cutscene a = new Cutscene("");
+		} catch (IOException e) {
+			System.out.println("Next Scene Jump");
 		}
 	}
 }

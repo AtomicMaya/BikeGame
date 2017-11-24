@@ -81,8 +81,8 @@ public final class Ellipse extends Shape {
 		Ellipse2D ellipse = new Ellipse2D.Float(
 				center.x - this.longRadius,
 				center.y - this.shortRadius,
-				this.longRadius ,
-				this.shortRadius
+				this.longRadius * 2.f,
+				this.shortRadius * 2.f
 		);
 		return new Path2D.Float(ellipse);
 	}
