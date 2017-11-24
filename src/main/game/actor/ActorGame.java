@@ -38,6 +38,8 @@ public class ActorGame implements Game {
 
 	private FileSystem fileSystem;
 
+	private boolean gameFrozen = false;
+
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		if (window == null)
@@ -56,6 +58,8 @@ public class ActorGame implements Game {
 
 	@Override
 	public void update(float deltaTime) {
+		if (gameFrozen)
+			return;
 		world.update(deltaTime);
 
 		for (Actor actor : actors) {
@@ -122,4 +126,11 @@ public class ActorGame implements Game {
 		return world.createWheelConstraintBuilder();
 	}
 
+	public boolean isGameFrozen(){
+		return gameFrozen;
+	}
+
+	public void setGameFreezeStatus(boolean freeze){
+		gameFrozen = freeze;
+	}
 }

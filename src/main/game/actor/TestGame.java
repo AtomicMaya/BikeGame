@@ -5,12 +5,14 @@
 package main.game.actor;
 
 import main.game.actor.myEntities.Bike;
-import main.game.actor.myEntities.EllipseEntity;
+import main.game.actor.myEntities.EllipseCinematicEntity;
 import main.game.actor.myEntities.Ground;
 import main.io.FileSystem;
 import main.math.Polyline;
 import main.math.Vector;
 import main.window.Window;
+
+import java.awt.*;
 
 public class TestGame extends ActorGame {
 
@@ -25,10 +27,13 @@ public class TestGame extends ActorGame {
 
 		new Ground(this, null, p);
 
-		player = new Bike(this, new Vector(4, 5));
-		this.setViewCandidate(player.cycliste);
-		this.addActor(new EllipseEntity(this, new Vector(-2,4), 1, .5f, "res/explosive.11.png", false));
+		player = new Bike(this, new Vector(-0, 5));
 
+		this.addActor(new EllipseCinematicEntity(this, new Vector(-25,4), 1f, .5f, true, Color.BLUE,Color.BLUE,.1f,1,0));
+		Actor a =new RectangleEntity(this, new Vector(-30f,6f),"res/wood.4.png",10,.2f, false);
+		this.addActor(a);
+
+		this.setViewCandidate(a);
 		return true;
 
 	}

@@ -12,9 +12,9 @@ import main.math.Vector;
 
 import java.awt.*;
 
-public class EllipseEntity extends SimpleEntity {
+public class EllipseCinematicEntity extends SimpleEntity {
 
-	public EllipseEntity(ActorGame game, Vector position, float longRadius, float shortRadius, String imagePath, boolean fixed) {
+	public EllipseCinematicEntity(ActorGame game, Vector position, float longRadius, float shortRadius, String imagePath, boolean fixed) {
 		super(game, position, fixed);
 		Ellipse e = new Ellipse(shortRadius, longRadius);
 
@@ -23,20 +23,18 @@ public class EllipseEntity extends SimpleEntity {
 		if (imagePath != null && imagePath != "") {
 			image = new ImageGraphics(imagePath, longRadius * 2f, shortRadius * 2f, new Vector(longRadius, shortRadius));
 		}
-		super.setShape(e);
 		super.setGraphics(image);
 
 	}
-	public EllipseEntity(ActorGame game, Vector position, float longRadius, float shortRadius, boolean fixed) {
+	public EllipseCinematicEntity(ActorGame game, Vector position, float longRadius, float shortRadius, boolean fixed, Color innerColor, Color outerColor, float thickness, float alpha, float depth) {
 		super(game, position, fixed);
 		Ellipse e = new Ellipse(shortRadius, longRadius);
 
-		// give the entity an image
 
-		ShapeGraphics s = new ShapeGraphics(e, Color.BLUE,Color.BLUE,1,1,0);
-		super.setShape(e);
+
+		ShapeGraphics s = new ShapeGraphics(e, innerColor, outerColor,1,1,0);
+
 		super.setGraphics(s);
-
 	}
 
 }

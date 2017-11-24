@@ -19,6 +19,7 @@ public class Wheel extends GameEntity {
 
 	public Wheel(ActorGame game, Vector position) {
 		super(game, false, position);
+		super.getEntity().destroy();
 		this.game = game;
 		wheel = new SphereEntity(game, position, .5f, "res/explosive.11.png", false);
 		wheel.setFriction(.6f);
