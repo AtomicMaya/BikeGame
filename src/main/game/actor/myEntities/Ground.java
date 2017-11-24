@@ -6,17 +6,25 @@ package main.game.actor.myEntities;
 
 import main.game.actor.Actor;
 import main.game.actor.ActorGame;
+import main.game.actor.ShapeGraphics;
 import main.math.Entity;
 import main.math.Polyline;
 import main.math.Vector;
+import main.window.Canvas;
 
 import java.awt.*;
 
-public class Ground {
+public class Ground extends GameEntity {
+
+	ShapeGraphics g;
 	public Ground(ActorGame game, Vector position, Polyline p) {
-		Entity e = game.newEntity((position == null) ? Vector.ZERO : position,true);
-		Actor a = new PolyLineEntity(e, p, Color.BLACK, .2f);
-		game.addActor(a);
+		super(game, true,(position == null) ? Vector.ZERO : position);
+		EntityBuilder.build(getEntity(),p);
+		g = EntityBuilder.addGraphics(getEntity(),p,null, Color.black,.1f,1,0);
+	}
+	@Override
+	public void draw(Canvas window){
+		g.draw(window);
 	}
 
 
