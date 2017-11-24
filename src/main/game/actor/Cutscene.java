@@ -1,5 +1,7 @@
 package main.game.actor;
 
+import org.jbox2d.common.Vec2;
+
 /**
  * Created on 11/23/2017 at 7:32 PM.
  */
@@ -20,5 +22,23 @@ public class Cutscene {
 
 class Test {
 	public static void main(String[] args) {
+		float longRadius = 5.f, shortRadius = 2.5f;
+		int vertexCount = 32; // Magic value for quick modification
+		Vec2[] vertices = new Vec2[vertexCount + 1];
+		for (int i = 0; i < vertexCount; i++) {
+			float angle = (float) (((Math.PI * 2) / vertexCount) * i);
+			float radiusAtAngle = (float) ((longRadius * shortRadius) /
+					Math.sqrt(Math.pow(longRadius * Math.sin(angle), 2) + Math.pow(shortRadius * Math.cos(angle), 2)));
+			float xPos = (float) (radiusAtAngle * Math.cos(angle));
+			float yPos = (float) (radiusAtAngle * Math.sin(angle));
+			vertices[i] = new Vec2(xPos, yPos);
+		}
+
+		vertices[vertexCount] = vertices[0];
+		int i = 0;
+		for(Vec2 vec : vertices) {
+			System.out.println((char) (65 + i) + " = (" + vec.x + ", " + vec.y + ")");
+			i++;
+		}
 	}
 }

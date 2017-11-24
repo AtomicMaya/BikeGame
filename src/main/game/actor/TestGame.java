@@ -7,7 +7,6 @@ package main.game.actor;
 import main.game.actor.myEntities.Bike;
 import main.game.actor.myEntities.EllipseEntity;
 import main.game.actor.myEntities.Ground;
-import main.game.actor.myEntities.RectangleEntity;
 import main.io.FileSystem;
 import main.math.Polyline;
 import main.math.Vector;
@@ -37,6 +36,6 @@ public class TestGame extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-player.update(deltaTime);
+		player.update(deltaTime);
 	}
 }
