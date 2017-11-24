@@ -90,34 +90,6 @@ public final class Ellipse extends Shape {
 	@Override
 	Part build(FixtureDef fixtureDef, Entity entity) {
 		int vertexCount = 32; // Magic value for quick modification
-		/*
-		// Create Box2D polygonal shape
-		PolygonShape ellipseApproxShape = new PolygonShape();
-
-		ellipseApproxShape.set(new Vec2[]{
-				new Vec2(center.x, center.y - this.shortRadius),
-				new Vec2(center.x - .5f * this.longRadius, center.y - .9375f * this.shortRadius),   // 15/16th
-				new Vec2(center.x - .75f * this.longRadius, center.y - .875f * this.shortRadius),   // 7/8th
-				new Vec2(center.x - .875f * this.longRadius, center.y - .5f * this.shortRadius),    // 1/2th
-				new Vec2(center.x - .9375f * this.longRadius, center.y - .25f * this.shortRadius),  // 1/4th
-				new Vec2(center.x - this.longRadius, 0.f),
-				new Vec2(center.x - .9375f * this.longRadius, center.y + .25f * this.shortRadius),
-				new Vec2(center.x - .875f * this.longRadius, center.y + .5f * this.shortRadius),
-				new Vec2(center.x - .75f * this.longRadius, center.y + .875f * this.shortRadius),
-				new Vec2(center.x - .5f * this.longRadius, center.y + .9375f * this.shortRadius),
-				new Vec2(center.x, center.y + this.shortRadius),
-				new Vec2(center.x + .5f * this.longRadius, center.y + .9375f * this.shortRadius),
-				new Vec2(center.x + .75f * this.longRadius, center.y + .875f * this.shortRadius),
-				new Vec2(center.x + .875f * this.longRadius, center.y + .5f * this.shortRadius),
-				new Vec2(center.x + .9375f * this.longRadius, center.y + .25f * this.shortRadius),
-				new Vec2(center.x + this.longRadius, 0.f),
-				new Vec2(center.x + .9375f * this.longRadius, center.y - .25f * this.shortRadius),
-				new Vec2(center.x + .875f * this.longRadius, center.y - .5f * this.shortRadius),
-				new Vec2(center.x + .75f * this.longRadius, center.y - .875f * this.shortRadius),
-				new Vec2(center.x + .5f * this.longRadius, center.y - .9375f * this.shortRadius),
-				new Vec2(center.x, center.y - this.shortRadius)
-		}, 8);
-		*/
 		PolygonShape ellipseApproxShape = new PolygonShape();
 		Vec2[] vertices = new Vec2[vertexCount];
 
