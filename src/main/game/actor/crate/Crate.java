@@ -26,16 +26,4 @@ public class Crate extends GameEntity {
 		graphic.draw(canvas);
 	}
 
-	@Override
-	public Transform getTransform() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Vector getVelocity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

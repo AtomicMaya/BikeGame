@@ -73,6 +73,7 @@ public class Bike extends GameEntity {
 		// cycliste.getEntity().applyAngularForce(10f);
 		// }
 		// }
+
 		if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
 			frontWheel.power(-20);
 			rearWheel.power(-20);

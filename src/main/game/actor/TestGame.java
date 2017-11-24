@@ -5,7 +5,9 @@
 package main.game.actor;
 
 import main.game.actor.myEntities.Bike;
+import main.game.actor.myEntities.EllipseEntity;
 import main.game.actor.myEntities.Ground;
+import main.game.actor.myEntities.RectangleEntity;
 import main.io.FileSystem;
 import main.math.Polyline;
 import main.math.Vector;
@@ -25,8 +27,9 @@ public class TestGame extends ActorGame {
 		new Ground(this, null, p);
 
 		player = new Bike(this, new Vector(4, 5));
-		
 		this.setViewCandidate(player.cycliste);
+		this.addActor(new EllipseEntity(this, new Vector(-2,4), 1, .5f, "res/explosive.11.png", false));
+
 		return true;
 
 	}
@@ -34,6 +37,6 @@ public class TestGame extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-
+player.update(deltaTime);
 	}
 }

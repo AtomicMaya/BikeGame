@@ -14,9 +14,9 @@ import main.math.Vector;
 
 public class SphereEntity extends SimpleEntity {
 
-	public SphereEntity(ActorGame game, Vector position, boolean fixed) {
-		super(game, position, fixed);
-	}
+//	public SphereEntity(ActorGame game, Vector position, boolean fixed) {
+//		super(game, position, fixed);
+//	}
 
 	public SphereEntity(ActorGame game, Vector position, float radius, String imagePath, boolean fixed) {
 		super(game, position, fixed);

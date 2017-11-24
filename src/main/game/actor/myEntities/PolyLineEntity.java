@@ -31,7 +31,7 @@ public class PolyLineEntity extends SimpleEntity {
 
 		ShapeGraphics shapeGraphic = new ShapeGraphics(p, null, color, .1f);
 		// so the thing on it are not in the line
-		shapeGraphic.setRelativeTransform(shapeGraphic.getTransform().translated(new Vector(0, -.05f)));
+		//shapeGraphic.setRelativeTransform(shapeGraphic.getTransform().translated(new Vector(0, -.05f)));
 
 		super.setShape(p);
 		super.setGraphics(shapeGraphic);
