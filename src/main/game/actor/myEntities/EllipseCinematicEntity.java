@@ -22,7 +22,7 @@ public class EllipseCinematicEntity extends SimpleEntity {
 		// give the entity an image
 		ImageGraphics image = null;
 		if (imagePath != null && imagePath != "") {
-			image = new ImageGraphics(imagePath, longRadius * 2f, shortRadius * 2f, new Vector(longRadius, shortRadius));
+			image = new ImageGraphics(imagePath, longRadius, shortRadius , new Vector(longRadius, shortRadius));
 		}
 		super.setShape(e);
 		super.setGraphics(image);
@@ -32,7 +32,7 @@ public class EllipseCinematicEntity extends SimpleEntity {
 		super(entity);
 		Ellipse e = new Ellipse(shortRadius, longRadius);
 
-		ShapeGraphics s = new ShapeGraphics(e, innerColor, outerColor,1,1,0);
+		ShapeGraphics s = new ShapeGraphics(e, innerColor, outerColor,thickness,alpha,depth);
 		super.setShape(e);
 		super.setGraphics(s);
 	}

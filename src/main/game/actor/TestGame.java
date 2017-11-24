@@ -7,6 +7,7 @@ package main.game.actor;
 import main.game.actor.myEntities.Bike;
 import main.game.actor.myEntities.EllipseCinematicEntity;
 import main.game.actor.myEntities.Ground;
+import main.game.actor.myEntities.RectangleEntity;
 import main.io.FileSystem;
 import main.math.Entity;
 import main.math.Polyline;
@@ -32,6 +33,7 @@ public class TestGame extends ActorGame {
 
 		Entity e = super.newEntity(new Vector(-25,4),false);
 		this.addActor(new EllipseCinematicEntity(e, 1f, .5f, Color.BLUE,Color.BLUE,.1f,1,0));
+		this.addActor(new RectangleEntity(super.newEntity(new Vector(-28,4),false),"res/wood.4.png",1,.5f));
 
 		this.setViewCandidate(e);
 		return true;
