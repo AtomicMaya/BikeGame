@@ -1,6 +1,6 @@
 package main.math;
 
-import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.collision.shapes.ChainShape;
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
@@ -89,7 +89,10 @@ public final class Ellipse extends Shape {
 
 	@Override
 	Part build(FixtureDef fixtureDef, Entity entity) {
+		int vertexCount = 32; // Magic value for quick modification
+
 		// Create Box2D polygonal shape
+		/*
 		PolygonShape ellipseApproxShape = new PolygonShape();
 
 		ellipseApproxShape.set(new Vec2[]{
@@ -115,7 +118,23 @@ public final class Ellipse extends Shape {
 				new Vec2(center.x + .5f * this.longRadius, center.y - .9375f * this.shortRadius),
 				new Vec2(center.x, center.y - this.shortRadius)
 		}, 11);
+		*/
 
+		ChainShape ellipseApproxShape = new ChainShape();
+		Vec2[] vertices = new Vec2[vertexCount + 1];
+
+		float spikeDegree = (float) (2.f * Math.PI / 180.f);
+		for (int i = 0; i < vertexCount; i++) {
+			float angle = (float) (((Math.PI * 2) / vertexCount) * i);
+			float radiusAtAngle = (float) ((this.longRadius * this.shortRadius) /
+					Math.sqrt(Math.pow(this.longRadius * Math.sin(angle), 2) + Math.pow(this.shortRadius * Math.cos(angle), 2)));
+			float xPos = (float) (radiusAtAngle * Math.cos(angle));
+			float yPos = (float) (radiusAtAngle * Math.sin(angle));
+			vertices[i] = new Vec2(xPos, yPos);
+		}
+
+		vertices[vertexCount + 1] = vertices[0];
+		ellipseApproxShape.createChain(vertices, vertices.length);
 		fixtureDef.shape = ellipseApproxShape;
 
 		// Instanciate the actual body part
