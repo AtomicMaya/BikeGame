@@ -1,10 +1,9 @@
 package main.game.actor.myEntities;
 
-import main.game.actor.Actor;
-import main.game.actor.Graphics;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
-import main.math.*;
+import main.math.Entity;
+import main.math.PartBuilder;
 import main.math.Shape;
 
 import java.awt.*;
@@ -21,9 +20,9 @@ public class EntityBuilder {
      * @return A new ImageGraphics associated to the entity
      * */
     public static ImageGraphics addGraphics(Entity entity, String imagePath, float width, float height){
-        ImageGraphics ig = new ImageGraphics(imagePath, width, height);
-        ig.setParent(entity);
-        return ig;
+        ImageGraphics graphics = new ImageGraphics(imagePath, width, height);
+        graphics.setParent(entity);
+        return graphics;
     }
 
     /**
@@ -39,9 +38,13 @@ public class EntityBuilder {
      * @return The ShapeGraphics created and associated to the image
      */
     public static ShapeGraphics addGraphics(Entity entity, Shape shape, Color fillColor, Color outlineColor, float thickness, float alpha, float depth){
-        ShapeGraphics s = new ShapeGraphics(shape, fillColor, outlineColor, thickness, alpha, depth);
-        s.setParent(entity);
-        return s;
+        ShapeGraphics graphics = new ShapeGraphics(shape, fillColor, outlineColor, thickness, alpha, depth);
+        graphics.setParent(entity);
+        return graphics;
+    }
+
+    public static ShapeGraphics addGraphics(Entity entity, Shape shape, Color color) {
+        return addGraphics(entity, shape, color, color, 0.f, 0.f, 0.f);
     }
     /**
      * Build the entity, which give a physical representation for the engine
@@ -73,11 +76,11 @@ public class EntityBuilder {
         partBuilder.build();
     }
 
-    private static void setParent(Entity entity, ImageGraphics ig){
-        if (ig!=null)ig.setParent(entity);
+    private static void setParent(Entity entity, ImageGraphics graphics){
+        if (graphics != null) graphics.setParent(entity);
     }
 
-    private static void setParent(Entity entity, ShapeGraphics ig){
-        if (ig!=null)ig.setParent(entity);
+    private static void setParent(Entity entity, ShapeGraphics graphics){
+        if (graphics != null) graphics.setParent(entity);
     }
 }

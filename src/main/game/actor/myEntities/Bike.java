@@ -4,18 +4,17 @@
  */
 package main.game.actor.myEntities;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-
 import main.game.actor.ActorGame;
 import main.game.actor.Graphics;
 import main.game.actor.ShapeGraphics;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Shape;
-import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 import static main.game.actor.myEntities.EntityBuilder.*;
 

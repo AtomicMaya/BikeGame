@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public abstract class CinematicEntity implements Actor {
 
     Entity entity;
-    private ArrayList<Graphics> graphics = new ArrayList<Graphics>();
+    private ArrayList<Graphics> graphics = new ArrayList<>();
     private PartBuilder partBuilder = null;
 
     CinematicEntity(Entity entity) {

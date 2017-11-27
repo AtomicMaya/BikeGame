@@ -4,12 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created on 11/23/2017 at 7:32 PM.
  */
-public class Cutscene {
+public class Cutscene extends ActorGame {
 	// Cutscene format :
 	// #                                                line is ignored
 	// polygon x1 y1 x1 y2 . . ... color strokeWidth alpha etc...    is a polygon
@@ -20,31 +19,62 @@ public class Cutscene {
 	// break n                                          will pause the cutscene for n seconds
 	// break key                                        will pause the cutscene until key pressed
 	// button                                           next line is a button polygon
+	// text x y size "some text"                             text, x y at upper right of first letter
 
+	private ArrayList<ArrayList<String>> cutsceneContents = new ArrayList<>();
+	private ArrayList<Actor> actors = new ArrayList<>();
 
 	public Cutscene(String fileName) throws IOException {   // Handle externally for optimum smootheness
 		FileReader fileReader = new FileReader(fileName);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		List<ArrayList<String>> lines = new ArrayList<>();
 		String line = null;
 		while ((line = bufferedReader.readLine()) != null) {
 			ArrayList<String> splittedLine = new ArrayList<>();
 			for(String s : line.split(" ")) {
 				splittedLine.add(s);
 			}
-			lines.add(splittedLine);
+			cutsceneContents.add(splittedLine);
 		}
 		bufferedReader.close();
 
-		System.out.println(lines);
+		decode();
 
+	}
+
+	private void decode() {
+		for (ArrayList<String> actor : cutsceneContents) {
+			switch (actor.get(0)){
+				case "line":
+					ArrayList<Integer> coordinates = new ArrayList<>();
+					String color = "";
+					int strokeWidth = 0;
+
+					for(int i = 1; i < actor.size(); i++) {
+						if (i == actor.size() - 2) color = actor.get(i);
+						else if (i == actor.size() - 1) strokeWidth = Integer.parseInt(actor.get(i));
+						else coordinates.add(Integer.parseInt(actor.get(i)));
+					}
+					System.out.println(coordinates);
+					System.out.println(color + " " + strokeWidth);
+					System.out.println("Was a line !");
+					break;
+				case "polygon":
+					System.out.println("Was a Polygon !");
+					break;
+				case "text":
+					System.out.println("Was a Text !");
+					break;
+				default:
+					break;
+			}
+		}
 	}
 }
 
 class Test {
 	public static void main(String[] args) {
 		try {
-			Cutscene a = new Cutscene("");
+			Cutscene a = new Cutscene("./res/cutscene/level1-1.cts");
 		} catch (IOException e) {
 			System.out.println("Next Scene Jump");
 		}
