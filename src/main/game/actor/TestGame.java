@@ -1,8 +1,5 @@
 package main.game.actor;
 
-import java.awt.event.KeyEvent;
-
-import main.test;
 import main.game.actor.crate.Crate;
 import main.game.actor.myEntities.Bike;
 import main.game.actor.myEntities.Ground;
@@ -11,8 +8,9 @@ import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
-import main.window.Keyboard;
 import main.window.Window;
+
+import java.awt.event.KeyEvent;
 
 public class TestGame extends ActorGame {
 
@@ -25,8 +23,8 @@ public class TestGame extends ActorGame {
 		// TODO creation objects du program
 		Polygon p1 = new Polygon(-10.f, 0.f, -5.f, 5.f, 0.f, -2.5f, -7.5f, -5.f);
 
-		player = new Bike(this, new Vector(-0, 5));
-		test = new TestEntity(this, Vector.ZERO, p1);
+		//player = new Bike(this, new Vector(-0, 5));
+		//test = new TestEntity(this, Vector.ZERO, p1);
 
 		this.setViewCandidate(test);
 		Polyline p = new Polyline(
@@ -54,7 +52,6 @@ public class TestGame extends ActorGame {
 		this.setViewCandidate(player);
 		this.addActor(ground);
 		this.addActor(player);
-		this.addActor(test);
 		return true;
 
 	}
@@ -63,7 +60,6 @@ public class TestGame extends ActorGame {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		player.update(deltaTime);
-		test.update(deltaTime);
 	}
 
 	@Override

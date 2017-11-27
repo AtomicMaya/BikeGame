@@ -10,14 +10,14 @@ import main.game.actor.ShapeGraphics;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Polyline;
-import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import static main.game.actor.myEntities.EntityBuilder.*;
+import static main.game.actor.myEntities.EntityBuilder.addGraphics;
+import static main.game.actor.myEntities.EntityBuilder.build;
 
 public class Bike extends GameEntity {
 
@@ -27,7 +27,8 @@ public class Bike extends GameEntity {
 
 	private boolean lookRight = true;
 
-	private Wheel rearWheel, frontWheel;
+	private Polygon hitbox;
+	private Polyline bikeFrame, characterBody;
 	private Polyline lKnee, rKnee, lFoot, rFoot;
 
 	private ShapeGraphics bikeFrameGraphic, charBodyGraphic, charLKneeGraphic, charRKneeGraphic;
@@ -36,36 +37,30 @@ public class Bike extends GameEntity {
 	private Wheel leftWheel, rightWheel;
 
 	private Graphics headGraphic;
-	ShapeGraphics cone;
-
-	Shape triangle;
 
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
 		this.game = game;
 
-		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		Polyline bikeFrame = new Polyline(-1.3f, .6f, -1.f, .7f,-1.f, .7f, -.7f, .6f, -.3f, .6f,//rear mud guard
+		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
+		bikeFrame = new Polyline(-1.3f, .6f, -1.f, .7f,-1.f, .7f, -.7f, .6f, -.3f, .6f,//rear mud guard
 				-.4f, 1.f, -.3f, .6f, // ass holder
 				-1.f, 0.f, -.25f, .1f, -1.f, 0.f, -.3f, .6f, -.25f, .1f, .8f, .75f, -.3f, .6f, .8f, .75f, // Frame
 				1.f, .75f, 1.f, .85f, 1.f, .7f, 1.f, 0.f, 1.f, .7f, 1.3f, .65f, 1.4f, .6f);
-		Polyline characterBody = new Polyline(.4f, 1.75f, .2f, 1.5f, 0.5f, 1.f, 1.f, 1.f, 0.5f, 1.f, .2f, 1.5f, -.2f, 0.85f);
+		characterBody = new Polyline(.4f, 1.75f, .2f, 1.5f, 0.5f, 1.f, 1.f, 1.f, 0.5f, 1.f, .2f, 1.5f, -.2f, 0.85f);
 
-		build(getEntity(), hitBox);
+		build(getEntity(), hitbox);
 
 		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.LIGHT_GRAY, .1f, 1, 0);
+		charBodyGraphic = addGraphics(this.getEntity(), characterBody, null, Color.BLACK, .1f, 1.f, 0);
 
-		Joint back = new Joint(game, new Vector(-.2f, .85f), 1.f);
-		Joint leg = new Joint(game, new Vector(.1f, .5f), 1.f);
+		Joint back = new Joint(game, false, new Vector(-.2f, .85f), 1.f);
+		Joint leg = new Joint(game, true, new Vector(.1f, .5f), 1.f);
 		leg.attach(back, back.getAnchor(), new Vector(.0f, 1.f));
 
 		Circle head = new Circle(0.2f, getHeadLocation());
 
 		headGraphic = addGraphics(getEntity(), head, Color.PINK, Color.BLACK, .05f, 1, 0);
-
-
-		triangle = new Polygon(.15f, 1.75f, .55f, 1.65f, .1f, 1.55f);
-		cone = addGraphics(getEntity(), triangle, Color.red, Color.black, .05f, 1, -1);
 
 		leftWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
 		rightWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
@@ -85,9 +80,6 @@ public class Bike extends GameEntity {
 	public void update(float deltaTime) {
 		//Graphics
 
-
-		rearWheel.relax();
-		frontWheel.relax();
 		// if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
 		// if (lookRight && rearWheel.getSpeed() > MAX_WHEEL_SPEED) {
 		// rearWheel.power(-10f);
@@ -114,14 +106,11 @@ public class Bike extends GameEntity {
 			// frontWheel.relax();
 			lookRight = !lookRight;
 			if (!lookRight) {
-				triangle = new Polygon(-.15f, 1.75f, -.55f, 1.65f, -.1f, 1.55f);
 				System.out.println("look left");
+				headGraphic = a
 			} else {
-				triangle = new Polygon(.15f, 1.75f, .55f, 1.65f, .1f, 1.55f);
 				System.out.println("look right");
 			}
-
-			cone = addGraphics(getEntity(), triangle, Color.red, Color.black, .05f, 1, -1);
 
 			System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x : 0.0f);
 		}
@@ -157,8 +146,7 @@ public class Bike extends GameEntity {
 		headGraphic.draw(canvas);
 		bikeFrameGraphic.draw(canvas);
 		charBodyGraphic.draw(canvas);
-		charLKneeGraphic.draw(canvas);
-		cone.draw(canvas);
+//		charLKneeGraphic.draw(canvas);
 	}
 
 }

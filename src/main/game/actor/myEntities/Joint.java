@@ -2,8 +2,7 @@ package main.game.actor.myEntities;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
-import main.math.Entity;
-import main.math.Polyline;
+import main.math.Polygon;
 import main.math.PrismaticConstraintBuilder;
 import main.math.Vector;
 import main.window.Canvas;
@@ -19,9 +18,10 @@ public class Joint extends GameEntity {
 	private ShapeGraphics graphics;
 	private boolean relative;
 
-	public Joint(ActorGame game, Vector position, float length) {
+	public Joint(ActorGame game, boolean relative, Vector position, float length) {
 		super(game, false, position);
-		Polyline member = new Polyline(.0f, .0f, length, length);
+		if(!relative) anchor = position;
+		Polygon member = new Polygon(.0f, .0f, length, .0f, length, length, .0f, length);
 		build(this.getEntity(), member);
 		graphics = addGraphics(this.getEntity(), member, null, Color.BLACK, .1f, 1.f, 0f);
 	}
@@ -51,7 +51,4 @@ public class Joint extends GameEntity {
 		graphics.draw(canvas);
 	}
 
-	public Entity getEntity() {
-		return this.getEntity();
-	}
 }
