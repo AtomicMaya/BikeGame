@@ -32,13 +32,6 @@ public abstract class Level extends Node {
 		actors.add(actor);
 	}
 
-	public void end() {
-		game.detroyActor(actors);
-		for (Actor a : actors) {
-			a.destroy();
-		}
-	}
-
 	public void setViewCandidate(Actor a) {
 		this.viewCAndidate = a;
 	}

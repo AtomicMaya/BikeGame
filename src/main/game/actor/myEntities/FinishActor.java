@@ -30,16 +30,17 @@ public class FinishActor extends GameEntity {
 
 	@Override
 	public void update(float deltaTime) {
-		if (contactListener.getEntities().contains(player)) {
-			finish = true;
-		}
+		finish = contactListener.getEntities().contains(player);
 	}
 
 	public boolean isFinished() {
 		return finish;
 	}
-	public void c() {
-		System.out.println(player);
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		super.getOwner().destroyActor(this);
 	}
 
 }

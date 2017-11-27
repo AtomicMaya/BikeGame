@@ -5,6 +5,7 @@
 package main.game.actor.myEntities;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
@@ -23,8 +24,16 @@ public class Ground extends GameEntity {
 	@Override
 	public void draw(Canvas window){
 		g.draw(window);
+		if (super.getOwner().getKeyboard().get(KeyEvent.VK_G).isPressed()) {
+			destroy();
+		}
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
+		super.getOwner().destroyActor(this);
+	}
 
 
 

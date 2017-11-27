@@ -72,7 +72,8 @@ public class Wheel extends GameEntity {
 	public float getSpeed() {
 		if (constraint != null) {
 			return constraint.getMotorSpeed();
-		} else return -1;
+		} else
+			return -1;
 	}
 
 	@Override
@@ -83,6 +84,6 @@ public class Wheel extends GameEntity {
 	@Override
 	public void destroy() {
 		super.destroy();
-		detach();
+		super.getOwner().destroyActor(this);
 	}
 }

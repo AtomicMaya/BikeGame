@@ -19,7 +19,7 @@ public class Crate extends GameEntity {
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
 		super(game, fixed, position);
 		imagePath = (imagePath == null || imagePath == "") ? "res/crate.1.png" : imagePath;
-		Polygon square = new Polygon(0, 0, 1, 0, 1, 1, 0, 1);
+		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);
 		EntityBuilder.build(getEntity(), square);
 		graphic = new ImageGraphics(imagePath, size, size);
 		graphic.setParent(getEntity());
@@ -28,6 +28,12 @@ public class Crate extends GameEntity {
 	@Override
 	public void draw(Canvas canvas) {
 		graphic.draw(canvas);
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		super.getOwner().destroyActor(this);
 	}
 
 }

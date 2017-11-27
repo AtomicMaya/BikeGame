@@ -43,6 +43,7 @@ public class Bike extends GameEntity {
 
 	private Graphics headGraphic;
 
+	Joint back, leg;
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
 		this.game = game;
@@ -60,8 +61,8 @@ public class Bike extends GameEntity {
 		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.LIGHT_GRAY, .1f, 1, 0);
 		charBodyGraphic = addGraphics(this.getEntity(), characterBody, null, Color.BLACK, .1f, 1.f, 0);
 
-		Joint back = new Joint(game, false, new Vector(-.2f, .85f), 1.f);
-		Joint leg = new Joint(game, true, new Vector(.1f, .5f), 1.f);
+		 back = new Joint(game, false, new Vector(-.2f, .85f), 1.f);
+		 leg = new Joint(game, true, new Vector(.1f, .5f), 1.f);
 		leg.attach(back, back.getAnchor(), new Vector(.0f, 1.f));
 
 		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
@@ -118,7 +119,7 @@ public class Bike extends GameEntity {
 			// rearWheel.relax();
 			// frontWheel.relax();
 			lookRight = !lookRight;
-			System.out.println("look changed");
+		//	System.out.println("look changed");
 			setHeadPosition(getHeadPosition().mul(new Vector(-1.f, 1.f)));
 			head = new Circle(head.getRadius(), getHeadPosition());
 			headGraphic = addGraphics(this.getEntity(), head, Color.PINK, Color.BLACK, .05f, 1, .1f);
@@ -127,7 +128,7 @@ public class Bike extends GameEntity {
 			characterBody = new Polyline(invertXCoordinates(characterBody.getPoints()));
 			charBodyGraphic = addGraphics(this.getEntity(), characterBody, null, Color.BLACK, .1f, 1.f, 0.f);
 
-			System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x : 0.0f);
+			//System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x : 0.0f);
 		}
 
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
@@ -174,10 +175,12 @@ public class Bike extends GameEntity {
 
 	@Override
 	public void destroy() {
-		super.destroy();
 		this.leftWheel.destroy();
 		this.rightWheel.destroy();
-
+		this.back.destroy();
+		this.leg.destroy();
+		super.destroy();
+		super.getOwner().destroyActor(this);
 	}
 
 }

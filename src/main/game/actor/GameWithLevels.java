@@ -24,7 +24,6 @@ public abstract class GameWithLevels extends ActorGame {
 		addActor(actorLevel);
 		
 		
-		
 		return true;
 	}
 

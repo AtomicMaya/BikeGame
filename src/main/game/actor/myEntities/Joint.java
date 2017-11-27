@@ -50,5 +50,10 @@ public class Joint extends GameEntity {
 	public void draw(Canvas canvas) {
 		graphics.draw(canvas);
 	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+	}
 
 }
