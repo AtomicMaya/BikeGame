@@ -5,3 +5,7 @@
 .project
 .classpath
 /out
+src/main/game/actor/myEntities/Ground.java
+src/main/game/actor/TestGame.java
+src/main/game/actor/myEntities/Wheel.java
+src/main/game/actor/ActorGame.java

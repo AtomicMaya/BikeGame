@@ -4,8 +4,11 @@
  */
 package main.game.actor.myEntities;
 
+<<<<<<< HEAD
 import java.awt.Color;
 
+=======
+>>>>>>> c676db3c3a87c3e6cdbdffa421f197e731810636
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Polyline;
@@ -14,15 +17,16 @@ import main.window.Canvas;
 
 public class Ground extends GameEntity {
 
-	ShapeGraphics g;
-	public Ground(ActorGame game, Vector position, Polyline p) {
-		super(game, true,(position == null) ? Vector.ZERO : position);
-		EntityBuilder.build(getEntity(),p,.6f, -1, false);
-		g = EntityBuilder.addGraphics(getEntity(),p,null, Color.black,.1f,1,0);
+	private ShapeGraphics graphics;
+	public Ground(ActorGame game, Vector position, Polyline shape) {
+		super(game, true, (position == null) ? Vector.ZERO : position);
+		EntityBuilder.build(this.getEntity(), shape, .6f, -1, false);
+		graphics = EntityBuilder.addGraphics(getEntity(), shape, null, Color.black, .1f, 1, 0);
 	}
+
 	@Override
 	public void draw(Canvas window){
-		g.draw(window);
+		graphics.draw(window);
 	}
 
 

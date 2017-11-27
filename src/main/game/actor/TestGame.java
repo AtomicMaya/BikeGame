@@ -9,6 +9,7 @@ import main.game.actor.crate.Crate;
 import main.game.actor.myEntities.Bike;
 import main.game.actor.myEntities.FinishActor;
 import main.game.actor.myEntities.Ground;
+import main.game.actor.myEntities.TestEntity;
 import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -18,12 +19,23 @@ import main.window.Window;
 public class TestGame extends ActorGame {
 
 	Bike player;
+<<<<<<< HEAD
 	List<Level> levels;
 	FinishActor a;
+=======
+	TestEntity test;
+
+>>>>>>> c676db3c3a87c3e6cdbdffa421f197e731810636
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
 		// TODO creation objects du program
+		Polygon p1 = new Polygon(-10.f, 0.f, -5.f, 5.f, 0.f, -2.5f, -7.5f, -5.f);
+
+		player = new Bike(this, new Vector(-0, 5));
+		test = new TestEntity(this, Vector.ZERO, p1);
+
+		this.setViewCandidate(test);
 		Polyline p = new Polyline(
 				-1000.0f, -1000.0f,
 				-1000.0f, 0.0f,
@@ -55,6 +67,7 @@ public class TestGame extends ActorGame {
 		this.setViewCandidate(player);
 		this.addActor(ground);
 		this.addActor(player);
+		this.addActor(test);
 		return true;
 
 	}
@@ -62,6 +75,19 @@ public class TestGame extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+<<<<<<< HEAD
+=======
+		player.update(deltaTime);
+		test.update(deltaTime);
+	}
+
+	@Override
+	public void end() {
+		// Nothing yet
+		if (this.getKeyboard().get(KeyEvent.VK_Q).isPressed()) {
+
+		}
+>>>>>>> c676db3c3a87c3e6cdbdffa421f197e731810636
 	}
 	
 	
