@@ -4,21 +4,15 @@
  */
 package main.game.actor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import main.game.Game;
 import main.io.FileSystem;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.Positionable;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.WheelConstraintBuilder;
-import main.math.World;
+import main.math.*;
 import main.window.Canvas;
 import main.window.Keyboard;
 import main.window.Window;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActorGame implements Game {
 
@@ -140,6 +134,10 @@ public class ActorGame implements Game {
 
 	public WheelConstraintBuilder createWheelConstraintBuilder() {
 		return world.createWheelConstraintBuilder();
+	}
+
+	public PrismaticConstraintBuilder createPrismaticConstraintBuilder() {
+		return world.createPrismaticConstraintBuilder();
 	}
 
 	public boolean isGameFrozen(){
