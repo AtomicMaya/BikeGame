@@ -33,7 +33,7 @@ public abstract class GameEntity implements Actor {
 		entity = game.newEntity(fixed);
 	}
 
-	public Entity getEntity() {
+	protected Entity getEntity() {
 		return entity;
 	}
 
