@@ -4,9 +4,6 @@
  */
 package main.game.actor.myEntities;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-
 import main.game.actor.ActorGame;
 import main.game.actor.Graphics;
 import main.math.Circle;
@@ -14,7 +11,11 @@ import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
-import static main.game.actor.myEntities.EntityBuilder.*;
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+import static main.game.actor.myEntities.EntityBuilder.addGraphics;
+import static main.game.actor.myEntities.EntityBuilder.build;
 
 public class Bike extends GameEntity {
 
@@ -33,7 +34,7 @@ public class Bike extends GameEntity {
 		this.game = game;
 
 		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		build(getEntity(),hitBox);
+		build(getEntity(), hitBox);
 
 
 		Circle head = new Circle(0.2f, getHeadLocation());
