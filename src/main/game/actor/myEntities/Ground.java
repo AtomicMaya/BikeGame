@@ -16,10 +16,11 @@ public class Ground extends GameEntity {
 
 	private ShapeGraphics graphics;
 	public Ground(ActorGame game, Vector position, Polyline shape) {
-		super(game, true,(position == null) ? Vector.ZERO : position);
-		EntityBuilder.build(this.getEntity(), shape);
-		graphics = EntityBuilder.addGraphics(getEntity(), shape,null, Color.black,.1f,1,0);
+		super(game, true, (position == null) ? Vector.ZERO : position);
+		EntityBuilder.build(this.getEntity(), shape, .6f, -1, false);
+		graphics = EntityBuilder.addGraphics(getEntity(), shape, null, Color.black, .1f, 1, 0);
 	}
+
 	@Override
 	public void draw(Canvas window){
 		graphics.draw(window);

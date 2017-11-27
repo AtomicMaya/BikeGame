@@ -77,7 +77,7 @@ public class Wheel extends GameEntity {
 	@Override
 	public void draw(Canvas canvas) {
 		graphics.draw(canvas);
-		
+
 	}
 
 }

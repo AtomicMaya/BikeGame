@@ -6,8 +6,9 @@ package main.game.actor.crate;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ImageGraphics;
+import main.game.actor.myEntities.EntityBuilder;
 import main.game.actor.myEntities.GameEntity;
-import main.math.Transform;
+import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -17,6 +18,9 @@ public class Crate extends GameEntity {
 
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
 		super(game, fixed, position);
+		imagePath = (imagePath == null || imagePath == "") ? "res/crate.1.png" : imagePath;
+		Polygon square = new Polygon(0, 0, 1, 0, 1, 1, 0, 1);
+		EntityBuilder.build(getEntity(), square);
 		graphic = new ImageGraphics(imagePath, size, size);
 		graphic.setParent(getEntity());
 	}

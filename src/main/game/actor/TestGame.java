@@ -1,5 +1,9 @@
 package main.game.actor;
 
+import java.awt.event.KeyEvent;
+
+import main.test;
+import main.game.actor.crate.Crate;
 import main.game.actor.myEntities.Bike;
 import main.game.actor.myEntities.Ground;
 import main.game.actor.myEntities.TestEntity;
@@ -7,6 +11,7 @@ import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
+import main.window.Keyboard;
 import main.window.Window;
 
 public class TestGame extends ActorGame {
@@ -18,14 +23,35 @@ public class TestGame extends ActorGame {
 		super.begin(window, fileSystem);
 
 		// TODO creation objects du program
-		Polyline p = new Polyline(-50f, 0.f, 0.f, -2.f, 50.f, 0.f);
 		Polygon p1 = new Polygon(-10.f, 0.f, -5.f, 5.f, 0.f, -2.5f, -7.5f, -5.f);
-		Ground ground = new Ground(this, null, p);
 
 		player = new Bike(this, new Vector(-0, 5));
 		test = new TestEntity(this, Vector.ZERO, p1);
 
 		this.setViewCandidate(test);
+		Polyline p = new Polyline(
+				-1000.0f, -1000.0f,
+				-1000.0f, 0.0f,
+				0.0f, 0.0f,
+				3.0f, 1.0f,
+				8.0f, 1.0f,
+				15.0f, 3.0f,
+				16.0f, 3.0f,
+				25.0f, 0.0f,
+				35.0f, -5.0f,
+				50.0f, -5.0f,
+				55.0f, -4.0f,
+				65.0f, 0.0f,
+				6500.0f, -1000.0f
+				);
+
+		Ground ground = new Ground(this, null, p);
+
+		player = new Bike(this, new Vector(4, 5));
+
+		Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
+		this.addActor(crate1);
+		this.setViewCandidate(player);
 		this.addActor(ground);
 		this.addActor(player);
 		this.addActor(test);
@@ -43,5 +69,9 @@ public class TestGame extends ActorGame {
 	@Override
 	public void end() {
 		// Nothing yet
+		if (this.getKeyboard().get(KeyEvent.VK_Q).isPressed()) {
+
+		}
 	}
+	
 }
