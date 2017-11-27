@@ -1,15 +1,6 @@
 package main;
 
 import main.game.Game;
-import main.game.actor.ActorGame;
-import main.game.actor.TestGame;
-import main.game.actor.crate.CrateGame;
-import main.game.tutorial.ContactGame;
-import main.game.tutorial.HelloWorldGame;
-import main.game.tutorial.PolyLineGame;
-import main.game.tutorial.RopeGame;
-import main.game.tutorial.ScaleGame;
-import main.game.tutorial.SimpleCrateGame;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;
@@ -50,7 +41,8 @@ public class Program {
 			// Game game = new PolyLineGame();
 			// Game game = new CrateGame();
 
-			Game game = new TestGame();
+			//Game game = new TestGame();
+			Game game = new TestGameWithLevel();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

@@ -14,14 +14,14 @@ public class Wheel extends GameEntity {
 
 	private WheelConstraint constraint = null;
 
-	private ImageGraphics graphics;
+	private ImageGraphics g;
 
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
-		Circle circle = new Circle(radius);
-		build(getEntity(), circle);
-		graphics = addGraphics(this.getEntity(),"res/explosive.11.png",radius * 2,radius*2);
-		graphics.setAnchor(new Vector(.5f,.5f));
+		Circle c = new Circle(radius);
+		build(getEntity(), c, .6f, -1, false);
+		g = addGraphics(getEntity(), "res/explosive.11.png", radius * 2, radius * 2);
+		g.setAnchor(new Vector(.5f, .5f));
 
 	}
 
@@ -48,36 +48,41 @@ public class Wheel extends GameEntity {
 	}
 
 	public void power(float speed) {
-		constraint.setMotorEnabled(true);
-		constraint.setMotorSpeed(speed);
+		if (constraint != null) {
+			constraint.setMotorEnabled(true);
+			constraint.setMotorSpeed(speed);
+		}
 	}
 
 	public void relax() {
-		constraint.setMotorEnabled(false);
-		constraint.setMotorSpeed(0);
+		if (constraint != null) {
+			constraint.setMotorEnabled(false);
+			constraint.setMotorSpeed(0);
+		}
 	}
 
 	public void detach() {
-		constraint.destroy();
+		if (constraint != null)
+			constraint.destroy();
 	}
 
 	/**
 	 * @return relative rotation speed , in radians per second
 	 */
 	public float getSpeed() {
-		return constraint.getMotorSpeed();
-	}
-
-	@Override
-	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
-
+		if (constraint != null) {
+			return constraint.getMotorSpeed();
+		} else return -1;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		graphics.draw(canvas);
-
+		g.draw(canvas);
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
+		detach();
+	}
 }

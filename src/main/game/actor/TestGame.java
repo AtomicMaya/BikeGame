@@ -1,9 +1,12 @@
 package main.game.actor;
 
+import java.util.List;
+
+import main.game.levels.Level;
 import main.game.actor.crate.Crate;
 import main.game.actor.myEntities.Bike;
+import main.game.actor.myEntities.FinishActor;
 import main.game.actor.myEntities.Ground;
-import main.game.actor.myEntities.TestEntity;
 import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -15,8 +18,8 @@ import java.awt.event.KeyEvent;
 public class TestGame extends ActorGame {
 
 	Bike player;
-	TestEntity test;
-
+	List<Level> levels;
+	FinishActor a;
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
@@ -26,7 +29,6 @@ public class TestGame extends ActorGame {
 		//player = new Bike(this, new Vector(-0, 5));
 		//test = new TestEntity(this, Vector.ZERO, p1);
 
-		this.setViewCandidate(test);
 		Polyline p = new Polyline(
 				-1000.0f, -1000.0f,
 				-1000.0f, 0.0f,
@@ -48,6 +50,12 @@ public class TestGame extends ActorGame {
 		player = new Bike(this, new Vector(4, 5));
 
 		Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
+		
+		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
+		a = new FinishActor(this, new Vector(7, 0), player, s);
+		
+		
+		this.addActor(a);
 		this.addActor(crate1);
 		this.setViewCandidate(player);
 		this.addActor(ground);
@@ -69,5 +77,6 @@ public class TestGame extends ActorGame {
 
 		}
 	}
+	
 	
 }

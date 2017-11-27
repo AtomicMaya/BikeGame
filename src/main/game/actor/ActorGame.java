@@ -4,14 +4,21 @@
  */
 package main.game.actor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import main.game.Game;
 import main.io.FileSystem;
-import main.math.*;
+import main.math.Entity;
+import main.math.EntityBuilder;
+import main.math.Positionable;
+import main.math.Transform;
+import main.math.Vector;
+import main.math.WheelConstraintBuilder;
+import main.math.World;
 import main.window.Canvas;
 import main.window.Keyboard;
 import main.window.Window;
-
-import java.util.ArrayList;
 
 public class ActorGame implements Game {
 
@@ -24,7 +31,7 @@ public class ActorGame implements Game {
 	private static final float VIEW_INTERPOLATION_RATIO_PER_SECOND = 0.1f;
 	private static final float VIEW_SCALE = 10.0f;
 
-	private ArrayList<Actor> actors = new ArrayList<>();
+	private ArrayList<Actor> actors = new ArrayList<Actor>();
 
 	private World world;
 
@@ -34,6 +41,8 @@ public class ActorGame implements Game {
 
 	private boolean gameFrozen = false;
 
+	private ArrayList<Actor> actorsToRemove = new ArrayList<Actor>();
+	
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		if (window == null)
@@ -60,6 +69,10 @@ public class ActorGame implements Game {
 			actor.update(deltaTime);
 		}
 
+		if (!actorsToRemove.isEmpty()) {
+			actors.removeAll(actorsToRemove);
+			actorsToRemove.clear();
+		}
 		// Update expected viewport center
 		if (viewCandidate != null) {
 			viewTarget = viewCandidate.getPosition()
@@ -72,6 +85,7 @@ public class ActorGame implements Game {
 		Transform viewTransform = Transform.I.scaled(VIEW_SCALE).translated(viewCenter);
 		window.setRelativeTransform(viewTransform);
 
+		
 		for (Actor actor : actors) {
 			actor.draw(window);
 		}
@@ -81,7 +95,6 @@ public class ActorGame implements Game {
 	@Override
 	public void end() {
 		actors.clear();
-		
 	}
 
 	public Keyboard getKeyboard() {
@@ -93,15 +106,23 @@ public class ActorGame implements Game {
 	}
 
 	public void setViewCandidate(Positionable p) {
-		viewCandidate = p;
+		this.viewCandidate = p;
 	}
 
 	public void addActor(Actor actor) {
-		actors.add(actor);
+		this.actors.add(actor);
+	}
+	
+	public void addActor(List<Actor> actors) {
+		this.actors.addAll(actors);
 	}
 
-	public void destroyActor(Actor actor) {
-		this.actors.remove(actor);
+	public void detroyActor(Actor actor) {
+		actorsToRemove.add(actor);
+	}
+	
+	public void detroyActor(ArrayList<Actor> actors) {
+		actorsToRemove = actors;
 	}
 
 	public Entity newEntity(Vector position, boolean fixed) {
@@ -120,8 +141,6 @@ public class ActorGame implements Game {
 	public WheelConstraintBuilder createWheelConstraintBuilder() {
 		return world.createWheelConstraintBuilder();
 	}
-
-	public PrismaticConstraintBuilder createPrismaticConstraintBuilder() { return world.createPrismaticConstraintBuilder(); }
 
 	public boolean isGameFrozen(){
 		return gameFrozen;

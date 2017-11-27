@@ -10,6 +10,7 @@ import main.game.actor.ShapeGraphics;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Polyline;
+import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -58,6 +59,9 @@ public class Bike extends GameEntity {
 		Joint leg = new Joint(game, true, new Vector(.1f, .5f), 1.f);
 		leg.attach(back, back.getAnchor(), new Vector(.0f, 1.f));
 
+		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
+		build(getEntity(), hitBox);
+
 		Circle head = new Circle(0.2f, getHeadLocation());
 
 		headGraphic = addGraphics(getEntity(), head, Color.PINK, Color.BLACK, .05f, 1, 0);
@@ -73,7 +77,7 @@ public class Bike extends GameEntity {
 	}
 
 	private Vector getHeadLocation() {
-		return new Vector(0.5f, 2.f);
+		return new Vector(0.0f, 1.75f);
 	}
 
 	@Override
@@ -107,7 +111,7 @@ public class Bike extends GameEntity {
 			lookRight = !lookRight;
 			if (!lookRight) {
 				System.out.println("look left");
-				headGraphic = a
+				//headGraphic = a
 			} else {
 				System.out.println("look right");
 			}
@@ -147,6 +151,14 @@ public class Bike extends GameEntity {
 		bikeFrameGraphic.draw(canvas);
 		charBodyGraphic.draw(canvas);
 //		charLKneeGraphic.draw(canvas);
+	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		this.leftWheel.destroy();
+		this.rightWheel.destroy();
+		
 	}
 
 }
