@@ -4,20 +4,14 @@
  */
 package main.game.actor;
 
-import java.util.ArrayList;
-
 import main.game.Game;
 import main.io.FileSystem;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.Positionable;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.WheelConstraintBuilder;
-import main.math.World;
+import main.math.*;
 import main.window.Canvas;
 import main.window.Keyboard;
 import main.window.Window;
+
+import java.util.ArrayList;
 
 public class ActorGame implements Game {
 
@@ -30,7 +24,7 @@ public class ActorGame implements Game {
 	private static final float VIEW_INTERPOLATION_RATIO_PER_SECOND = 0.1f;
 	private static final float VIEW_SCALE = 10.0f;
 
-	private ArrayList<Actor> actors = new ArrayList<Actor>();
+	private ArrayList<Actor> actors = new ArrayList<>();
 
 	private World world;
 
@@ -105,7 +99,7 @@ public class ActorGame implements Game {
 		actors.add(actor);
 	}
 
-	public void detroyActor(Actor actor) {
+	public void destroyActor(Actor actor) {
 		this.actors.remove(actor);
 	}
 
@@ -125,6 +119,8 @@ public class ActorGame implements Game {
 	public WheelConstraintBuilder createWheelConstraintBuilder() {
 		return world.createWheelConstraintBuilder();
 	}
+
+	public PrismaticConstraintBuilder createPrismaticConstraintBuilder() { return world.createPrismaticConstraintBuilder(); }
 
 	public boolean isGameFrozen(){
 		return gameFrozen;

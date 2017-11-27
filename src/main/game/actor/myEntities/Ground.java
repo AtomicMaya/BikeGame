@@ -4,10 +4,8 @@
  */
 package main.game.actor.myEntities;
 
-import main.game.actor.Actor;
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
-import main.math.Entity;
 import main.math.Polyline;
 import main.math.Vector;
 import main.window.Canvas;
@@ -16,15 +14,15 @@ import java.awt.*;
 
 public class Ground extends GameEntity {
 
-	ShapeGraphics g;
-	public Ground(ActorGame game, Vector position, Polyline p) {
+	private ShapeGraphics graphics;
+	public Ground(ActorGame game, Vector position, Polyline shape) {
 		super(game, true,(position == null) ? Vector.ZERO : position);
-		EntityBuilder.build(getEntity(),p);
-		g = EntityBuilder.addGraphics(getEntity(),p,null, Color.black,.1f,1,0);
+		EntityBuilder.build(this.getEntity(), shape);
+		graphics = EntityBuilder.addGraphics(getEntity(), shape,null, Color.black,.1f,1,0);
 	}
 	@Override
 	public void draw(Canvas window){
-		g.draw(window);
+		graphics.draw(window);
 	}
 
 
