@@ -4,20 +4,21 @@
  */
 package main.game.actor;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
-=======
->>>>>>> c676db3c3a87c3e6cdbdffa421f197e731810636
 import main.game.Game;
 import main.io.FileSystem;
-import main.math.*;
+import main.math.Entity;
+import main.math.EntityBuilder;
+import main.math.Positionable;
+import main.math.Transform;
+import main.math.Vector;
+import main.math.WheelConstraintBuilder;
+import main.math.World;
 import main.window.Canvas;
 import main.window.Keyboard;
 import main.window.Window;
-
-import java.util.ArrayList;
 
 public class ActorGame implements Game {
 
@@ -30,7 +31,7 @@ public class ActorGame implements Game {
 	private static final float VIEW_INTERPOLATION_RATIO_PER_SECOND = 0.1f;
 	private static final float VIEW_SCALE = 10.0f;
 
-	private ArrayList<Actor> actors = new ArrayList<>();
+	private ArrayList<Actor> actors = new ArrayList<Actor>();
 
 	private World world;
 
@@ -116,17 +117,12 @@ public class ActorGame implements Game {
 		this.actors.addAll(actors);
 	}
 
-<<<<<<< HEAD
 	public void detroyActor(Actor actor) {
 		actorsToRemove.add(actor);
 	}
 	
 	public void detroyActor(ArrayList<Actor> actors) {
 		actorsToRemove = actors;
-=======
-	public void destroyActor(Actor actor) {
-		this.actors.remove(actor);
->>>>>>> c676db3c3a87c3e6cdbdffa421f197e731810636
 	}
 
 	public Entity newEntity(Vector position, boolean fixed) {
@@ -145,8 +141,6 @@ public class ActorGame implements Game {
 	public WheelConstraintBuilder createWheelConstraintBuilder() {
 		return world.createWheelConstraintBuilder();
 	}
-
-	public PrismaticConstraintBuilder createPrismaticConstraintBuilder() { return world.createPrismaticConstraintBuilder(); }
 
 	public boolean isGameFrozen(){
 		return gameFrozen;

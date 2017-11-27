@@ -14,14 +14,14 @@ public class Wheel extends GameEntity {
 
 	private WheelConstraint constraint = null;
 
-	private ImageGraphics graphics;
+	private ImageGraphics g;
 
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
-		Circle circle = new Circle(radius);
-		build(getEntity(), circle);
-		graphics = addGraphics(this.getEntity(),"res/explosive.11.png",radius * 2,radius*2);
-		graphics.setAnchor(new Vector(.5f,.5f));
+		Circle c = new Circle(radius);
+		build(getEntity(), c, .6f, -1, false);
+		g = addGraphics(getEntity(), "res/explosive.11.png", radius * 2, radius * 2);
+		g.setAnchor(new Vector(.5f, .5f));
 
 	}
 
@@ -77,12 +77,7 @@ public class Wheel extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-<<<<<<< HEAD
 		g.draw(canvas);
-=======
-		graphics.draw(canvas);
-
->>>>>>> c676db3c3a87c3e6cdbdffa421f197e731810636
 	}
 
 	@Override
