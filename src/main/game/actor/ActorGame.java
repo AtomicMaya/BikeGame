@@ -86,7 +86,8 @@ public class ActorGame implements Game {
 
 	@Override
 	public void end() {
-
+		actors.clear();
+		
 	}
 
 	public Keyboard getKeyboard() {

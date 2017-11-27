@@ -19,7 +19,7 @@ public class Ground extends GameEntity {
 	ShapeGraphics g;
 	public Ground(ActorGame game, Vector position, Polyline p) {
 		super(game, true,(position == null) ? Vector.ZERO : position);
-		EntityBuilder.build(getEntity(),p);
+		EntityBuilder.build(getEntity(),p,.6f, -1, false);
 		g = EntityBuilder.addGraphics(getEntity(),p,null, Color.black,.1f,1,0);
 	}
 	@Override

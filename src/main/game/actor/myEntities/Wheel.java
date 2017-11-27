@@ -19,9 +19,9 @@ public class Wheel extends GameEntity {
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
 		Circle c = new Circle(radius);
-		build(getEntity(),c); ;
-		g = addGraphics(getEntity(),"res/explosive.11.png",radius*2,radius*2);
-		g.setAnchor(new Vector(.5f,.5f));
+		build(getEntity(), c, .6f, -1, false);
+		g = addGraphics(getEntity(), "res/explosive.11.png", radius * 2, radius * 2);
+		g.setAnchor(new Vector(.5f, .5f));
 
 	}
 
@@ -77,7 +77,7 @@ public class Wheel extends GameEntity {
 	@Override
 	public void draw(Canvas canvas) {
 		g.draw(canvas);
-		
+
 	}
 
 }
