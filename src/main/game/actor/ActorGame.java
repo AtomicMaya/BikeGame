@@ -5,6 +5,7 @@
 package main.game.actor;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import main.game.Game;
 import main.io.FileSystem;
@@ -40,6 +41,8 @@ public class ActorGame implements Game {
 
 	private boolean gameFrozen = false;
 
+	private ArrayList<Actor> actorsToRemove = new ArrayList<Actor>();
+	
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		if (window == null)
@@ -66,6 +69,10 @@ public class ActorGame implements Game {
 			actor.update(deltaTime);
 		}
 
+		if (!actorsToRemove.isEmpty()) {
+			actors.removeAll(actorsToRemove);
+			actorsToRemove.clear();
+		}
 		// Update expected viewport center
 		if (viewCandidate != null) {
 			viewTarget = viewCandidate.getPosition()
@@ -78,6 +85,7 @@ public class ActorGame implements Game {
 		Transform viewTransform = Transform.I.scaled(VIEW_SCALE).translated(viewCenter);
 		window.setRelativeTransform(viewTransform);
 
+		
 		for (Actor actor : actors) {
 			actor.draw(window);
 		}
@@ -87,7 +95,6 @@ public class ActorGame implements Game {
 	@Override
 	public void end() {
 		actors.clear();
-		
 	}
 
 	public Keyboard getKeyboard() {
@@ -99,15 +106,23 @@ public class ActorGame implements Game {
 	}
 
 	public void setViewCandidate(Positionable p) {
-		viewCandidate = p;
+		this.viewCandidate = p;
 	}
 
 	public void addActor(Actor actor) {
-		actors.add(actor);
+		this.actors.add(actor);
+	}
+	
+	public void addActor(List<Actor> actors) {
+		this.actors.addAll(actors);
 	}
 
 	public void detroyActor(Actor actor) {
-		this.actors.remove(actor);
+		actorsToRemove.add(actor);
+	}
+	
+	public void detroyActor(ArrayList<Actor> actors) {
+		actorsToRemove = actors;
 	}
 
 	public Entity newEntity(Vector position, boolean fixed) {

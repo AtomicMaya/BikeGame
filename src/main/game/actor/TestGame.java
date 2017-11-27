@@ -1,21 +1,25 @@
 package main.game.actor;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 
+import main.game.levels.Level;
 import main.test;
 import main.game.actor.crate.Crate;
 import main.game.actor.myEntities.Bike;
+import main.game.actor.myEntities.FinishActor;
 import main.game.actor.myEntities.Ground;
 import main.io.FileSystem;
+import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
-import main.window.Keyboard;
 import main.window.Window;
 
 public class TestGame extends ActorGame {
 
 	Bike player;
-
+	List<Level> levels;
+	FinishActor a;
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
@@ -41,6 +45,12 @@ public class TestGame extends ActorGame {
 		player = new Bike(this, new Vector(4, 5));
 
 		Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
+		
+		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
+		a = new FinishActor(this, new Vector(7, 0), player, s);
+		
+		
+		this.addActor(a);
 		this.addActor(crate1);
 		this.setViewCandidate(player);
 		this.addActor(ground);
@@ -52,9 +62,7 @@ public class TestGame extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		if (this.getKeyboard().get(KeyEvent.VK_Q).isPressed()) {
-			test.setEnded(true);
-		}
 	}
+	
 	
 }

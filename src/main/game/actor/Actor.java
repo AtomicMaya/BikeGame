@@ -5,6 +5,7 @@
 package main.game.actor;
 
 import main.math.Positionable;
+import main.window.Canvas;
 
 public interface Actor extends Positionable, Graphics {
 	/**
@@ -19,5 +20,9 @@ public interface Actor extends Positionable, Graphics {
 
 	public default void destroy() {
 		// By default , actors have nothing to destroy
+	}
+	@Override
+	public default void draw(Canvas canvas) {
+		// By default , actors have nothing to draw
 	}
 }

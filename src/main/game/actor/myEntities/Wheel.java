@@ -48,36 +48,41 @@ public class Wheel extends GameEntity {
 	}
 
 	public void power(float speed) {
-		constraint.setMotorEnabled(true);
-		constraint.setMotorSpeed(speed);
+		if (constraint != null) {
+			constraint.setMotorEnabled(true);
+			constraint.setMotorSpeed(speed);
+		}
 	}
 
 	public void relax() {
-		constraint.setMotorEnabled(false);
-		constraint.setMotorSpeed(0);
+		if (constraint != null) {
+			constraint.setMotorEnabled(false);
+			constraint.setMotorSpeed(0);
+		}
 	}
 
 	public void detach() {
-		constraint.destroy();
+		if (constraint != null)
+			constraint.destroy();
 	}
 
 	/**
 	 * @return relative rotation speed , in radians per second
 	 */
 	public float getSpeed() {
-		return constraint.getMotorSpeed();
-	}
-
-	@Override
-	public void update(float deltaTime) {
-		// TODO Auto-generated method stub
-
+		if (constraint != null) {
+			return constraint.getMotorSpeed();
+		} else return -1;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		g.draw(canvas);
-
 	}
 
+	@Override
+	public void destroy() {
+		super.destroy();
+		detach();
+	}
 }

@@ -114,5 +114,13 @@ public class Bike extends GameEntity {
 		headGraphic.draw(canvas);
 		cone.draw(canvas);
 	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		this.leftWheel.destroy();
+		this.rightWheel.destroy();
+		
+	}
 
 }
