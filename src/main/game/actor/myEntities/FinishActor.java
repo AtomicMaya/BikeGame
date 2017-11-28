@@ -20,7 +20,7 @@ public class FinishActor extends GameEntity {
 	public FinishActor(ActorGame game, Vector position, GameEntity player, Shape shape) {
 		super(game, true, position);
 
-		EntityBuilder.build(getEntity(), shape, -1, -1, true);
+		build(getEntity(), shape, -1, -1, true);
 		
 		this.player = player.getEntity();
 		contactListener = new BasicContactListener();

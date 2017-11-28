@@ -25,16 +25,20 @@ public class ActorGame implements Game {
 	private static final float VIEW_INTERPOLATION_RATIO_PER_SECOND = 0.1f;
 	private static final float VIEW_SCALE = 10.0f;
 
+	// list of all actors in the game
 	private ArrayList<Actor> actors = new ArrayList<Actor>();
 
+	// our physical world
 	private World world;
 
+	// the parameters of the game
 	private Window window;
-
 	private FileSystem fileSystem;
 
+	// Weather the game is frozen
 	private boolean gameFrozen = false;
 
+	// list to add or remove actors
 	private ArrayList<Actor> actorsToRemove = new ArrayList<Actor>(), actorsToAdd = new ArrayList<Actor>();
 
 	@Override
@@ -95,34 +99,69 @@ public class ActorGame implements Game {
 		actors.clear();
 	}
 
+	/**
+	 * @return associated keyboard controller
+	 */
 	public Keyboard getKeyboard() {
 		return window.getKeyboard();
 	}
 
-	public Canvas getCanvas() {
-		return window;
-	}
+	/**
+	 * @return associated canvas
+	 */
+	// public Canvas getCanvas() {
+	// return window;
+	// }
 
+	/**
+	 * @param p
+	 *            Positionable to follow with the camera
+	 */
 	public void setViewCandidate(Positionable p) {
 		this.viewCandidate = p;
 	}
 
+	/**
+	 * @param actor
+	 *            to add the the game
+	 */
 	public void addActor(Actor actor) {
 		actorsToAdd.add(actor);
 	}
 
+	/**
+	 * @param actors
+	 *            list of actors to add the the game
+	 */
 	public void addActor(List<Actor> actors) {
 		actorsToAdd.addAll(actors);
 	}
 
+	/**
+	 * @param actor
+	 *            to remove from the game
+	 */
 	public void destroyActor(Actor actor) {
 		actorsToRemove.add(actor);
 	}
 
+	/**
+	 * @param actors
+	 *            List of actors to remove from the game
+	 */
 	public void destroyActor(ArrayList<Actor> actors) {
 		actorsToRemove.addAll(actors);
 	}
 
+	/**
+	 * Create a new Entity in the world
+	 *
+	 * @param position
+	 *            to give to the Entity
+	 * @param fixed
+	 *            weather the Entity can move or not
+	 * @return a new Entity
+	 */
 	public Entity newEntity(Vector position, boolean fixed) {
 		EntityBuilder entityBuilder = world.createEntityBuilder();
 		entityBuilder.setFixed(fixed);
@@ -130,28 +169,53 @@ public class ActorGame implements Game {
 		return entityBuilder.build();
 	}
 
+	/**
+	 * Create a new Entity in the world
+	 *
+	 * @param fixed
+	 *            weather the Entity can move or not
+	 * @return a new Entity
+	 */
 	public Entity newEntity(boolean fixed) {
 		EntityBuilder entityBuilder = world.createEntityBuilder();
 		entityBuilder.setFixed(fixed);
 		return entityBuilder.build();
 	}
 
+	/**
+	 * @return a new WheelConstraintBuilder
+	 */
 	public WheelConstraintBuilder createWheelConstraintBuilder() {
 		return world.createWheelConstraintBuilder();
 	}
 
+	/**
+	 * @return a new PrismaticConstraintBuilder
+	 */
 	public PrismaticConstraintBuilder createPrismaticConstraintBuilder() {
 		return world.createPrismaticConstraintBuilder();
 	}
 
+	/**
+	 * @return a new DistanceConstraintBuilder
+	 */
 	public DistanceConstraintBuilder createDistanceContraintBuilder() {
 		return world.createDistanceConstraintBuilder();
 	}
 
+	/**
+	 * @return weather the game is frozen
+	 */
 	public boolean isGameFrozen() {
 		return gameFrozen;
 	}
 
+	/**
+	 * Set the frozen status of the game
+	 * 
+	 * @param weather
+	 *            we want to freeze the game
+	 */
 	public void setGameFreezeStatus(boolean freeze) {
 		gameFrozen = freeze;
 

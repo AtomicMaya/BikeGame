@@ -9,6 +9,9 @@ import main.io.FileSystem;
 import main.math.Vector;
 import main.window.Window;
 
+/**
+ * Part 4.5, Test de l'architecture: CrateGame
+ */
 public class CrateGame extends ActorGame {
 
 	@Override

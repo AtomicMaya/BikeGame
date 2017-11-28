@@ -10,9 +10,6 @@ import main.window.Canvas;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static main.game.actor.myEntities.EntityBuilder.addGraphics;
-
-
 public class Character extends GameEntity {
 
 	private Vector headPosition, armJointPosition, backPosition;
