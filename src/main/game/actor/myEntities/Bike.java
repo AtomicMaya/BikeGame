@@ -125,12 +125,9 @@ public class Bike extends GameEntity {
 			// rearWheel.relax();
 			// frontWheel.relax();
 			lookRight = !lookRight;
-			character.invertX();
-			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints()));
-			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE, .1f, 1f, 0f);
-			//System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x : 0.0f);
+			character.invertX();//System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x : 0.0f);
             bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints()));
-			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.LIGHT_GRAY, .1f, 1f, 0f);
+			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE, .1f, 1f, 0f);
 
 			// System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x :
 			// 0.0f);
