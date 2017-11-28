@@ -8,20 +8,23 @@ import main.game.actor.*;
 import main.math.*;
 import main.window.Canvas;
 
+import java.awt.*;
+
 import static main.game.actor.myEntities.EntityBuilder.*;
 
 public class Wheel extends GameEntity {
 
 	private WheelConstraint constraint = null;
 
-	private ImageGraphics g;
+	private ShapeGraphics g;
 
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
-		Circle c = new Circle(radius);
+		Circle c = new Circle(radius - .05f);
 		build(getEntity(), c, .6f, -1, false);
-		g = addGraphics(getEntity(), "res/explosive.11.png", radius * 2, radius * 2);
-		g.setAnchor(new Vector(.5f, .5f));
+		g = addGraphics(getEntity(), c, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 0.f);
+
+		//g.setAnchor(new Vector(.5f, .5f));
 
 	}
 

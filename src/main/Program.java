@@ -42,7 +42,7 @@ public class Program {
 			// Game game = new CrateGame();
 
 			//Game game = new TestGame();
-			Game game = new TestGameWithLevel();
+			Game game = new ConstraintGameTest();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression
