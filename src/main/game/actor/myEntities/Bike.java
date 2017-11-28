@@ -5,9 +5,7 @@
 package main.game.actor.myEntities;
 
 import main.game.actor.ActorGame;
-import main.game.actor.Graphics;
 import main.game.actor.ShapeGraphics;
-import main.math.Circle;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
@@ -16,6 +14,7 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static main.game.actor.myEntities.EntityBuilder.addGraphics;
@@ -30,45 +29,44 @@ public class Bike extends GameEntity {
 	private boolean lookRight = true;
 
 	private Polygon hitbox;
-	private Polyline bikeFrame, characterBody;
-	private Circle head;
-	private Polyline lKnee, rKnee, lFoot, rFoot;
+	private Polyline bikeFrame;
 
-	private Vector headPosition;
-
-	private ShapeGraphics bikeFrameGraphic, charBodyGraphic, charLKneeGraphic, charRKneeGraphic;
-	private Vector lKneePosition, rKneePosition, lFootPosition, rFootPosition;
+	private ShapeGraphics bikeFrameGraphic;
 
 	private Wheel leftWheel, rightWheel;
 
-	private Graphics headGraphic;
+	private Character character;
 
-	Joint back, quadL, quadR, tibiaL, tibiaR;
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
 		this.game = game;
 
-		headPosition = new Vector(0.4f, 1.75f);
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
 		bikeFrame = new Polyline(-1.3f, .6f, -1.f, .7f,-1.f, .7f, -.7f, .6f, -.3f, .6f,//rear mud guard
 				-.4f, 1.f, -.3f, .6f, // ass holder
 				-1.f, 0.f, -.25f, .1f, -1.f, 0.f, -.3f, .6f, -.25f, .1f, .8f, .75f, -.3f, .6f, .8f, .75f, // Frame
 				1.f, .75f, 1.f, .85f, 1.f, .7f, 1.f, 0.f, 1.f, .7f, 1.3f, .65f, 1.4f, .6f);
-		characterBody = new Polyline(.4f, 1.75f, .2f, 1.5f, 0.5f, 1.f, 1.f, 1.f, 0.5f, 1.f, .2f, 1.5f, 0.f, 0.85f);
 
 		build(getEntity(), hitbox);
 
 		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE, .1f, 1, 0);
-		charBodyGraphic = addGraphics(this.getEntity(), characterBody, null, Color.BLACK, .1f, 1.f, 0);
 
-
+		Vector[] indices1 = new Vector[]{ new Vector(.4f, 1.75f),
+				new Vector(.2f, 1.5f),
+				new Vector(0.f, .4f),
+				new Vector(.5f, 1.f),
+				new Vector(1.f, 1.f),
+				new Vector(.5f, 1.f),
+				new Vector(1.f, 1.f),
+				new Vector(.6f, .2f),
+				new Vector(.5f, -.2f),
+				new Vector(.6f, .2f),
+				new Vector(.2f, -.2f)};
+		ArrayList<Vector> indices = new ArrayList<>(Arrays.asList(indices1));
+		character = new Character(game, position, indices, 3);
 
 		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
 		build(getEntity(), hitBox);
-
-		head = new Circle(0.2f, getHeadPosition());
-
-		headGraphic = addGraphics(getEntity(), head, Color.PINK, Color.BLACK, .05f, 1, 0.1f);
 
 		leftWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
 		rightWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
@@ -78,14 +76,7 @@ public class Bike extends GameEntity {
 
 		game.addActor(rightWheel);
 		game.addActor(leftWheel);
-	}
-
-	private Vector getHeadPosition() {
-		return headPosition; //new Vector(0.0f, 1.75f);
-	}
-
-	private void setHeadPosition(Vector newPosition) {
-		headPosition = newPosition;
+		game.addActor(character);
 	}
 
 	@Override
@@ -113,20 +104,14 @@ public class Bike extends GameEntity {
 		leftWheel.relax();
 		rightWheel.relax();
 
-
 		if (game.getKeyboard().get(KeyEvent.VK_SPACE).isPressed()) {
+			System.out.println("Inversion");
 			// rearWheel.relax();
 			// frontWheel.relax();
 			lookRight = !lookRight;
-		//	System.out.println("look changed");
-			setHeadPosition(getHeadPosition().mul(new Vector(-1.f, 1.f)));
-			head = new Circle(head.getRadius(), getHeadPosition());
-			headGraphic = addGraphics(this.getEntity(), head, Color.PINK, Color.BLACK, .05f, 1, .1f);
+			character.invertX();
 			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints()));
-			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.LIGHT_GRAY, .1f, 1f, 0f);
-			characterBody = new Polyline(invertXCoordinates(characterBody.getPoints()));
-			charBodyGraphic = addGraphics(this.getEntity(), characterBody, null, Color.BLACK, .1f, 1.f, 0.f);
-
+			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE, .1f, 1f, 0f);
 			//System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x : 0.0f);
 		}
 
@@ -134,6 +119,7 @@ public class Bike extends GameEntity {
 			leftWheel.power(0);
 			rightWheel.power(0);
 		} else if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
+			character.nextPedal();
 			if (lookRight && leftWheel.getSpeed() > -MAX_WHEEL_SPEED) {
 				leftWheel.power(-MAX_WHEEL_SPEED);
 			} else if (rightWheel.getSpeed() < MAX_WHEEL_SPEED) {
@@ -166,18 +152,15 @@ public class Bike extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-		headGraphic.draw(canvas);
 		bikeFrameGraphic.draw(canvas);
-		charBodyGraphic.draw(canvas);
-//		charLKneeGraphic.draw(canvas);
+		character.draw(canvas);
+
 	}
 
 	@Override
 	public void destroy() {
 		this.leftWheel.destroy();
 		this.rightWheel.destroy();
-		this.back.destroy();
-		this.quadL.destroy();
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}

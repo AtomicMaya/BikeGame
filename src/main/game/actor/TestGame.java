@@ -1,12 +1,10 @@
 package main.game.actor;
 
-import java.util.List;
-
-import main.game.levels.Level;
 import main.game.actor.crate.Crate;
 import main.game.actor.myEntities.Bike;
 import main.game.actor.myEntities.FinishActor;
 import main.game.actor.myEntities.Ground;
+import main.game.levels.Level;
 import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -14,6 +12,7 @@ import main.math.Vector;
 import main.window.Window;
 
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 public class TestGame extends ActorGame {
 
@@ -67,7 +66,6 @@ public class TestGame extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		player.update(deltaTime);
 	}
 
 	@Override

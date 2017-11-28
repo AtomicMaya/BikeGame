@@ -2,7 +2,7 @@ package main;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
-import main.game.actor.myEntities.Joint;
+import main.game.actor.myEntities.Character;
 import main.io.FileSystem;
 import main.math.*;
 import main.window.Window;
@@ -16,7 +16,7 @@ public class ConstraintGameTest extends ActorGame {
 	private ShapeGraphics anchorFill;
 	private Window window;
 	private Entity anchor;
-	Joint joint1, joint2;
+	Character character1, character2;
 	WheelConstraint c1, c2, constraint;
 
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -31,12 +31,6 @@ public class ConstraintGameTest extends ActorGame {
 		anchorFill = new ShapeGraphics(new Circle(4f), null, Color.RED, .1f, 1.f, 0);
 		anchorFill.setParent(anchor);
 
-		WheelConstraintBuilder builder = this.createWheelConstraintBuilder();
-		joint1 = new Joint(this, new Vector(3f, 3f));
-		c1 = joint1.link(anchor, builder, 3f, true, 1.f);
-		//joint2 = new Joint(this, new Vector(-.5f, 0));
-		//c2 = joint2.link(anchor, builder, -0.5f, true, 2.f);
-
 		return true;
 
 	}
@@ -45,10 +39,9 @@ public class ConstraintGameTest extends ActorGame {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		anchorFill.draw(window);
-		joint1.draw(window);
-//		joint2.draw(window);
-		System.out.println(joint1.getPosition());
-		anchor.setPosition(Vector.ZERO);
+		character1.draw(window);
+//		character2.draw(window);
+		System.out.println(character1.getPosition());
 	}
 
 	@Override

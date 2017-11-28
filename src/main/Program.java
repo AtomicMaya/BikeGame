@@ -1,6 +1,7 @@
 package main;
 
 import main.game.Game;
+import main.game.actor.TestGame;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;
@@ -42,7 +43,7 @@ public class Program {
 			// Game game = new CrateGame();
 
 			//Game game = new TestGame();
-			Game game = new ConstraintGameTest();
+			Game game = new TestGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

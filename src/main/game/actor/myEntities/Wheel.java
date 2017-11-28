@@ -74,6 +74,7 @@ public class Wheel extends GameEntity {
 	 */
 	public float getSpeed() {
 		if (constraint != null) {
+			System.out.println(constraint.getMotorSpeed());
 			return constraint.getMotorSpeed();
 		} else
 			return -1;
