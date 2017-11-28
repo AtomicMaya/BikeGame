@@ -6,21 +6,38 @@ package main.game.actor.crate;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ImageGraphics;
-import main.game.actor.myEntities.EntityBuilder;
 import main.game.actor.myEntities.GameEntity;
 import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
+/**
+ * Part 4.5, Test de l'architecture: Crate
+ */
 public class Crate extends GameEntity {
 
+	// keep reference to our images
 	private ImageGraphics graphic;
 
+	/**
+	 * Create a new Crate
+	 * 
+	 * @param game
+	 *            ActorGame where the Crate evolve
+	 * @param position
+	 *            initial position of the Crate
+	 * @param imagePath
+	 *            path to the image to give to the Crate, if null, default image
+	 * @param fixed
+	 *            weather the crate is fixed
+	 * @param size
+	 *            of the crate
+	 */
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
 		super(game, fixed, position);
 		imagePath = (imagePath == null || imagePath == "") ? "res/crate.1.png" : imagePath;
 		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);
-		EntityBuilder.build(getEntity(), square);
+		build(getEntity(), square);
 		graphic = new ImageGraphics(imagePath, size, size);
 		graphic.setParent(getEntity());
 	}
@@ -29,7 +46,7 @@ public class Crate extends GameEntity {
 	public void draw(Canvas canvas) {
 		graphic.draw(canvas);
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();

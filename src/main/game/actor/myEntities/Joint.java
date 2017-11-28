@@ -1,16 +1,13 @@
 package main.game.actor.myEntities;
 
+import java.awt.Color;
+
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Polygon;
 import main.math.PrismaticConstraintBuilder;
 import main.math.Vector;
 import main.window.Canvas;
-
-import java.awt.*;
-
-import static main.game.actor.myEntities.EntityBuilder.addGraphics;
-import static main.game.actor.myEntities.EntityBuilder.build;
 
 
 public class Joint extends GameEntity {

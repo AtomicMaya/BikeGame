@@ -4,18 +4,31 @@
  */
 package main.game.actor.myEntities;
 
-import main.game.actor.*;
-import main.math.*;
+import main.game.actor.ActorGame;
+import main.game.actor.ImageGraphics;
+import main.math.Circle;
+import main.math.Entity;
+import main.math.Vector;
+import main.math.WheelConstraint;
+import main.math.WheelConstraintBuilder;
 import main.window.Canvas;
-
-import static main.game.actor.myEntities.EntityBuilder.*;
 
 public class Wheel extends GameEntity {
 
+	// keep references
 	private WheelConstraint constraint = null;
-
 	private ImageGraphics g;
 
+	/**
+	 * Create a wheel, can be associated to an other Entity
+	 * 
+	 * @param game
+	 *            ActorGame where the wheel evolve
+	 * @param position
+	 *            initial position of the wheel
+	 * @param radius
+	 *            size of the radius of the wheel
+	 */
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
 		Circle c = new Circle(radius);
@@ -25,6 +38,17 @@ public class Wheel extends GameEntity {
 
 	}
 
+	/**
+	 * Attach this wheel to an Entity
+	 * 
+	 * @param vehicle
+	 *            Entity where to attach this wheel
+	 * @param anchor
+	 *            where to attach the wheel to the vehicle, in local coordinate of
+	 *            the vehicle
+	 * @param axis
+	 *            around witch the wheel can move
+	 */
 	public void attach(Entity vehicle, Vector anchor, Vector axis) {
 		WheelConstraintBuilder constraintBuilder = super.getOwner().createWheelConstraintBuilder();
 
@@ -47,13 +71,20 @@ public class Wheel extends GameEntity {
 		constraint = constraintBuilder.build();
 	}
 
-	public void power(float speed) {
+	/**
+	 * @param velocity
+	 *            angular velocity to give to the wheel, in radiant per second
+	 */
+	public void power(float velocity) {
 		if (constraint != null) {
 			constraint.setMotorEnabled(true);
-			constraint.setMotorSpeed(speed);
+			constraint.setMotorSpeed(velocity);
 		}
 	}
 
+	/**
+	 * Stop the wheel
+	 */
 	public void relax() {
 		if (constraint != null) {
 			constraint.setMotorEnabled(false);
@@ -61,6 +92,9 @@ public class Wheel extends GameEntity {
 		}
 	}
 
+	/**
+	 * DEtach the wheel from its vehicle
+	 */
 	public void detach() {
 		if (constraint != null)
 			constraint.destroy();

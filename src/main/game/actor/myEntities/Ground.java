@@ -15,14 +15,27 @@ import main.window.Canvas;
 
 public class Ground extends GameEntity {
 
-	ShapeGraphics g;
+	// keep reference to the graphics
+	private ShapeGraphics g;
+
+	/**
+	 * Create a Ground
+	 * 
+	 * @param game
+	 *            ActorGame where the ground stand
+	 * @param position
+	 *            of the ground
+	 * @param p
+	 *            polyline shape of the ground
+	 */
 	public Ground(ActorGame game, Vector position, Polyline p) {
-		super(game, true,(position == null) ? Vector.ZERO : position);
-		EntityBuilder.build(getEntity(),p,.6f, -1, false);
-		g = EntityBuilder.addGraphics(getEntity(),p,null, Color.black,.1f,1,0);
+		super(game, true, (position == null) ? Vector.ZERO : position);
+		build(getEntity(), p, .6f, -1, false);
+		g = addGraphics(getEntity(), p, null, Color.black, .1f, 1, 0);
 	}
+
 	@Override
-	public void draw(Canvas window){
+	public void draw(Canvas window) {
 		g.draw(window);
 		if (super.getOwner().getKeyboard().get(KeyEvent.VK_G).isPressed()) {
 			destroy();
@@ -34,7 +47,5 @@ public class Ground extends GameEntity {
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
-
-
 
 }

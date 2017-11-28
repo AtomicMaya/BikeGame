@@ -18,9 +18,13 @@ public interface Actor extends Positionable, Graphics {
 		// By default , actors have nothing to update
 	}
 
+	/**
+	 * Default destroy, don't do anything
+	 * */
 	public default void destroy() {
 		// By default , actors have nothing to destroy
 	}
+	
 	@Override
 	public default void draw(Canvas canvas) {
 		// By default , actors have nothing to draw
