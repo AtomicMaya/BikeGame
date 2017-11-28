@@ -4,34 +4,36 @@ import java.awt.Color;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
-import main.math.Polygon;
-import main.math.PrismaticConstraintBuilder;
-import main.math.Vector;
+import main.math.*;
 import main.window.Canvas;
 
 
 public class Joint extends GameEntity {
 	private Vector anchor;
+	private float radius = .05f;
 	private ShapeGraphics graphics;
 	private boolean relative;
 
-	public Joint(ActorGame game, boolean relative, Vector position, float length) {
+	public Joint(ActorGame game, Vector position) {
 		super(game, false, position);
-		if(!relative) anchor = position;
-		Polygon member = new Polygon(.0f, .0f, length, .0f, length, length, .0f, length);
-		build(this.getEntity(), member);
-		graphics = addGraphics(this.getEntity(), member, null, Color.BLACK, .1f, 1.f, 0f);
+		Circle shape = new Circle(radius);
+		build(this.getEntity(), shape, -1, -1, true);
+		graphics = addGraphics(this.getEntity(), shape, null, Color.BLACK, .1f, 1.f, 0f);
 	}
 
-	public void attach(Joint anotherJoint, Vector anchor, Vector axis) {
-		this.anchor = anchor;
-		PrismaticConstraintBuilder constraintBuilder = super.getOwner().createPrismaticConstraintBuilder();
-		constraintBuilder.setFirstEntity(anotherJoint.getEntity());
-		constraintBuilder.setFirstAnchor(anchor);
-		constraintBuilder.setSecondEntity(this.getEntity());
+	public WheelConstraint link(Entity entity, WheelConstraintBuilder constraintBuilder, float offset, boolean motorized, float motorSpeed) {
+		constraintBuilder.setFirstEntity(entity);
 		constraintBuilder.setFirstAnchor(Vector.ZERO);
-		constraintBuilder.setAxis(axis);
-		constraintBuilder.setLimitEnabled(true);
+		constraintBuilder.setSecondEntity(this.getEntity());
+		constraintBuilder.setSecondAnchor(new Vector(1f, 1f));
+		//constraintBuilder.setAxis(new Vector(1f, 1f));
+		constraintBuilder.setInternalCollision(false);
+		constraintBuilder.setMotorEnabled(motorized);
+		constraintBuilder.setMotorSpeed(motorSpeed);
+		constraintBuilder.setMotorMaxTorque(2f);
+		constraintBuilder.setDamping(5f);
+		constraintBuilder.setFrequency(10f);
+		return constraintBuilder.build();
 	}
 
 	public Vector getAnchor() {

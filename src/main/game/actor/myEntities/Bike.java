@@ -43,7 +43,7 @@ public class Bike extends GameEntity {
 
 	// Entities associeted to the bike
 	private Wheel leftWheel, rightWheel;
-	private Joint back, leg;
+	private Joint back, leg, quadL, quadR, tibiaL, tibiaR;
 
 	/**
 	 * Create a Bike, controllable by the player
@@ -67,12 +67,11 @@ public class Bike extends GameEntity {
 
 		build(getEntity(), hitbox);
 
-		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.LIGHT_GRAY, .1f, 1, 0);
+		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE, .1f, 1, 0);
 		charBodyGraphic = addGraphics(this.getEntity(), characterBody, null, Color.BLACK, .1f, 1.f, 0);
 
-		back = new Joint(game, false, new Vector(-.2f, .85f), 1.f);
-		leg = new Joint(game, true, new Vector(.1f, .5f), 1.f);
-		leg.attach(back, back.getAnchor(), new Vector(.0f, 1.f));
+		back = new Joint(game, new Vector(-.2f, .85f));
+		leg = new Joint(game, new Vector(.1f, .5f));
 
 		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
 		build(getEntity(), hitBox);
@@ -84,8 +83,8 @@ public class Bike extends GameEntity {
 		leftWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
 		rightWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
 
-		leftWheel.attach(getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
-		rightWheel.attach(getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
+		leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
+		rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
 
 		game.addActor(rightWheel);
 		game.addActor(leftWheel);
@@ -132,6 +131,7 @@ public class Bike extends GameEntity {
 
 		leftWheel.relax();
 		rightWheel.relax();
+
 
 		if (game.getKeyboard().get(KeyEvent.VK_SPACE).isPressed()) {
 			// rearWheel.relax();
@@ -197,7 +197,7 @@ public class Bike extends GameEntity {
 		this.leftWheel.destroy();
 		this.rightWheel.destroy();
 		this.back.destroy();
-		this.leg.destroy();
+		this.quadL.destroy();
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
