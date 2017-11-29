@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	22 nov. 2017
- */
 package main.game.actor.myEntities;
 
 import main.game.actor.ActorGame;
@@ -154,3 +150,4 @@ public class Bike extends GameEntity {
 	}
 
 }
+
