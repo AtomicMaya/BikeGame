@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created on 11/23/2017 at 7:32 PM.
@@ -72,11 +74,41 @@ public class Cutscene extends ActorGame {
 }
 
 class Test {
+	static int counter = 0;
+	static Timer timer;
+
 	public static void main(String[] args) {
-		try {
-			Cutscene a = new Cutscene("./res/cutscene/level1-1.cts");
-		} catch (IOException e) {
-			System.out.println("Next Scene Jump");
-		}
+
+		//create timer task to increment counter
+		TimerTask timerTask = new TimerTask() {
+
+			@Override
+			public void run() {
+				// System.out.println("TimerTask executing counter is: " + counter);
+				counter++;
+			}
+		};
+
+		//create thread to print counter value
+		Thread t = new Thread(() -> {
+				while (true) {
+					try {
+						System.out.println("Thread reading counter is: " + counter);
+						if (counter == 3) {
+							System.out.println("Counter has reached 3 now will terminate");
+							timer.cancel();//end the timer
+							break;//end this loop
+						}
+						Thread.sleep(1000);
+					} catch (InterruptedException ex) {
+						ex.printStackTrace();
+					}
+				}
+			});
+
+		timer = new Timer("MyTimer");//create a new timer
+		timer.scheduleAtFixedRate(timerTask, 30, 3000);//start timer in 30ms to increment  counter
+
+		t.start();//start thread to display counter
 	}
 }

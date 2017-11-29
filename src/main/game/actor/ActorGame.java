@@ -25,7 +25,7 @@ public class ActorGame implements Game {
 	private static final float VIEW_SCALE = 10.0f;
 
 	// list of all actors in the game
-	private ArrayList<Actor> actors = new ArrayList<Actor>();
+	private ArrayList<Actor> actors = new ArrayList<>();
 
 	// our physical world
 	private World world;
@@ -46,13 +46,14 @@ public class ActorGame implements Game {
 			throw new NullPointerException("Window is null");
 		if (fileSystem == null)
 			throw new NullPointerException("FileSystem is null");
+
 		world = new World();
 		world.setGravity(new Vector(0, -9.81f));
+
 		this.window = window;
 		this.fileSystem = fileSystem;
 		this.viewCenter = Vector.ZERO;
 		this.viewTarget = Vector.ZERO;
-
 		return true;
 	}
 
@@ -106,47 +107,35 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * @return associated canvas
-	 */
-	// public Canvas getCanvas() {
-	// return window;
-	// }
-
-	/**
-	 * @param p
-	 *            Positionable to follow with the camera
+	 * @param p : the object (Positionable) to follow with the camera
 	 */
 	public void setViewCandidate(Positionable p) {
 		this.viewCandidate = p;
 	}
 
 	/**
-	 * @param actor
-	 *            to add the the game
+	 * @param actor : an actor to be added in the game
 	 */
 	public void addActor(Actor actor) {
 		actorsToAdd.add(actor);
 	}
 
 	/**
-	 * @param actors
-	 *            list of actors to add the the game
+	 * @param actors : a list of actors to be added to the game
 	 */
 	public void addActor(List<Actor> actors) {
 		actorsToAdd.addAll(actors);
 	}
 
 	/**
-	 * @param actor
-	 *            to remove from the game
+	 * @param actor : an actor to be removed from the game
 	 */
 	public void destroyActor(Actor actor) {
 		actorsToRemove.add(actor);
 	}
 
 	/**
-	 * @param actors
-	 *            List of actors to remove from the game
+	 * @param actors : a list of actors to be removed from the game
 	 */
 	public void destroyActor(ArrayList<Actor> actors) {
 		actorsToRemove.addAll(actors);
@@ -154,11 +143,8 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new Entity in the world
-	 *
-	 * @param position
-	 *            to give to the Entity
-	 * @param fixed
-	 *            weather the Entity can move or not
+	 * @param position : position given to the entity
+	 * @param fixed : whether the entity can move or not
 	 * @return a new Entity
 	 */
 	public Entity newEntity(Vector position, boolean fixed) {
@@ -170,9 +156,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new Entity in the world
-	 *
-	 * @param fixed
-	 *            weather the Entity can move or not
+	 * @param fixed : whether the Entity can move or not
 	 * @return a new Entity
 	 */
 	public Entity newEntity(boolean fixed) {
@@ -202,10 +186,13 @@ public class ActorGame implements Game {
 		return world.createDistanceConstraintBuilder();
 	}
 
+	/**
+	 * @return a new PointConstraintBuilder
+	 */
 	public PointConstraintBuilder createPointConstraintBuilder() { return world.createPointConstraintBuilder(); }
 
 	/**
-	 * @return wether the game is frozen
+	 * @return whether the game is frozen
 	 */
 	public boolean isGameFrozen() {
 		return gameFrozen;
@@ -213,13 +200,17 @@ public class ActorGame implements Game {
 
 	/**
 	 * Set the frozen status of the game
-	 * @param freeze : wether we want to freeze the game
+	 * @param freeze : whether or not we want to freeze the game
 	 */
 	public void setGameFreezeStatus(boolean freeze) {
 		gameFrozen = freeze;
 
 	}
 
+	/**
+	 * Modify the value of the world's gravity
+	 * @param vector : the new gravity values.
+	 */
 	protected void setGravity(Vector vector) {
 		world.setGravity(vector);
 	}

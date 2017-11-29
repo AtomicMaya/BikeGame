@@ -10,23 +10,21 @@ import main.window.Canvas;
 public interface Actor extends Positionable, Graphics {
 	/**
 	 * Simulates a single time step.
-	 * 
-	 * @param deltaTime
-	 *            elapsed time since last update , in seconds , non-negative
+	 * @param deltaTime elapsed time since last update, in seconds, non-negative
 	 */
-	public default void update(float deltaTime) {
+	default void update(float deltaTime) {
 		// By default , actors have nothing to update
 	}
 
 	/**
 	 * Default destroy, don't do anything
 	 * */
-	public default void destroy() {
+	default void destroy() {
 		// By default , actors have nothing to destroy
 	}
 	
 	@Override
-	public default void draw(Canvas canvas) {
+	default void draw(Canvas canvas) {
 		// By default , actors have nothing to draw
 	}
 }

@@ -4,29 +4,24 @@
  */
 package main.game.actor.myEntities;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Polyline;
 import main.math.Vector;
 import main.window.Canvas;
 
-public class Ground extends GameEntity {
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
+public class Ground extends GameEntity {
 	// keep reference to the graphics
 	private ShapeGraphics g;
 
 	/**
 	 * Create a Ground
-	 * 
-	 * @param game
-	 *            ActorGame where the ground stand
-	 * @param position
-	 *            of the ground
-	 * @param p
-	 *            polyline shape of the ground
+	 * @param game : ActorGame where the ground exists
+	 * @param position : the position of the ground
+	 * @param p : a polyline shape of the ground
 	 */
 	public Ground(ActorGame game, Vector position, Polyline p) {
 		super(game, true, (position == null) ? Vector.ZERO : position);

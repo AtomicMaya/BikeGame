@@ -40,42 +40,37 @@ public class Bike extends GameEntity {
 
 	/**
 	 * Create a Bike, controllable by the player
-	 *
-	 * @param game
-	 *            ActorGame where the Bike evolve
-	 * @param position
-	 *            initial position of the Bike
+	 * @param game : the actorGame in which this object exists
+	 * @param position : the initial position of the bike
 	 */
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
 		this.game = game;
 
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f, -1.f, .9f, -.7f, .8f, -.3f, .8f, // rear mud guard
+		build(getEntity(), hitbox);
+
+		bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f,
+				-1.f, .9f, -.7f, .8f, -.3f, .8f, // rear mud guard
 				-.4f, 1.1f, -.3f, .7f, // ass holder
 				-1.f, 0.1f, -.25f, .2f,
 				-1.f, 0.1f, -.3f, .7f,
 				-.25f, .2f, .8f, .85f,
 				-.3f, .7f, .8f, .85f, // Frame
-				1.f, .85f, 1.f, 1.25f, 0.9f, 1.3f, 1.f, 1.25f, 1.f, .8f, 1.f, 0.1f, 1.f, .8f, 1.3f, .75f, 1.4f, .7f);
-
-		build(getEntity(), hitbox);
-
+				1.f, .85f, 1.f, 1.25f,
+				0.9f, 1.3f, 1.f, 1.25f,
+				1.f, .8f, 1.f, 0.1f,
+				1.f, .8f, 1.3f, .75f, 1.4f, .7f);
 		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
-
-
-		character = new CharacterBike(game, position, 3);
-
-
-		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		build(getEntity(), hitBox);
 
 		leftWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
 		rightWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
+		character = new CharacterBike(game, position, 3);
 
 		leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
 		character.attach(this.getEntity(), new Vector(0.f, 0.5f));
+
 		game.addActor(rightWheel);
 		game.addActor(leftWheel);
 		game.addActor(character);
@@ -111,8 +106,8 @@ public class Bike extends GameEntity {
 			character.invertX();
 			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints()));
 			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1f, 0f);
-			character.setLeftFootPosition(lookRight ? new Vector(.1f, -.3f) : new Vector(-.1f, -.3f));
-			character.setRightFootPosition(lookRight ? new Vector(-.1f, -.3f): new Vector(.1f, -.3f));
+			character.setlFootPos(lookRight ? new Vector(.1f, -.3f) : new Vector(-.1f, -.3f));
+			character.setrFootPos(lookRight ? new Vector(-.1f, -.3f): new Vector(.1f, -.3f));
 		}
 
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
@@ -120,6 +115,7 @@ public class Bike extends GameEntity {
 			rightWheel.power(0);
 		} else if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
 			character.nextPedal(lookRight ? -1 : 1);
+			if (character.getIsYaying()) character.nextYay(lookRight ? -1 : 1, deltaTime);
 			if (lookRight && leftWheel.getSpeed() > -MAX_WHEEL_SPEED) {
 				leftWheel.power(-MAX_WHEEL_SPEED);
 			} else if (rightWheel.getSpeed() < MAX_WHEEL_SPEED) {

@@ -15,18 +15,13 @@ import java.awt.*;
 
 public abstract class GameEntity implements Actor {
 	private Entity entity;
-
 	private ActorGame actorGame;
 
 	/**
 	 * Create a new GameEntity, and its associated Entity
-	 * 
-	 * @param game
-	 *            The ActorGame where the GameEntity evolve
-	 * @param fixed
-	 *            Weather the Entity is fixed
-	 * @param position
-	 *            The position of the Entity
+	 * @param game : The Game where this entity inhabits
+	 * @param fixed : Whether the entity is fixed
+	 * @param position : The position of the entity
 	 */
 	public GameEntity(ActorGame game, boolean fixed, Vector position) {
 		if (game == null)
@@ -40,11 +35,8 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Create a new GameEntity, and its associated Entity
-	 * 
-	 * @param game
-	 *            The ActorGame where the GameEntity evolve
-	 * @param fixed
-	 *            Wether the Entity is fixed
+	 * @param game : The ActorGame where the GameEntity evolves
+	 * @param fixed : Whether the Entity is fixed
 	 */
 	public GameEntity(ActorGame game, boolean fixed) {
 		if (game == null)
@@ -55,9 +47,8 @@ public abstract class GameEntity implements Actor {
 	}
 
 	/**
-	 * Get the Entity associated with this GameEntity
-	 * 
-	 * @return The Entity
+	 * Get the entity associated with this GameEntity
+	 * @return the entity
 	 */
 	protected Entity getEntity() {
 		return entity;
@@ -65,8 +56,7 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Get the ActorGame associated with this GameEntity
-	 * 
-	 * @return The ActorGame
+	 * @return The actorGame
 	 */
 	protected ActorGame getOwner() {
 		return actorGame;
@@ -91,16 +81,11 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Create and add an ImageGraphics to an entity
-	 *
-	 * @param entity
-	 *            The entity
-	 * @param imagePath
-	 *            The path to the image to add
-	 * @param width
-	 *            The width of the image
-	 * @param height
-	 *            The height of the image
-	 * @return A new ImageGraphics associated to the entity
+	 * @param entity : the entity
+	 * @param imagePath : the path to the image to add
+	 * @param width : the width of the image
+	 * @param height : the height of the image
+	 * @return a new ImageGraphics associated to the entity
 	 */
 	public static ImageGraphics addGraphics(Entity entity, String imagePath, float width, float height) {
 		ImageGraphics graphics = new ImageGraphics(imagePath, width, height);
@@ -110,21 +95,13 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Create and add a ShapeGraphics to an entity
-	 *
-	 * @param entity
-	 *            The entity
-	 * @param shape
-	 *            shape, may be null
-	 * @param fillColor
-	 *            fill color, may be null
-	 * @param outlineColor
-	 *            outline color, may be null
-	 * @param thickness
-	 *            outline thickness
-	 * @param alpha
-	 *            transparency, between 0 (invisible) and 1 (opaque)
-	 * @param depth
-	 *            render priority, lower-values drawn first
+	 * @param entity : the entity
+	 * @param shape : a shape, may be null
+	 * @param fillColor : a fill color, may be null
+	 * @param outlineColor : an outline color, may be null
+	 * @param thickness : the outline thickness
+	 * @param alpha : the transparency, between 0 (invisible) and 1 (opaque)
+	 * @param depth : the render priority, lower-values drawn first
 	 * @return The ShapeGraphics created and associated to the image
 	 */
 	public static ShapeGraphics addGraphics(Entity entity, Shape shape, Color fillColor, Color outlineColor,
@@ -134,35 +111,33 @@ public abstract class GameEntity implements Actor {
 		return graphics;
 	}
 
+	/**
+	 * Create and add a ShapeGraphics to an entity
+	 * @param entity : the entity
+	 * @param shape : a shape, may be null
+	 * @param color : a fill color, may be null
+	 * @return The ShapeGraphics created and associated to the image
+	 */
 	public static ShapeGraphics addGraphics(Entity entity, Shape shape, Color color) {
 		return addGraphics(entity, shape, color, color, 0.f, 0.f, 0.f);
 	}
 
 	/**
-	 * Build the entity, which give a physical representation for the engine
-	 *
-	 * @param entity
-	 *            The entity
-	 * @param shape
-	 *            The shape to give to the entity
+	 * Build the entity, which gives it a physical representation in the engine
+	 * @param entity : the entity
+	 * @param shape : the shape to be given to the entity
 	 */
 	public static void build(Entity entity, Shape shape) {
 		build(entity, shape, -1, -1, false);
 	}
 
 	/**
-	 * Build the entity, which give a physical representation for the engine
-	 *
-	 * @param entity
-	 *            The entity
-	 * @param shape
-	 *            The shape to give to the entity
-	 * @param friction
-	 *            friction to give to the entity, if negative -> default value
-	 * @param density
-	 *            density of the entity, if negative -> default value
-	 * @param ghost
-	 *            whether this part is hidden and act only as a sensor
+	 * Build the entity, which gives it a physical representation in the engine
+	 * @param entity : the entity
+	 * @param shape : the shape to be given to the entity
+	 * @param friction : the friction to be given to the entity, defaults if negative
+	 * @param density : the density of the entity, defaults if negative
+	 * @param ghost : whether this part is hidden and should act only as a sensor
 	 */
 	public static void build(Entity entity, Shape shape, float friction, float density, boolean ghost) {
 		PartBuilder partBuilder = entity.createPartBuilder();
