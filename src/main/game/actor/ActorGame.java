@@ -7,7 +7,6 @@ package main.game.actor;
 import main.game.Game;
 import main.io.FileSystem;
 import main.math.*;
-import main.window.Canvas;
 import main.window.Keyboard;
 import main.window.Window;
 
@@ -203,8 +202,10 @@ public class ActorGame implements Game {
 		return world.createDistanceConstraintBuilder();
 	}
 
+	public PointConstraintBuilder createPointConstraintBuilder() { return world.createPointConstraintBuilder(); }
+
 	/**
-	 * @return weather the game is frozen
+	 * @return wether the game is frozen
 	 */
 	public boolean isGameFrozen() {
 		return gameFrozen;
@@ -212,9 +213,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Set the frozen status of the game
-	 * 
-	 * @param weather
-	 *            we want to freeze the game
+	 * @param freeze : wether we want to freeze the game
 	 */
 	public void setGameFreezeStatus(boolean freeze) {
 		gameFrozen = freeze;

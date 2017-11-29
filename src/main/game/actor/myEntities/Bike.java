@@ -14,13 +14,11 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
 public class Bike extends GameEntity {
-
-	// game where the Bike evolve
+	// game where the Bike evolves
 	private ActorGame game;
 
 	private float MAX_WHEEL_SPEED = 20f;
@@ -33,20 +31,16 @@ public class Bike extends GameEntity {
 	// shapes of the Bike
 	private Polyline bikeFrame;
 
-	private Vector headPosition;
-
 	// Graphics to represent the Bike
 	private ShapeGraphics bikeFrameGraphic;
 
 	// Entities associeted to the bike
 	private Wheel leftWheel, rightWheel;
-
-	private Character character;
-
+	private CharacterBike character;
 
 	/**
 	 * Create a Bike, controllable by the player
-	 * 
+	 *
 	 * @param game
 	 *            ActorGame where the Bike evolve
 	 * @param position
@@ -57,28 +51,20 @@ public class Bike extends GameEntity {
 		this.game = game;
 
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		bikeFrame = new Polyline(-1.3f, .6f, -1.f, .7f, -1.f, .7f, -.7f, .6f, -.3f, .6f, // rear mud guard
-				-.4f, 1.f, -.3f, .6f, // ass holder
-				-1.f, 0.f, -.25f, .1f, -1.f, 0.f, -.3f, .6f, -.25f, .1f, .8f, .75f, -.3f, .6f, .8f, .75f, // Frame
-				1.f, .75f, 1.f, .85f, 1.f, .7f, 1.f, 0.f, 1.f, .7f, 1.3f, .65f, 1.4f, .6f);
+		bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f, -1.f, .9f, -.7f, .8f, -.3f, .8f, // rear mud guard
+				-.4f, 1.1f, -.3f, .7f, // ass holder
+				-1.f, 0.1f, -.25f, .2f,
+				-1.f, 0.1f, -.3f, .7f,
+				-.25f, .2f, .8f, .85f,
+				-.3f, .7f, .8f, .85f, // Frame
+				1.f, .85f, 1.f, 1.25f, 0.9f, 1.3f, 1.f, 1.25f, 1.f, .8f, 1.f, 0.1f, 1.f, .8f, 1.3f, .75f, 1.4f, .7f);
 
 		build(getEntity(), hitbox);
 
-		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE, .1f, 1, 0);
+		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
 
-		Vector[] indices1 = new Vector[]{ new Vector(.4f, 1.75f),
-				new Vector(.2f, 1.5f),
-				new Vector(0.f, .4f),
-				new Vector(.5f, 1.f),
-				new Vector(1.f, 1.f),
-				new Vector(.5f, 1.f),
-				new Vector(1.f, 1.f),
-				new Vector(.6f, .2f),
-				new Vector(.5f, -.2f),
-				new Vector(.6f, .2f),
-				new Vector(.2f, -.2f)};
-		ArrayList<Vector> indices = new ArrayList<>(Arrays.asList(indices1));
-		character = new Character(game, position, indices, 3);
+
+		character = new CharacterBike(game, position, 3);
 
 
 		Polygon hitBox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
@@ -89,7 +75,7 @@ public class Bike extends GameEntity {
 
 		leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
-
+		character.attach(this.getEntity(), new Vector(0.f, 0.5f));
 		game.addActor(rightWheel);
 		game.addActor(leftWheel);
 		game.addActor(character);
@@ -97,47 +83,43 @@ public class Bike extends GameEntity {
 
 	@Override
 	public void update(float deltaTime) {
-		// Graphics
-
-		// if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-		// if (lookRight && rearWheel.getSpeed() > MAX_WHEEL_SPEED) {
-		// rearWheel.power(-10f);
-		// cycliste.getEntity().applyAngularForce(10f);
-		// } else if (frontWheel.getSpeed() < MAX_WHEEL_SPEED) {
-		// frontWheel.power(-10f);
-		// cycliste.getEntity().applyAngularForce(-10f);
-		// }
-		// } else if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-		// if (lookRight && rearWheel.getSpeed() < MAX_WHEEL_SPEED) {
-		// rearWheel.power(10f);
-		// cycliste.getEntity().applyAngularForce(-10f);
-		// } else if (frontWheel.getSpeed() > -MAX_WHEEL_SPEED) {
-		// frontWheel.power(10f);
-		// cycliste.getEntity().applyAngularForce(10f);
-		// }
-		// }
-
+		/*
+		Graphics
+		 if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
+		 if (lookRight && rearWheel.getSpeed() > MAX_WHEEL_SPEED) {
+		 rearWheel.power(-10f);
+		 cycliste.getEntity().applyAngularForce(10f);
+		 } else if (frontWheel.getSpeed() < MAX_WHEEL_SPEED) {
+		 frontWheel.power(-10f);
+		 cycliste.getEntity().applyAngularForce(-10f);
+		 }
+		 } else if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
+		 if (lookRight && rearWheel.getSpeed() < MAX_WHEEL_SPEED) {
+		 rearWheel.power(10f);
+		 cycliste.getEntity().applyAngularForce(-10f);
+		 } else if (frontWheel.getSpeed() > -MAX_WHEEL_SPEED) {
+		 frontWheel.power(10f);
+		 cycliste.getEntity().applyAngularForce(10f);
+		 }
+		 }
+		*/
 		leftWheel.relax();
 		rightWheel.relax();
 
 		if (game.getKeyboard().get(KeyEvent.VK_SPACE).isPressed()) {
-			System.out.println("Inversion");
-			// rearWheel.relax();
-			// frontWheel.relax();
 			lookRight = !lookRight;
-			character.invertX();//System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x : 0.0f);
-            bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints()));
-			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE, .1f, 1f, 0f);
-
-			// System.out.println((Math.abs(getVelocity().x) > .2f) ? getVelocity().x :
-			// 0.0f);
+			character.invertX();
+			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints()));
+			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1f, 0f);
+			character.setLeftFootPosition(lookRight ? new Vector(.1f, -.3f) : new Vector(-.1f, -.3f));
+			character.setRightFootPosition(lookRight ? new Vector(-.1f, -.3f): new Vector(.1f, -.3f));
 		}
 
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
 			leftWheel.power(0);
 			rightWheel.power(0);
 		} else if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
-			character.nextPedal();
+			character.nextPedal(lookRight ? -1 : 1);
 			if (lookRight && leftWheel.getSpeed() > -MAX_WHEEL_SPEED) {
 				leftWheel.power(-MAX_WHEEL_SPEED);
 			} else if (rightWheel.getSpeed() < MAX_WHEEL_SPEED) {
@@ -149,14 +131,6 @@ public class Bike extends GameEntity {
 				getEntity().applyAngularForce(-10f);
 			}
 		}
-
-		// if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-		// frontWheel.power(-20);
-		// rearWheel.power(-20);
-		// } else if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-		// frontWheel.power(20);
-		// rearWheel.power(20);
-		// }
 
 	}
 
@@ -178,6 +152,7 @@ public class Bike extends GameEntity {
 	public void destroy() {
 		this.leftWheel.destroy();
 		this.rightWheel.destroy();
+		this.character.destroy();
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}

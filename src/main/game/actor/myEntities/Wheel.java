@@ -4,24 +4,19 @@
  */
 package main.game.actor.myEntities;
 
-import java.awt.Color;
-
 import main.game.actor.ActorGame;
-import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
-import main.math.Circle;
-import main.math.Entity;
-import main.math.Vector;
-import main.math.WheelConstraint;
-import main.math.WheelConstraintBuilder;
+import main.math.*;
 import main.window.Canvas;
+
+import java.awt.*;
 
 public class Wheel extends GameEntity {
 
 	// keep references
 	private WheelConstraint constraint = null;
 
-	private ShapeGraphics g;
+	private ShapeGraphics graphics;
 
 
 	/**
@@ -36,11 +31,11 @@ public class Wheel extends GameEntity {
 	 */
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
-		Circle c = new Circle(radius - .05f);
-		build(getEntity(), c, .6f, -1, false);
-		g = addGraphics(getEntity(), c, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 0.f);
+		Circle circle = new Circle(radius - .05f);
+		build(getEntity(), circle, .6f, -1, false);
+		graphics = addGraphics(getEntity(), circle, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 0.f);
 
-		//g.setAnchor(new Vector(.5f, .5f));
+		//graphics.setAnchor(new Vector(.5f, .5f));
 
 	}
 
@@ -70,7 +65,7 @@ public class Wheel extends GameEntity {
 		constraintBuilder.setAxis(axis);
 		// fréquence du ressort associé
 		constraintBuilder.setFrequency(3.0f);
-		constraintBuilder.setDamping(0.5f);
+		constraintBuilder.setDamping(0.9f);
 		// force angulaire maximale pouvant être appliquée
 		// à la roue pour la faire tourner :
 		constraintBuilder.setMotorMaxTorque(10.0f);
@@ -111,7 +106,6 @@ public class Wheel extends GameEntity {
 	 */
 	public float getSpeed() {
 		if (constraint != null) {
-			System.out.println(constraint.getMotorSpeed());
 			return constraint.getMotorSpeed();
 		} else
 			return -1;
@@ -119,7 +113,7 @@ public class Wheel extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-		g.draw(canvas);
+		graphics.draw(canvas);
 	}
 
 	@Override

@@ -4,17 +4,14 @@
  */
 package main.game.actor.myEntities;
 
-import java.awt.Color;
-
 import main.game.actor.Actor;
 import main.game.actor.ActorGame;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
-import main.math.Entity;
-import main.math.PartBuilder;
+import main.math.*;
 import main.math.Shape;
-import main.math.Transform;
-import main.math.Vector;
+
+import java.awt.*;
 
 public abstract class GameEntity implements Actor {
 	private Entity entity;
