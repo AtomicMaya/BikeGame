@@ -9,8 +9,8 @@ import main.window.Canvas;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
+
+import static main.game.actor.QuickMafs.invertXCoordinates;
 
 
 public class Bike extends GameEntity {
@@ -61,15 +61,11 @@ public class Bike extends GameEntity {
 
 		leftWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
 		rightWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
-		character = new CharacterBike(game, position, 3);
+		character = new CharacterBike(game, position);
 
 		leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
 		character.attach(this.getEntity(), new Vector(0.f, 0.5f));
-
-		game.addActor(rightWheel);
-		game.addActor(leftWheel);
-		game.addActor(character);
 	}
 
 	@Override
@@ -94,24 +90,25 @@ public class Bike extends GameEntity {
 		 }
 		 }
 		*/
+
 		leftWheel.relax();
 		rightWheel.relax();
 
 		if (game.getKeyboard().get(KeyEvent.VK_SPACE).isPressed()) {
 			lookRight = !lookRight;
 			character.invertX();
-			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints()));
-			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1f, 0f);
+			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints(), new Vector(-1.f, 1.f)));
+			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1.f, .0f);
 			character.setlFootPos(lookRight ? new Vector(.1f, -.3f) : new Vector(-.1f, -.3f));
 			character.setrFootPos(lookRight ? new Vector(-.1f, -.3f): new Vector(.1f, -.3f));
 		}
-		if (character.getIsYaying()) character.nextYay(lookRight ? -1 : 1, deltaTime);
+		if (character.getIsYaying()) character.nextYay(deltaTime);
 
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
 			leftWheel.power(0);
 			rightWheel.power(0);
 		} else if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
-			character.nextPedal(lookRight ? -1 : 1);
+			character.nextPedal();
 			if (lookRight && leftWheel.getSpeed() > -MAX_WHEEL_SPEED) {
 				leftWheel.power(-MAX_WHEEL_SPEED);
 			} else if (rightWheel.getSpeed() < MAX_WHEEL_SPEED) {
@@ -120,23 +117,21 @@ public class Bike extends GameEntity {
 			if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
 				getEntity().applyAngularForce(10.0f);
 			} else if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-				getEntity().applyAngularForce(-10f);
+				getEntity().applyAngularForce(-10.f);
 			}
 		}
 
+		leftWheel.update(deltaTime);
+		rightWheel.update(deltaTime);
+		character.update(deltaTime);
 	}
 
-	private List<Vector> invertXCoordinates(List<Vector> vectors) {
-		List<Vector> newVectors = new ArrayList<>();
-		for (Vector vector : vectors) {
-			newVectors.add(vector.mul(new Vector(-1.f, 1.f)));
-		}
-		return newVectors;
-	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		bikeFrameGraphic.draw(canvas);
+		leftWheel.draw(canvas);
+		rightWheel.draw(canvas);
 		character.draw(canvas);
 	}
 

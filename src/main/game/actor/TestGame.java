@@ -10,14 +10,13 @@ import main.math.Polyline;
 import main.math.Vector;
 import main.window.Window;
 
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class TestGame extends ActorGame {
 
-	Bike player;
-	List<Level> levels;
-	FinishActor a;
+	private Bike player;
+	private List<Level> levels;
+	private FinishActor a;
 
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
@@ -67,8 +66,5 @@ public class TestGame extends ActorGame {
 	@Override
 	public void end() {
 		// Nothing yet
-		if (this.getKeyboard().get(KeyEvent.VK_Q).isPressed()) {
-
-		}
 	}
 }

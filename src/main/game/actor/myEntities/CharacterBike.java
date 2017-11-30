@@ -8,6 +8,8 @@ import main.window.Canvas;
 
 import java.awt.*;
 
+import static main.game.actor.QuickMafs.toRadians;
+
 public class CharacterBike extends GameEntity {
 	private Vector headPos, armJointPos, backPos;
 	private Vector lElbowPos, rElbowPos, lHandPos, rHandPos;
@@ -20,7 +22,7 @@ public class CharacterBike extends GameEntity {
 	private PrismaticConstraint constraint;
 
 	private float angle;
-	private final float pedalingAngleIncrement;
+	private final float pedalingAngleIncrement = 3.f;
 	private boolean isYaying;
 	private final float timeTillYayEnd = 1.5f;
 	private float elapsedYayTime;
@@ -28,12 +30,16 @@ public class CharacterBike extends GameEntity {
 	// Insurance Vectors, so as to reset the various moving limbs to default positions
 	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f);
 	private Vector initRElbowPos = new Vector(.5f, 1.f), initRHandPos = new Vector(1.f, .8f);
-	private Vector lElbowRaisedPos = new Vector(0.0f, 2.2f), lHandRaisedPos = new Vector(0.0f, 2.75f);
+	private Vector lElbowRaisedPos = new Vector(.0f, 2.2f), lHandRaisedPos = new Vector(.0f, 2.75f);
 	private Vector rElbowRaisedPos = new Vector(-.2f, 2.2f), rHandRaisedPos = new Vector(-.2f, 2.75f);
 
-	public CharacterBike(ActorGame game, Vector position, float pedalingAngleIncrement) {
+	/**
+	 * Initialize a Character
+	 * @param game : the game in which this character exists
+	 * @param position : the position the character occupies
+	 */
+	public CharacterBike(ActorGame game, Vector position) {
 		super(game, false, position);
-		this.pedalingAngleIncrement = pedalingAngleIncrement;
 		this.directionModifier = 1.f;
 
 		headPos = new Vector(.2f, 1.75f); armJointPos = new Vector(.0f, 1.5f); backPos = new Vector(-.3f, .5f);
@@ -51,7 +57,6 @@ public class CharacterBike extends GameEntity {
 		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
 		graphicsHead = addGraphics(this.getEntity(), head, Color.WHITE, Color.BLACK, .15f, 1.f, 0);
 	}
-
 
 	@Override
 	public void update(float deltaTime) {
@@ -72,12 +77,22 @@ public class CharacterBike extends GameEntity {
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
+
+	/**
+	 * Generates the shape of the body given all positions.
+	 * @return a Polyline
+	 */
 	private Polyline generatePolygon() {
 		return new Polyline(headPos, armJointPos, lElbowPos, lHandPos, lElbowPos, armJointPos, rElbowPos, rHandPos,
 				rElbowPos, armJointPos, backPos, lKneePos, lFootPos, lKneePos, backPos, rKneePos, rFootPos, rKneePos,
 				backPos, armJointPos);
 	}
 
+	/**
+	 * Attaches this to the entity, at the anchor point
+	 * @param vehicle : the entity on which this will be attached
+	 * @param anchor : the point were this should be centered
+	 */
 	protected void attach(Entity vehicle, Vector anchor) {
 		PrismaticConstraintBuilder builder = super.getOwner().createPrismaticConstraintBuilder();
 		builder.setFirstEntity(vehicle);
@@ -95,26 +110,27 @@ public class CharacterBike extends GameEntity {
 		constraint = builder.build();
 	}
 
+	/**
+	 * Removes the constraint
+	 */
 	public void detach() {
-		if (constraint != null)
-			constraint.destroy();
+		if (constraint != null) constraint.destroy();
 	}
 
-	private float toRadians(float angle) {
-		return (float) (angle * Math.PI / 180.f);
-	}
-
-	public void nextPedal(int modifier) {
-		angle += modifier * pedalingAngleIncrement;
+	/**
+	 *
+	 */
+	public void nextPedal() {
+		angle += -directionModifier * pedalingAngleIncrement;
 		angle %= 360;
-		lFootPos = new Vector( (float) (lFootPos.x + Math.cos(toRadians(angle)) * 0.01 * -modifier),
-				(float) (lFootPos.y + Math.sin(toRadians(angle))* 0.01 * -modifier));
-		rFootPos = new Vector((float) (rFootPos.x + Math.cos(toRadians((float) (angle - Math.PI))) * 0.01 * -modifier),
-				(float) (rFootPos.y + Math.sin(toRadians((float) (angle - Math.PI))) * 0.01 * -modifier));
-		lKneePos = new Vector((float) (lKneePos.x + Math.cos(toRadians(angle)) * 0.005 * -modifier),
-				(float) (lKneePos.y + Math.sin(toRadians(angle))* 0.005 * -modifier));
-		rKneePos = new Vector((float) (rKneePos.x + Math.cos(toRadians((float) (angle - Math.PI))) * 0.005 * -modifier),
-				(float) (rKneePos.y + Math.sin(toRadians((float) (angle - Math.PI))) * 0.005 * -modifier));
+		lFootPos = new Vector( (float) (lFootPos.x + Math.cos(toRadians(angle)) * 0.01 * -directionModifier),
+				(float) (lFootPos.y + Math.sin(toRadians(angle))* 0.01 * -directionModifier));
+		rFootPos = new Vector((float) (rFootPos.x + Math.cos(toRadians(angle) - Math.PI) * 0.01 * -directionModifier),
+				(float) (rFootPos.y + Math.sin(toRadians(angle) - Math.PI) * 0.01 * -directionModifier));
+		lKneePos = new Vector((float) (lKneePos.x + Math.cos(toRadians(angle)) * 0.005 * -directionModifier),
+				(float) (lKneePos.y + Math.sin(toRadians(angle))* 0.005 * -directionModifier));
+		rKneePos = new Vector((float) (rKneePos.x + Math.cos(toRadians(angle) - Math.PI) * 0.005 * -directionModifier),
+				(float) (rKneePos.y + Math.sin(toRadians(angle) - Math.PI) * 0.005 * -directionModifier));
 	}
 
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
@@ -124,7 +140,7 @@ public class CharacterBike extends GameEntity {
 		return new Vector((float) (anchor.x + radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}
 
-	public void nextYay(int modifier, float deltaTime) {
+	public void nextYay(float deltaTime) {
 		elapsedYayTime += deltaTime;
 		if (elapsedYayTime < timeTillYayEnd / 2.f) {
 			lElbowPos = getNewPosition(armJointPos, initLElbowPos, lElbowRaisedPos);
