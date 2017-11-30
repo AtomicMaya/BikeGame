@@ -6,7 +6,7 @@ package main.game.actor.crate;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ImageGraphics;
-import main.game.actor.myEntities.GameEntity;
+import main.game.actor.entities.GameEntity;
 import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;

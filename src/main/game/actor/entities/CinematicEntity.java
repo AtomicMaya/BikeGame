@@ -1,10 +1,13 @@
-package main.game.actor.myEntities;
+package main.game.actor.entities;
 
 import main.game.actor.Actor;
 import main.game.actor.Graphics;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
-import main.math.*;
+import main.math.Entity;
+import main.math.PartBuilder;
+import main.math.Transform;
+import main.math.Vector;
 import main.window.Canvas;
 
 import java.util.ArrayList;

@@ -4,11 +4,9 @@
  */
 package main;
 
-import main.game.Game;
-import main.game.actor.Actor;
 import main.game.actor.ActorGame;
 import main.game.actor.TestGame;
-import main.game.actor.myEntities.Cinematic;
+import main.game.actor.entities.Cinematic;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;

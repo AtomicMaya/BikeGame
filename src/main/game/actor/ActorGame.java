@@ -79,7 +79,7 @@ public class ActorGame implements Game {
 		}
 		// Interpolate with previous location
 		float ratio = (float) Math.pow(VIEW_INTERPOLATION_RATIO_PER_SECOND, deltaTime);
-		viewCenter = viewCenter.mixed(viewTarget, ratio);
+		viewCenter = viewCenter.mixed(viewTarget, 1.f - ratio);
 		// Compute new viewport
 		Transform viewTransform = Transform.I.scaled(VIEW_SCALE).translated(viewCenter);
 		window.setRelativeTransform(viewTransform);

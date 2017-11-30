@@ -4,22 +4,15 @@
  */
 package main.game.tutorial;
 
-import java.awt.Color;
-
 import main.game.Game;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
 import main.io.FileSystem;
-import main.math.BasicContactListener;
-import main.math.Circle;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.PartBuilder;
+import main.math.*;
 import main.math.Polygon;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.World;
 import main.window.Window;
+
+import java.awt.*;
 
 /**
  * Simple game, to show basic the basic architecture
@@ -51,30 +44,30 @@ public class ContactGame implements Game {
 		world.setGravity(new Vector(0.0f, -9.81f));
 
 		// Create the block
-		EntityBuilder ebBlock = world.createEntityBuilder();
-		ebBlock.setFixed(true);
-		ebBlock.setPosition(new Vector(-5.0f, -1.0f));
-		block = ebBlock.build();
+		EntityBuilder entityBuilder = world.createEntityBuilder();
+		entityBuilder.setFixed(true);
+		entityBuilder.setPosition(new Vector(-5.0f, -1.0f));
+		block = entityBuilder.build();
 
-		PartBuilder pbBlock = block.createPartBuilder();
+		PartBuilder partBuilder = block.createPartBuilder();
 		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(10.0f, 0.0f), new Vector(10.0f, 1.0f),
 				new Vector(0.0f, 1.0f));
-		pbBlock.setShape(polygon);
-		pbBlock.build();
+		partBuilder.setShape(polygon);
+		partBuilder.build();
 
 		blockGraphics = new ImageGraphics("res/stone.broken.4.png", 10, 1);
 		blockGraphics.setParent(block);
 
 		// ball
 		float radius = .5f;
-		EntityBuilder entityBuilder = world.createEntityBuilder();
+		entityBuilder = world.createEntityBuilder();
 		entityBuilder.setFixed(false);
 		entityBuilder.setPosition(new Vector(0.5f, 4.0f));
 		ball = entityBuilder.build();
 
 		Circle circle = new Circle(radius);
 
-		PartBuilder partBuilder = ball.createPartBuilder();
+		partBuilder = ball.createPartBuilder();
 		partBuilder.setShape(circle);
 		partBuilder.setFriction(.4f);
 		partBuilder.build();

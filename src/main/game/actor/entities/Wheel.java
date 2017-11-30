@@ -1,4 +1,4 @@
-package main.game.actor.myEntities;
+package main.game.actor.entities;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;

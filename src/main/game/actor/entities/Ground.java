@@ -1,4 +1,4 @@
-package main.game.actor.myEntities;
+package main.game.actor.entities;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
@@ -21,7 +21,7 @@ public class Ground extends GameEntity {
 	 */
 	public Ground(ActorGame game, Vector position, Polyline p) {
 		super(game, true, (position == null) ? Vector.ZERO : position);
-		build(getEntity(), p, .6f, -1, false);
+		build(getEntity(), p, 1f, -1, false);
 		g = addGraphics(getEntity(), p, null, Color.black, .1f, 1, 0);
 	}
 

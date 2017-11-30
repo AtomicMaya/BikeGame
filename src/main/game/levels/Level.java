@@ -4,12 +4,12 @@
  */
 package main.game.levels;
 
-import java.util.ArrayList;
-
 import main.game.actor.Actor;
 import main.game.actor.ActorGame;
-import main.game.actor.myEntities.FinishActor;
+import main.game.actor.entities.FinishActor;
 import main.math.Node;
+
+import java.util.ArrayList;
 
 public abstract class Level extends Node {
 

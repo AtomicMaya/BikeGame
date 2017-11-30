@@ -2,7 +2,7 @@
  *	Author: Clément Jeannet
  *	Date: 	27 nov. 2017
  */
-package main.game.actor.myEntities;
+package main.game.actor.entities;
 
 import main.game.actor.ActorGame;
 import main.math.BasicContactListener;
