@@ -2,15 +2,15 @@
  *	Author: Clément Jeannet
  *	Date: 	27 nov. 2017
  */
-package main.game.actor.myEntities;
-
-import java.awt.event.KeyEvent;
+package main.game.actor.entities;
 
 import main.game.actor.ActorGame;
 import main.io.FileSystem;
 import main.math.Polyline;
 import main.math.Vector;
 import main.window.Window;
+
+import java.awt.event.KeyEvent;
 
 public class Cinematic extends ActorGame {
 	

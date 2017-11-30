@@ -1,4 +1,4 @@
-package main.game.actor.myEntities;
+package main.game.actor.entities;
 
 import main.game.actor.ActorGame;
 import main.game.actor.QuickMafs;
@@ -8,7 +8,7 @@ import main.window.Canvas;
 
 import java.awt.*;
 
-import static main.game.actor.QuickMafs.toRadians;
+import static main.game.actor.QuickMafs.*;
 
 public class CharacterBike extends GameEntity {
 	private Vector headPos, armJointPos, backPos;
@@ -60,6 +60,7 @@ public class CharacterBike extends GameEntity {
 
 	@Override
 	public void update(float deltaTime) {
+		if (isYaying) nextYay(deltaTime);
 		body = generatePolygon();
 		graphics = addGraphics(this.getEntity(), body, null, Color.BLACK, .15f, 1.f, 0);
 		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
@@ -118,7 +119,7 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/**
-	 *
+	 * Calculate the next position of the feet and the knees.
 	 */
 	public void nextPedal() {
 		angle += -directionModifier * pedalingAngleIncrement;
@@ -127,12 +128,19 @@ public class CharacterBike extends GameEntity {
 				(float) (lFootPos.y + Math.sin(toRadians(angle))* 0.01 * -directionModifier));
 		rFootPos = new Vector((float) (rFootPos.x + Math.cos(toRadians(angle) - Math.PI) * 0.01 * -directionModifier),
 				(float) (rFootPos.y + Math.sin(toRadians(angle) - Math.PI) * 0.01 * -directionModifier));
-		lKneePos = new Vector((float) (lKneePos.x + Math.cos(toRadians(angle)) * 0.005 * -directionModifier),
-				(float) (lKneePos.y + Math.sin(toRadians(angle))* 0.005 * -directionModifier));
-		rKneePos = new Vector((float) (rKneePos.x + Math.cos(toRadians(angle) - Math.PI) * 0.005 * -directionModifier),
-				(float) (rKneePos.y + Math.sin(toRadians(angle) - Math.PI) * 0.005 * -directionModifier));
+		lKneePos = new Vector((float) (lKneePos.x + Math.cos(toRadians(angle)) * 0.01 * -directionModifier),
+				(float) (lKneePos.y + Math.sin(toRadians(angle))* 0.01 * -directionModifier));
+		rKneePos = new Vector((float) (rKneePos.x + Math.cos(toRadians(angle) - Math.PI) * 0.01 * -directionModifier),
+				(float) (rKneePos.y + Math.sin(toRadians(angle) - Math.PI) * 0.01 * -directionModifier));
 	}
 
+	/**
+	 * Calculates the coordinates of the next point relative to time
+	 * @param anchor : the point to which this point is 'attached', can moved
+	 * @param initial : the absolute initial coordinates that this point occupied
+	 * @param goal : the point that this point should attain
+	 * @return the new coordinates of this point
+	 */
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
 		float radius = QuickMafs.getDistance(anchor, initial);
 		float angle = (float) Math.atan2((initial.y - anchor.y) - (goal.y - anchor.y), (initial.x - anchor.x) - (goal.x - anchor.x));
@@ -140,6 +148,10 @@ public class CharacterBike extends GameEntity {
 		return new Vector((float) (anchor.x + radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}
 
+	/**
+	 * Calculates all the next positions and assigns them to the elbows and hands
+	 * @param deltaTime : the current deltaTime, so that we can use time as a parameter of the animation
+	 */
 	public void nextYay(float deltaTime) {
 		elapsedYayTime += deltaTime;
 		if (elapsedYayTime < timeTillYayEnd / 2.f) {
@@ -147,7 +159,6 @@ public class CharacterBike extends GameEntity {
 			lHandPos = getNewPosition(armJointPos, initLHandPos, lHandRaisedPos);
 			rElbowPos = getNewPosition(armJointPos, initRElbowPos, rElbowRaisedPos);
 			rHandPos = getNewPosition(armJointPos, initRHandPos, rHandRaisedPos);
-
 		} else if (elapsedYayTime < timeTillYayEnd) {
 			lHandPos = getNewPosition(armJointPos, lHandRaisedPos, initLHandPos);
 			lElbowPos = getNewPosition(armJointPos, lElbowRaisedPos, initLElbowPos);
@@ -155,49 +166,49 @@ public class CharacterBike extends GameEntity {
 			rElbowPos = getNewPosition(armJointPos, rElbowRaisedPos, initRElbowPos);
 		}
 
-		if (elapsedYayTime > timeTillYayEnd) {  // Insurance for bad math
+		if (elapsedYayTime > timeTillYayEnd) {
 			this.isYaying = false;
 			this.elapsedYayTime = 0.f;
 
-			// Once again : Insurance
+			// Insurance for bad math...
 			lElbowPos = initLElbowPos; lHandPos = initLHandPos;
 			rElbowPos = initRElbowPos; rHandPos = initRHandPos;
 		}
 	}
 
+	/**
+	 * Trigger the Victory animation
+	 */
 	public void triggerYayAnimation() {
 		this.isYaying = true;
 	}
 
+	/**
+	 * @return if the Victory animation is active
+	 */
 	public boolean getIsYaying() {
 		return this.isYaying;
 	}
 
+	/**
+	 * Inverts all the xCoordinates on the x axis
+	 */
 	public void invertX() {
 		directionModifier = directionModifier * -1;
-		headPos = headPos.mul(new Vector(-1.f, 1.f));
-		armJointPos = armJointPos.mul(new Vector(-1.f, 1.f));
-		backPos = backPos.mul(new Vector(-1.f, 1.f));
-		lElbowPos = lElbowPos.mul(new Vector(-1.f, 1.f));
-		lHandPos = lHandPos.mul(new Vector(-1.f, 1.f));
-		rElbowPos = rElbowPos.mul(new Vector(-1.f, 1.f));
-		rHandPos = rHandPos.mul(new Vector(-1.f, 1.f));
-		lKneePos = lKneePos.mul(new Vector(-1.f, 1.f));
-		lFootPos = lFootPos.mul(new Vector(-1.f, 1.f));
-		rKneePos = rKneePos.mul(new Vector(-1.f, 1.f));
-		rFootPos = rFootPos.mul(new Vector(-1.f, 1.f));
+		headPos = headPos.mul(xInverted); armJointPos = armJointPos.mul(xInverted);
+		backPos = backPos.mul(xInverted);
+		lElbowPos = lElbowPos.mul(xInverted); lHandPos = lHandPos.mul(xInverted);
+		rElbowPos = rElbowPos.mul(xInverted); rHandPos = rHandPos.mul(xInverted);
 
-		lElbowRaisedPos = lElbowRaisedPos.mul(new Vector(-1.f, 1.f)); lHandRaisedPos = lHandRaisedPos.mul(new Vector(-1.f, 1.f));
-		rElbowRaisedPos = rElbowRaisedPos.mul(new Vector(-1.f, 1.f)); rHandRaisedPos = rHandRaisedPos.mul(new Vector(-1.f, 1.f));
-		initLElbowPos = initLElbowPos.mul(new Vector(-1.f, 1.f)); initLHandPos = initLHandPos.mul(new Vector(-1.f, 1.f));
-		initRElbowPos = initRElbowPos.mul(new Vector(-1.f, 1.f)); initRHandPos = initRHandPos.mul(new Vector(-1.f, 1.f));
-	}
+		// Insurance against bad math...
+		lKneePos = new Vector(.2f, .3f).mul(directionModifier == 1 ? xyNormal : xInverted);
+		lFootPos = new Vector(.1f, -.3f).mul(directionModifier == 1 ? xyNormal : xInverted);
+		rKneePos = new Vector(.0f, .2f).mul(directionModifier == 1 ? xyNormal : xInverted);
+		rFootPos = new Vector(-.1f, -.3f).mul(directionModifier == 1 ? xyNormal : xInverted);
 
-	public void setlFootPos(Vector newPosition) {
-		lFootPos = newPosition;
-	}
-
-	public void setrFootPos(Vector newPosition) {
-		rFootPos = newPosition;
+		lElbowRaisedPos = lElbowRaisedPos.mul(xInverted); lHandRaisedPos = lHandRaisedPos.mul(xInverted);
+		rElbowRaisedPos = rElbowRaisedPos.mul(xInverted); rHandRaisedPos = rHandRaisedPos.mul(xInverted);
+		initLElbowPos = initLElbowPos.mul(xInverted); initLHandPos = initLHandPos.mul(xInverted);
+		initRElbowPos = initRElbowPos.mul(xInverted); initRHandPos = initRHandPos.mul(xInverted);
 	}
 }

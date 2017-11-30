@@ -4,12 +4,12 @@
  */
 package main.game.actor;
 
-import java.util.List;
-
-import main.game.actor.myEntities.FinishActor;
+import main.game.actor.entities.FinishActor;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.window.Window;
+
+import java.util.List;
 
 public abstract class GameWithLevels extends ActorGame {
 

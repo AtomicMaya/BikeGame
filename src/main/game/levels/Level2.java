@@ -6,10 +6,10 @@ package main.game.levels;
 
 import main.game.actor.ActorGame;
 import main.game.actor.crate.Crate;
-import main.game.actor.myEntities.Bike;
-import main.game.actor.myEntities.FinishActor;
-import main.game.actor.myEntities.GameEntity;
-import main.game.actor.myEntities.Ground;
+import main.game.actor.entities.Bike;
+import main.game.actor.entities.FinishActor;
+import main.game.actor.entities.GameEntity;
+import main.game.actor.entities.Ground;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;

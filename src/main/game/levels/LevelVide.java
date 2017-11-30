@@ -6,7 +6,7 @@ package main.game.levels;
 
 import main.game.actor.ActorGame;
 import main.game.actor.crate.Crate;
-import main.game.actor.myEntities.FinishActor;
+import main.game.actor.entities.FinishActor;
 import main.math.Polygon;
 import main.math.Vector;
 

@@ -5,6 +5,9 @@ import main.math.Vector;
 import java.util.ArrayList;
 import java.util.List;
 
+// ASCII
+// 050 032 112 108 117 115 032 050 032 105 115 032 052 032 109 105 110 117 115 032 049 032 105 115 032 051 044 032 113 117 105 099 107 032 109 097 102 115 032 033
+
 public class QuickMafs {
 	/**
 	 * Gets distance between two points
@@ -39,4 +42,9 @@ public class QuickMafs {
 		}
 		return newVectors;
 	}
+
+	public static Vector xyNormal = new Vector(1.f, 1.f);
+	public static Vector xInverted = new Vector(-1.f, 1.f);
+	public static Vector yInverted = new Vector(1.f, -1.f);
+	public static Vector xyInverted = new Vector(-1.f, -1.f);
 }

@@ -1,4 +1,4 @@
-package main.game.actor.myEntities;
+package main.game.actor.entities;
 
 import main.game.actor.ActorGame;
 import main.game.actor.ShapeGraphics;
@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 import static main.game.actor.QuickMafs.invertXCoordinates;
+import static main.game.actor.QuickMafs.xInverted;
 
 
 public class Bike extends GameEntity {
@@ -19,18 +20,17 @@ public class Bike extends GameEntity {
 
 	private final float MAX_WHEEL_SPEED = 20f;
 
-	// weather
+	// Whether or not the bike is looking towards the right
 	private boolean lookRight = true;
 
-	// physical shape of the Bike
+	// Physical shape of the Bike
 	private final Polygon hitbox;
-	// shapes of the Bike
 	private Polyline bikeFrame;
 
 	// Graphics to represent the Bike
 	private ShapeGraphics bikeFrameGraphic;
 
-	// Entities associeted to the bike
+	// Entities associated to the bike
 	private Wheel leftWheel, rightWheel;
 	private CharacterBike character;
 
@@ -44,7 +44,7 @@ public class Bike extends GameEntity {
 		this.game = game;
 
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		build(getEntity(), hitbox);
+		build(this.getEntity(), hitbox);
 
 		bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f,
 				-1.f, .9f, -.7f, .8f, -.3f, .8f, // rear mud guard
@@ -90,19 +90,15 @@ public class Bike extends GameEntity {
 		 }
 		 }
 		*/
-
 		leftWheel.relax();
 		rightWheel.relax();
 
 		if (game.getKeyboard().get(KeyEvent.VK_SPACE).isPressed()) {
 			lookRight = !lookRight;
 			character.invertX();
-			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints(), new Vector(-1.f, 1.f)));
+			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints(), xInverted));
 			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1.f, .0f);
-			character.setlFootPos(lookRight ? new Vector(.1f, -.3f) : new Vector(-.1f, -.3f));
-			character.setrFootPos(lookRight ? new Vector(-.1f, -.3f): new Vector(.1f, -.3f));
 		}
-		if (character.getIsYaying()) character.nextYay(deltaTime);
 
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
 			leftWheel.power(0);
