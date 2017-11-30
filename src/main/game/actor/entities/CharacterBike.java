@@ -49,22 +49,22 @@ public class CharacterBike extends GameEntity {
 		rKneePos = new Vector(.0f, .2f); rFootPos = new Vector(-.1f, -.3f);
 
 		Circle anchor = new Circle(0.1f);
-		build(this.getEntity(), anchor, -1f, -1, true);
+		this.build(anchor, -1f, -1, true);
 
 		body = generatePolygon();
-		graphics = addGraphics(this.getEntity(), body, null, Color.BLACK, .15f, 1.f, 0);
+		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 0);
 
 		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
-		graphicsHead = addGraphics(this.getEntity(), head, Color.WHITE, Color.BLACK, .15f, 1.f, 0);
+		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 0);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		if (isYaying) nextYay(deltaTime);
 		body = generatePolygon();
-		graphics = addGraphics(this.getEntity(), body, null, Color.BLACK, .15f, 1.f, 0);
+		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 0);
 		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
-		graphicsHead = addGraphics(this.getEntity(), head, Color.WHITE, Color.BLACK, .15f, 1.f, 0);
+		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 0);
 	}
 
 	@Override

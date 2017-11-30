@@ -1,6 +1,6 @@
-package main.game.actor;
+package main.game;
 
-import main.game.ActorGame;
+import main.game.actor.Audio;
 import main.game.actor.entities.Bike;
 import main.game.actor.entities.FinishActor;
 import main.game.actor.entities.Ground;

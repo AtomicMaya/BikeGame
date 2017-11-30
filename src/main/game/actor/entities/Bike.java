@@ -44,7 +44,7 @@ public class Bike extends GameEntity {
 		this.game = game;
 
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		build(this.getEntity(), hitbox);
+		this.build(hitbox);
 
 		bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f,
 				-1.f, .9f, -.7f, .8f, -.3f, .8f, // rear mud guard
@@ -57,7 +57,7 @@ public class Bike extends GameEntity {
 				0.9f, 1.3f, 1.f, 1.25f,
 				1.f, .8f, 1.f, 0.1f,
 				1.f, .8f, 1.3f, .75f, 1.4f, .7f);
-		bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
+		bikeFrameGraphic = this.addGraphics(bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
 
 		leftWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
 		rightWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
@@ -97,7 +97,7 @@ public class Bike extends GameEntity {
 			lookRight = !lookRight;
 			character.invertX();
 			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints(), xInverted));
-			bikeFrameGraphic = addGraphics(this.getEntity(), bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1.f, .0f);
+			bikeFrameGraphic = addGraphics(bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1.f, .0f);
 		}
 
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {

@@ -21,8 +21,8 @@ public class Ground extends GameEntity {
 	 */
 	public Ground(ActorGame game, Vector position, Polyline p) {
 		super(game, true, (position == null) ? Vector.ZERO : position);
-		build(getEntity(), p, 1f, -1, false);
-		g = addGraphics(getEntity(), p, null, Color.black, .1f, 1, 0);
+		this.build(p, 1f, -1, false);
+		g = this.addGraphics(p, null, Color.black, .1f, 1, 0);
 	}
 
 	@Override

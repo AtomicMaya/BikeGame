@@ -31,18 +31,18 @@ public class ProximitySensor extends GameEntity implements Sensor {
 		this.height = height;
 
 		sensorArea = new Polygon(.0f, .0f, width, .0f, width, height, .0f, height);
-		build(this.getEntity(), sensorArea, -1, -1, true);
-		graphics = addGraphics(this.getEntity(), sensorArea, Color.GREEN, Color.GREEN, .1f, 0.75f, 0);
+		this.build(sensorArea, -1, -1, true);
+		graphics = addGraphics(sensorArea, Color.GREEN, Color.GREEN, .1f, 0.75f, 0);
 
 		contactListener = new BasicContactListener();
-		this.getEntity().addContactListener(contactListener);
+		this.addContactListener(contactListener);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		detectionStatus = contactListener.getEntities().size() > 0;
 		if (detectionStatus != previousDetectionStatus)
-			graphics = addGraphics(this.getEntity(), sensorArea, detectionStatus ? Color.RED : Color.GREEN,
+			graphics = addGraphics(sensorArea, detectionStatus ? Color.RED : Color.GREEN,
 					detectionStatus ? Color.RED : Color.GREEN, .1f, 0.75f, 0);
 
 		previousDetectionStatus = detectionStatus;

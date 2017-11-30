@@ -20,11 +20,11 @@ public class FinishActor extends GameEntity {
 	public FinishActor(ActorGame game, Vector position, GameEntity player, Shape shape) {
 		super(game, true, position);
 
-		build(getEntity(), shape, -1, -1, true);
+		build(shape, -1, -1, true);
 		
 		this.player = player.getEntity();
 		contactListener = new BasicContactListener();
-		getEntity().addContactListener(contactListener);
+		this.addContactListener(contactListener);
 
 	}
 

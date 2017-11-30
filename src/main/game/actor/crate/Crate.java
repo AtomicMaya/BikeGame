@@ -37,7 +37,7 @@ public class Crate extends GameEntity {
 		super(game, fixed, position);
 		imagePath = (imagePath == null || imagePath == "") ? "res/crate.1.png" : imagePath;
 		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);
-		build(getEntity(), square);
+		build(square);
 		graphic = new ImageGraphics(imagePath, size, size);
 		graphic.setParent(getEntity());
 	}

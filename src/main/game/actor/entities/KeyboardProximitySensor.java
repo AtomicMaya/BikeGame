@@ -35,11 +35,11 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 		this.height = height;
 
 		sensorArea = new Polygon(.0f, .0f, width, .0f, width, height, .0f, height);
-		build(this.getEntity(), sensorArea, -1, -1, true);
-		graphics = addGraphics(this.getEntity(), sensorArea, Color.GREEN, Color.GREEN, .1f, 0.75f, 0);
+		this.build(sensorArea, -1, -1, true);
+		graphics = this.addGraphics(sensorArea, Color.GREEN, Color.GREEN, .1f, 0.75f, 0);
 
 		contactListener = new BasicContactListener();
-		this.getEntity().addContactListener(contactListener);
+		this.addContactListener(contactListener);
 	}
 
 	@Override
@@ -48,11 +48,11 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 		keyPressedStatus = keyboard.get(KeyEvent.VK_E).isDown();
 
 		if (detectionStatus && keyPressedStatus)
-			graphics = addGraphics(this.getEntity(), sensorArea,
+			graphics = addGraphics(sensorArea,
 					detectionStatus && keyPressedStatus ? Color.RED : Color.GREEN,
 					detectionStatus && keyPressedStatus ? Color.RED : Color.GREEN, .1f, 0.75f, 0);
 		if (previousDetectionStatus != detectionStatus) {
-			graphics = addGraphics(this.getEntity(), sensorArea, Color.GREEN,  Color.GREEN, .1f, 0.75f, 0);
+			graphics = addGraphics(sensorArea, Color.GREEN,  Color.GREEN, .1f, 0.75f, 0);
 		}
 		previousDetectionStatus = detectionStatus;
 

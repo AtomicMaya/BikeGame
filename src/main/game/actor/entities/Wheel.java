@@ -21,8 +21,8 @@ public class Wheel extends GameEntity {
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
 		Circle circle = new Circle(radius - .05f);
-		build(this.getEntity(), circle, .6f, -1, false);
-		graphics = addGraphics(this.getEntity(), circle, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 0.f);
+		this.build(circle, .6f, -1, false);
+		graphics = this.addGraphics(circle, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 0.f);
 	}
 
 	/**
