@@ -1,6 +1,6 @@
 package main.game.actor.entities;
 
-import main.game.actor.ActorGame;
+import main.game.ActorGame;
 import main.game.actor.Sensor;
 import main.game.actor.ShapeGraphics;
 import main.math.BasicContactListener;

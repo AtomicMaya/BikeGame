@@ -1,6 +1,6 @@
-package main.game.actor;
+package main.game;
 
-import main.game.Game;
+import main.game.actor.Actor;
 import main.io.FileSystem;
 import main.math.*;
 import main.window.Keyboard;

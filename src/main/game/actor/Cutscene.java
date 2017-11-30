@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import main.game.ActorGame;
+
 
 public class Cutscene extends ActorGame {
 	// Cutscene format :

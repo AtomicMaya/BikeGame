@@ -2,8 +2,9 @@
  *	Author: Clément Jeannet
  *	Date: 	27 nov. 2017
  */
-package main.game.actor;
+package main.game;
 
+import main.game.actor.ActorLevel;
 import main.game.actor.entities.FinishActor;
 import main.game.levels.Level;
 import main.io.FileSystem;

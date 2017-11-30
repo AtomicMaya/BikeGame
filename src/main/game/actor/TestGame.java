@@ -1,5 +1,6 @@
 package main.game.actor;
 
+import main.game.ActorGame;
 import main.game.actor.entities.Bike;
 import main.game.actor.entities.FinishActor;
 import main.game.actor.entities.Ground;

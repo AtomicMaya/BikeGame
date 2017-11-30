@@ -6,6 +6,7 @@ package main.game.actor;
 
 import java.util.List;
 
+import main.game.GameWithLevels;
 import main.game.levels.Level;
 import main.math.Transform;
 import main.math.Vector;
