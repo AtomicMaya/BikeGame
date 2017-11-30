@@ -29,7 +29,7 @@ public abstract class Level extends Node {
 	 * Create a new level
 	 * 
 	 * @param game
-	 *            ActorGame in wich the actors will evolve
+	 *            ActorGame in which the actors will evolve
 	 */
 	public Level(ActorGame game) {
 		this.game = game;

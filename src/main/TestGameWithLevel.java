@@ -32,9 +32,5 @@ public class TestGameWithLevel extends GameWithLevels {
 
 		return levels;
 	}
-	
-	public void update (float deltaTime) {
-		super.update(deltaTime);
-	}
 
 }

@@ -25,7 +25,7 @@ public abstract class GameEntity implements Actor {
 		if (position == null)
 			throw new NullPointerException("Vector is null");
 		this.actorGame = game;
-
+		
 		entity = game.newEntity(position, fixed);
 	}
 
@@ -46,7 +46,7 @@ public abstract class GameEntity implements Actor {
 	 * Get the entity associated with this GameEntity
 	 * @return the entity
 	 */
-	protected Entity getEntity() {
+	public Entity getEntity() {
 		return entity;
 	}
 

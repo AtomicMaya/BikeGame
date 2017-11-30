@@ -7,6 +7,7 @@ import main.window.Keyboard;
 import main.window.Window;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ActorGame implements Game {
@@ -64,6 +65,9 @@ public class ActorGame implements Game {
 		}
 
 		if (!actorsToRemove.isEmpty()) {
+			for (int i = 0; i< actorsToRemove.size();i++) {
+				actorsToRemove.get(i).destroy();
+			}
 			actors.removeAll(actorsToRemove);
 			actorsToRemove.clear();
 		}
@@ -113,28 +117,61 @@ public class ActorGame implements Game {
 	 * @param actor : an actor to be added in the game
 	 */
 	public void addActor(Actor actor) {
-		actorsToAdd.add(actor);
+		if (!actors.contains(actor))
+			actorsToAdd.add(actor);
 	}
 
 	/**
 	 * @param actors : a list of actors to be added to the game
 	 */
 	public void addActor(List<Actor> actors) {
-		actorsToAdd.addAll(actors);
+		for (Actor a : actors) {
+			if (!this.actors.contains(a))
+				actorsToAdd.add(a);
+		}
+		
 	}
 
 	/**
 	 * @param actor : an actor to be removed from the game
 	 */
 	public void destroyActor(Actor actor) {
-		actorsToRemove.add(actor);
+		if (!actorsToRemove.contains(actor))
+			actorsToRemove.add(actor);
 	}
 
 	/**
 	 * @param actors : a list of actors to be removed from the game
 	 */
 	public void destroyActor(ArrayList<Actor> actors) {
-		actorsToRemove.addAll(actors);
+		for (Actor a: actors) {
+			if (!actorsToRemove.contains(a))
+				actorsToRemove.add(a);
+		}
+		
+	}
+	
+	/**
+	 * @param actors : a list of actor to keep in the game
+	 * */
+	public void destroyAllActorsExept(Actor actorToKeep) {
+		for (Actor actor : actors) {
+			// use != because we test the reference
+			if (actor != actorToKeep) {
+				actorsToRemove.add(actor);
+			}
+		}
+	}
+	
+	/**
+	 * @param actors : a list of actor to keep in the game
+	 * */
+	public void destroyAllActorsExept(ArrayList<Actor> actorsToKeep) {
+		for (Actor actor : actors) {
+			if (!actorsToKeep.contains(actor)) {
+				actorsToRemove.add(actor);
+			}
+		}
 	}
 
 	/**

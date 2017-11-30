@@ -23,7 +23,7 @@ public class Level2 extends Level {
 
 	@Override
 	public void createAllActors() {
-		Crate un = new Crate(game, new Vector(5, 6), null, false, 1);
+		Crate un = new Crate(game, new Vector(6, 6), null, false, 1);
 		Polyline p = new Polyline(-1000.0f, -1000.0f, -1000.0f, 0.0f, 0.0f, 0.0f, 3.0f, 1.0f, 8.0f, 1.0f, 15.0f, 3.0f,
 				16.0f, 3.0f, 25.0f, 0.0f, 35.0f, -5.0f, 50.0f, -5.0f, 55.0f, -4.0f, 65.0f, 0.0f, 6500.0f, -1000.0f);
 

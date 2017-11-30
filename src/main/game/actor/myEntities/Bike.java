@@ -143,6 +143,5 @@ public class Bike extends GameEntity {
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
-
 }
 

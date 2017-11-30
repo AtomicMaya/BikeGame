@@ -38,22 +38,15 @@ public class ActorLevel implements Actor {
 	@Override
 	public void update(float deltaTime) {
 
-		if (levels.get(currentLevel).getFinishActor() != null && levels.get(currentLevel).getFinishActor().isFinished()) {
-			System.out.println("destroy");
-			
-			// Destroy the old actors and entities
-			for(Actor a:levels.get(currentLevel).getActors()) {
-				a.destroy();
-			}
-			currentLevel++;
-			if (currentLevel >= levels.size()) {
-				currentLevel = 0;
-			}
-			beginLevel(currentLevel);
+		if (levels.get(currentLevel).getFinishActor() != null
+				&& levels.get(currentLevel).getFinishActor().isFinished()) {
+			nextLevel();
+
 		}
 	}
 
 	public void beginLevel(int i) {
+		currentLevel = i;
 		levels.get(i).createAllActors();
 		game.addActor(levels.get(i).getActors());
 		game.setViewCandidate(levels.get(i).getViewCandidate());
@@ -63,6 +56,23 @@ public class ActorLevel implements Actor {
 	@Override
 	public void destroy() {
 		game.destroyActor(this);
+	}
+
+	public void nextLevel() {
+		// Destroy the old actors and entities
+//		for (Actor a : levels.get(currentLevel).getActors()) {
+//			a.destroy();
+//		}
+		game.destroyAllActorsExept(this);
+		currentLevel++;
+		if (currentLevel >= levels.size()) {
+			currentLevel = 0;
+		}
+		beginLevel(currentLevel);
+	}
+	
+	public void restartLevel() {
+		
 	}
 
 }
