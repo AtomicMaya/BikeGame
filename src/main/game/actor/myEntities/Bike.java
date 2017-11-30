@@ -15,15 +15,15 @@ import java.util.List;
 
 public class Bike extends GameEntity {
 	// game where the Bike evolves
-	private ActorGame game;
+	private final ActorGame game;
 
-	private float MAX_WHEEL_SPEED = 20f;
+	private final float MAX_WHEEL_SPEED = 20f;
 
 	// weather
 	private boolean lookRight = true;
 
 	// physical shape of the Bike
-	private Polygon hitbox;
+	private final Polygon hitbox;
 	// shapes of the Bike
 	private Polyline bikeFrame;
 
@@ -105,13 +105,13 @@ public class Bike extends GameEntity {
 			character.setlFootPos(lookRight ? new Vector(.1f, -.3f) : new Vector(-.1f, -.3f));
 			character.setrFootPos(lookRight ? new Vector(-.1f, -.3f): new Vector(.1f, -.3f));
 		}
+		if (character.getIsYaying()) character.nextYay(lookRight ? -1 : 1, deltaTime);
 
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
 			leftWheel.power(0);
 			rightWheel.power(0);
 		} else if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
 			character.nextPedal(lookRight ? -1 : 1);
-			if (character.getIsYaying()) character.nextYay(lookRight ? -1 : 1, deltaTime);
 			if (lookRight && leftWheel.getSpeed() > -MAX_WHEEL_SPEED) {
 				leftWheel.power(-MAX_WHEEL_SPEED);
 			} else if (rightWheel.getSpeed() < MAX_WHEEL_SPEED) {
@@ -128,8 +128,8 @@ public class Bike extends GameEntity {
 
 	private List<Vector> invertXCoordinates(List<Vector> vectors) {
 		List<Vector> newVectors = new ArrayList<>();
-		for (int i = 0; i < vectors.size(); i++) {
-			newVectors.add(vectors.get(i).mul(new Vector(-1.f, 1.f)));
+		for (Vector vector : vectors) {
+			newVectors.add(vector.mul(new Vector(-1.f, 1.f)));
 		}
 		return newVectors;
 	}
