@@ -2,6 +2,7 @@ package main.game.actor;
 
 import main.math.Vector;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,4 +48,14 @@ public class QuickMafs {
 	public static Vector xInverted = new Vector(-1.f, 1.f);
 	public static Vector yInverted = new Vector(1.f, -1.f);
 	public static Vector xyInverted = new Vector(-1.f, -1.f);
+
+	public static SwingWorker<Void, Void> generateWorker(Runnable action) {
+		return new SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() {
+				action.run();
+				return null;
+			}
+		};
+	}
 }

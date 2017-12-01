@@ -7,13 +7,7 @@ package main.game.tutorial;
 import main.game.Game;
 import main.game.actor.ImageGraphics;
 import main.io.FileSystem;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.PartBuilder;
-import main.math.Polygon;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.World;
+import main.math.*;
 import main.window.Window;
 
 /**
@@ -53,7 +47,7 @@ public class SimpleCrateGame implements Game {
 		pbBlock.setShape(polygon);
 		pbBlock.build();
 
-		blockAsset = new ImageGraphics("res/stone.broken.4.png", 1, 1);
+		blockAsset = new ImageGraphics("res/images/stone.broken.4.png", 1, 1);
 		blockAsset.setParent(block);
 		
 		// Create the crate
@@ -66,7 +60,7 @@ public class SimpleCrateGame implements Game {
 		pbCrate.setShape(polygon);
 		pbCrate.build();
 		
-		crateAsset = new ImageGraphics("res/box.4.png", 1, 1);
+		crateAsset = new ImageGraphics("res/images/box.4.png", 1, 1);
 		crateAsset.setParent(crate);
 
 		// Successfully initiated

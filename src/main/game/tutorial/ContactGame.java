@@ -55,7 +55,7 @@ public class ContactGame implements Game {
 		partBuilder.setShape(polygon);
 		partBuilder.build();
 
-		blockGraphics = new ImageGraphics("res/stone.broken.4.png", 10, 1);
+		blockGraphics = new ImageGraphics("res/images/stone.broken.4.png", 10, 1);
 		blockGraphics.setParent(block);
 
 		// ball

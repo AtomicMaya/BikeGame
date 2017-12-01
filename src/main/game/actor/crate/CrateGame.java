@@ -17,9 +17,9 @@ public class CrateGame extends ActorGame {
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
-		addActor(new Crate(this, new Vector(0, 5), "res/box.4.png", false, 1));
-		addActor(new Crate(this, new Vector(0.2f, 7), "res/box.4.png", false, 1));
-		addActor(new Crate(this, new Vector(2, 6), "res/box.4.png", false, 1));
+		addActor(new Crate(this, new Vector(0, 5), "res/images/box.4.png", false, 1));
+		addActor(new Crate(this, new Vector(0.2f, 7), "res/images/box.4.png", false, 1));
+		addActor(new Crate(this, new Vector(2, 6), "res/images/box.4.png", false, 1));
 		return true;
 
 	}

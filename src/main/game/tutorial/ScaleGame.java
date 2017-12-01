@@ -4,21 +4,13 @@
  */
 package main.game.tutorial;
 
-import java.awt.event.KeyEvent;
-
 import main.game.Game;
 import main.game.actor.ImageGraphics;
 import main.io.FileSystem;
-import main.math.Circle;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.PartBuilder;
-import main.math.Polygon;
-import main.math.RevoluteConstraintBuilder;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.World;
+import main.math.*;
 import main.window.Window;
+
+import java.awt.event.KeyEvent;
 
 /**
  * Simple game, to show basic the basic architecture
@@ -35,7 +27,7 @@ public class ScaleGame implements Game {
 	private Entity block, plank, ball;
 	// private ImageGraphics image;
 
-	private ImageGraphics blockGraphics, plankGRaphics, ballGraphics;
+	private ImageGraphics blockGraphics, plankGraphics, ballGraphics;
 
 	// This event is raised when game has just started
 	@Override
@@ -48,49 +40,49 @@ public class ScaleGame implements Game {
 		world.setGravity(new Vector(0.0f, -9.81f));
 
 		// Create the block
-		EntityBuilder ebBlock = world.createEntityBuilder();
-		ebBlock.setFixed(true);
-		ebBlock.setPosition(new Vector(-5.0f, -1.0f));
-		block = ebBlock.build();
+		EntityBuilder entityBuilder = world.createEntityBuilder();
+		entityBuilder.setFixed(true);
+		entityBuilder.setPosition(new Vector(-5.0f, -1.0f));
+		block = entityBuilder.build();
 
-		PartBuilder pbBlock = block.createPartBuilder();
+		PartBuilder partBuilder = block.createPartBuilder();
 		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(10.0f, 0.0f), new Vector(10.0f, 1.0f),
 				new Vector(0.0f, 1.0f));
-		pbBlock.setShape(polygon);
-		pbBlock.build();
+		partBuilder.setShape(polygon);
+		partBuilder.build();
 
-		blockGraphics = new ImageGraphics("res/stone.broken.4.png", 10, 1);
+		blockGraphics = new ImageGraphics("res/images/stone.broken.4.png", 10, 1);
 		blockGraphics.setParent(block);
 
 		// Create the plank
-		EntityBuilder ebPlank = world.createEntityBuilder();
-		ebPlank.setFixed(false);
-		plank = ebPlank.build();
+		entityBuilder = world.createEntityBuilder();
+		entityBuilder.setFixed(false);
+		plank = entityBuilder.build();
 
-		PartBuilder pbPlank = plank.createPartBuilder();
+		partBuilder = plank.createPartBuilder();
 		Polygon p2 = new Polygon(new Vector(0.0f, 0.0f), new Vector(5.0f, 0f), new Vector(5.0f, .2f),
 				new Vector(0.0f, .2f));
-		pbPlank.setShape(p2);
-		pbPlank.build();
+		partBuilder.setShape(p2);
+		partBuilder.build();
 
-		plankGRaphics = new ImageGraphics("res/wood.4.png", 5, .2f);
-		plankGRaphics.setParent(plank);
+		plankGraphics = new ImageGraphics("res/images/wood.4.png", 5, .2f);
+		plankGraphics.setParent(plank);
 
 		// ball
 		float radius = .5f;
-		EntityBuilder entityBuilder = world.createEntityBuilder();
+		entityBuilder = world.createEntityBuilder();
 		entityBuilder.setFixed(false);
 		entityBuilder.setPosition(new Vector(0.5f, 4.0f));
 		ball = entityBuilder.build();
 
 		Circle circle = new Circle(radius);
 
-		PartBuilder partBuilder = ball.createPartBuilder();
+		partBuilder = ball.createPartBuilder();
 		partBuilder.setShape(circle);
 		partBuilder.setFriction(.4f);
 		partBuilder.build();
 
-		ballGraphics = new ImageGraphics("res/explosive.11.png", radius * 2f, radius * 2f, new Vector(.5f, .5f));
+		ballGraphics = new ImageGraphics("res/images/explosive.11.png", radius * 2f, radius * 2f, new Vector(.5f, .5f));
 		ballGraphics.setParent(ball);
 
 		// link them
@@ -121,7 +113,7 @@ public class ScaleGame implements Game {
 		// The actual rendering will be done now, by the program loop
 		ballGraphics.draw(window);
 		blockGraphics.draw(window);
-		plankGRaphics.draw(window);
+		plankGraphics.draw(window);
 	}
 
 	// This event is raised after game ends, to release additional resources

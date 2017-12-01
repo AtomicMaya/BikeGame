@@ -9,32 +9,34 @@ import main.math.Vector;
 import main.window.Canvas;
 import main.window.Keyboard;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
+
+import static main.game.actor.QuickMafs.generateWorker;
 
 // TODO remove drawable component -> visual aid
 
 public class KeyboardProximitySensor extends GameEntity implements Sensor {
-	private Polygon sensorArea;
-	private float width, height;
 	private ActorGame game;
+	private Keyboard keyboard;
+	private int key;
+
+	private Polygon sensorArea;
 	private ShapeGraphics graphics;
+
+	private BasicContactListener contactListener;
+
 	private boolean detectionStatus, previousDetectionStatus = false;
 	private boolean keyPressedStatus;
-	private BasicContactListener contactListener;
-	private Keyboard keyboard;
 	private boolean busy = false;
 	float timeToActionEnd, elapsedActionTime = 0.f;
 
-	public KeyboardProximitySensor(ActorGame game, Vector position, float width, float height) {
+	public KeyboardProximitySensor(ActorGame game, Vector position, Polygon shape, int key) {
 		super(game, true, position);
 		this.game = game;
 		this.keyboard = game.getKeyboard();
-		this.width = width;
-		this.height = height;
+		this.key = key;
 
-		sensorArea = new Polygon(.0f, .0f, width, .0f, width, height, .0f, height);
+		sensorArea = shape;
 		this.build(sensorArea, -1, -1, true);
 		graphics = this.addGraphics(sensorArea, Color.GREEN, Color.GREEN, .1f, 0.75f, 0);
 
@@ -45,7 +47,7 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 	@Override
 	public void update(float deltaTime) {
 		detectionStatus = contactListener.getEntities().size() > 0;
-		keyPressedStatus = keyboard.get(KeyEvent.VK_E).isDown();
+		keyPressedStatus = keyboard.get(key).isDown();
 
 		if (detectionStatus && keyPressedStatus)
 			graphics = addGraphics(sensorArea,
@@ -79,15 +81,6 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 	@Override
 	public boolean getSensorDetectionStatus() {
 		return detectionStatus && keyPressedStatus;
-	}
-	private SwingWorker<Void, Void> generateWorker(Runnable action) {
-		return new SwingWorker<Void, Void>() {
-			@Override
-			protected Void doInBackground() {
-				action.run();
-				return null;
-			}
-		};
 	}
 
 	@Override

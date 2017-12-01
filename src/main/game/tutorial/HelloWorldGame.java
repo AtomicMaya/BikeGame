@@ -3,11 +3,7 @@ package main.game.tutorial;
 import main.game.Game;
 import main.game.actor.ImageGraphics;
 import main.io.FileSystem;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.World;
+import main.math.*;
 import main.window.Window;
 
 /**
@@ -24,7 +20,7 @@ public class HelloWorldGame implements Game {
 	// And we need to keep references on our game objects
 	private Entity body;
 
-	private ImageGraphics g, g2;
+	private ImageGraphics bodyGraphics, bowGraphics;
 
 	private float alpha = 0f;
 	private boolean increasing = true;
@@ -44,17 +40,17 @@ public class HelloWorldGame implements Game {
 		entityBuilder.setPosition(new Vector(2f, -1.5f));
 		body = entityBuilder.build();
 
-		g = new ImageGraphics("res/stone.broken.4.png", 1, 1);
-		g.setParent(body);
-		g.setAlpha(0.5f);
-		g.setDepth(0.0f);
-		g.setParent(body);
+		bodyGraphics = new ImageGraphics("res/images/stone.broken.4.png", 1, 1);
+		bodyGraphics.setParent(body);
+		bodyGraphics.setAlpha(0.5f);
+		bodyGraphics.setDepth(0.0f);
+		bodyGraphics.setParent(body);
 
-		g2 = new ImageGraphics("res/bow.png", 1, 1);
-		g2.setAlpha(0.5f);
-		g2.setDepth(1.0f);
+		bowGraphics = new ImageGraphics("res/images/bow.png", 1, 1);
+		bowGraphics.setAlpha(0.5f);
+		bowGraphics.setDepth(1.0f);
 
-		g2.setParent(body);
+		bowGraphics.setParent(body);
 
 		// Successfully initiated
 		return true;
@@ -79,11 +75,11 @@ public class HelloWorldGame implements Game {
 
 		world.update(deltaTime);
 
-		g2.setAlpha(alpha);
-		g.setAlpha(1f - alpha);
+		bowGraphics.setAlpha(alpha);
+		bodyGraphics.setAlpha(1f - alpha);
 		
-		g.draw(window);
-		g2.draw(window);
+		bodyGraphics.draw(window);
+		bowGraphics.draw(window);
 		// The actual rendering will be done now, by the program loop
 	}
 

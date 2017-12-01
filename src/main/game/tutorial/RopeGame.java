@@ -4,22 +4,15 @@
  */
 package main.game.tutorial;
 
-import java.awt.Color;
-
 import main.game.Game;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
 import main.io.FileSystem;
-import main.math.Circle;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.PartBuilder;
+import main.math.*;
 import main.math.Polygon;
-import main.math.RopeConstraintBuilder;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.World;
 import main.window.Window;
+
+import java.awt.*;
 
 /**
  * Simple game, to show basic the basic architecture
@@ -35,7 +28,7 @@ public class RopeGame implements Game {
 	// And we need to keep references on our game objects
 	private Entity block, ball;
 
-	private ImageGraphics blockAsset;
+	private ImageGraphics blockGraphics;
 	private ShapeGraphics ballGraphics;
 
 	// This event is raised when game has just started
@@ -49,30 +42,30 @@ public class RopeGame implements Game {
 		world.setGravity(new Vector(0.0f, -9.81f));
 
 		// Create the block
-		EntityBuilder ebBlock = world.createEntityBuilder();
-		ebBlock.setFixed(true);
-		ebBlock.setPosition(new Vector(1.0f, 0.5f));
-		block = ebBlock.build();
+		EntityBuilder entityBuilder = world.createEntityBuilder();
+		entityBuilder.setFixed(true);
+		entityBuilder.setPosition(new Vector(1.0f, 0.5f));
+		block = entityBuilder.build();
 
-		PartBuilder pbBlock = block.createPartBuilder();
+		PartBuilder partBuilder = block.createPartBuilder();
 		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(1.0f, 0.0f), new Vector(1.0f, 1.0f),
 				new Vector(0.0f, 1.0f));
-		pbBlock.setShape(polygon);
-		pbBlock.build();
+		partBuilder.setShape(polygon);
+		partBuilder.build();
 
-		blockAsset = new ImageGraphics("res/stone.broken.4.png", 1, 1);
-		blockAsset.setParent(block);
+		blockGraphics = new ImageGraphics("res/images/stone.broken.4.png", 1, 1);
+		blockGraphics.setParent(block);
 
 		// Create the ball
-		EntityBuilder ebBall = world.createEntityBuilder();
-		ebBall.setFixed(false);
-		ebBall.setPosition(new Vector (0.6f, 4.0f) );
-		ball = ebBall.build();
+		entityBuilder = world.createEntityBuilder();
+		entityBuilder.setFixed(false);
+		entityBuilder.setPosition(new Vector (0.6f, 4.0f) );
+		ball = entityBuilder.build();
 
-		PartBuilder pbBall = ball.createPartBuilder();
+		partBuilder = ball.createPartBuilder();
 		Circle circle = new Circle(.6f);
-		pbBall.setShape(circle);
-		pbBall.build();
+		partBuilder.setShape(circle);
+		partBuilder.build();
 
 		ballGraphics = new ShapeGraphics(circle, Color.BLUE, Color.RED, .1f, 1.f, 0);
 		ballGraphics.setParent(ball);
@@ -99,7 +92,7 @@ public class RopeGame implements Game {
 		world.update(deltaTime);
 
 		// The actual rendering will be done now, by the program loop
-		blockAsset.draw(window);
+		blockGraphics.draw(window);
 		ballGraphics.draw(window);
 	}
 

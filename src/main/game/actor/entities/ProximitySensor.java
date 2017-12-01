@@ -8,15 +8,13 @@ import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
-import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created on 11/30/2017 at 6:23 PM.
- */
+import static main.game.actor.QuickMafs.generateWorker;
+
 public class ProximitySensor extends GameEntity implements Sensor {
 	private Polygon sensorArea;
-	private float width, height;
+
 	private ActorGame game;
 	private ShapeGraphics graphics;
 	private boolean detectionStatus, previousDetectionStatus;
@@ -24,13 +22,11 @@ public class ProximitySensor extends GameEntity implements Sensor {
 	private boolean busy = false;
 	float timeToActionEnd, elapsedActionTime = 0.f;
 
-	public ProximitySensor(ActorGame game, Vector position, float width, float height) {
+	public ProximitySensor(ActorGame game, Vector position, Polygon shape) {
 		super(game, true, position);
 		this.game = game;
-		this.width = width;
-		this.height = height;
+		this.sensorArea = shape;
 
-		sensorArea = new Polygon(.0f, .0f, width, .0f, width, height, .0f, height);
 		this.build(sensorArea, -1, -1, true);
 		graphics = addGraphics(sensorArea, Color.GREEN, Color.GREEN, .1f, 0.75f, 0);
 
@@ -72,15 +68,7 @@ public class ProximitySensor extends GameEntity implements Sensor {
 		return detectionStatus;
 	}
 
-	private SwingWorker<Void, Void> generateWorker(Runnable action) {
-		return new SwingWorker<Void, Void>() {
-			@Override
-			protected Void doInBackground() {
-				action.run();
-				return null;
-			}
-		};
-	}
+
 
 	@Override
 	public void setAction(Runnable runnable, float time) {

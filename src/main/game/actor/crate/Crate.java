@@ -35,7 +35,7 @@ public class Crate extends GameEntity {
 	 */
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
 		super(game, fixed, position);
-		imagePath = (imagePath == null || imagePath == "") ? "res/crate.1.png" : imagePath;
+		imagePath = (imagePath == null || imagePath == "") ? "res/images/crate.1.png" : imagePath;
 		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);
 		build(square);
 		graphic = new ImageGraphics(imagePath, size, size);
