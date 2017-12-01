@@ -24,6 +24,7 @@ public class Audio implements LineListener {
 			this.audioClip.loop(loops);
 			this.soundControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
 			this.soundControl.setValue(-volumeDecrease);
+
 			this.audioClip.start();
 
 			while (isPlaying) {

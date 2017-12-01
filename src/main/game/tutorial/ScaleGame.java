@@ -46,8 +46,7 @@ public class ScaleGame implements Game {
 		block = entityBuilder.build();
 
 		PartBuilder partBuilder = block.createPartBuilder();
-		Polygon polygon = new Polygon(new Vector(0.0f, 0.0f), new Vector(10.0f, 0.0f), new Vector(10.0f, 1.0f),
-				new Vector(0.0f, 1.0f));
+		Polygon polygon = new Polygon(0.0f, 0.0f, 10.0f, 0.0f, 10.0f, 1.0f, 0.0f, 1.0f);
 		partBuilder.setShape(polygon);
 		partBuilder.build();
 
@@ -57,11 +56,11 @@ public class ScaleGame implements Game {
 		// Create the plank
 		entityBuilder = world.createEntityBuilder();
 		entityBuilder.setFixed(false);
+		entityBuilder.setPosition(new Vector(-2.5f, .8f));
 		plank = entityBuilder.build();
 
 		partBuilder = plank.createPartBuilder();
-		Polygon p2 = new Polygon(new Vector(0.0f, 0.0f), new Vector(5.0f, 0f), new Vector(5.0f, .2f),
-				new Vector(0.0f, .2f));
+		Polygon p2 = new Polygon(0.0f, 0.0f, 5.0f, 0f, 5.0f, .2f, 0.0f, .2f);
 		partBuilder.setShape(p2);
 		partBuilder.build();
 

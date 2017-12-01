@@ -4,7 +4,7 @@ import main.game.ActorGame;
 import main.game.actor.Sensor;
 import main.game.actor.ShapeGraphics;
 import main.math.BasicContactListener;
-import main.math.Polygon;
+import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -13,22 +13,22 @@ import java.awt.*;
 import static main.game.actor.QuickMafs.generateWorker;
 
 public class ProximitySensor extends GameEntity implements Sensor {
-	private Polygon sensorArea;
+	private Shape sensorArea;
 
 	private ActorGame game;
 	private ShapeGraphics graphics;
 	private boolean detectionStatus, previousDetectionStatus;
 	private BasicContactListener contactListener;
-	private boolean busy = false;
+	private boolean sensorOccupied = false;
 	float timeToActionEnd, elapsedActionTime = 0.f;
 
-	public ProximitySensor(ActorGame game, Vector position, Polygon shape) {
+	public ProximitySensor(ActorGame game, Vector position, Shape shape) {
 		super(game, true, position);
 		this.game = game;
 		this.sensorArea = shape;
 
 		this.build(sensorArea, -1, -1, true);
-		graphics = addGraphics(sensorArea, Color.GREEN, Color.GREEN, .1f, 0.75f, 0);
+		graphics = addGraphics(sensorArea, Color.GREEN, Color.GREEN, .1f, 0.25f, 0);
 
 		contactListener = new BasicContactListener();
 		this.addContactListener(contactListener);
@@ -39,14 +39,14 @@ public class ProximitySensor extends GameEntity implements Sensor {
 		detectionStatus = contactListener.getEntities().size() > 0;
 		if (detectionStatus != previousDetectionStatus)
 			graphics = addGraphics(sensorArea, detectionStatus ? Color.RED : Color.GREEN,
-					detectionStatus ? Color.RED : Color.GREEN, .1f, 0.75f, 0);
+					detectionStatus ? Color.RED : Color.GREEN, .1f, 0.25f, 0);
 
 		previousDetectionStatus = detectionStatus;
 
-		if (busy) {
+		if (sensorOccupied) {
 			elapsedActionTime += deltaTime;
 			if (elapsedActionTime > timeToActionEnd) {
-				busy = false;
+				sensorOccupied = false;
 				elapsedActionTime = 0.f;
 			}
 		}
@@ -68,17 +68,16 @@ public class ProximitySensor extends GameEntity implements Sensor {
 		return detectionStatus;
 	}
 
-
-
 	@Override
-	public void setAction(Runnable runnable, float time) {
-		busy = true;
+	public void runAction(Runnable runnable, float time) {
+		sensorOccupied = true;
 		timeToActionEnd = time;
 		generateWorker(runnable).execute();
 	}
 
 	@Override
-	public boolean getIfBusy() {
-		return busy;
+	public boolean isOccupied() {
+		return sensorOccupied;
 	}
+
 }

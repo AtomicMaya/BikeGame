@@ -1,13 +1,12 @@
 package main.game.actor;
 
-import main.math.Positionable;
 import main.window.Canvas;
 
-public interface Sensor extends Positionable, Graphics {
+public interface Sensor extends Actor {
 	boolean getSensorDetectionStatus();
-	boolean getIfBusy();
+	boolean isOccupied();
 
-	void setAction(Runnable action, float time);
+	void runAction(Runnable action, float time);
 
 	/**
 	 * Simulates a single time step.
