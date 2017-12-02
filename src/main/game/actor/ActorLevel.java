@@ -4,8 +4,10 @@
  */
 package main.game.actor;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import main.game.ActorGame;
 import main.game.GameWithLevels;
 import main.game.levels.Level;
 import main.math.Transform;
@@ -73,6 +75,12 @@ public class ActorLevel implements Actor {
 	}
 	
 	public void restartLevel() {
+		
+	}
+
+	@Override
+	public void reCreate(ActorGame game) {
+		// TODO Auto-generated method stub
 		
 	}
 

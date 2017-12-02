@@ -6,6 +6,7 @@ import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;
 import main.io.ResourceFileSystem;
+import main.io.TestSave;
 import main.window.Window;
 import main.window.swing.SwingWindow;
 
@@ -43,7 +44,8 @@ public class Program {
 			// Game game = new CrateGame();
 
 			//Game game = new TestGame();
-			Game game = new TestGame();
+			//Game game = new TestGame();
+			Game game = new TestSave();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

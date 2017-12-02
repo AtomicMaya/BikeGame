@@ -1,5 +1,11 @@
 package main.game.actor.entities;
 
+import static main.game.actor.QuickMafs.invertXCoordinates;
+import static main.game.actor.QuickMafs.xInverted;
+
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+
 import main.game.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Polygon;
@@ -7,16 +13,10 @@ import main.math.Polyline;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-
-import static main.game.actor.QuickMafs.invertXCoordinates;
-import static main.game.actor.QuickMafs.xInverted;
-
 
 public class Bike extends GameEntity {
 	// game where the Bike evolves
-	private final ActorGame game;
+	private transient ActorGame game;
 
 	private final float MAX_WHEEL_SPEED = 20f;
 
@@ -24,15 +24,15 @@ public class Bike extends GameEntity {
 	private boolean lookRight = true;
 
 	// Physical shape of the Bike
-	private final Polygon hitbox;
-	private Polyline bikeFrame;
+	private transient Polygon hitbox;
+	private transient Polyline bikeFrame;
 
 	// Graphics to represent the Bike
-	private ShapeGraphics bikeFrameGraphic;
+	private transient ShapeGraphics bikeFrameGraphic;
 
 	// Entities associated to the bike
-	private Wheel leftWheel, rightWheel;
-	private CharacterBike character;
+	private transient Wheel leftWheel, rightWheel;
+	private transient CharacterBike character;
 
 	/**
 	 * Create a Bike, controllable by the player
@@ -43,6 +43,10 @@ public class Bike extends GameEntity {
 		super(game, false, position);
 		this.game = game;
 
+		construct();
+	}
+	
+	private void construct() {
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
 		this.build(hitbox);
 
@@ -59,9 +63,9 @@ public class Bike extends GameEntity {
 				1.f, .8f, 1.3f, .75f, 1.4f, .7f);
 		bikeFrameGraphic = this.addGraphics(bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
 
-		leftWheel = new Wheel(game, new Vector(-1, 0).add(position), .5f);
-		rightWheel = new Wheel(game, position.add(new Vector(1, 0)), .5f);
-		character = new CharacterBike(game, position);
+		leftWheel = new Wheel(game, new Vector(-1, 0).add(this.getPosition()), .5f);
+		rightWheel = new Wheel(game, this.getPosition().add(new Vector(1, 0)), .5f);
+		character = new CharacterBike(game, this.getPosition());
 
 		leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
@@ -138,6 +142,13 @@ public class Bike extends GameEntity {
 		this.character.destroy();
 		super.destroy();
 		super.getOwner().destroyActor(this);
+	}
+	
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		this.game = game;
+		construct();
 	}
 }
 
