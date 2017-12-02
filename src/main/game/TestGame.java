@@ -11,12 +11,13 @@ import main.window.Window;
 
 import java.util.List;
 
-public class TestGame extends ActorGame {
-	private List<Level> levels;
+	public class TestGame extends ActorGame {
+		private List<Level> levels;
 	private FinishActor a;
 	private KeyboardProximitySensor sensor;
 
 	private Audio backgroundAudio, backgroundAudio2;
+	TriggeredPlatform platform;
 
 
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -32,8 +33,8 @@ public class TestGame extends ActorGame {
 				3.0f, 1.0f,
 				8.0f, 1.0f,
 				15.0f, 3.0f,
-				16.0f, 3.0f,
-				25.0f, 0.0f,
+				20.0f, 3.0f,
+				20.0f, -5.0f,
 				35.0f, -5.0f,
 				50.0f, -5.0f,
 				55.0f, -4.0f,
@@ -51,7 +52,10 @@ public class TestGame extends ActorGame {
 
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 
-		backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", -1, 0.f);
+		platform = new TriggeredPlatform(this, new Vector(20, 2), new Vector(1, 0),6,5, 2, 3, 2);
+
+		lever.addAction(() -> platform.triggerAction());
+		//backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", -1, 0.f);
 
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
@@ -66,6 +70,7 @@ public class TestGame extends ActorGame {
 		this.addActor(player);
 		//this.addActor(sensor);
 		this.addActor(lever);
+		this.addActor(platform);
 		return true;
 	}
 
@@ -76,7 +81,8 @@ public class TestGame extends ActorGame {
 
 	@Override
 	public void end() {
-		backgroundAudio.destroy();
+		//backgroundAudio.destroy();
 		//backgroundAudio2.destroy();
 	}
+
 }

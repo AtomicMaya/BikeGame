@@ -1,69 +1,46 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
-import main.game.actor.ImageGraphics;
-import main.game.actor.QuickMafs;
-import main.game.actor.ShapeGraphics;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
-
-/**
- * Created on 12/1/2017 at 5:14 PM.
- */
 public class MovingPlatform extends GameEntity {
-	private ShapeGraphics railGraphics, anchor1Graphics, anchor2Graphics;
-	private ImageGraphics platformGraphics;
-	private ActorGame game;
-	private Shape shape;
 	private float loopTime, pauseTime;
 	private float elapsedTime = 0.f;
+	private float speed;
+	private Platform platform;
+	private Vector evolution;
 
-	public MovingPlatform(ActorGame game, Vector startPosition, Vector endPosition, float loopTime, float pauseTime) {
-		super(game, true, startPosition);
-
-		this.shape = new Polygon(0f, 0f, 5f, 0f, 5f, 1f, 0f, 1f);
-		this.loopTime = loopTime;
+	public MovingPlatform(ActorGame game, Vector position, Vector evolution, float distance, float advancementTime, float pauseTime) {
+		super(game, false, position);
+		this.loopTime = advancementTime;
 		this.pauseTime = pauseTime;
+		this.speed = distance / advancementTime;
+		this.evolution = evolution;
 
-		Polygon rail = new Polygon(startPosition, startPosition.add(-.1f, .1f), endPosition.add(-1.f, .1f), endPosition);
-		Circle anchor1 = new Circle(.5f);
-		Circle anchor2 = new Circle(.5f, endPosition);
-		railGraphics = addGraphics(rail, Color.LIGHT_GRAY, Color.DARK_GRAY, .2f, 1.f, 0f);
-		anchor1Graphics = addGraphics(anchor1, Color.LIGHT_GRAY, Color.DARK_GRAY, .1f, 1.f, 0.1f);
-		anchor2Graphics = addGraphics(anchor2, Color.LIGHT_GRAY, Color.DARK_GRAY, .1f, 1.f, 0.1f);
-		platformGraphics = addGraphics("./res/images/stone.3.png", 5.f, 1.f);
+		Shape platformShape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 1.f, .0f, 1.f);
+		platform = new Platform(game, position, platformShape);
 
-		build(this.shape);
+		this.build(new Circle(0.1f), -1f, -1, false);
+		platform.attach(this.getEntity(), Vector.ZERO);
 
-
-	}
-
-	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal, boolean paused) {
-		float fullDistance = QuickMafs.getDistance(anchor, goal);
-		float currentDistance = QuickMafs.getDistance(anchor, initial);
-		currentDistance += currentDistance * (paused ? elapsedTime - pauseTime : elapsedTime) / loopTime;
-		return new Vector(0,0);
-		//TODO Finish
+		game.addActor(platform);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		elapsedTime += deltaTime;
-		if (elapsedTime < loopTime) {
-
-		} else if (elapsedTime < loopTime + pauseTime) {
-		} else if (elapsedTime < 2 * loopTime + pauseTime) {
-		} else if (elapsedTime < 2 * loopTime + 2 * pauseTime) {
-
-		} else {
+		if (0 < elapsedTime && elapsedTime < loopTime) {
+			platform.setPosition(evolution.mul(speed * deltaTime, speed * deltaTime));
+		} else if (loopTime + pauseTime < elapsedTime && elapsedTime < 2 * loopTime + pauseTime) {
+			platform.setPosition(evolution.mul(-speed * deltaTime, -speed * deltaTime));
+		} else if (elapsedTime > 2 * (loopTime + pauseTime)){
 			elapsedTime = 0.f;
 		}
-
+		platform.update(deltaTime);
 	}
 
 	@Override
@@ -73,6 +50,6 @@ public class MovingPlatform extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-
+		platform.draw(canvas);
 	}
 }

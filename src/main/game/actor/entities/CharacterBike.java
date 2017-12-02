@@ -143,7 +143,7 @@ public class CharacterBike extends GameEntity {
 	 */
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
 		float radius = QuickMafs.getDistance(anchor, initial);
-		float angle = (float) Math.atan2((initial.y - anchor.y) - (goal.y - anchor.y), (initial.x - anchor.x) - (goal.x - anchor.x));
+		float angle = QuickMafs.getAngle(anchor, initial, goal);
 		angle += angle * directionModifier * elapsedYayTime / (timeTillYayEnd / 2.f);
 		return new Vector((float) (anchor.x + radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}

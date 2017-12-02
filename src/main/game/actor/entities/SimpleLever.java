@@ -26,15 +26,15 @@ public class SimpleLever extends GameEntity implements Lever {
 		this.game = game;
 		this.activated = false;
 
-		this.shape = new Polygon(0f, 0f, 2f, 0f, 2f, 2f, 0f, 2f);
+		this.shape = new Polygon(0f, 0f, 1.5f, 0f, 1.5f, 1.5f, 0f, 1.5f);
 
 		this.build(this.shape, -1, -1, true);
 
 		this.sensor = new KeyboardProximitySensor(this.game, position, this.shape, KeyEvent.VK_E);
 
 		this.graphics = new ArrayList<>();
-		this.graphics.add(this.addGraphics("./res/images/lever.red.right.png", 2.f, 2.f));
-		this.graphics.add(this.addGraphics("./res/images/lever.red.left.png", 2.f, 2.f));
+		this.graphics.add(this.addGraphics("./res/images/lever.red.right.png", 1.5f, 1.5f));
+		this.graphics.add(this.addGraphics("./res/images/lever.red.left.png", 1.5f, 1.5f));
 
 		this.actions = new ArrayList<>();
 		this.time = new ArrayList<>();
@@ -47,8 +47,9 @@ public class SimpleLever extends GameEntity implements Lever {
 	@Override
 	public void update(float deltaTime) {
 		if (this.sensor.getSensorDetectionStatus() && !this.sensor.isOccupied()) {
-			this.sensor.runAction(this.actions.get(0), this.time.get(0));
-			this.sensor.runAction(this.actions.get(1), this.time.get(1));
+			for(int i = 0; i < actions.size(); i++) {
+				this.sensor.runAction(this.actions.get(i), this.time.get(i));
+			}
 		}
 		sensor.update(deltaTime);
 	}
@@ -64,12 +65,12 @@ public class SimpleLever extends GameEntity implements Lever {
 		(activated ? graphics.get(1) : graphics.get(0)).draw(canvas);
 	}
 
-	protected void addAction(Runnable action, float expirationTime) {
+	public void addAction(Runnable action, float expirationTime) {
 		this.actions.add(action);
 		this.time.add(expirationTime);
 	}
 
-	protected void addAction(Runnable action) {
+	public void addAction(Runnable action) {
 		addAction(action, 0f);
 	}
 }

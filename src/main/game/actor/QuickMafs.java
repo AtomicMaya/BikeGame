@@ -20,6 +20,10 @@ public class QuickMafs {
 		return (float) Math.sqrt(Math.pow(first.x - second.x, 2) + Math.pow(first.y - second.y, 2));
 	}
 
+	public static float getAngle(Vector center, Vector from, Vector to) {
+		return (float) Math.atan2((from.y - center.y) - (to.y - center.y), (from.x - center.x) - (to.x - center.x));
+	}
+
 	/**
 	 * Converts from degrees to radians
 	 * @param angle : an angle in degrees
