@@ -11,6 +11,11 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Ground extends GameEntity {
+	/**
+	 * Because its asked
+	 */
+	private static final long serialVersionUID = 7454750386019416210L;
+
 	// keep reference to the graphics
 	private transient ShapeGraphics graphics;
 
@@ -26,13 +31,23 @@ public class Ground extends GameEntity {
 	public Ground(ActorGame game, Vector position, Polyline shape) {
 		super(game, true, (position == null) ? Vector.ZERO : position);
 		this.points = shape.getPoints();
-		construct();
+		create();
 	}
-	
-	private void construct() {
+
+	/**
+	 * Actual creation of the parameters of the GameEntity, not in the constructor to
+	 * avoid duplication with the method reCreate
+	 */
+	private void create() {
 		Polyline p = new Polyline(points);
 		this.build(p, 2f, -1, false);
 		graphics = this.addGraphics(p, Color.decode("#6D5D49"), Color.decode("#548540"), .2f, 1, 0);
+	}
+
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		create();
 	}
 
 	@Override
@@ -48,10 +63,5 @@ public class Ground extends GameEntity {
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
-	
-	@Override
-	public void reCreate(ActorGame game) {
-		super.reCreate(game);
-		construct();
-	}
+
 }

@@ -4,32 +4,33 @@
  */
 package main.game.levels;
 
-import main.game.ActorGame;
-import main.game.actor.Actor;
-import main.game.actor.entities.FinishActor;
-import main.math.Node;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Level extends Node {
+import main.game.ActorGame;
+import main.game.actor.Actor;
+import main.math.Node;
+
+public abstract class Level extends Node implements Actor, Serializable {
+
+	/**
+	 * Because its asked
+	 */
+	private static final long serialVersionUID = 8954161709405265832L;
 
 	// list of Actors in this level
 	private ArrayList<Actor> actors = new ArrayList<>();
 
 	// associated Actor Game
-	protected ActorGame game;
+	protected transient ActorGame game;
 
 	// Actor to follow with the camera in the game
 	private Actor viewCAndidate;
 
-	// Actor use to end the level
-	private FinishActor finishActor;
-
 	/**
 	 * Create a new level
 	 * 
-	 * @param game
-	 *            ActorGame in which the actors will evolve
+	 * @param game ActorGame in which the actors will evolve
 	 */
 	public Level(ActorGame game) {
 		this.game = game;
@@ -41,16 +42,14 @@ public abstract class Level extends Node {
 	public abstract void createAllActors();
 
 	/**
-	 * @param actor
-	 *            to ads in the level
+	 * @param actor to ads in the level
 	 */
 	public void addActor(Actor actor) {
 		actors.add(actor);
 	}
 
 	/**
-	 * @param player
-	 *            actor to follow with the camera in the level
+	 * @param player actor to follow with the camera in the level
 	 */
 	public void setViewCandidate(Actor player) {
 		this.viewCAndidate = player;
@@ -71,17 +70,7 @@ public abstract class Level extends Node {
 	}
 
 	/**
-	 * @param a
-	 *            FinishActor use to end this level
+	 * @return weather this level is finished
 	 */
-	public void setFinishActor(FinishActor a) {
-		this.finishActor = a;
-	}
-
-	/**
-	 * @return the FinishActor use to end this level
-	 */
-	public FinishActor getFinishActor() {
-		return finishActor;
-	}
+	public abstract boolean isFinished();
 }

@@ -1,19 +1,25 @@
 package main.game.actor.entities;
 
+import static main.game.actor.QuickMafs.invertXCoordinates;
+import static main.game.actor.QuickMafs.xInverted;
+
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+
 import main.game.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
+import main.math.Polyline;
+import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-
-import static main.game.actor.QuickMafs.invertXCoordinates;
-import static main.game.actor.QuickMafs.xInverted;
-
-
 public class Bike extends GameEntity {
+	/**
+	 * Because its asked
+	 */
+	private static final long serialVersionUID = -5894386848192144642L;
+
 	// game where the Bike evolves
 	private transient ActorGame game;
 
@@ -44,12 +50,16 @@ public class Bike extends GameEntity {
 		super(game, false, position);
 		this.game = game;
 
-		this.construct();
+		this.create();
 	}
-	
-	private void construct() {
-		this.hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		this.build(this.hitbox);
+
+	/**
+	 * Actual creation of the parameters of the GameEntity, not in the constructor to
+	 * avoid duplication with the method reCreate
+	 */
+	private void create() {
+		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
+		this.build(hitbox);
 
 		this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);
@@ -74,6 +84,14 @@ public class Bike extends GameEntity {
 		this.leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		this.rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
 		this.character.attach(this.getEntity(), new Vector(0.f, 0.5f));
+	}
+
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		this.game = game;
+		create();
+
 	}
 
 	@Override
@@ -135,12 +153,6 @@ public class Bike extends GameEntity {
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
-	
-	@Override
-	public void reCreate(ActorGame game) {
-		super.reCreate(game);
-		this.game = game;
-		construct();
-	}
+
 }
 

@@ -9,6 +9,7 @@ import main.math.Shape;
 
 import java.awt.*;
 
+
 public abstract class GameEntity implements Actor {
 	/**
 	 * Because its asked
@@ -32,16 +33,27 @@ public abstract class GameEntity implements Actor {
 			throw new NullPointerException("Game is null");
 		if (position == null)
 			throw new NullPointerException("Vector is null");
-		
-		this.actorGame = game;
 
 		this.position = position;
 		this.fixed = fixed;
-		construct();
+
+		this.actorGame = game;
+		create();
 	}
-	
-	private void construct() {
-		this.entity = this.actorGame.newEntity(this.position, this.fixed);
+
+	/**
+	 * Actual creation of the parameters of the GameEntity, not in the constructor to
+	 * avoid duplication with the method reCreate
+	 */
+	private void create() {
+		if (entity == null)
+            this.entity = this.actorGame.newEntity(this.position, this.fixed);
+        }
+
+	@Override
+	public void reCreate(ActorGame game) {
+		actorGame = game;
+		create();
 	}
 
 	/**
@@ -178,11 +190,5 @@ public abstract class GameEntity implements Actor {
 	 */
 	public void addContactListener(ContactListener listener) {
 		this.entity.addContactListener(listener);
-	}
-
-	@Override
-	public void reCreate(ActorGame game) {
-		this.actorGame = game;
-		construct();
 	}
 }
