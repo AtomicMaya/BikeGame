@@ -11,8 +11,8 @@ import main.window.Window;
 
 import java.util.List;
 
-	public class TestGame extends ActorGame {
-		private List<Level> levels;
+public class TestGame extends ActorGame {
+	private List<Level> levels;
 	private FinishActor a;
 	private KeyboardProximitySensor sensor;
 
@@ -84,5 +84,4 @@ import java.util.List;
 		//backgroundAudio.destroy();
 		//backgroundAudio2.destroy();
 	}
-
 }

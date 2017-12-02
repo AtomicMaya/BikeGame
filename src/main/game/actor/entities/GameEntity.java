@@ -1,20 +1,35 @@
 package main.game.actor.entities;
 
+import java.awt.Color;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
-import main.math.*;
+import main.math.ContactListener;
+import main.math.Entity;
+import main.math.PartBuilder;
 import main.math.Shape;
-
-import java.awt.*;
+import main.math.Transform;
+import main.math.Vector;
 
 public abstract class GameEntity implements Actor {
-	private Entity entity;
-	private ActorGame actorGame;
+	/**
+	 * Because its asked
+	 */
+	private static final long serialVersionUID = 8519429675636563656L;
+	private transient Entity entity;
+	private transient ActorGame actorGame;
+
+	private Vector position;
+	private boolean fixed;
 
 	/**
 	 * Create a new GameEntity, and its associated Entity
+	 * 
 	 * @param game : The Game where this entity inhabits
 	 * @param fixed : Whether the entity is fixed
 	 * @param position : The position of the entity
@@ -24,13 +39,21 @@ public abstract class GameEntity implements Actor {
 			throw new NullPointerException("Game is null");
 		if (position == null)
 			throw new NullPointerException("Vector is null");
-		this.actorGame = game;
 		
-		entity = game.newEntity(position, fixed);
+		this.actorGame = game;
+
+		this.position = position;
+		this.fixed = fixed;
+		construct();
+	}
+	
+	private void construct() {
+		entity = actorGame.newEntity(position, fixed);
 	}
 
 	/**
 	 * Create a new GameEntity, and its associated Entity
+	 * 
 	 * @param game : The ActorGame where the GameEntity evolves
 	 * @param fixed : Whether the Entity is fixed
 	 */
@@ -39,11 +62,14 @@ public abstract class GameEntity implements Actor {
 			throw new NullPointerException("Game is null");
 		this.actorGame = game;
 
+		this.fixed = fixed;
+		
 		entity = game.newEntity(fixed);
 	}
 
 	/**
 	 * Get the entity associated with this GameEntity
+	 * 
 	 * @return the entity
 	 */
 	protected Entity getEntity() {
@@ -52,6 +78,7 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Get the ActorGame associated with this GameEntity
+	 * 
 	 * @return The actorGame
 	 */
 	protected ActorGame getOwner() {
@@ -77,6 +104,7 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Create and add an ImageGraphics to this entity
+	 * 
 	 * @param imagePath : the path to the image to add
 	 * @param width : the width of the image
 	 * @param height : the height of the image
@@ -90,6 +118,7 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Create and add a ShapeGraphics to this entity
+	 * 
 	 * @param shape : a shape, may be null
 	 * @param fillColor : a fill color, may be null
 	 * @param outlineColor : an outline color, may be null
@@ -98,8 +127,8 @@ public abstract class GameEntity implements Actor {
 	 * @param depth : the render priority, lower-values drawn first
 	 * @return The ShapeGraphics created and associated to this entity
 	 */
-	public ShapeGraphics addGraphics(Shape shape, Color fillColor, Color outlineColor,
-			float thickness, float alpha, float depth) {
+	public ShapeGraphics addGraphics(Shape shape, Color fillColor, Color outlineColor, float thickness, float alpha,
+			float depth) {
 		ShapeGraphics graphics = new ShapeGraphics(shape, fillColor, outlineColor, thickness, alpha, depth);
 		graphics.setParent(entity);
 		return graphics;
@@ -107,17 +136,19 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Create and add a ShapeGraphics to an entity
+	 * 
 	 * @param entity : the entity
 	 * @param shape : a shape, may be null
 	 * @param color : a fill color, may be null
 	 * @return The ShapeGraphics created and associated to this entity
 	 */
-	public ShapeGraphics addGraphics( Shape shape, Color color) {
+	public ShapeGraphics addGraphics(Shape shape, Color color) {
 		return addGraphics(shape, color, color, 0.f, 0.f, 0.f);
 	}
 
 	/**
 	 * Build the entity, which gives it a physical representation in the engine
+	 * 
 	 * @param shape : the shape to be given to the entity
 	 */
 	public void build(Shape shape) {
@@ -126,8 +157,10 @@ public abstract class GameEntity implements Actor {
 
 	/**
 	 * Build the entity, which gives it a physical representation in the engine
+	 * 
 	 * @param shape : the shape to be given to the entity
-	 * @param friction : the friction to be given to the entity, defaults if negative
+	 * @param friction : the friction to be given to the entity, defaults if
+	 *            negative
 	 * @param density : the density of the entity, defaults if negative
 	 * @param ghost : whether this part is hidden and should act only as a sensor
 	 */
@@ -141,12 +174,17 @@ public abstract class GameEntity implements Actor {
 		partBuilder.setGhost(ghost);
 		partBuilder.build();
 	}
-	
+
 	/**
-	 * @param listener : the listener to add th this entity
-	 * */
+	 * @param listener : the listener to add this entity
+	 */
 	public void addContactListener(ContactListener listener) {
 		entity.addContactListener(listener);
 	}
 
+	@Override
+	public void reCreate(ActorGame game) {
+		actorGame = game;
+		construct();
+	}
 }

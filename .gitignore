@@ -5,3 +5,5 @@
 .project
 .classpath
 /out
+res/saves/test2.txt
+res/saves/test.txt
