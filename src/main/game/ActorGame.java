@@ -1,13 +1,25 @@
 package main.game;
 
-import main.game.actor.Actor;
-import main.io.FileSystem;
-import main.math.*;
-import main.window.Keyboard;
-import main.window.Window;
-
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import main.game.actor.Actor;
+import main.io.FileSystem;
+import main.io.Save;
+import main.math.DistanceConstraintBuilder;
+import main.math.Entity;
+import main.math.EntityBuilder;
+import main.math.PointConstraintBuilder;
+import main.math.Positionable;
+import main.math.PrismaticConstraintBuilder;
+import main.math.Transform;
+import main.math.Vector;
+import main.math.WheelConstraintBuilder;
+import main.math.World;
+import main.window.Keyboard;
+import main.window.Window;
 
 public class ActorGame implements Game {
 
@@ -35,6 +47,12 @@ public class ActorGame implements Game {
 
 	// list to add or remove actors
 	private ArrayList<Actor> actorsToRemove = new ArrayList<Actor>(), actorsToAdd = new ArrayList<Actor>();
+
+	private static final String saveDirectory = "saves/";
+
+	public String getSaveDirectory() {
+		return saveDirectory;
+	}
 
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -64,7 +82,7 @@ public class ActorGame implements Game {
 		}
 
 		if (!actorsToRemove.isEmpty()) {
-			for (int i = 0; i< actorsToRemove.size();i++) {
+			for (int i = 0; i < actorsToRemove.size(); i++) {
 				actorsToRemove.get(i).destroy();
 			}
 			actors.removeAll(actorsToRemove);
@@ -128,7 +146,7 @@ public class ActorGame implements Game {
 			if (!this.actors.contains(a))
 				actorsToAdd.add(a);
 		}
-		
+
 	}
 
 	/**
@@ -143,16 +161,23 @@ public class ActorGame implements Game {
 	 * @param actors : a list of actors to be removed from the game
 	 */
 	public void destroyActor(ArrayList<Actor> actors) {
-		for (Actor a: actors) {
+		for (Actor a : actors) {
 			if (!actorsToRemove.contains(a))
 				actorsToRemove.add(a);
 		}
-		
+
 	}
-	
+
+	/**
+	 * Destroy all actors stored
+	 */
+	public void destroyAllActors() {
+		actorsToRemove.addAll(actors);
+	}
+
 	/**
 	 * @param actors : a list of actor to keep in the game
-	 * */
+	 */
 	public void destroyAllActorsExept(Actor actorToKeep) {
 		for (Actor actor : actors) {
 			// use != because we test the reference
@@ -161,10 +186,10 @@ public class ActorGame implements Game {
 			}
 		}
 	}
-	
+
 	/**
 	 * @param actors : a list of actor to keep in the game
-	 * */
+	 */
 	public void destroyAllActorsExept(ArrayList<Actor> actorsToKeep) {
 		for (Actor actor : actors) {
 			if (!actorsToKeep.contains(actor)) {
@@ -175,6 +200,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new Entity in the world
+	 * 
 	 * @param position : position given to the entity
 	 * @param fixed : whether the entity can move or not
 	 * @return a new Entity
@@ -188,6 +214,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new Entity in the world
+	 * 
 	 * @param fixed : whether the Entity can move or not
 	 * @return a new Entity
 	 */
@@ -221,7 +248,9 @@ public class ActorGame implements Game {
 	/**
 	 * @return a new PointConstraintBuilder
 	 */
-	public PointConstraintBuilder createPointConstraintBuilder() { return world.createPointConstraintBuilder(); }
+	public PointConstraintBuilder createPointConstraintBuilder() {
+		return world.createPointConstraintBuilder();
+	}
 
 	/**
 	 * @return whether the game is frozen
@@ -232,6 +261,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Set the frozen status of the game
+	 * 
 	 * @param freeze : whether or not we want to freeze the game
 	 */
 	public void setGameFreezeStatus(boolean freeze) {
@@ -241,9 +271,62 @@ public class ActorGame implements Game {
 
 	/**
 	 * Modify the value of the world's gravity
+	 * 
 	 * @param vector : the new gravity values.
 	 */
 	protected void setGravity(Vector vector) {
 		world.setGravity(vector);
+	}
+
+	/**
+	 * Save all actors of the current game
+	 * 
+	 * @param saveFolderPath path to the folder to save the game
+	 */
+	public void save(String saveName) {
+
+		// if the save folder does not exist, create it
+		File folder = new File(saveDirectory + saveName);
+		folder.mkdirs();
+
+		for (int i = 0; i < actors.size(); i++) {
+			if (viewCandidate == actors.get(i)) {
+				Save.saveParameters(i, fileSystem, new File(folder.getPath() + "/params.param"));
+				break;
+			}
+		}
+		int i = 0;
+		for (Actor a : actors) {
+			// for each actors, save it in a new files
+			File file = new File(folder.getPath() + "/actor" + i + ".object");
+
+			Save.saveActor(a, file);
+
+			i++;
+		}
+	}
+
+	/**
+	 * Load all saved actors
+	 * 
+	 * @param saveName name of the save to load
+	 */
+	public void load(String saveName) {
+
+		File directory = new File(saveDirectory + saveName);
+		if (directory.exists()) {
+			File[] files = directory.listFiles();
+			for (File f : files) {
+				if (f.getPath().contains(".object")) {
+					Actor a = Save.readSavedActor(this, f);
+					if (a != null)
+						actors.add(a);
+				}
+
+			}
+			setViewCandidate(actors
+					.get(Save.viewCandidateNumberInFile(fileSystem, new File(directory.getPath() + "/params.param"))));
+		}
+
 	}
 }

@@ -15,6 +15,11 @@ import main.window.Canvas;
 
 
 public class Bike extends GameEntity {
+	/**
+	 * Because its asked
+	 */
+	private static final long serialVersionUID = -5894386848192144642L;
+
 	// game where the Bike evolves
 	private transient ActorGame game;
 
@@ -42,11 +47,14 @@ public class Bike extends GameEntity {
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
 		this.game = game;
-
-		construct();
+		create();
 	}
 	
-	private void construct() {
+	/**
+	 * Actual creation of the parameters of the GameEntity, not in the constructor to
+	 * avoid duplication with the method reCreate
+	 */
+	private void create() {
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
 		this.build(hitbox);
 
@@ -70,6 +78,14 @@ public class Bike extends GameEntity {
 		leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
 		character.attach(this.getEntity(), new Vector(0.f, 0.5f));
+	}
+	
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		this.game = game;
+		create();
+		
 	}
 
 	@Override
@@ -144,11 +160,6 @@ public class Bike extends GameEntity {
 		super.getOwner().destroyActor(this);
 	}
 	
-	@Override
-	public void reCreate(ActorGame game) {
-		super.reCreate(game);
-		this.game = game;
-		construct();
-	}
+
 }
 

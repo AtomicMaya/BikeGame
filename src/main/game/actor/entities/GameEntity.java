@@ -1,9 +1,6 @@
 package main.game.actor.entities;
 
 import java.awt.Color;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
@@ -39,16 +36,27 @@ public abstract class GameEntity implements Actor {
 			throw new NullPointerException("Game is null");
 		if (position == null)
 			throw new NullPointerException("Vector is null");
-		
-		this.actorGame = game;
 
 		this.position = position;
 		this.fixed = fixed;
-		construct();
+
+		this.actorGame = game;
+		create();
 	}
-	
-	private void construct() {
-		entity = actorGame.newEntity(position, fixed);
+
+	/**
+	 * Actual creation of the parameters of the GameEntity, not in the constructor to
+	 * avoid duplication with the method reCreate
+	 */
+	private void create() {
+		if (entity == null)
+			entity = actorGame.newEntity(position, fixed);
+	}
+
+	@Override
+	public void reCreate(ActorGame game) {
+		actorGame = game;
+		create();
 	}
 
 	/**
@@ -63,7 +71,7 @@ public abstract class GameEntity implements Actor {
 		this.actorGame = game;
 
 		this.fixed = fixed;
-		
+
 		entity = game.newEntity(fixed);
 	}
 
@@ -180,11 +188,5 @@ public abstract class GameEntity implements Actor {
 	 */
 	public void addContactListener(ContactListener listener) {
 		entity.addContactListener(listener);
-	}
-
-	@Override
-	public void reCreate(ActorGame game) {
-		actorGame = game;
-		construct();
 	}
 }

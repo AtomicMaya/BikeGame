@@ -23,11 +23,20 @@ public class FinishActor extends GameEntity {
 		super(game, true, position);
 
 		build(shape, -1, -1, true);
-		
+
 		this.player = player;
+		create();
+	}
+
+	private void create() {
 		contactListener = new BasicContactListener();
 		this.addContactListener(contactListener);
+	}
 
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		create();
 	}
 
 	@Override
@@ -35,26 +44,30 @@ public class FinishActor extends GameEntity {
 		finish = contactListener.getEntities().contains(player.getEntity());
 	}
 
+	public void setPlayer(GameEntity player) {
+		this.player = player;
+	}
+
 	public boolean isFinished() {
 		return finish;
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
-	
+
 	public ArrayList<ArrayList<String>> getRepresentation() {
 		ArrayList<ArrayList<String>> r = new ArrayList<ArrayList<String>>();
 		ArrayList<String> classe = new ArrayList<String>();
-			classe.add("\""+this.getClass().toString()+"\"");
+		classe.add("\"" + this.getClass().toString() + "\"");
 		ArrayList<String> player = new ArrayList<String>();
-			player.add("\"player\" : \""+this.player.getClass().toString()+"\"");
+		player.add("\"player\" : \"" + this.player.getClass().toString() + "\"");
 		r.add(classe);
 		r.add(player);
 		return r;
-		
+
 	}
 
 }

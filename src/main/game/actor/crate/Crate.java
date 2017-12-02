@@ -4,11 +4,6 @@
  */
 package main.game.actor.crate;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.ImageGraphics;
 import main.game.actor.entities.GameEntity;
@@ -19,7 +14,7 @@ import main.window.Canvas;
 /**
  * Part 4.5, Test de l'architecture: Crate
  */
-public class Crate extends GameEntity implements Serializable {
+public class Crate extends GameEntity {
 
 	/**
 	 * 
@@ -45,13 +40,28 @@ public class Crate extends GameEntity implements Serializable {
 	 */
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
 		super(game, fixed, position);
-		this.imagePath = (imagePath == null || imagePath == "") ? "res/images/crate.1.png" : imagePath;
+
 		this.size = size;
+
+		create();
+	}
+	
+	/**
+	 * Actual creation of the parameters of the GameEntity, not in the constructor to
+	 * avoid duplication with the method reCreate
+	 */
+	private void create() {
+		imagePath = (imagePath == null || imagePath == "") ? "res/images/crate.1.png" : imagePath;
 
 		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);
 		this.build(square);
-
 		graphic = this.addGraphics(this.imagePath, size, size);
+	}
+	
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		create();
 	}
 
 	@Override
@@ -63,14 +73,6 @@ public class Crate extends GameEntity implements Serializable {
 	public void destroy() {
 		super.destroy();
 		super.getOwner().destroyActor(this);
-	}
-
-	public void reCreate(ActorGame game) {
-		super.reCreate(game);
-		
-		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);
-		this.build(square);
-		graphic = this.addGraphics(this.imagePath, size, size);
 	}
 
 }

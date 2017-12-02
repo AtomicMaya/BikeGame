@@ -4,38 +4,51 @@
  */
 package main.game;
 
-import main.game.actor.ActorLevel;
-import main.game.actor.entities.FinishActor;
+import java.util.List;
+
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.window.Window;
 
-import java.util.List;
-
 public abstract class GameWithLevels extends ActorGame {
 
-	ActorLevel actorLevel;
-	FinishActor finishActor;
-	
+	private List<Level> levels;
+	private int currentLevel = 0;
+
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
-		actorLevel = new ActorLevel(this, createLevelList());
-		addActor(actorLevel);
-		
-		
+		levels = createLevelList();
 		return true;
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		if (levels.get(currentLevel).isFinished()) {
+			nextLevel();
+		}
 	}
-	
+
+	protected void nextLevel() {
+		clearCurrentLevel();
+		beginLevel(currentLevel + 1);
+	}
+
+	protected void clearCurrentLevel() {
+		super.destroyAllActors();
+	}
+
+	protected void beginLevel(int i) {
+		currentLevel = i;
+		if (currentLevel > levels.size())
+			currentLevel = 0;
+		super.addActor(levels.get(i));
+		levels.get(i).createAllActors();
+		super.addActor(levels.get(i).getActors());
+		super.setViewCandidate(levels.get(i).getViewCandidate());
+	}
+
 	protected abstract List<Level> createLevelList();
-	
-	public void setFinishActor(FinishActor fa) {
-		this.finishActor = fa;
-	}
 }
