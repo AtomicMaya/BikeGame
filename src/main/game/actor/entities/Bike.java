@@ -1,17 +1,16 @@
 package main.game.actor.entities;
 
-import static main.game.actor.QuickMafs.invertXCoordinates;
-import static main.game.actor.QuickMafs.xInverted;
-
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-
 import main.game.ActorGame;
 import main.game.actor.ShapeGraphics;
+import main.math.*;
 import main.math.Polygon;
-import main.math.Polyline;
-import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+import static main.game.actor.QuickMafs.invertXCoordinates;
+import static main.game.actor.QuickMafs.xInverted;
 
 
 public class Bike extends GameEntity {
@@ -22,6 +21,8 @@ public class Bike extends GameEntity {
 
 	// Whether or not the bike is looking towards the right
 	private boolean lookRight = true;
+
+	private BasicContactListener contactListener;
 
 	// Physical shape of the Bike
 	private transient Polygon hitbox;
@@ -43,14 +44,17 @@ public class Bike extends GameEntity {
 		super(game, false, position);
 		this.game = game;
 
-		construct();
+		this.construct();
 	}
 	
 	private void construct() {
-		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		this.build(hitbox);
+		this.hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
+		this.build(this.hitbox);
 
-		bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f,
+		this.contactListener = new BasicContactListener();
+		this.addContactListener(this.contactListener);
+
+		this.bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f,
 				-1.f, .9f, -.7f, .8f, -.3f, .8f, // rear mud guard
 				-.4f, 1.1f, -.3f, .7f, // ass holder
 				-1.f, 0.1f, -.25f, .2f,
@@ -61,78 +65,66 @@ public class Bike extends GameEntity {
 				0.9f, 1.3f, 1.f, 1.25f,
 				1.f, .8f, 1.f, 0.1f,
 				1.f, .8f, 1.3f, .75f, 1.4f, .7f);
-		bikeFrameGraphic = this.addGraphics(bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
+		this.bikeFrameGraphic = this.addGraphics(bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
 
-		leftWheel = new Wheel(game, new Vector(-1, 0).add(this.getPosition()), .5f);
-		rightWheel = new Wheel(game, this.getPosition().add(new Vector(1, 0)), .5f);
-		character = new CharacterBike(game, this.getPosition());
+		this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
+		this.rightWheel = new Wheel(this.game, this.getPosition().add(new Vector(1, 0)), .5f);
+		this.character = new CharacterBike(this.game, this.getPosition());
 
-		leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
-		rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
-		character.attach(this.getEntity(), new Vector(0.f, 0.5f));
+		this.leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
+		this.rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
+		this.character.attach(this.getEntity(), new Vector(0.f, 0.5f));
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		/*
-		Graphics
-		 if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-		 if (lookRight && rearWheel.getSpeed() > MAX_WHEEL_SPEED) {
-		 rearWheel.power(-10f);
-		 cycliste.getEntity().applyAngularForce(10f);
-		 } else if (frontWheel.getSpeed() < MAX_WHEEL_SPEED) {
-		 frontWheel.power(-10f);
-		 cycliste.getEntity().applyAngularForce(-10f);
-		 }
-		 } else if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-		 if (lookRight && rearWheel.getSpeed() < MAX_WHEEL_SPEED) {
-		 rearWheel.power(10f);
-		 cycliste.getEntity().applyAngularForce(-10f);
-		 } else if (frontWheel.getSpeed() > -MAX_WHEEL_SPEED) {
-		 frontWheel.power(10f);
-		 cycliste.getEntity().applyAngularForce(10f);
-		 }
-		 }
-		*/
-		leftWheel.relax();
-		rightWheel.relax();
+	    if(this.contactListener.getEntities().size() > 0) {
+	        for(Entity entity : this.contactListener.getEntities()) {
+	            if(!entity.isGhost()) {
+	                //TODO trigger death ->
+                }
+            }
+        }
 
-		if (game.getKeyboard().get(KeyEvent.VK_SPACE).isPressed()) {
-			lookRight = !lookRight;
-			character.invertX();
-			bikeFrame = new Polyline(invertXCoordinates(bikeFrame.getPoints(), xInverted));
-			bikeFrameGraphic = addGraphics(bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1.f, .0f);
+		this.leftWheel.relax();
+		this.rightWheel.relax();
+
+		if (this.game.getKeyboard().get(KeyEvent.VK_SPACE).isPressed()) {
+			this.lookRight = !this.lookRight;
+			this.character.invertX();
+			this.bikeFrame = new Polyline(invertXCoordinates(this.bikeFrame.getPoints(), xInverted));
+			this.bikeFrameGraphic = addGraphics(this.bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1.f, .0f);
 		}
 
-		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
-			leftWheel.power(0);
-			rightWheel.power(0);
-		} else if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
-			character.nextPedal();
-			if (lookRight && leftWheel.getSpeed() > -MAX_WHEEL_SPEED) {
-				leftWheel.power(-MAX_WHEEL_SPEED);
-			} else if (rightWheel.getSpeed() < MAX_WHEEL_SPEED) {
-				rightWheel.power(MAX_WHEEL_SPEED);
+		if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
+			this.leftWheel.power(0);
+			this.rightWheel.power(0);
+		} else if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
+			this.character.nextPedal();
+			if (this.lookRight && this.leftWheel.getSpeed() > -this.MAX_WHEEL_SPEED) {
+				this.leftWheel.power(-this.MAX_WHEEL_SPEED);
+			} else if (this.rightWheel.getSpeed() < this.MAX_WHEEL_SPEED) {
+				this.rightWheel.power(this.MAX_WHEEL_SPEED);
 			}
-			if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-				getEntity().applyAngularForce(10.0f);
-			} else if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-				getEntity().applyAngularForce(-10.f);
+			if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
+				this.getEntity().applyAngularForce(10.0f);
+			} else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
+				this.getEntity().applyAngularForce(-10.f);
 			}
 		}
 
-		leftWheel.update(deltaTime);
-		rightWheel.update(deltaTime);
-		character.update(deltaTime);
+		this.leftWheel.update(deltaTime);
+		this.rightWheel.update(deltaTime);
+		this.character.update(deltaTime);
 	}
 
 
 	@Override
 	public void draw(Canvas canvas) {
-		bikeFrameGraphic.draw(canvas);
-		leftWheel.draw(canvas);
-		rightWheel.draw(canvas);
-		character.draw(canvas);
+		this.bikeFrameGraphic.draw(canvas);
+		this.leftWheel.draw(canvas);
+		this.rightWheel.draw(canvas);
+		this.character.draw(canvas);
 	}
 
 	@Override

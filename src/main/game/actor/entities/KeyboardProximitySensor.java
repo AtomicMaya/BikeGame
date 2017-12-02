@@ -11,8 +11,6 @@ import main.window.Keyboard;
 
 import java.awt.*;
 
-import static main.game.actor.QuickMafs.generateWorker;
-
 // TODO remove drawable component -> visual aid
 
 public class KeyboardProximitySensor extends GameEntity implements Sensor {
@@ -28,7 +26,7 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 	private boolean detectionStatus, previousDetectionStatus = false;
 	private boolean keyPressedStatus;
 	private boolean sensorOccupied = false;
-	float timeToActionEnd, elapsedActionTime = 0.f;
+	private float timeToActionEnd, elapsedActionTime = 0.f;
 
 	public KeyboardProximitySensor(ActorGame game, Vector position, Shape shape, int key) {
 		super(game, true, position);
@@ -87,7 +85,7 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 	public void runAction(Runnable runnable, float time) {
 		sensorOccupied = true;
 		timeToActionEnd = time;
-		generateWorker(runnable).execute();
+		Runner.generateWorker(runnable).execute();
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public abstract class Level extends Node {
 
 	// list of Actors in this level
-	private ArrayList<Actor> actors = new ArrayList<Actor>();
+	private ArrayList<Actor> actors = new ArrayList<>();
 
 	// associated Actor Game
 	protected ActorGame game;

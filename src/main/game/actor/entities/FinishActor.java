@@ -1,16 +1,11 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	27 nov. 2017
- */
 package main.game.actor.entities;
-
-import java.util.ArrayList;
 
 import main.game.ActorGame;
 import main.math.BasicContactListener;
-import main.math.Entity;
 import main.math.Shape;
 import main.math.Vector;
+
+import java.util.ArrayList;
 
 public class FinishActor extends GameEntity {
 
@@ -46,10 +41,10 @@ public class FinishActor extends GameEntity {
 	}
 	
 	public ArrayList<ArrayList<String>> getRepresentation() {
-		ArrayList<ArrayList<String>> r = new ArrayList<ArrayList<String>>();
-		ArrayList<String> classe = new ArrayList<String>();
+		ArrayList<ArrayList<String>> r = new ArrayList<>();
+		ArrayList<String> classe = new ArrayList<>();
 			classe.add("\""+this.getClass().toString()+"\"");
-		ArrayList<String> player = new ArrayList<String>();
+		ArrayList<String> player = new ArrayList<>();
 			player.add("\"player\" : \""+this.player.getClass().toString()+"\"");
 		r.add(classe);
 		r.add(player);

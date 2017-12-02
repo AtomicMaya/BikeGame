@@ -23,6 +23,8 @@ public class Entity implements Positionable {
     
     // Internal list of parts
     List<Part> parts;
+
+    private PartBuilder builder;
     
     // Listeners
     List<ContactListener> contactListeners;
@@ -218,7 +220,8 @@ public class Entity implements Positionable {
     
     /** @return new part builder */
     public PartBuilder createPartBuilder() {
-        return new PartBuilder(this);
+        builder = new PartBuilder(this);
+        return builder;
     }
     
     /** Destroys entity and associated parts and constraints */
@@ -228,6 +231,10 @@ public class Entity implements Positionable {
             // Note: joints are automatically destroyed by world, using destruction callback to notify our simulator
             world = null;
         }
+    }
+
+    public boolean isGhost() {
+        return builder.isGhost();
     }
     
 }

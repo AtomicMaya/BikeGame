@@ -4,14 +4,13 @@
  */
 package main.game.actor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import main.game.ActorGame;
 import main.game.GameWithLevels;
 import main.game.levels.Level;
 import main.math.Transform;
 import main.math.Vector;
+
+import java.util.List;
 
 public class ActorLevel implements Actor {
 

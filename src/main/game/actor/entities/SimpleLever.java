@@ -20,6 +20,8 @@ public class SimpleLever extends GameEntity implements Lever {
 	private ArrayList<ImageGraphics> graphics;
 	private ArrayList<Runnable> actions;
 	private ArrayList<Float> time;
+	boolean isOccupied;
+	private float timeToActionEnd, elapsedActionTime = 0.f;
 
 	public SimpleLever(ActorGame game, Vector position) {
 		super(game, true, position);
@@ -38,19 +40,27 @@ public class SimpleLever extends GameEntity implements Lever {
 
 		this.actions = new ArrayList<>();
 		this.time = new ArrayList<>();
-		addAction(() -> new Audio("./res/audio/lever_activated.wav", 0, 5f));
 		addAction(() -> activated = !activated, 1.f);
+		addAction(() -> new Audio("./res/audio/lever_activated.wav", 0, 10f), 2.f);
 
 		this.game.addActor(sensor);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		if (this.sensor.getSensorDetectionStatus() && !this.sensor.isOccupied()) {
+		if (this.sensor.getSensorDetectionStatus() && !isOccupied) {
 			for(int i = 0; i < actions.size(); i++) {
-				this.sensor.runAction(this.actions.get(i), this.time.get(i));
+				this.runAction(this.actions.get(i), this.time.get(i));
 			}
 		}
+		if (isOccupied) {
+			elapsedActionTime += deltaTime;
+			if (elapsedActionTime > timeToActionEnd) {
+				isOccupied = false;
+				elapsedActionTime = 0.f;
+			}
+		}
+
 		sensor.update(deltaTime);
 	}
 
@@ -65,12 +75,18 @@ public class SimpleLever extends GameEntity implements Lever {
 		(activated ? graphics.get(1) : graphics.get(0)).draw(canvas);
 	}
 
-	public void addAction(Runnable action, float expirationTime) {
+	private void addAction(Runnable action, float expirationTime) {
 		this.actions.add(action);
 		this.time.add(expirationTime);
 	}
 
 	public void addAction(Runnable action) {
 		addAction(action, 0f);
+	}
+
+	public void runAction(Runnable runnable, float time) {
+		isOccupied = true;
+		timeToActionEnd = time;
+		Runner.generateWorker(runnable).execute();
 	}
 }

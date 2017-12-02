@@ -6,7 +6,6 @@ import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;
 import main.io.ResourceFileSystem;
-import main.io.TestSave;
 import main.window.Window;
 import main.window.swing.SwingWindow;
 
@@ -45,7 +44,7 @@ public class Program {
 
 			//Game game = new TestGame();
 			//Game game = new TestGame();
-			Game game = new TestSave();
+			Game game = new TestGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression
@@ -64,7 +63,7 @@ public class Program {
 					try {
 						int timeDiff = Math.max(0, (int) (1E9 / 300 - deltaTime));
 						Thread.sleep((int) (timeDiff / 1E6), (int) (timeDiff % 1E6));
-					} catch (InterruptedException e) {
+					} catch (InterruptedException ignored) {
 					}
 
 					now = System.nanoTime();

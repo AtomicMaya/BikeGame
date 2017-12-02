@@ -18,7 +18,7 @@ public class Platform extends GameEntity {
         super(game, true, position);
         this.shape = shape;
 
-        this.build(shape, -1.f, 1.f, false);
+        this.build(shape, 100.f, 1.f, false);
         graphics = addGraphics("./res/images/stone.3.png", 5.f, 1.f);
     }
 

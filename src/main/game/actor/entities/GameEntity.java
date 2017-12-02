@@ -1,20 +1,13 @@
 package main.game.actor.entities;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
-import main.math.ContactListener;
-import main.math.Entity;
-import main.math.PartBuilder;
+import main.math.*;
 import main.math.Shape;
-import main.math.Transform;
-import main.math.Vector;
+
+import java.awt.*;
 
 public abstract class GameEntity implements Actor {
 	/**
@@ -48,7 +41,7 @@ public abstract class GameEntity implements Actor {
 	}
 	
 	private void construct() {
-		entity = actorGame.newEntity(position, fixed);
+		this.entity = this.actorGame.newEntity(this.position, this.fixed);
 	}
 
 	/**
@@ -64,7 +57,7 @@ public abstract class GameEntity implements Actor {
 
 		this.fixed = fixed;
 		
-		entity = game.newEntity(fixed);
+		this.entity = game.newEntity(fixed);
 	}
 
 	/**
@@ -73,7 +66,7 @@ public abstract class GameEntity implements Actor {
 	 * @return the entity
 	 */
 	protected Entity getEntity() {
-		return entity;
+		return this.entity;
 	}
 
 	/**
@@ -82,24 +75,24 @@ public abstract class GameEntity implements Actor {
 	 * @return The actorGame
 	 */
 	protected ActorGame getOwner() {
-		return actorGame;
+		return this.actorGame;
 	}
 
 	/**
 	 * Destroy the entity associated with this GameEntity
 	 */
 	public void destroy() {
-		entity.destroy();
+		this.entity.destroy();
 	}
 
 	@Override
 	public Transform getTransform() {
-		return entity.getTransform();
+		return this.entity.getTransform();
 	}
 
 	@Override
 	public Vector getVelocity() {
-		return entity.getVelocity();
+		return this.entity.getVelocity();
 	}
 
 	/**
@@ -112,6 +105,12 @@ public abstract class GameEntity implements Actor {
 	 */
 	public ImageGraphics addGraphics(String imagePath, float width, float height) {
 		ImageGraphics graphics = new ImageGraphics(imagePath, width, height);
+		graphics.setParent(this.entity);
+		return graphics;
+	}
+
+	public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor, float alpha, float depth) {
+		ImageGraphics graphics = new ImageGraphics(imagePath, width, height, anchor, alpha, depth);
 		graphics.setParent(this.entity);
 		return graphics;
 	}
@@ -130,14 +129,13 @@ public abstract class GameEntity implements Actor {
 	public ShapeGraphics addGraphics(Shape shape, Color fillColor, Color outlineColor, float thickness, float alpha,
 			float depth) {
 		ShapeGraphics graphics = new ShapeGraphics(shape, fillColor, outlineColor, thickness, alpha, depth);
-		graphics.setParent(entity);
+		graphics.setParent(this.entity);
 		return graphics;
 	}
 
 	/**
 	 * Create and add a ShapeGraphics to an entity
-	 * 
-	 * @param entity : the entity
+	 *
 	 * @param shape : a shape, may be null
 	 * @param color : a fill color, may be null
 	 * @return The ShapeGraphics created and associated to this entity
@@ -165,7 +163,7 @@ public abstract class GameEntity implements Actor {
 	 * @param ghost : whether this part is hidden and should act only as a sensor
 	 */
 	public void build(Shape shape, float friction, float density, boolean ghost) {
-		PartBuilder partBuilder = entity.createPartBuilder();
+		PartBuilder partBuilder = this.entity.createPartBuilder();
 		partBuilder.setShape(shape);
 		if (friction >= 0)
 			partBuilder.setFriction(friction);
@@ -179,12 +177,12 @@ public abstract class GameEntity implements Actor {
 	 * @param listener : the listener to add this entity
 	 */
 	public void addContactListener(ContactListener listener) {
-		entity.addContactListener(listener);
+		this.entity.addContactListener(listener);
 	}
 
 	@Override
 	public void reCreate(ActorGame game) {
-		actorGame = game;
+		this.actorGame = game;
 		construct();
 	}
 }

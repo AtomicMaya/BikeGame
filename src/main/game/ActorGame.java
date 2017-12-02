@@ -4,6 +4,7 @@ import main.game.actor.Actor;
 import main.io.FileSystem;
 import main.math.*;
 import main.window.Keyboard;
+import main.window.Mouse;
 import main.window.Window;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class ActorGame implements Game {
 	private boolean gameFrozen = false;
 
 	// list to add or remove actors
-	private ArrayList<Actor> actorsToRemove = new ArrayList<Actor>(), actorsToAdd = new ArrayList<Actor>();
+	private ArrayList<Actor> actorsToRemove = new ArrayList<>(), actorsToAdd = new ArrayList<>();
 
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -64,8 +65,8 @@ public class ActorGame implements Game {
 		}
 
 		if (!actorsToRemove.isEmpty()) {
-			for (int i = 0; i< actorsToRemove.size();i++) {
-				actorsToRemove.get(i).destroy();
+			for (Actor actor : actorsToRemove) {
+				actor.destroy();
 			}
 			actors.removeAll(actorsToRemove);
 			actorsToRemove.clear();
@@ -104,6 +105,8 @@ public class ActorGame implements Game {
 	public Keyboard getKeyboard() {
 		return window.getKeyboard();
 	}
+
+	public Mouse getMouse() { return window.getMouse(); }
 
 	/**
 	 * @param p : the object (Positionable) to follow with the camera
@@ -151,7 +154,7 @@ public class ActorGame implements Game {
 	}
 	
 	/**
-	 * @param actors : a list of actor to keep in the game
+	 * @param actorToKeep : a list of actor to keep in the game
 	 * */
 	public void destroyAllActorsExept(Actor actorToKeep) {
 		for (Actor actor : actors) {
@@ -163,7 +166,7 @@ public class ActorGame implements Game {
 	}
 	
 	/**
-	 * @param actors : a list of actor to keep in the game
+	 * @param actorsToKeep : a list of actor to keep in the game
 	 * */
 	public void destroyAllActorsExept(ArrayList<Actor> actorsToKeep) {
 		for (Actor actor : actors) {

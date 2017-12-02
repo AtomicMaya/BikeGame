@@ -4,17 +4,14 @@
  */
 package main.game.actor.crate;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.ImageGraphics;
 import main.game.actor.entities.GameEntity;
 import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.io.Serializable;
 
 /**
  * Part 4.5, Test de l'architecture: Crate
@@ -45,7 +42,7 @@ public class Crate extends GameEntity implements Serializable {
 	 */
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
 		super(game, fixed, position);
-		this.imagePath = (imagePath == null || imagePath == "") ? "res/images/crate.1.png" : imagePath;
+		this.imagePath = (imagePath == null || imagePath.equals("")) ? "res/images/crate.1.png" : imagePath;
 		this.size = size;
 
 		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);

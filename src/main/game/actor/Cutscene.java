@@ -1,13 +1,14 @@
 package main.game.actor;
 
+import main.game.ActorGame;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import main.game.ActorGame;
 
 
 public class Cutscene extends ActorGame {
@@ -32,9 +33,7 @@ public class Cutscene extends ActorGame {
 		String line = null;
 		while ((line = bufferedReader.readLine()) != null) {
 			ArrayList<String> splittedLine = new ArrayList<>();
-			for(String s : line.split(" ")) {
-				splittedLine.add(s);
-			}
+            Collections.addAll(splittedLine, line.split(" "));
 			cutsceneContents.add(splittedLine);
 		}
 		bufferedReader.close();

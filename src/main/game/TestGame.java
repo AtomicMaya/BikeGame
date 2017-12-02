@@ -19,7 +19,6 @@ public class TestGame extends ActorGame {
 	private Audio backgroundAudio, backgroundAudio2;
 	TriggeredPlatform platform;
 
-
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
@@ -46,17 +45,21 @@ public class TestGame extends ActorGame {
 
 		Bike player = new Bike(this, new Vector(4, 5));
 
-		Polygon shape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 5.f, .0f, 5.f);
+		Polygon shape = new Polygon(.0f, .0f, 25.f, .0f, 25.f, 25.f, .0f, 25.f);
 		//sensor = new ProximitySensor(this, new Vector(12, 3), shape);
 		//sensor = new KeyboardProximitySensor(this, new Vector(12, 3), shape, KeyEvent.VK_E);
 
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 
-		platform = new TriggeredPlatform(this, new Vector(20, 2), new Vector(1, 0),6,5, 2, 3, 2);
+		this.platform = new TriggeredPlatform(this, new Vector(20, 2), new Vector(1, 0),6,5, 2, 3, 2);
 
-		lever.addAction(() -> platform.triggerAction());
-		//backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", -1, 0.f);
+		lever.addAction(() -> this.platform.triggerAction());
+		this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 
+		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), new Polygon(0f, 0f, 7f, 0f, 7f, 2f, 0f, 2f), "Such text !", 6);
+        button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png", "./res/images/button.white.2.png");
+
+		//BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(0, 5), "Hey !", 8, shape);
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
 		/*
@@ -71,6 +74,7 @@ public class TestGame extends ActorGame {
 		//this.addActor(sensor);
 		this.addActor(lever);
 		this.addActor(platform);
+		this.addActor(button);
 		return true;
 	}
 

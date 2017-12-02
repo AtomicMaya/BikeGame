@@ -10,23 +10,22 @@ import main.math.Vector;
 public interface Mouse extends Positionable {
         
     @Override
-    public default Transform getTransform() {
+    default Transform getTransform() {
         Vector position = getPosition();
         return new Transform(1.0f, 0.0f, position.x, 0.0f, 1.0f, position.y);
     }
+
+    Button getButton(int index);
     
-    
-    public Button getButton(int index);
-    
-    public default Button getLeftButton() {
+    default Button getLeftButton() {
         return getButton(0);
     }
     
-    public default Button getMiddleButton() {
+    default Button getMiddleButton() {
         return getButton(1);
     }
     
-    public default Button getRightButton() {
+    default Button getRightButton() {
         return getButton(2);
     }
     

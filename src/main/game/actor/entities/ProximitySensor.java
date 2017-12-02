@@ -10,8 +10,6 @@ import main.window.Canvas;
 
 import java.awt.*;
 
-import static main.game.actor.QuickMafs.generateWorker;
-
 public class ProximitySensor extends GameEntity implements Sensor {
 	private Shape sensorArea;
 
@@ -72,7 +70,7 @@ public class ProximitySensor extends GameEntity implements Sensor {
 	public void runAction(Runnable runnable, float time) {
 		sensorOccupied = true;
 		timeToActionEnd = time;
-		generateWorker(runnable).execute();
+		Runner.generateWorker(runnable).execute();
 	}
 
 	@Override

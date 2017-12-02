@@ -16,23 +16,27 @@ public class Audio implements LineListener {
 		File audioFile = new File(fileLocation);
 		try {
 			this.stream = AudioSystem.getAudioInputStream(audioFile);
-			this.format = stream.getFormat();
-			this.info = new DataLine.Info(Clip.class, format);
-			this.audioClip = (Clip) AudioSystem.getLine(info);
+			this.format = this.stream.getFormat();
+			this.info = new DataLine.Info(Clip.class, this.format);
+			this.audioClip = (Clip) AudioSystem.getLine(this.info);
 			this.audioClip.addLineListener(this);
-			this.audioClip.open(stream);
+			this.audioClip.open(this.stream);
 			this.audioClip.loop(loops);
-			this.soundControl = (FloatControl) audioClip.getControl(FloatControl.Type.MASTER_GAIN);
+			this.soundControl = (FloatControl) this.audioClip.getControl(FloatControl.Type.MASTER_GAIN);
 			this.soundControl.setValue(-volumeDecrease);
 
 			this.audioClip.start();
 
-			while (isPlaying) {
+			while (this.isPlaying) {
 				try { Thread.sleep(1000); }
 				catch (InterruptedException ignored) {  }
 			}
 		} catch (UnsupportedAudioFileException|LineUnavailableException|IOException ignored) { }
 
+	}
+
+	public Audio(String fileLocation, float volumeDecrease) {
+		new Audio(fileLocation, -1, volumeDecrease);
 	}
 
 	public Audio(String fileLocation) {
@@ -42,7 +46,7 @@ public class Audio implements LineListener {
 	@Override
 	public void update(LineEvent event) {
 		LineEvent.Type type = event.getType();
-		if (type == LineEvent.Type.STOP) isPlaying = false;
+		if (type == LineEvent.Type.STOP) this.isPlaying = false;
 	}
 
 	public void destroy() {
