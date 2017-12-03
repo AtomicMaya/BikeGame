@@ -99,4 +99,11 @@ public class Save {
 		return 0;
 
 	}
+	public static File[] availableSaves(File folder) {
+		
+		if (folder.isDirectory()) {
+			return folder.listFiles();
+		}
+		return new File[] {};	
+	}
 }

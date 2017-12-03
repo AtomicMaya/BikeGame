@@ -26,7 +26,7 @@ public abstract class GameWithLevels extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		if (levels.get(currentLevel).isFinished()) {
+		if (levels != null && !levels.isEmpty() && levels.get(currentLevel).isFinished()) {
 			nextLevel();
 		}
 	}

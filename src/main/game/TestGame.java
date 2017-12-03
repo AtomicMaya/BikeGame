@@ -69,6 +69,7 @@ public class TestGame extends ActorGame {
 		//this.addActor(a);
 		//this.addActor(crate1);
 		this.setViewCandidate(player);
+		this.setPayload(player);
 		this.addActor(ground);
 		this.addActor(player);
 		//this.addActor(sensor);

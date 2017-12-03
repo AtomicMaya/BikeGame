@@ -15,6 +15,7 @@ public abstract class GameEntity implements Actor {
 	 * Because its asked
 	 */
 	private static final long serialVersionUID = 8519429675636563656L;
+	
 	private transient Entity entity;
 	private transient ActorGame actorGame;
 
@@ -190,5 +191,13 @@ public abstract class GameEntity implements Actor {
 	 */
 	public void addContactListener(ContactListener listener) {
 		this.entity.addContactListener(listener);
+	}
+	
+	public void setPosition(Vector newPosition) {
+		entity.setPosition(newPosition);
+	}
+	
+	public void setTransform(Transform transform) {
+		
 	}
 }

@@ -2,13 +2,13 @@
  *	Author: Clément Jeannet
  *	Date: 	1 déc. 2017
  */
-package main.io;
+package main.game;
 
-import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.crate.Crate;
 import main.game.actor.entities.Bike;
 import main.game.actor.entities.Ground;
+import main.io.FileSystem;
 import main.math.Polyline;
 import main.math.Vector;
 import main.window.Window;

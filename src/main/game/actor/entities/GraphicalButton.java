@@ -63,7 +63,7 @@ public class GraphicalButton extends GameEntity {
         float mouseX = mousePosition.x, mouseY = mousePosition.y;
         if (this.minX <= mouseX && mouseX <= this.maxX && this.minY < mouseY && mouseY < this.maxY) {
             this.hovered = true;
-            this.clicked = this.mouse.getLeftButton().isDown();
+            this.clicked = this.mouse.getLeftButton().isPressed();
         } else {
             this.hovered = false;
         }
