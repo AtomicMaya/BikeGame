@@ -1,18 +1,16 @@
 package main.game.actor.entities;
 
-import static main.game.actor.QuickMafs.invertXCoordinates;
-import static main.game.actor.QuickMafs.xInverted;
-
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-
 import main.game.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
-import main.math.Polyline;
-import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+
+import static main.game.actor.QuickMafs.invertXCoordinates;
+import static main.game.actor.QuickMafs.xInverted;
 
 public class Bike extends GameEntity {
 	/**
@@ -39,7 +37,7 @@ public class Bike extends GameEntity {
 
 	// Entities associated to the bike
 	private transient Wheel leftWheel, rightWheel;
-	private transient CharacterBike character;
+	public transient CharacterBike character;
 
 	/**
 	 * Create a Bike, controllable by the player

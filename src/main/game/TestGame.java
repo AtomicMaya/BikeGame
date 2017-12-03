@@ -14,10 +14,11 @@ import java.util.List;
 public class TestGame extends ActorGame {
 	private List<Level> levels;
 	private FinishActor a;
-	private KeyboardProximitySensor sensor;
+	private ProximitySensor sensor;
 
 	private Audio backgroundAudio, backgroundAudio2;
-	TriggeredPlatform platform;
+	private TriggeredPlatform platform;
+    private ParticleEmitter emitter;
 
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
@@ -46,7 +47,7 @@ public class TestGame extends ActorGame {
 		Bike player = new Bike(this, new Vector(4, 5));
 
 		Polygon shape = new Polygon(.0f, .0f, 25.f, .0f, 25.f, 25.f, .0f, 25.f);
-		//sensor = new ProximitySensor(this, new Vector(12, 3), shape);
+		sensor = new ProximitySensor(this, new Vector(12, 3), shape);
 		//sensor = new KeyboardProximitySensor(this, new Vector(12, 3), shape, KeyEvent.VK_E);
 
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
@@ -55,12 +56,18 @@ public class TestGame extends ActorGame {
 
 		lever.addAction(() -> this.platform.triggerAction());
 		this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
+        BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(-2, 2), "Test some random words", 6, 10, 3);
 
 		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), new Polygon(0f, 0f, 7f, 0f, 7f, 2f, 0f, 2f), "Such text !", 6);
         button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png", "./res/images/button.white.2.png");
+        //button.addOnClickAction(() -> player.character.triggerYayAnimation(), 5);
 
-		//BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(0, 5), "Hey !", 8, shape);
+        //BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(0, 5), "Hey !", 8, shape);
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
+
+        //emitter = new ParticleEmitter(this, new Vector(0,5), 80, 0, .5f, 20, 0xFFFF0000, 0xFF0000FF);
+
+
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
@@ -76,6 +83,8 @@ public class TestGame extends ActorGame {
 		this.addActor(lever);
 		this.addActor(platform);
 		this.addActor(button);
+		this.addActor(betterTextGraphics);
+		//this.addActor(emitter);
 		return true;
 	}
 

@@ -6,14 +6,19 @@ import main.math.*;
 import main.window.Canvas;
 
 /**
- * Created on 12/2/2017 at 3:31 PM.
+ * A platform, can move.
  */
 public class Platform extends GameEntity {
     private Shape shape;
     private PrismaticConstraint constraint;
     private ImageGraphics graphics;
 
-
+    /**
+     * Creates a new Platform
+     * @param game : The game in which the platform exists
+     * @param position : The position at which the platform is instantiated
+     * @param shape : The shape of the platform
+     */
     public Platform(ActorGame game, Vector position, Shape shape) {
         super(game, true, position);
         this.shape = shape;
@@ -22,6 +27,11 @@ public class Platform extends GameEntity {
         graphics = addGraphics("./res/images/stone.3.png", 5.f, 1.f);
     }
 
+    /**
+     * Attaches this platform to a moving entity
+     * @param mobile : The moving entity
+     * @param anchor : Where on the moving entity this platform should be anchored
+     */
     protected void attach(Entity mobile, Vector anchor) {
         PrismaticConstraintBuilder builder = super.getOwner().createPrismaticConstraintBuilder();
         builder.setFirstEntity(mobile);
@@ -39,6 +49,10 @@ public class Platform extends GameEntity {
         constraint = builder.build();
     }
 
+    /**
+     * Sets the position of the platform
+     * @param vector : The differential value between this objects position and it's previous position
+     */
     public void setPosition(Vector vector) {
         this.getEntity().setPosition(this.getPosition().add(vector));
     }

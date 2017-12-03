@@ -51,7 +51,7 @@ public class GraphicalButton extends GameEntity {
         this.maxX = this.minX + maxPosition.x;
         this.maxY = this.minY + maxPosition.y;
 
-        textGraphics = new BetterTextGraphics(game, position, new Vector(-(fontSize * 0.13f), -(this.maxY - this.minY) / 2.25f), text, fontSize, shape);
+        textGraphics = new BetterTextGraphics(game, position, text, fontSize, maxX - minX, maxY - minY);
 
         build(shape, -1, -1, true);
 
@@ -94,6 +94,7 @@ public class GraphicalButton extends GameEntity {
     @Override
     public void destroy() {
         super.destroy();
+        super.getOwner().destroyActor(this);
     }
 
     public void setNewGraphics(String idleGraphics, String hoverGraphics, String clickGraphics) {

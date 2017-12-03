@@ -12,19 +12,21 @@ import java.util.TimerTask;
 
 
 public class Cutscene extends ActorGame {
-	// Cutscene format :
-	// #                                                line is ignored
-	// polygon x1 y1 x1 y2 . . ... color strokeWidth alpha etc...    is a polygon
-	// polygon x1 y1 x2 y2 . . ... filename             is a polygon filled with sprite
-	// line x1 y1 x2 y3 . . ... color strokewidth       is a line with color
-	// ellipse w h color strokeWidth                    is a ellipsoid of width w and height h
-	// ellipse w h filename                             is an ellipsoid of width w and height h filled with sprite
-	// break n                                          will pause the cutscene for n seconds
-	// break key                                        will pause the cutscene until key pressed
-	// button                                           next line is a button polygon
-	// text x y size "some text"                             text, x y at upper right of first letter
+	/*
+	Cutscene format :
+	#                                                line is ignored
+	polygon x1 y1 x1 y2 . . ... color strokeWidth alpha etc...    is a polygon
+	polygon x1 y1 x2 y2 . . ... filename             is a polygon filled with sprite
+	line x1 y1 x2 y3 . . ... color strokewidth       is a line with color
+	ellipse w h color strokeWidth                    is a ellipsoid of width w and height h
+	ellipse w h filename                             is an ellipsoid of width w and height h filled with sprite
+	break n                                          will pause the cutscene for n seconds
+	break key                                        will pause the cutscene until key pressed
+	button                                           next line is a button polygon
+	text x y size "some text"                             text, x y at upper right of first letter
+	*/
 
-	private ArrayList<ArrayList<String>> cutsceneContents = new ArrayList<>();
+    private ArrayList<ArrayList<String>> cutsceneContents = new ArrayList<>();
 	private ArrayList<Actor> actors = new ArrayList<>();
 
 	public Cutscene(String fileName) throws IOException {   // Handle externally for optimum smootheness

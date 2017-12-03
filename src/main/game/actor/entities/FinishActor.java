@@ -2,7 +2,6 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.math.BasicContactListener;
-import main.math.Entity;
 import main.math.Shape;
 import main.math.Vector;
 

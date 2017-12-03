@@ -7,9 +7,6 @@ import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
-/**
- * Created on 12/2/2017 at 5:09 PM.
- */
 public class TriggeredPlatform extends GameEntity {
     private float loopTime, pauseTime;
     private float elapsedTime = 0.f;
@@ -51,7 +48,6 @@ public class TriggeredPlatform extends GameEntity {
                 } else if (elapsedTime > 2 * (loopTime + pauseTime) + delay){
                     elapsedTime = 0.f;
                     this.currentLoopCount += 1;
-                    System.out.println(this.currentLoopCount);
                 }
             } else {
                 this.currentLoopCount = 0;
@@ -64,6 +60,7 @@ public class TriggeredPlatform extends GameEntity {
     @Override
     public void destroy() {
         super.destroy();
+        super.getOwner().destroyActor(this);
     }
 
     @Override

@@ -46,6 +46,7 @@ public class MovingPlatform extends GameEntity {
 	@Override
 	public void destroy() {
 		super.destroy();
+        super.getOwner().destroyActor(this);
 	}
 
 	@Override
