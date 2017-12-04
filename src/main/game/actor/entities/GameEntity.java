@@ -22,6 +22,7 @@ public abstract class GameEntity implements Actor, Savable {
 
 	private Vector position;
 	private boolean fixed;
+	private int collisionGroup;
 
 	/**
 	 * Create a new GameEntity, and its associated Entity
@@ -187,6 +188,18 @@ public abstract class GameEntity implements Actor, Savable {
 		partBuilder.build();
 	}
 
+	public void build(Shape shape, float friction, float density, boolean ghost, int collisionGroup) {
+        PartBuilder partBuilder = this.entity.createPartBuilder();
+        partBuilder.setShape(shape);
+        if (friction >= 0)
+            partBuilder.setFriction(friction);
+        if (density >= 0)
+            partBuilder.setDensity(density);
+        partBuilder.setGhost(ghost);
+        partBuilder.setCollisionGroup(collisionGroup);
+        partBuilder.build();
+    }
+
 	/**
 	 * @param listener : the listener to add this entity
 	 */
@@ -197,4 +210,8 @@ public abstract class GameEntity implements Actor, Savable {
 	public void setPosition(Vector newPosition) {
 		entity.setPosition(newPosition);
 	}
+
+	public int getCollisionGroup() {
+	    return this.collisionGroup;
+    }
 }

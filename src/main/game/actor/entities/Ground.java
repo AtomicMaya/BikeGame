@@ -38,7 +38,7 @@ public class Ground extends GameEntity {
 	 */
 	private void create() {
 		Polyline p = new Polyline(points);
-		this.build(p, 2f, -1, false);
+		this.build(p, 2f, -1, false, 1);
 		graphics = this.addGraphics(p, Color.decode("#6D5D49"), Color.decode("#548540"), .2f, 1, -10f);
 	}
 

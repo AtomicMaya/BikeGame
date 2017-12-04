@@ -4,9 +4,11 @@ import main.game.ActorGame;
 import main.game.actor.QuickMafs;
 import main.game.actor.ShapeGraphics;
 import main.math.*;
+import main.math.Polygon;
 import main.window.Canvas;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static main.game.actor.QuickMafs.*;
 
@@ -14,18 +16,16 @@ public class CharacterBike extends GameEntity {
 	private Vector headPos, armJointPos, backPos;
 	private Vector lElbowPos, rElbowPos, lHandPos, rHandPos;
 	private Vector lKneePos, rKneePos, lFootPos, rFootPos;
-	private Polyline body;
-	private Circle head;
 
 	private float directionModifier;
-	private ShapeGraphics graphics, graphicsHead;
+	private ArrayList<ShapeGraphics> graphics;
 	private PrismaticConstraint constraint;
 
 	private float angle;
-	private final float pedalingAngleIncrement = 3.f;
 	private boolean isYaying;
 	private final float timeTillYayEnd = 1.5f;
 	private float elapsedYayTime;
+    private final float pedalingAngleIncrement = 3.f;
 
 	// Insurance Vectors, so as to reset the various moving limbs to default positions
 	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f);
@@ -42,35 +42,44 @@ public class CharacterBike extends GameEntity {
 		super(game, false, position);
 		this.directionModifier = 1.f;
 
-		headPos = new Vector(.2f, 1.75f); armJointPos = new Vector(.0f, 1.5f); backPos = new Vector(-.3f, .5f);
-		lElbowPos = initLElbowPos; lHandPos = initLHandPos;
-		rElbowPos = initRElbowPos; rHandPos = initRHandPos;
-		lKneePos = new Vector(.2f, .3f); lFootPos = new Vector(.1f, -.3f);
-		rKneePos = new Vector(.0f, .2f); rFootPos = new Vector(-.1f, -.3f);
+        this.headPos = new Vector(.2f, 1.75f); this.armJointPos = new Vector(.0f, 1.5f); this.backPos = new Vector(-.3f, .5f);
+        this.lElbowPos = this.initLElbowPos; this.lHandPos = this.initLHandPos;
+        this.rElbowPos = this.initRElbowPos; this.rHandPos = this.initRHandPos;
+        this.lKneePos = new Vector(.2f, .3f); this.lFootPos = new Vector(.1f, -.3f);
+        this.rKneePos = new Vector(.0f, .2f); this.rFootPos = new Vector(-.1f, -.3f);
+
+		this.graphics = new ArrayList<>();
 
 		Circle anchor = new Circle(0.1f);
 		this.build(anchor, -1f, -1, true);
-
-		body = generatePolygon();
-		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10);
-
-		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
-		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 10.1f);
 	}
+
+	private void updateGraphics() {
+        Circle head = new Circle(.35f, this.headPos.add(.1f * this.directionModifier, .1f));
+        Polygon body = new Polygon(this.headPos, this.armJointPos, backPos);
+        this.graphics = new ArrayList<>();
+        this.graphics.add(this.addGraphics(head, Color.decode("#f5c396"), Color.BLACK, .02f, 1.f, 10.1f));
+        this.graphics.add(this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10));
+        this.graphics.add(this.addGraphics(this.generateLimb(0), null, Color.BLACK, .15f, 1.f, 10));
+        this.graphics.add(this.addGraphics(this.generateLimb(1), null, Color.BLACK, .15f, 1.f, 10));
+        this.graphics.add(this.addGraphics(this.generateLimb(2), null, Color.BLUE.brighter().brighter(), .15f, 1.f, 10));
+        this.graphics.add(this.addGraphics(this.generateLimb(3), null, Color.BLUE.brighter().brighter(), .15f, 1.f, 10));
+
+
+    }
 
 	@Override
 	public void update(float deltaTime) {
 		if (isYaying) nextYay(deltaTime);
-		body = generatePolygon();
-		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10);
-		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
-		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 10.1f);
+
+		this.updateGraphics();
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		graphics.draw(canvas);
-		graphicsHead.draw(canvas);
+	    for(ShapeGraphics g : this.graphics) {
+	        g.draw(canvas);
+        }
 	}
 	
 	@Override
@@ -83,10 +92,19 @@ public class CharacterBike extends GameEntity {
 	 * Generates the shape of the body given all positions.
 	 * @return a Polyline
 	 */
-	private Polyline generatePolygon() {
-		return new Polyline(headPos, armJointPos, lElbowPos, lHandPos, lElbowPos, armJointPos, rElbowPos, rHandPos,
-				rElbowPos, armJointPos, backPos, lKneePos, lFootPos, lKneePos, backPos, rKneePos, rFootPos, rKneePos,
-				backPos, armJointPos);
+	private Polyline generateLimb(int limb) {
+        switch (limb) {
+            case 0:    // Left arm
+                return new Polyline(this.armJointPos, this.lElbowPos, this.lHandPos);
+            case 1:
+                return new Polyline(this.armJointPos, this.rElbowPos, this.rHandPos);
+            case 2:
+                return new Polyline(this.backPos, this.lKneePos, this.lFootPos, this.lKneePos, this.backPos);
+            case 3:
+                return new Polyline(this.backPos, this.rKneePos, this.rFootPos);
+            default:
+                return null;
+        }
 	}
 
 	/**
@@ -108,7 +126,7 @@ public class CharacterBike extends GameEntity {
 		builder.setUpperTranslationLimit(0);
 		builder.setAxis(Vector.Y);
 		builder.setInternalCollision(false);
-		constraint = builder.build();
+        this.constraint = builder.build();
 	}
 
 	/**
@@ -121,18 +139,14 @@ public class CharacterBike extends GameEntity {
 	/**
 	 * Calculate the next position of the feet and the knees.
 	 */
-	public void nextPedal() {
-		angle += -directionModifier * pedalingAngleIncrement;
-		angle %= 360;
-		lFootPos = new Vector( (float) (lFootPos.x + Math.cos(toRadians(angle)) * 0.01 * -directionModifier),
-				(float) (lFootPos.y + Math.sin(toRadians(angle))* 0.01 * -directionModifier));
-		rFootPos = new Vector((float) (rFootPos.x + Math.cos(toRadians(angle) - Math.PI) * 0.01 * -directionModifier),
-				(float) (rFootPos.y + Math.sin(toRadians(angle) - Math.PI) * 0.01 * -directionModifier));
-		lKneePos = new Vector((float) (lKneePos.x + Math.cos(toRadians(angle)) * 0.01 * -directionModifier),
-				(float) (lKneePos.y + Math.sin(toRadians(angle))* 0.01 * -directionModifier));
-		rKneePos = new Vector((float) (rKneePos.x + Math.cos(toRadians(angle) - Math.PI) * 0.01 * -directionModifier),
-				(float) (rKneePos.y + Math.sin(toRadians(angle) - Math.PI) * 0.01 * -directionModifier));
-	}
+	public void nextPedal(float angle) {
+        this.lFootPos = new Vector( (float) (Math.cos(toRadians(angle)) * 0.4 + 0.15f) * this.directionModifier,
+                (float) (Math.sin(toRadians(angle)) * 0.4 - 0.25f));
+        this.rFootPos = new Vector((float) (Math.cos(toRadians(angle) - Math.PI) * 0.4 + 0.15f) * this.directionModifier,
+                (float) (Math.sin(toRadians(angle) - Math.PI) * 0.4 - 0.25f));
+        this.lKneePos = new Vector((this.lFootPos.x + 0.0f) , (this.lFootPos.y + 0.5f) );
+        this.rKneePos = new Vector((this.rFootPos.x + 0.0f) , (this.rFootPos.y + 0.5f));
+    }
 
 	/**
 	 * Calculates the coordinates of the next point relative to time
@@ -144,7 +158,7 @@ public class CharacterBike extends GameEntity {
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
 		float radius = QuickMafs.getDistance(anchor, initial);
 		float angle = QuickMafs.getAngle(anchor, initial, goal);
-		angle += angle * directionModifier * elapsedYayTime / (timeTillYayEnd / 2.f);
+		angle += angle * this.directionModifier * this.elapsedYayTime / (this.timeTillYayEnd / 2.f);
 		return new Vector((float) (anchor.x + radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}
 
@@ -153,26 +167,26 @@ public class CharacterBike extends GameEntity {
 	 * @param deltaTime : the current deltaTime, so that we can use time as a parameter of the animation
 	 */
 	private void nextYay(float deltaTime) {
-		elapsedYayTime += deltaTime;
-		if (elapsedYayTime < timeTillYayEnd / 2.f) {
-			lElbowPos = getNewPosition(armJointPos, initLElbowPos, lElbowRaisedPos);
-			lHandPos = getNewPosition(armJointPos, initLHandPos, lHandRaisedPos);
-			rElbowPos = getNewPosition(armJointPos, initRElbowPos, rElbowRaisedPos);
-			rHandPos = getNewPosition(armJointPos, initRHandPos, rHandRaisedPos);
-		} else if (elapsedYayTime < timeTillYayEnd) {
-			lHandPos = getNewPosition(armJointPos, lHandRaisedPos, initLHandPos);
-			lElbowPos = getNewPosition(armJointPos, lElbowRaisedPos, initLElbowPos);
-			rHandPos = getNewPosition(armJointPos, rHandRaisedPos, initRHandPos);
-			rElbowPos = getNewPosition(armJointPos, rElbowRaisedPos, initRElbowPos);
+		this.elapsedYayTime += deltaTime;
+		if (this.elapsedYayTime < this.timeTillYayEnd / 2.f) {
+			this.lElbowPos = getNewPosition(this.armJointPos, this.initLElbowPos, this.lElbowRaisedPos);
+			this.lHandPos = getNewPosition(this.armJointPos, this.initLHandPos, this.lHandRaisedPos);
+			this.rElbowPos = getNewPosition(this.armJointPos, this.initRElbowPos, this.rElbowRaisedPos);
+			this.rHandPos = getNewPosition(this.armJointPos, this.initRHandPos, this.rHandRaisedPos);
+		} else if (this.elapsedYayTime < this.timeTillYayEnd) {
+            this.lHandPos = getNewPosition(this.armJointPos, this.lHandRaisedPos, this.initLHandPos);
+            this.lElbowPos = getNewPosition(this.armJointPos, this.lElbowRaisedPos, this.initLElbowPos);
+            this.rHandPos = getNewPosition(this.armJointPos, this.rHandRaisedPos, this.initRHandPos);
+            this.rElbowPos = getNewPosition(this.armJointPos, this.rElbowRaisedPos, this.initRElbowPos);
 		}
 
-		if (elapsedYayTime > timeTillYayEnd) {
+		if (this.elapsedYayTime > this.timeTillYayEnd) {
 			this.isYaying = false;
 			this.elapsedYayTime = 0.f;
 
 			// Insurance for bad math...
-			lElbowPos = initLElbowPos; lHandPos = initLHandPos;
-			rElbowPos = initRElbowPos; rHandPos = initRHandPos;
+			this.lElbowPos = this.initLElbowPos; this.lHandPos = this.initLHandPos;
+			this.rElbowPos = this.initRElbowPos; this.rHandPos = this.initRHandPos;
 		}
 	}
 

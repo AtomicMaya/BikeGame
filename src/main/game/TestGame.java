@@ -1,7 +1,9 @@
 package main.game;
 
+import main.game.GameObjects.Rectangle;
 import main.game.actor.Audio;
 import main.game.actor.entities.*;
+import main.game.actor.graphicalStuff.Cloud;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.math.Polygon;
@@ -21,6 +23,7 @@ public class TestGame extends ActorGame {
     private ParticleEmitter emitter;
     private BetterTextGraphics betterTextGraphics;
     private Window window;
+    private Cloud cloud;
 
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
@@ -49,31 +52,33 @@ public class TestGame extends ActorGame {
 
 		Bike player = new Bike(this, new Vector(4, 5));
 
-		Polygon shape = new Polygon(.0f, .0f, 25.f, .0f, 25.f, 25.f, .0f, 25.f);
-//		sensor = new ProximitySensor(this, new Vector(12, 3), shape);
+		Polygon shape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 3.f, .0f, 3.f);
 		//sensor = new KeyboardProximitySensor(this, new Vector(12, 3), shape, KeyEvent.VK_E);
 
         this.platform = new TriggeredPlatform(this, new Vector(20, 2), new Vector(1, 0),6,5, 2, 3, 2);
 
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		lever.addAction(() -> this.platform.triggerAction(), 1);
+		lever.addAction(() -> this.setViewScaleModifier(20f), 1);
 
 		//this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 
        // BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(-2, 2), "Test some random words", 6, 10, 3);
 
-		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), new Polygon(0f, 0f, 7f, 0f, 7f, 2f, 0f, 2f), "Such text !", 1);
+		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), "One does not simply code a video game !", 1f);
         //button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png");
         //button.addOnClickAction(() -> player.character.triggerYayAnimation(), 5);
 
         this.betterTextGraphics = new BetterTextGraphics(new Vector(0, 0), "Some text !", .5f, 5, 3);
+        cloud = new Cloud(new Vector(3, 4), new Rectangle(2, 4));
+
 
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
-        emitter = new ParticleEmitter(this, new Vector(0,3), 300, (float) Math.PI / 2f, 1f, 5, 0xFFFFFF00, 0xFFFF0000);
+        emitter = new ParticleEmitter(this, new Vector(0,6), 800, (float) Math.PI * 0.5f, 1f, 3, 0xFFFFFF00, 0xFFFF0000);
 
-
-
+        sensor = new ProximitySensor(this, new Vector(0,0), shape);
+        this.setViewScaleModifier(20f);
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		a = new FinishActor(this, new Vector(7, 0), player, s);
@@ -84,7 +89,7 @@ public class TestGame extends ActorGame {
 		this.setPayload(player);
 		this.addActor(ground);
 		this.addActor(player);
-		//this.addActor(sensor);
+		this.addActor(sensor);
 		this.addActor(lever);
 		this.addActor(platform);
 		this.addActor(button);
@@ -96,6 +101,7 @@ public class TestGame extends ActorGame {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		betterTextGraphics.draw(window);
+		cloud.draw(window);
 
 	}
 

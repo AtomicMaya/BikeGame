@@ -4,6 +4,9 @@
  */
 package main.game.actor.menu;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 import main.game.ActorGame;
 import main.game.actor.actorBuilder.CrateBuilder;
 import main.game.actor.entities.GraphicalButton;
@@ -13,9 +16,6 @@ import main.math.Vector;
 import main.window.Canvas;
 import main.window.Mouse;
 import main.window.Window;
-
-import java.awt.*;
-import java.util.ArrayList;
 
 public class ActorMenu extends Menu {
 

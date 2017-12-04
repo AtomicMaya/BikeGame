@@ -22,6 +22,10 @@ public class ActorGame implements Game {
 
 	private static final float VIEW_INTERPOLATION_RATIO_PER_SECOND = 0.1f;
 	private static final float VIEW_SCALE = 10.0f;
+	private static float VIEW_SCALE_MOD = 0.0f;
+	private static float VIEW_SCALE_CURRENT = VIEW_SCALE;
+	private static float VIEW_SCALE_PREVIOUS = VIEW_SCALE;
+	private static final float TRANSLATION_TIME = 3f;
 
 	// list of all actors in the game
 	private ArrayList<Actor> actors = new ArrayList<>();
@@ -91,6 +95,9 @@ public class ActorGame implements Game {
 			actorsToAdd.clear();
 		}
 
+		if (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD && !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT && VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f)) VIEW_SCALE_CURRENT -= VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
+		else if (VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD && !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT && VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f)) VIEW_SCALE_CURRENT += VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
+
 		// Update expected viewport center
 		if (viewCandidate != null) {
 			viewTarget = viewCandidate.getPosition()
@@ -100,12 +107,13 @@ public class ActorGame implements Game {
 		float ratio = (float) Math.pow(VIEW_INTERPOLATION_RATIO_PER_SECOND, deltaTime);
 		viewCenter = viewCenter.mixed(viewTarget, 1.f - ratio);
 		// Compute new viewport
-		Transform viewTransform = Transform.I.scaled(VIEW_SCALE).translated(viewCenter);
+		Transform viewTransform = Transform.I.scaled(VIEW_SCALE_CURRENT).translated(viewCenter);
 		window.setRelativeTransform(viewTransform);
 
 		for (Actor actor : actors) {
 			actor.draw(window);
 		}
+		VIEW_SCALE_PREVIOUS = VIEW_SCALE_CURRENT;
 
 	}
 
@@ -344,6 +352,9 @@ public class ActorGame implements Game {
 			setViewCandidate(
 					actors.get(Save.viewCandidateNumberInFile(fileSystem, new File(save.getPath() + "/params.param"))));
 		}
-
 	}
+
+	public void setViewScaleModifier(float newModifier) {
+	    VIEW_SCALE_MOD = newModifier;
+    }
 }

@@ -10,9 +10,6 @@ import main.window.Mouse;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- * Created on 12/2/2017 at 5:53 PM.
- */
 public class GraphicalButton extends GameEntity {
     private Mouse mouse;
 
@@ -29,11 +26,14 @@ public class GraphicalButton extends GameEntity {
     private BetterTextGraphics textGraphics;
 
     private Vector maxPosition;
-    
+
     public GraphicalButton(ActorGame game, Vector position, Polygon shape, String text, float fontSize) {
         super(game, true, position);
         this.mouse = game.getMouse();
-        
+
+        float length = (text.length() + 2) * fontSize, height = fontSize * 1.5f;
+        Polygon shape = new Polygon(0, 0, length, 0, length, height, 0, height);
+
         this.graphics = new ArrayList<>();
         this.graphics.add(addGraphics(shape, Color.GREEN, Color.ORANGE, .1f,0.6f, -0.2f));
         this.graphics.add(addGraphics(shape, Color.RED, Color.ORANGE, .1f,0.6f, -0.2f));
@@ -41,13 +41,13 @@ public class GraphicalButton extends GameEntity {
         this.actions = new ArrayList<>();
         this.time = new ArrayList<>();
 
-        maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
+        this.maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
         this.minX = position.x;
         this.minY = position.y;
-        this.maxX = this.minX + maxPosition.x;
-        this.maxY = this.minY + maxPosition.y;
+        this.maxX = this.minX + this.maxPosition.x;
+        this.maxY = this.minY + this.maxPosition.y;
 
-        textGraphics = new BetterTextGraphics(position, text, fontSize, maxX - minX, maxY - minY);
+        textGraphics = new BetterTextGraphics(position, text, fontSize, length, height);
 
         build(shape, -1, -1, true);
 
@@ -125,7 +125,7 @@ public class GraphicalButton extends GameEntity {
         this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
         Runner.generateWorker(runnable).execute();
     }
-    
+
     @Override
     public void setPosition(Vector position) {
     	super.setPosition(position);

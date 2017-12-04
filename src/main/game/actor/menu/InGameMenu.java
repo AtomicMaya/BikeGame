@@ -26,6 +26,7 @@ public class InGameMenu extends Menu {
 
 	private BetterTextGraphics menuText;
 
+	
 	public InGameMenu(GameWithLevelAndMenu game, Window window) {
 		super(game, window, false, Color.GRAY);
 		this.game = game;
@@ -64,11 +65,11 @@ public class InGameMenu extends Menu {
 			backToMainMenu.draw(canvas);
 		}
 	}
-	
+
 	@Override
 	public void changeStatut() {
 		super.changeStatut();
 		game.setGameFreezeStatus(isOpen());
 	}
-	
+
 }

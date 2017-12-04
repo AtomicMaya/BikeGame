@@ -38,6 +38,7 @@ public class Bike extends GameEntity {
 	// Entities associated to the bike
 	private transient Wheel leftWheel, rightWheel;
 	public transient CharacterBike character;
+	private float angle;
 
 	/**
 	 * Create a Bike, controllable by the player
@@ -73,7 +74,7 @@ public class Bike extends GameEntity {
 				0.9f, 1.3f, 1.f, 1.25f,
 				1.f, .8f, 1.f, 0.1f,
 				1.f, .8f, 1.3f, .75f, 1.4f, .7f);
-		this.bikeFrameGraphic = this.addGraphics(bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 10);
+		this.bikeFrameGraphic = this.addGraphics(bikeFrame, null,  Color.decode("#58355e"), .1f, 1, 10);
 
 		this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
 		this.rightWheel = new Wheel(this.game, this.getPosition().add(new Vector(1, 0)), .5f);
@@ -82,6 +83,7 @@ public class Bike extends GameEntity {
 		this.leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		this.rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
 		this.character.attach(this.getEntity(), new Vector(0.f, 0.5f));
+		this.angle = 0;
 	}
 
 	@Override
@@ -96,8 +98,9 @@ public class Bike extends GameEntity {
 	public void update(float deltaTime) {
 	    if(this.contactListener.getEntities().size() > 0) {
 	        for(Entity entity : this.contactListener.getEntities()) {
-	            if(!entity.isGhost()) {
+	            if(entity.getCollisionGroup() == 1) {
 	                //TODO trigger death ->
+                    System.out.println("is dead");
                 }
             }
         }
@@ -109,14 +112,13 @@ public class Bike extends GameEntity {
 			this.lookRight = !this.lookRight;
 			this.character.invertX();
 			this.bikeFrame = new Polyline(invertXCoordinates(this.bikeFrame.getPoints(), xInverted));
-			this.bikeFrameGraphic = addGraphics(this.bikeFrame, null, Color.BLUE.brighter().brighter().brighter(), .1f, 1.f, .0f);
+			this.bikeFrameGraphic = addGraphics(this.bikeFrame, null, Color.decode("#58355e"), .1f, 1.f, .0f);
 		}
 
 		if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
 			this.leftWheel.power(0);
 			this.rightWheel.power(0);
 		} else if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
-			this.character.nextPedal();
 			if (this.lookRight && this.leftWheel.getSpeed() > -this.MAX_WHEEL_SPEED) {
 				this.leftWheel.power(-this.MAX_WHEEL_SPEED);
 			} else if (this.rightWheel.getSpeed() < this.MAX_WHEEL_SPEED) {
@@ -127,6 +129,8 @@ public class Bike extends GameEntity {
 			} else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
 				this.getEntity().applyAngularForce(-10.f);
 			}
+            this.angle += ((this.lookRight ? this.leftWheel : this.rightWheel).getSpeed() / (deltaTime * 50)) % 360 * (lookRight ? 1 : -1);
+            this.character.nextPedal(this.angle);
 		}
 
 		this.leftWheel.update(deltaTime);
