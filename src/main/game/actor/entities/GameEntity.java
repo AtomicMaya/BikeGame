@@ -196,8 +196,4 @@ public abstract class GameEntity implements Actor {
 	public void setPosition(Vector newPosition) {
 		entity.setPosition(newPosition);
 	}
-	
-	public void setTransform(Transform transform) {
-		
-	}
 }

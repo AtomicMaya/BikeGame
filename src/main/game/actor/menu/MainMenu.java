@@ -74,7 +74,7 @@ public class MainMenu extends Menu {
 			Vector position = new Vector(-8, -(i % maxNumberButtonsSave) + 2.5f);
 			buttons.add(new GraphicalButton(game, position, buttonShape, list[i].getName(), 6));
 			int p = i;
-			buttons.get(i).addOnClickAction(() -> load(list[p]), 0f);
+			buttons.get(i).addOnClickAction(() -> load(list[p]), 1f);
 		}
 
 		// Arrow buttons to navigate in the save menu
@@ -142,6 +142,7 @@ public class MainMenu extends Menu {
 		for (ShapeGraphics sg : graphics) {
 			sg.draw(canvas);
 		}
+		
 		for (int i = 0; i < buttons.size(); i++) {
 			// draw only the buttons on the current page
 			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
@@ -154,4 +155,6 @@ public class MainMenu extends Menu {
 		}
 		levelEditor.draw(canvas);
 	}
+	
+	
 }
