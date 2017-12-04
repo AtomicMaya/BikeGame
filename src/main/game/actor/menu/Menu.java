@@ -4,8 +4,6 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-
 import main.game.ActorGame;
 import main.game.actor.Graphics;
 import main.game.actor.ShapeGraphics;
@@ -13,6 +11,8 @@ import main.math.Polygon;
 import main.math.Transform;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
 
 public abstract class Menu implements Graphics {
 
@@ -55,12 +55,10 @@ public abstract class Menu implements Graphics {
 
 	public void changeStatut() {
 		open = !open;
-		game.setGameFreezeStatus(isOpen());
 	}
 	
 	public void setStatut(boolean isOpen) {
 		open = isOpen;
-		game.setGameFreezeStatus(isOpen());
 	}
 
 }

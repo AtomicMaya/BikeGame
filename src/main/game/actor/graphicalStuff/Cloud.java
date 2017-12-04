@@ -19,6 +19,6 @@ public class Cloud extends Node implements Graphics {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage();
+       // canvas.drawImage();
     }
 }

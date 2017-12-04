@@ -28,11 +28,12 @@ public class GraphicalButton extends GameEntity {
     private float timeToActionEnd = 0.f, elapsedActionTime = 0.f;
     private BetterTextGraphics textGraphics;
 
-
-    public GraphicalButton(ActorGame game, Vector position, Polygon shape, String text, int fontSize) {
+    private Vector maxPosition;
+    
+    public GraphicalButton(ActorGame game, Vector position, Polygon shape, String text, float fontSize) {
         super(game, true, position);
         this.mouse = game.getMouse();
-
+        
         this.graphics = new ArrayList<>();
         this.graphics.add(addGraphics(shape, Color.GREEN, Color.ORANGE, .1f,0.6f, -0.2f));
         this.graphics.add(addGraphics(shape, Color.RED, Color.ORANGE, .1f,0.6f, -0.2f));
@@ -40,7 +41,7 @@ public class GraphicalButton extends GameEntity {
         this.actions = new ArrayList<>();
         this.time = new ArrayList<>();
 
-        Vector maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
+        maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
         this.minX = position.x;
         this.minY = position.y;
         this.maxX = this.minX + maxPosition.x;
@@ -64,6 +65,7 @@ public class GraphicalButton extends GameEntity {
         }
 
         if (this.clicked & !this.buttonBusy) {
+            this.buttonBusy = true;
             for(int i = 0; i < this.actions.size(); i++) {
                 this.runAction(this.actions.get(i), this.time.get(i));
             }
@@ -122,6 +124,15 @@ public class GraphicalButton extends GameEntity {
         this.buttonBusy = true;
         this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
         Runner.generateWorker(runnable).execute();
+    }
+    
+    @Override
+    public void setPosition(Vector position) {
+    	super.setPosition(position);
+    	this.minX = position.x;
+        this.minY = position.y;
+        this.maxX = this.minX + maxPosition.x;
+        this.maxY = this.minY + maxPosition.y;
     }
 
 

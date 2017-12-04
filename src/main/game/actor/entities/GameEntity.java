@@ -3,6 +3,7 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.ImageGraphics;
+import main.game.actor.Savable;
 import main.game.actor.ShapeGraphics;
 import main.math.*;
 import main.math.Shape;
@@ -10,7 +11,7 @@ import main.math.Shape;
 import java.awt.*;
 
 
-public abstract class GameEntity implements Actor {
+public abstract class GameEntity implements Actor, Savable {
 	/**
 	 * Because its asked
 	 */

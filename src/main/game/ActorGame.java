@@ -337,7 +337,7 @@ public class ActorGame implements Game {
 				if (f.getPath().contains(".object")) {
 					Actor a = Save.readSavedActor(this, f);
 					if (a != null)
-						actors.add(a);
+						actorsToAdd.add(a);
 				}
 
 			}

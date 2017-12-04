@@ -38,16 +38,22 @@ public class MainMenu extends Menu {
 
 	private GraphicalButton left, right;
 
-	private GraphicalButton levelEditor;
+	private GraphicalButton levelEditorButton;
 
-	int r = 0;
+	private float waitBeforeClick = 0;
+
+	private LevelEditor levelEditor;
+
+	private boolean inLevelEditor = false;
+
+	private boolean busy = false;
 
 	public MainMenu(ActorGame game, Window window) {
 		super(game, window, true, Color.GRAY);
 		this.window = window;
 		this.game = game;
 		float fontSize = 2f;
-		tg = new TextGraphics("Me\nnu", fontSize, Color.BLACK, Color.BLUE, .1f, false, false, new Vector(.5f, fontSize),
+		tg = new TextGraphics("Menu", fontSize, Color.BLACK, Color.BLUE, .1f, false, false, new Vector(.5f, fontSize),
 				1, 1);
 
 		ig = new ImageGraphics("res/images/box.4.png", 2, 1);
@@ -69,12 +75,13 @@ public class MainMenu extends Menu {
 		// get tha saves
 		File[] list = Save.availableSaves(new File(game.getSaveDirectory()));
 
-		Polygon buttonShape = new Polygon(0, .1f, 4, .1f, 4, .9f, 0, .9f);
+		Polygon buttonShape = new Polygon(0, .1f, 6, .1f, 6, .9f, 0, .9f);
 		for (int i = 0; i < list.length; i++) {
-			Vector position = new Vector(-8, -(i % maxNumberButtonsSave) + 2.5f);
-			buttons.add(new GraphicalButton(game, position, buttonShape, list[i].getName(), 6));
+			Vector position = new Vector(-9, -(i % maxNumberButtonsSave) + 2.5f);
+			buttons.add(new GraphicalButton(game, position, buttonShape, list[i].getName(), 1f));
 			int p = i;
-			buttons.get(i).addOnClickAction(() -> load(list[p]), 1f);
+
+			buttons.get(i).addOnClickAction(() -> load(list[p]), 0f);
 		}
 
 		// Arrow buttons to navigate in the save menu
@@ -89,20 +96,25 @@ public class MainMenu extends Menu {
 		// set arrows graphics
 		right.setNewGraphics("./res/images/arrows/right_arrow_dark_green.png",
 				"./res/images/arrows/right_arrow_light_green.png");
-        left.setNewGraphics("./res/images/arrows/left_arrow_dark_green.png",
+		left.setNewGraphics("./res/images/arrows/left_arrow_dark_green.png",
 				"./res/images/arrows/left_arrow_light_green.png");
 
 		// level editor
-		levelEditor = new GraphicalButton(game, new Vector(4, 3), new Polygon(0, 0, 0, 1, 5, 1, 5, 0), "Level Editor",
-				4);
+		levelEditor = new LevelEditor(game, window);
+		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), new Polygon(0, 0, 0, 1, 5, 1, 5, 0),
+				"Level Editor", 1f);
 
-		levelEditor.addOnClickAction(() -> r++, 0);
+		levelEditorButton.addOnClickAction(() -> inLevelEditor = true, 0);
 	}
 
 	private void load(File file) {
-		game.destroyAllActors();
-		game.load(file.getName());
-		changeStatut();
+		if (!busy && waitBeforeClick > .5f) {
+			game.destroyAllActors();
+			changeStatut();
+			busy = true;
+			game.load(file.getName());
+		}
+
 	}
 
 	private void PagePlusPlus() {
@@ -118,31 +130,43 @@ public class MainMenu extends Menu {
 	}
 
 	public void update(float deltaTime) {
-		super.update(deltaTime);
-		if (this.isOpen()) {
-			for (int i = 0; i < buttons.size(); i++) {
-				// update only the buttons on the current page
-				if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
-					buttons.get(i).update(deltaTime);
-			}
-			// update the left/right buttons only of their is too much saves
-			if (buttons.size() > maxNumberButtonsSave) {
-				left.update(deltaTime);
-				right.update(deltaTime);
-			}
+
+		if (inLevelEditor) {
 			levelEditor.update(deltaTime);
+			return;
 		}
+
+		super.update(deltaTime);
+		waitBeforeClick += deltaTime;
+		for (int i = 0; i < buttons.size(); i++) {
+			// update only the buttons on the current page
+			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
+				buttons.get(i).update(deltaTime);
+		}
+		// update the left/right buttons only of their is too much saves
+		if (buttons.size() > maxNumberButtonsSave) {
+			left.update(deltaTime);
+			right.update(deltaTime);
+		}
+		levelEditorButton.update(deltaTime);
+
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
+
+		if (inLevelEditor) {
+			levelEditor.draw(canvas);
+			return;
+		}
+
 		super.draw(canvas);
 		tg.draw(canvas);
 		ig.draw(canvas);
 		for (ShapeGraphics sg : graphics) {
 			sg.draw(canvas);
 		}
-		
+
 		for (int i = 0; i < buttons.size(); i++) {
 			// draw only the buttons on the current page
 			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
@@ -153,8 +177,13 @@ public class MainMenu extends Menu {
 			left.draw(canvas);
 			right.draw(canvas);
 		}
-		levelEditor.draw(canvas);
+		levelEditorButton.draw(canvas);
 	}
-	
-	
+
+	@Override
+	public void setStatut(boolean isOpen) {
+		super.setStatut(isOpen);
+		busy = !isOpen;
+	}
+
 }

@@ -6,6 +6,7 @@ package main.io;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.Savable;
 
 import java.io.*;
 
@@ -47,9 +48,9 @@ public class Save {
 
 			// transform the object into an actor
 			try {
-				Actor actor = (Actor) o;
+				Savable actor = (Savable) o;
 				actor.reCreate(game);
-				return actor;
+				return (Actor) actor;
 			} catch (ClassCastException cce) {
 				cce.printStackTrace();
 			}

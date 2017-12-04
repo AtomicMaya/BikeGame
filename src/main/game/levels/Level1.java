@@ -54,9 +54,4 @@ public class Level1 extends Level {
 		return finishActor.isFinished();
 	}
 
-	@Override
-	public void reCreate(ActorGame game) {
-		
-	}
-
 }

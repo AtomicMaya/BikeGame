@@ -26,20 +26,19 @@ public class InGameMenu extends Menu {
 
 	private BetterTextGraphics menuText;
 
-	
 	public InGameMenu(GameWithLevelAndMenu game, Window window) {
 		super(game, window, false, Color.GRAY);
 		this.game = game;
 		shape = new Polygon(-10, -10, -10, 10, 10, 10, 10, -10);
 
-		close = new GraphicalButton(game, new Vector(6, -3), new Polygon(0, 0, 1, 0, 1, 1, 1, 0), "Close", 6);
+		close = new GraphicalButton(game, new Vector(6, -3), new Polygon(0, 0, 1, 0, 1, 1, 1, 0), "Close", 1);
 
 		close.setNewGraphics("./res/images/button.white.1.png",
 				"./res/images/button.white.2.png");
 
 		close.addOnClickAction(() -> changeStatut(), .1f);
 
-		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), new Polygon(0, 0, 0, 1, 1, 1, 1, 0), "Back to Menu", 6);
+		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), new Polygon(0, 0, 0, 1, 1, 1, 1, 0), "Back to Menu", .5f);
 		backToMainMenu.addOnClickAction(() -> game.goToMainMenu(), 0f);
 	}
 
@@ -56,6 +55,7 @@ public class InGameMenu extends Menu {
 		}
 	}
 
+	@Override
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
 		if (isOpen()) {
@@ -64,4 +64,11 @@ public class InGameMenu extends Menu {
 			backToMainMenu.draw(canvas);
 		}
 	}
+	
+	@Override
+	public void changeStatut() {
+		super.changeStatut();
+		game.setGameFreezeStatus(isOpen());
+	}
+	
 }
