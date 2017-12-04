@@ -233,8 +233,6 @@ public class Entity implements Positionable {
         }
     }
 
-    public boolean isGhost() {
-        return builder.isGhost();
-    }
+    public int getCollisionGroup() { return builder.getCollisionGroup(); }
     
 }

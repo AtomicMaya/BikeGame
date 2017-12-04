@@ -20,7 +20,7 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 
         this.graphics = getFileLocations(text.toUpperCase());
         this.offsets = new ArrayList<>();
-        this.offsets.add(new Vector(position.x + (containerWidth - this.graphics.size()) / 2f, position.y + (containerHeight - this.charSize) / 2f));
+        this.offsets.add(new Vector(position.x + (containerWidth - this.graphics.size()) / 2f, position.y + (containerHeight - this.charSize) / 2f).mul(charSize));
         for (int i = 0; i < this.graphics.size() - 1; i++) {
             this.offsets.add(this.offsets.get(i).add(new Vector(this.charSize, 0)));
         }
@@ -92,7 +92,7 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
     @Override
     public void draw(Canvas canvas) {
         for(int i = 0; i < this.graphics.size(); i++) {
-            canvas.drawImage(canvas.getImage(this.graphics.get(i)), Transform.I.translated(this.offsets.get(i)).scaled(charSize, charSize), 1, -.01f);
+            canvas.drawImage(canvas.getImage(this.graphics.get(i)), Transform.I.translated(this.offsets.get(i)), 1, -.01f);
         }
     }
 }
