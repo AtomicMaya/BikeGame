@@ -79,9 +79,9 @@ public class ActorGame implements Game {
 		}
 
 		if (!actorsToRemove.isEmpty()) {
-		    // Plus propre
-			for (Actor actor : actorsToRemove) {
-				actor.destroy();
+		    // peut etre plus propre mais ca fait des ConcurrentModificationException
+			for (int i = 0; i < actorsToRemove.size(); i++) {
+				actorsToRemove.get(i).destroy();
 			}
 			actors.removeAll(actorsToRemove);
 			actorsToRemove.clear();

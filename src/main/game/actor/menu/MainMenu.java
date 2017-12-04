@@ -4,11 +4,6 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import main.game.ActorGame;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
@@ -21,6 +16,10 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
 
 public class MainMenu extends Menu {
 
@@ -42,12 +41,13 @@ public class MainMenu extends Menu {
 	private GraphicalButton levelEditor;
 
 	int r = 0;
+
 	public MainMenu(ActorGame game, Window window) {
 		super(game, window, true, Color.GRAY);
 		this.window = window;
 		this.game = game;
 		float fontSize = 2f;
-		tg = new TextGraphics("Menu", fontSize, Color.BLACK, Color.BLUE, .1f, false, false, new Vector(.5f, fontSize),
+		tg = new TextGraphics("Me\nnu", fontSize, Color.BLACK, Color.BLUE, .1f, false, false, new Vector(.5f, fontSize),
 				1, 1);
 
 		ig = new ImageGraphics("res/images/box.4.png", 2, 1);
@@ -65,11 +65,11 @@ public class MainMenu extends Menu {
 			graphics.add(new ShapeGraphics(t2, Color.BLACK, null, 0));
 			graphics.get(i + 20).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - 10)));
 		}
-		
+
 		// get tha saves
 		File[] list = Save.availableSaves(new File(game.getSaveDirectory()));
 
-		Polygon buttonShape = new Polygon(0, .1f, 3, .1f, 3, .9f, 0, .9f);
+		Polygon buttonShape = new Polygon(0, .1f, 4, .1f, 4, .9f, 0, .9f);
 		for (int i = 0; i < list.length; i++) {
 			Vector position = new Vector(-8, -(i % maxNumberButtonsSave) + 2.5f);
 			buttons.add(new GraphicalButton(game, position, buttonShape, list[i].getName(), 6));
@@ -88,14 +88,14 @@ public class MainMenu extends Menu {
 
 		// set arrows graphics
 		right.setNewGraphics("./res/images/arrows/right_arrow_dark_green.png",
-				"./res/images/arrows/right_arrow_dark_green.png", "./res/images/arrows/right_arrow_light_green.png");
+				"./res/images/arrows/right_arrow_light_green.png", "./res/images/arrows/right_arrow_dark_green.png");
 		left.setNewGraphics("./res/images/arrows/left_arrow_dark_green.png",
-				"./res/images/arrows/left_arrow_dark_green.png", "./res/images/arrows/left_arrow_light_green.png");
+				"./res/images/arrows/left_arrow_light_green.png", "./res/images/arrows/left_arrow_dark_green.png");
 
 		// level editor
-		levelEditor = new GraphicalButton(game, new Vector(4, 3), new Polygon(0, 0, 0, 1, 3, 1, 3, 0), "Level Editor",
+		levelEditor = new GraphicalButton(game, new Vector(4, 3), new Polygon(0, 0, 0, 1, 5, 1, 5, 0), "Level Editor",
 				4);
-		
+
 		levelEditor.addOnClickAction(() -> r++, 0);
 	}
 

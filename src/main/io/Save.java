@@ -4,17 +4,10 @@
  */
 package main.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-
 import main.game.ActorGame;
 import main.game.actor.Actor;
+
+import java.io.*;
 
 public class Save {
 
@@ -99,11 +92,15 @@ public class Save {
 		return 0;
 
 	}
+
+	/**
+	 * @return the files in a folder
+	 */
 	public static File[] availableSaves(File folder) {
-		
+
 		if (folder.isDirectory()) {
 			return folder.listFiles();
 		}
-		return new File[] {};	
+		return new File[] {};
 	}
 }
