@@ -30,8 +30,6 @@ public class SimpleLever extends GameEntity implements Lever {
 
 		this.shape = new Polygon(0f, 0f, 1.5f, 0f, 1.5f, 1.5f, 0f, 1.5f);
 
-		this.build(this.shape, -1, -1, true);
-
 		this.sensor = new KeyboardProximitySensor(this.game, position, this.shape, KeyEvent.VK_E);
 
 		this.graphics = new ArrayList<>();
@@ -40,28 +38,27 @@ public class SimpleLever extends GameEntity implements Lever {
 
 		this.actions = new ArrayList<>();
 		this.time = new ArrayList<>();
-		addAction(() -> activated = !activated, 1.f);
-		addAction(() -> new Audio("./res/audio/lever_activated.wav", 0, 10f), 2.f);
+		this.addAction(() -> this.activated = !this.activated, 1.f);
+		this.addAction(() -> new Audio("./res/audio/lever_activated.wav", 0, 10f), 1.f);
 
-		this.game.addActor(sensor);
+		this.game.addActor(this.sensor);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		if (this.sensor.getSensorDetectionStatus() && !isOccupied) {
-			for(int i = 0; i < actions.size(); i++) {
+		if (this.sensor.getSensorDetectionStatus() && !this.isOccupied) {
+			for(int i = 0; i < this.actions.size(); i++) {
 				this.runAction(this.actions.get(i), this.time.get(i));
 			}
 		}
-		if (isOccupied) {
-			elapsedActionTime += deltaTime;
-			if (elapsedActionTime > timeToActionEnd) {
-				isOccupied = false;
-				elapsedActionTime = 0.f;
+		if (this.isOccupied) {
+			this.elapsedActionTime += deltaTime;
+			if (this.elapsedActionTime > this.timeToActionEnd) {
+				this.isOccupied = false;
+				this.elapsedActionTime = 0.f;
 			}
 		}
-
-		sensor.update(deltaTime);
+		this.sensor.update(deltaTime);
 	}
 
 	@Override
@@ -75,18 +72,24 @@ public class SimpleLever extends GameEntity implements Lever {
 		(activated ? graphics.get(1) : graphics.get(0)).draw(canvas);
 	}
 
-	private void addAction(Runnable action, float expirationTime) {
+    /**
+     * Adds runnable actions to this lever
+     * @param action : the action to run
+     * @param expirationTime : When this button shouldn't be considered busy anymore.
+     */
+	public void addAction(Runnable action, float expirationTime) {
 		this.actions.add(action);
 		this.time.add(expirationTime);
 	}
 
-	public void addAction(Runnable action) {
-		addAction(action, 0f);
-	}
-
-	public void runAction(Runnable runnable, float time) {
-		isOccupied = true;
-		timeToActionEnd = time;
+    /**
+     * Runs a runnable action in parallel to this thread.
+     * @param runnable : the action to run
+     * @param time : When the action should expire.
+     */
+	private void runAction(Runnable runnable, float time) {
+		this.isOccupied = true;
+        this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
 		Runner.generateWorker(runnable).execute();
 	}
 }

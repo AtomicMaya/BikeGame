@@ -4,20 +4,18 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-
 import main.game.ActorGame;
 import main.game.GameWithLevelAndMenu;
 import main.game.actor.entities.BetterTextGraphics;
 import main.game.actor.entities.GraphicalButton;
-import main.math.Entity;
 import main.math.Polygon;
 import main.math.Shape;
-import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class InGameMenu extends Menu {
 
@@ -36,7 +34,7 @@ public class InGameMenu extends Menu {
 
 		close = new GraphicalButton(game, new Vector(6, -3), new Polygon(0, 0, 1, 0, 1, 1, 1, 0), "Close", 6);
 
-		close.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png",
+		close.setNewGraphics("./res/images/button.white.1.png",
 				"./res/images/button.white.2.png");
 
 		close.addOnClickAction(() -> changeStatut(), .1f);

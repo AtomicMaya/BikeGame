@@ -6,7 +6,6 @@ import main.math.Circle;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
@@ -44,10 +43,6 @@ public class ParticleEmitter extends GameEntity {
         this.endColor = endColor;
 
         this.particles = new LinkedList<>();
-
-        Circle circle = new Circle(.1f);
-        graphics = addGraphics(circle, Color.CYAN);
-        build(circle, -1, -1, true);
 
         game.addActor(this);
 
@@ -99,7 +94,6 @@ public class ParticleEmitter extends GameEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        graphics.draw(canvas);
         for(Particle particle : this.particles)
             particle.draw(canvas);
     }

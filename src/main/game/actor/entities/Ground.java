@@ -23,7 +23,6 @@ public class Ground extends GameEntity {
 
 	/**
 	 * Create a Ground
-	 * 
 	 * @param game : ActorGame where the ground exists
 	 * @param position : the position of the ground
 	 * @param shape : a polyline shape of the ground
@@ -31,7 +30,7 @@ public class Ground extends GameEntity {
 	public Ground(ActorGame game, Vector position, Polyline shape) {
 		super(game, true, (position == null) ? Vector.ZERO : position);
 		this.points = shape.getPoints();
-		create();
+		this.create();
 	}
 
 	/**
@@ -47,14 +46,14 @@ public class Ground extends GameEntity {
 	@Override
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
-		create();
+		this.create();
 	}
 
 	@Override
 	public void draw(Canvas window) {
 		graphics.draw(window);
-		if (super.getOwner().getKeyboard().get(KeyEvent.VK_G).isPressed()) {
-			destroy();
+		if (super.getOwner().getKeyboard().get(KeyEvent.VK_G).isPressed()) { // TODO Whyyyy ?
+			this.destroy();
 		}
 	}
 

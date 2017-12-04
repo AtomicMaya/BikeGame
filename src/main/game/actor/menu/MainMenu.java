@@ -4,11 +4,6 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import main.game.ActorGame;
 import main.game.actor.ImageGraphics;
 import main.game.actor.ShapeGraphics;
@@ -21,6 +16,10 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
 
 public class MainMenu extends Menu {
 
@@ -88,9 +87,9 @@ public class MainMenu extends Menu {
 
 		// set arrows graphics
 		right.setNewGraphics("./res/images/arrows/right_arrow_dark_green.png",
-				"./res/images/arrows/right_arrow_dark_green.png", "./res/images/arrows/right_arrow_light_green.png");
+                "./res/images/arrows/right_arrow_light_green.png");
 		left.setNewGraphics("./res/images/arrows/left_arrow_dark_green.png",
-				"./res/images/arrows/left_arrow_dark_green.png", "./res/images/arrows/left_arrow_light_green.png");
+				"./res/images/arrows/left_arrow_light_green.png");
 
 		// level editor
 		levelEditor = new GraphicalButton(game, new Vector(4, 3), new Polygon(0, 0, 0, 1, 3, 1, 3, 0), "Level Editor",

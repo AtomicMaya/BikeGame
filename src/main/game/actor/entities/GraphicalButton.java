@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * Created on 12/2/2017 at 5:53 PM.
  */
 public class GraphicalButton extends GameEntity {
-    private ActorGame game;
     private Mouse mouse;
 
     private ArrayList<Graphics> graphics;
@@ -26,21 +25,17 @@ public class GraphicalButton extends GameEntity {
     private boolean hovered, clicked;
     private boolean buttonBusy = false;
 
-    private float timeToActionEnd, elapsedActionTime = 0.f;
-    private String text;
+    private float timeToActionEnd = 0.f, elapsedActionTime = 0.f;
     private BetterTextGraphics textGraphics;
 
 
     public GraphicalButton(ActorGame game, Vector position, Polygon shape, String text, int fontSize) {
         super(game, true, position);
-        this.game = game;
         this.mouse = game.getMouse();
-        this.text = text;
 
         this.graphics = new ArrayList<>();
         this.graphics.add(addGraphics(shape, Color.GREEN, Color.ORANGE, .1f,0.6f, -0.2f));
         this.graphics.add(addGraphics(shape, Color.RED, Color.ORANGE, .1f,0.6f, -0.2f));
-        this.graphics.add(addGraphics(shape, Color.PINK, Color.ORANGE, .1f, 0.6f, -0.2f));
 
         this.actions = new ArrayList<>();
         this.time = new ArrayList<>();
@@ -85,8 +80,7 @@ public class GraphicalButton extends GameEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        if (this.clicked) this.graphics.get(2).draw(canvas);
-        else if (this.hovered) this.graphics.get(1).draw(canvas);
+        if (this.hovered) this.graphics.get(1).draw(canvas);
         else this.graphics.get(0).draw(canvas);
         textGraphics.draw(canvas);
     }
@@ -97,21 +91,35 @@ public class GraphicalButton extends GameEntity {
         super.getOwner().destroyActor(this);
     }
 
-    public void setNewGraphics(String idleGraphics, String hoverGraphics, String clickGraphics) {
+    /**
+     * Sets new graphics to the button
+     * @param idleGraphics : Graphics when the button is Idle
+     * @param hoverGraphics : Graphics when the button is Hovered
+     */
+    public void setNewGraphics(String idleGraphics, String hoverGraphics) {
         this.graphics = new ArrayList<>();
         this.graphics.add(addGraphics(idleGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, -0.2f));
         this.graphics.add(addGraphics(hoverGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, -0.2f));
-        this.graphics.add(addGraphics(clickGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, -0.2f));
     }
 
+    /**
+     * Adds runnable actions to this button
+     * @param action : the action to run
+     * @param expirationTime : When this button shouldn't be considered busy anymore.
+     */
     public void addOnClickAction(Runnable action, float expirationTime) {
         this.actions.add(action);
         this.time.add(expirationTime);
     }
 
+    /**
+     * Runs a runnable action in parallel to this thread.
+     * @param runnable : the action to run
+     * @param time : When the action should expire.
+     */
     private void runAction(Runnable runnable, float time) {
         this.buttonBusy = true;
-        this.timeToActionEnd = time;
+        this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
         Runner.generateWorker(runnable).execute();
     }
 

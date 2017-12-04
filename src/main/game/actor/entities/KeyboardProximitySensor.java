@@ -14,7 +14,6 @@ import java.awt.*;
 // TODO remove drawable component -> visual aid
 
 public class KeyboardProximitySensor extends GameEntity implements Sensor {
-	private ActorGame game;
 	private Keyboard keyboard;
 	private int key;
 
@@ -30,44 +29,43 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 
 	public KeyboardProximitySensor(ActorGame game, Vector position, Shape shape, int key) {
 		super(game, true, position);
-		this.game = game;
 		this.keyboard = game.getKeyboard();
 		this.key = key;
 
-		sensorArea = shape;
-		this.build(sensorArea, -1, -1, true);
-		graphics = this.addGraphics(sensorArea, Color.GREEN, Color.GREEN, .1f, 0.25f, 0);
+		this.sensorArea = shape;
+		this.build(this.sensorArea, -1, -1, true);
+		this.graphics = this.addGraphics(this.sensorArea, Color.GREEN, Color.GREEN, .1f, 0.25f, 0);
 
-		contactListener = new BasicContactListener();
-		this.addContactListener(contactListener);
+		this.contactListener = new BasicContactListener();
+		this.addContactListener(this.contactListener);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		detectionStatus = contactListener.getEntities().size() > 0;
-		keyPressedStatus = keyboard.get(key).isDown();
+		this.detectionStatus = this.contactListener.getEntities().size() > 0;
+		this.keyPressedStatus = this.keyboard.get(this.key).isDown();
 
-		if (detectionStatus && keyPressedStatus)
-			graphics = addGraphics(sensorArea,
-					detectionStatus && keyPressedStatus ? Color.RED : Color.GREEN,
-					detectionStatus && keyPressedStatus ? Color.RED : Color.GREEN, .1f, 0.25f, 0);
-		if (previousDetectionStatus != detectionStatus) {
-			graphics = addGraphics(sensorArea, Color.GREEN,  Color.GREEN, .1f, 0.25f, 0);
+		if (this.detectionStatus && this.keyPressedStatus)
+			this.graphics = addGraphics(this.sensorArea,
+					this.detectionStatus ? Color.RED : Color.GREEN,
+					this.detectionStatus ? Color.RED : Color.GREEN, .1f, 0.25f, 0);
+		if (this.previousDetectionStatus != this.detectionStatus) {
+			this.graphics = addGraphics(this.sensorArea, Color.GREEN,  Color.GREEN, .1f, 0.25f, 0);
 		}
-		previousDetectionStatus = detectionStatus;
+		this.previousDetectionStatus = this.detectionStatus;
 
-		if (sensorOccupied) {
-			elapsedActionTime += deltaTime;
-			if (elapsedActionTime > timeToActionEnd) {
-				sensorOccupied = false;
-				elapsedActionTime = 0.f;
+		if (this.sensorOccupied) {
+			this.elapsedActionTime += deltaTime;
+			if (this.elapsedActionTime > this.timeToActionEnd) {
+				this.sensorOccupied = false;
+				this.elapsedActionTime = 0.f;
 			}
 		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		graphics.draw(canvas);
+		this.graphics.draw(canvas);
 	}
 
 	@Override
@@ -78,18 +76,18 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 
 	@Override
 	public boolean getSensorDetectionStatus() {
-		return detectionStatus && keyPressedStatus;
+		return this.detectionStatus && this.keyPressedStatus;
 	}
 
 	@Override
 	public void runAction(Runnable runnable, float time) {
-		sensorOccupied = true;
-		timeToActionEnd = time;
+		this.sensorOccupied = true;
+        this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
 		Runner.generateWorker(runnable).execute();
 	}
 
 	@Override
 	public boolean isOccupied() {
-		return sensorOccupied;
+		return this.sensorOccupied;
 	}
 }
