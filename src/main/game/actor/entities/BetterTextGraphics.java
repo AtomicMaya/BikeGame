@@ -1,52 +1,28 @@
 package main.game.actor.entities;
 
 
-import main.game.ActorGame;
 import main.game.actor.Graphics;
-import main.game.actor.ImageGraphics;
+import main.math.Attachable;
+import main.math.Node;
+import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
 import java.util.ArrayList;
 
-public class BetterTextGraphics extends GameEntity {
-    ArrayList<ImageGraphics> graphics;
+public class BetterTextGraphics extends Node implements Attachable, Graphics {
+    private ArrayList<String> graphics;
+    private ArrayList<Vector> offsets;
+    private float charSize;
 
-    public BetterTextGraphics(ActorGame game, Vector position, String text, int fontSize, float containerWidth, float containerHeight) {
-        super(game, true, position);
+    public BetterTextGraphics(Vector position, String text, float fontSize, float containerWidth, float containerHeight) {
+        this.charSize = fontSize;
 
-        // Standard FontSize to Pixel ratio.
-        float charSize = fontSize * 0.13f;
-
-        String[] textSplit = text.toUpperCase().split(" ");
-        String[] lines = new String[textSplit.length];
-        for(int i = 0; i < lines.length; i++) lines[i] = "";            // Initialize the array so as not to have null written in the text.
-
-        ArrayList<String> lines2 = new ArrayList<>();
-        for (String s : lines) if(!s.equals("")) lines2.add(s);         // Remove unnecessary empty lines.
-
-
-        int[] indices = new int[lines2.size()];                         // Calculate where in the sentence the cut took place
-        int counter = 0;
-        for (String s : lines2) {
-            if (counter > 0) indices[counter] = indices[counter - 1] + s.length();
-            else indices[counter] = s.length();
-            counter += 1;
-        }
-
-        this.graphics = new ArrayList<>();
-        int counter2 = 0;
-        float startY = (containerHeight - charSize) / 2 + (lines2.size() * charSize) / 2 - charSize * 0.75f;            // TODO fix math because transform is weird
-        for (String s : lines2) {
-            float startX = -(containerWidth - 2 * charSize) / 2 - (s.length() * (charSize + 0.01f)) / 2 + containerWidth + charSize / 2; // TODO fix math because transform is weird
-            System.out.println(startX + ", " + startY);
-            Vector offset = new Vector(-startX, -startY);
-            for(String file : getFileLocations(s)) {
-                this.graphics.add(this.addGraphics(file,fontSize * .13f, fontSize * .13f, offset, 1.f, -0.1f));
-                offset = offset.add(-fontSize * .13f, 0);
-            }
-            counter2 += 1;
-            startY -= fontSize * .14f;
+        this.graphics = getFileLocations(text.toUpperCase());
+        this.offsets = new ArrayList<>();
+        this.offsets.add(new Vector(position.x + (containerWidth - this.graphics.size()) / 2f, position.y + (containerHeight - this.charSize) / 2f));
+        for (int i = 0; i < this.graphics.size() - 1; i++) {
+            this.offsets.add(this.offsets.get(i).add(new Vector(this.charSize, 0)));
         }
     }
 
@@ -115,13 +91,8 @@ public class BetterTextGraphics extends GameEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        for(Graphics g : this.graphics) {
-            g.draw(canvas);
+        for(int i = 0; i < this.graphics.size(); i++) {
+            canvas.drawImage(canvas.getImage(this.graphics.get(i)), Transform.I.translated(this.offsets.get(i)).scaled(charSize, charSize), 1, -.01f);
         }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
     }
 }

@@ -73,7 +73,7 @@ public class Bike extends GameEntity {
 				0.9f, 1.3f, 1.f, 1.25f,
 				1.f, .8f, 1.f, 0.1f,
 				1.f, .8f, 1.3f, .75f, 1.4f, .7f);
-		this.bikeFrameGraphic = this.addGraphics(bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 0);
+		this.bikeFrameGraphic = this.addGraphics(bikeFrame, null, Color.blue.brighter().brighter().brighter(), .1f, 1, 10);
 
 		this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
 		this.rightWheel = new Wheel(this.game, this.getPosition().add(new Vector(1, 0)), .5f);

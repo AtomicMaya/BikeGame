@@ -56,7 +56,7 @@ public class ParticleEmitter extends GameEntity {
         Vector velocity = new Vector((float) Math.cos(angle) * speed, (float) Math.sin(angle) * speed);
         Vector position = this.getPosition().add(velocity.mul(offset));
 
-        this.particles.push(new Particle(this.game, position, new Circle(.1f),
+        this.particles.push(new Particle(position, new Circle(.1f),
                 this.startColor, this.endColor, lifeTime, velocity, this.gravity));
     }
 
@@ -78,7 +78,6 @@ public class ParticleEmitter extends GameEntity {
 
         for(Particle particle :  particlesToRemove) {
             this.particles.remove(particle);
-            particle.destroy();
         }
 
         if(this.particles.size() == 0) {

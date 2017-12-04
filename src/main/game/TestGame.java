@@ -19,6 +19,8 @@ public class TestGame extends ActorGame {
 	private Audio backgroundAudio, backgroundAudio2;
 	private TriggeredPlatform platform;
     private ParticleEmitter emitter;
+    private BetterTextGraphics betterTextGraphics;
+    private Window window;
 
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
@@ -26,6 +28,7 @@ public class TestGame extends ActorGame {
 		// TODO creation objects du program
 		//Polygon p1 = new Polygon(-10.f, 0.f, -5.f, 5.f, 0.f, -2.5f, -7.5f, -5.f);
 
+        this.window = window;
 		Polyline p = new Polyline(
 				-1000.0f, -1000.0f,
 				-1000.0f, 0.0f,
@@ -59,11 +62,12 @@ public class TestGame extends ActorGame {
 
        // BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(-2, 2), "Test some random words", 6, 10, 3);
 
-		//GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), new Polygon(0f, 0f, 7f, 0f, 7f, 2f, 0f, 2f), "Such text !", 6);
+		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), new Polygon(0f, 0f, 7f, 0f, 7f, 2f, 0f, 2f), "Such text !", 1);
         //button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png");
         //button.addOnClickAction(() -> player.character.triggerYayAnimation(), 5);
 
-        //BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(0, 5), "Hey !", 8, shape);
+        this.betterTextGraphics = new BetterTextGraphics(new Vector(0, 0), "Some text !", .5f, 5, 3);
+
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
         emitter = new ParticleEmitter(this, new Vector(0,3), 300, (float) Math.PI / 2f, 1f, 5, 0xFFFFFF00, 0xFFFF0000);
@@ -83,8 +87,7 @@ public class TestGame extends ActorGame {
 		//this.addActor(sensor);
 		this.addActor(lever);
 		this.addActor(platform);
-		//this.addActor(button);
-		//this.addActor(betterTextGraphics);
+		this.addActor(button);
 		this.addActor(emitter);
 		return true;
 	}
@@ -92,6 +95,8 @@ public class TestGame extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		betterTextGraphics.draw(window);
+
 	}
 
 	@Override

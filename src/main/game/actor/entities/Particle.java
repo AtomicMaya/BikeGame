@@ -1,30 +1,31 @@
 package main.game.actor.entities;
 
-import main.game.ActorGame;
+import main.game.actor.Graphics;
 import main.game.actor.QuickMafs;
 import main.game.actor.ShapeGraphics;
 import main.math.Shape;
+import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
 
-public class Particle extends GameEntity {
+public class Particle implements Graphics {
     private ShapeGraphics graphics;
     private int[] currentColor, startColor, endColor;
     private Shape shape;
 
     private float lifeTime, elapsedLifeTime;
     private boolean flaggedForDestruction;
-    private Vector speed, gravity;
+    private Vector position, speed, gravity;
     private float modA, modR, modG, modB;
 
 
-    public Particle(ActorGame game, Vector position, Shape shape, int startColor, int endColor, float lifeTime, Vector speed, Vector gravity) {
-        super(game, true, position);
+    public Particle(Vector position, Shape shape, int startColor, int endColor, float lifeTime, Vector speed, Vector gravity) {
         this.lifeTime = lifeTime;
         this.elapsedLifeTime = 0;
         this.flaggedForDestruction = false;
+        this.position = position;
         this.speed = speed;
         this.gravity = gravity;
 
@@ -38,10 +39,6 @@ public class Particle extends GameEntity {
         this.modB = this.startColor[3] >= this.endColor[3] ? -1 : 1;
 
         this.shape = shape;
-        this.graphics = addGraphics(this.shape, Color.decode(this.getColor(this.currentColor)), null, 0f, this.getAlpha(this.currentColor), -0.05f);
-        this.build(shape, -1, -1, true);
-
-        game.addActor(this);
     }
 
     private String getColor(int[] color) {
@@ -57,7 +54,6 @@ public class Particle extends GameEntity {
         return this.flaggedForDestruction;
     }
 
-    @Override
     public void update(float deltaTime) {
         this.elapsedLifeTime += deltaTime;
         float lifePercent = 1 - this.elapsedLifeTime / this.lifeTime;
@@ -67,7 +63,7 @@ public class Particle extends GameEntity {
         }
 
         this.speed = this.speed.add(this.gravity.mul(deltaTime));
-        this.getEntity().setPosition(this.getPosition().add(this.speed.mul(deltaTime)));
+        this.position = this.position.add(this.speed.mul(deltaTime));
 
         this.currentColor = new int[] {
                 (int) (this.startColor[0] + this.modA * Math.abs(this.startColor[0] - this.endColor[0]) * lifePercent),
@@ -75,18 +71,10 @@ public class Particle extends GameEntity {
                 (int) (this.startColor[2] + this.modG * Math.abs(this.startColor[2] - this.endColor[2]) * lifePercent),
                 (int) (this.startColor[3] + this.modB * Math.abs(this.startColor[3] - this.endColor[3]) * lifePercent)
         };
-
-        this.graphics = addGraphics(this.shape, Color.decode(this.getColor(this.currentColor)), null, 0f, this.getAlpha(this.currentColor), -0.05f);
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        super.getOwner().destroyActor(this);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        graphics.draw(canvas);
+        canvas.drawShape(shape, Transform.I.translated(this.position), Color.decode(this.getColor(this.currentColor)), null, 0f, this.getAlpha(this.currentColor), -0.05f);
     }
 }

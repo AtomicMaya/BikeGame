@@ -46,7 +46,7 @@ public class GraphicalButton extends GameEntity {
         this.maxX = this.minX + maxPosition.x;
         this.maxY = this.minY + maxPosition.y;
 
-        textGraphics = new BetterTextGraphics(game, position, text, fontSize, maxX - minX, maxY - minY);
+        textGraphics = new BetterTextGraphics(position, text, fontSize, maxX - minX, maxY - minY);
 
         build(shape, -1, -1, true);
 
@@ -67,6 +67,7 @@ public class GraphicalButton extends GameEntity {
             for(int i = 0; i < this.actions.size(); i++) {
                 this.runAction(this.actions.get(i), this.time.get(i));
             }
+            this.clicked = false;
         }
 
         if (this.buttonBusy) {

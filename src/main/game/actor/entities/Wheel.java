@@ -6,7 +6,6 @@ import main.math.*;
 import main.window.Canvas;
 
 import java.awt.*;
-import java.util.Scanner;
 
 public class Wheel extends GameEntity {
 	// keep references
@@ -34,7 +33,7 @@ public class Wheel extends GameEntity {
 	private void create() {
 		Circle circle = new Circle(radius - .05f);
 		this.build(circle, .6f, -1, false);
-		graphics = this.addGraphics(circle, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 0.f);
+		graphics = this.addGraphics(circle, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 9.9f);
 	}
 	
 //	@Override

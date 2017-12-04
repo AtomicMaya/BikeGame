@@ -7,7 +7,6 @@ import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class Ground extends GameEntity {
@@ -40,7 +39,7 @@ public class Ground extends GameEntity {
 	private void create() {
 		Polyline p = new Polyline(points);
 		this.build(p, 2f, -1, false);
-		graphics = this.addGraphics(p, Color.decode("#6D5D49"), Color.decode("#548540"), .2f, 1, 0);
+		graphics = this.addGraphics(p, Color.decode("#6D5D49"), Color.decode("#548540"), .2f, 1, -10f);
 	}
 
 	@Override
@@ -52,9 +51,6 @@ public class Ground extends GameEntity {
 	@Override
 	public void draw(Canvas window) {
 		graphics.draw(window);
-		if (super.getOwner().getKeyboard().get(KeyEvent.VK_G).isPressed()) { // TODO Whyyyy ?
-			this.destroy();
-		}
 	}
 
 	@Override

@@ -52,19 +52,19 @@ public class CharacterBike extends GameEntity {
 		this.build(anchor, -1f, -1, true);
 
 		body = generatePolygon();
-		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 0);
+		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10);
 
 		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
-		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 0);
+		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 10.1f);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		if (isYaying) nextYay(deltaTime);
 		body = generatePolygon();
-		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 0);
+		graphics = this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10);
 		head = new Circle(.3f, headPos.add(.1f * directionModifier, .1f));
-		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 0);
+		graphicsHead = this.addGraphics(head, Color.WHITE, Color.BLACK, .15f, 1.f, 10.1f);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class CharacterBike extends GameEntity {
 	 * Calculates all the next positions and assigns them to the elbows and hands
 	 * @param deltaTime : the current deltaTime, so that we can use time as a parameter of the animation
 	 */
-	public void nextYay(float deltaTime) {
+	private void nextYay(float deltaTime) {
 		elapsedYayTime += deltaTime;
 		if (elapsedYayTime < timeTillYayEnd / 2.f) {
 			lElbowPos = getNewPosition(armJointPos, initLElbowPos, lElbowRaisedPos);
