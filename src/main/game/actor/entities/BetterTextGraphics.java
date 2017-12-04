@@ -9,49 +9,24 @@ import main.window.Canvas;
 
 import java.util.ArrayList;
 
-/**
- * Created on 12/2/2017 at 7:10 PM.
- */
 public class BetterTextGraphics extends GameEntity {
     ArrayList<ImageGraphics> graphics;
 
     public BetterTextGraphics(ActorGame game, Vector position, String text, int fontSize, float containerWidth, float containerHeight) {
         super(game, true, position);
 
-        float charWidth = fontSize * 0.13f;
-        String[] lines = new String[text.split(" ").length];
-        for(int i = 0; i < lines.length; i++) lines[i] = "";
-        float lineMaxLength = containerWidth - 2 * charWidth;
-        float lineCurrentLength = 0;
+        // Standard FontSize to Pixel ratio.
+        float charSize = fontSize * 0.13f;
 
-        int lineCounter = 0;
-        int wordCounter = 0;
-        for(String word : text.split(" ")) {
-            lineCurrentLength += word.length() * charWidth;
-            if (lineCurrentLength + charWidth <= lineMaxLength) {
-                lines[lineCounter] += word + " ";
-                wordCounter += 1;
-            } else if (lineCurrentLength <= lineMaxLength) {
-                lines[lineCounter] += word;
-                lineCounter += 1;
-                wordCounter = 0;
-            } else if (lineCurrentLength > lineMaxLength && wordCounter == 0) {
-                lines[lineCounter] += word;
-                lineCounter += 1;
-            } else {
-                lineCounter += 1;
-                lineCurrentLength = word.length() * charWidth;
-                lines[lineCounter] += word;
-                lineCounter += 1;
-            }
-        }
+        String[] textSplit = text.toUpperCase().split(" ");
+        String[] lines = new String[textSplit.length];
+        for(int i = 0; i < lines.length; i++) lines[i] = "";            // Initialize the array so as not to have null written in the text.
 
         ArrayList<String> lines2 = new ArrayList<>();
-        for (String s : lines) {
-            if(!s.equals("")) lines2.add(s);
-        }
+        for (String s : lines) if(!s.equals("")) lines2.add(s);         // Remove unnecessary empty lines.
 
-        int[] indices = new int[lines2.size()];
+
+        int[] indices = new int[lines2.size()];                         // Calculate where in the sentence the cut took place
         int counter = 0;
         for (String s : lines2) {
             if (counter > 0) indices[counter] = indices[counter - 1] + s.length();
@@ -59,24 +34,27 @@ public class BetterTextGraphics extends GameEntity {
             counter += 1;
         }
 
-        ArrayList<String> fileLocations = getFileLocations(text.toUpperCase());
-
         this.graphics = new ArrayList<>();
-        counter = 0;
-        float startY = (containerHeight - charWidth) / 2 + (lines2.size() * charWidth) / 2 - charWidth * 0.75f;
+        int counter2 = 0;
+        float startY = (containerHeight - charSize) / 2 + (lines2.size() * charSize) / 2 - charSize * 0.75f;            // TODO fix math because transform is weird
         for (String s : lines2) {
-            float startX = -(containerWidth - 2 * charWidth) / 2 - (s.length() * (charWidth + 0.01f)) / 2 + containerWidth + charWidth / 2;
+            float startX = -(containerWidth - 2 * charSize) / 2 - (s.length() * (charSize + 0.01f)) / 2 + containerWidth + charSize / 2; // TODO fix math because transform is weird
             System.out.println(startX + ", " + startY);
             Vector offset = new Vector(-startX, -startY);
-            for(int i = counter == 0 ? 0 : indices[counter - 1]; i < indices[counter]; i++) {
-                this.graphics.add(this.addGraphics(fileLocations.get(i),fontSize * .13f, fontSize * .13f, offset, 1.f, -0.1f));
+            for(String file : getFileLocations(s)) {
+                this.graphics.add(this.addGraphics(file,fontSize * .13f, fontSize * .13f, offset, 1.f, -0.1f));
                 offset = offset.add(-fontSize * .13f, 0);
             }
-            counter += 1;
+            counter2 += 1;
             startY -= fontSize * .14f;
         }
     }
 
+    /**
+     * Gets all related paths to letters of font...
+     * @param text : The input text
+     * @return an arrayList containing paths to the font image.
+     */
     private ArrayList<String> getFileLocations(String text) {
         ArrayList<String> fileLocations = new ArrayList<>();
         for (char c : text.toCharArray()) {

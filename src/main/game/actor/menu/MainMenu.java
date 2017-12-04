@@ -88,9 +88,9 @@ public class MainMenu extends Menu {
 
 		// set arrows graphics
 		right.setNewGraphics("./res/images/arrows/right_arrow_dark_green.png",
-				"./res/images/arrows/right_arrow_light_green.png", "./res/images/arrows/right_arrow_dark_green.png");
-		left.setNewGraphics("./res/images/arrows/left_arrow_dark_green.png",
-				"./res/images/arrows/left_arrow_light_green.png", "./res/images/arrows/left_arrow_dark_green.png");
+				"./res/images/arrows/right_arrow_dark_green.png");
+        left.setNewGraphics("./res/images/arrows/left_arrow_dark_green.png",
+				"./res/images/arrows/left_arrow_light_green.png");
 
 		// level editor
 		levelEditor = new GraphicalButton(game, new Vector(4, 3), new Polygon(0, 0, 0, 1, 5, 1, 5, 0), "Level Editor",

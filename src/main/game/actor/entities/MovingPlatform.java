@@ -22,25 +22,25 @@ public class MovingPlatform extends GameEntity {
 		this.evolution = evolution;
 
 		Shape platformShape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 1.f, .0f, 1.f);
-		platform = new Platform(game, position, platformShape);
+		this.platform = new Platform(game, position, platformShape);
 
 		this.build(new Circle(0.1f), -1f, -1, false);
-		platform.attach(this.getEntity(), Vector.ZERO);
+		this.platform.attach(this.getEntity(), Vector.ZERO);
 
-		game.addActor(platform);
+		game.addActor(this.platform);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		elapsedTime += deltaTime;
-		if (0 < elapsedTime && elapsedTime < loopTime) {
-			platform.setPosition(evolution.mul(speed * deltaTime, speed * deltaTime));
-		} else if (loopTime + pauseTime < elapsedTime && elapsedTime < 2 * loopTime + pauseTime) {
-			platform.setPosition(evolution.mul(-speed * deltaTime, -speed * deltaTime));
-		} else if (elapsedTime > 2 * (loopTime + pauseTime)){
-			elapsedTime = 0.f;
+		this.elapsedTime += deltaTime;
+		if (0 < this.elapsedTime && this.elapsedTime < this.loopTime) {
+			this.platform.setPosition(this.evolution.mul(this.speed * deltaTime, this.speed * deltaTime));
+		} else if (this.loopTime + this.pauseTime < this.elapsedTime && this.elapsedTime < 2 * this.loopTime + this.pauseTime) {
+            this.platform.setPosition(this.evolution.mul(-this.speed * deltaTime, -this.speed * deltaTime));
+		} else if (this.elapsedTime > 2 * (this.loopTime + this.pauseTime)){
+            this.elapsedTime = 0.f;
 		}
-		platform.update(deltaTime);
+        this.platform.update(deltaTime);
 	}
 
 	@Override
@@ -51,6 +51,6 @@ public class MovingPlatform extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-		platform.draw(canvas);
+        this.platform.draw(canvas);
 	}
 }

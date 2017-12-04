@@ -28,15 +28,14 @@ public class Particle extends GameEntity {
         this.speed = speed;
         this.gravity = gravity;
 
-        this.startColor = new int[]{QuickMafs.getAlpha(startColor), QuickMafs.getRed(startColor), QuickMafs.getGreen(startColor), QuickMafs.getBlue(startColor)};
-        this.endColor = new int[]{QuickMafs.getAlpha(endColor), QuickMafs.getRed(endColor), QuickMafs.getGreen(endColor), QuickMafs.getBlue(endColor)};
+        this.startColor = new int[]{QuickMafs.getAlpha(endColor), QuickMafs.getRed(endColor), QuickMafs.getGreen(endColor), QuickMafs.getBlue(endColor)};
+        this.endColor = new int[]{QuickMafs.getAlpha(startColor), QuickMafs.getRed(startColor), QuickMafs.getGreen(startColor), QuickMafs.getBlue(startColor)};
         this.currentColor = this.startColor.clone();
 
         this.modA = this.startColor[0] >= this.endColor[0] ? -1 : 1;
         this.modR = this.startColor[1] >= this.endColor[1] ? -1 : 1;
         this.modG = this.startColor[2] >= this.endColor[2] ? -1 : 1;
         this.modB = this.startColor[3] >= this.endColor[3] ? -1 : 1;
-
 
         this.shape = shape;
         this.graphics = addGraphics(this.shape, Color.decode(this.getColor(this.currentColor)), null, 0f, this.getAlpha(this.currentColor), -0.05f);
