@@ -88,7 +88,7 @@ public class MainMenu extends Menu {
 
 		// set arrows graphics
 		right.setNewGraphics("./res/images/arrows/right_arrow_dark_green.png",
-				"./res/images/arrows/right_arrow_dark_green.png");
+				"./res/images/arrows/right_arrow_light_green.png");
         left.setNewGraphics("./res/images/arrows/left_arrow_dark_green.png",
 				"./res/images/arrows/left_arrow_light_green.png");
 
