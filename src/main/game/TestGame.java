@@ -2,6 +2,7 @@ package main.game;
 
 import main.game.GameObjects.Rectangle;
 import main.game.actor.Audio;
+import main.game.actor.crate.Crate;
 import main.game.actor.entities.*;
 import main.game.actor.graphicalStuff.Cloud;
 import main.game.actor.graphicalStuff.Preset;
@@ -68,14 +69,24 @@ public class TestGame extends ActorGame {
 		//this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 
        // BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(-2, 2), "Test some random words", 6, 10, 3);
+        Crate c1 = new Crate(this, new Vector(10, 7), "/res/images/box.1.enabled.png", true, 1);
+        Crate c2 = new Crate(this, new Vector(11, 7), "/res/images/box.4.png", true, 1);
+        Crate c3 = new Crate(this, new Vector(12, 7), "/res/images/box.1.enabled.png", true, 1);
+        Crate c4 = new Crate(this, new Vector(13, 7), "/res/images/box.4.png", true, 1);
+        Crate c5 = new Crate(this, new Vector(14, 7), "/res/images/box.1.enabled.png", true, 1);
+        Crate c6 = new Crate(this, new Vector(15, 7), "/res/images/box.4.png", true, 1);
+        Crate c7 = new Crate(this, new Vector(16, 7), "/res/images/box.1.enabled.png", true, 1);
+        Crate c8 = new Crate(this, new Vector(17, 7), "/res/images/box.4.png", true, 1);
+        Crate c9 = new Crate(this, new Vector(18, 7), "/res/images/box.1.enabled.png", true, 1);
 
-		GraphicalButton button = new GraphicalButton(this, new Vector(10, 7), "One does not simply code a video game !", 0.5f);
+
+		GraphicalButton button = new GraphicalButton(this, new Vector(.8f, 4.2f), "One does not simply code a video game !", 3.3f);
         //button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png");
         //button.addOnClickAction(() -> player.character.triggerYayAnimation(), 5);
 
 
 
-        this.betterTextGraphics = new BetterTextGraphics(new Vector(0, 0), "Some text !", .5f, 5, 3);
+        //this.betterTextGraphics = new BetterTextGraphics(new Vector(0, 0), "Some text !", .5f, 5, 3);
         cloud = new Cloud(new Vector(3, 4), new Rectangle(2, 4), new Vector(1, 0));
 
 
@@ -86,9 +97,9 @@ public class TestGame extends ActorGame {
         System.out.println(Preset.Breezy.getObjectCount());
 
         sensor = new ProximitySensor(this, new Vector(0,0), shape);
-        this.setViewScale(50f);
+        this.setViewScale(30f);
 
-        scenery = new Scenery(new Vector(0,0), this.getViewScale());
+        //scenery = new Scenery(new Vector(0,0), this.getViewScale());
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
@@ -105,16 +116,24 @@ public class TestGame extends ActorGame {
 		this.addActor(platform);
 		this.addActor(button);
 		this.addActor(emitter);
+		this.addActor(c1);
+		this.addActor(c2);
+		this.addActor(c3);
+		this.addActor(c4);
+		this.addActor(c5);
+		this.addActor(c6);
+		this.addActor(c7);
+		this.addActor(c8);
+		this.addActor(c9);
 		return true;
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		betterTextGraphics.draw(window);
-		scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
-		scenery.draw(window);
-        scenery.update(deltaTime);
+		//scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
+		//scenery.draw(window);
+       // scenery.update(deltaTime);
 
 	}
 

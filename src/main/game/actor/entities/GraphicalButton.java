@@ -33,7 +33,7 @@ public class GraphicalButton extends GameEntity {
         float length = (text.length() + 2) * fontSize, height = fontSize * 1.5f;
         Polygon shape = new Polygon(0, 0, length, 0, length, height, 0, height);
 
-        textGraphics = new BetterTextGraphics(position, text, fontSize, length, height);
+        textGraphics = new BetterTextGraphics(position, text, fontSize);
         create(game, position, shape);
 
     }

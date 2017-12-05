@@ -9,33 +9,28 @@ import main.math.Vector;
 import main.window.Canvas;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class BetterTextGraphics extends Node implements Attachable, Graphics {
     private final ArrayList<String> graphics;
     private final ArrayList<Vector> offsets;
+    private Vector position;
     private float charSize;
     private Vector modifier;
+    private float textLength;
 
-    public BetterTextGraphics(Vector position, String text, float fontSize, float containerWidth, float containerHeight) {
-        this.charSize = fontSize - fontSize % 0.5f;
+    public BetterTextGraphics(Vector position, String text, float fontSize) {
         this.graphics = getFileLocations(text.toUpperCase());
         this.offsets = new ArrayList<>();
-        if(this.charSize < .5f) this.charSize = .5f;
-        else if (5f < this.charSize) this.charSize = 5f;
+        this.textLength = text.length();
+        this.position = position;
+        this.charSize = fontSize;
 
-        this.offsets.add(new Vector(position.x + (containerWidth - this.graphics.size()) / 2f, position.y + (containerHeight - this.charSize) / 2f).mul(charSize));
+        this.offsets.add(new Vector(charSize, 0.25f * charSize));
         for (int i = 0; i < this.graphics.size() - 1; i++) {
             this.offsets.add(this.offsets.get(i).add(new Vector(this.charSize, 0)));
         }
-
-        ArrayList<Vector> mods = new ArrayList<>(Arrays.asList(new Vector(position.x + 10.5f, position.y), new Vector(position.x + 0, position.y),
-                new Vector(position.x - 10.25f, position.y), new Vector(position.x - 20.5f, position.y),
-                new Vector(position.x - 30.75f, position.y), new Vector(position.x - 41, position.y),
-                new Vector(position.x - 51.25f, position.y), new Vector(position.x - 61.5f, position.y),
-                new Vector(position.x - 71.75f, position.y), new Vector(position.x - 82f, position.y)));
-        this.modifier = mods.get((int) ((charSize - 0.5f) * 2));
     }
+
 
     /**
      * Gets all related paths to letters of font...
@@ -103,7 +98,8 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
     @Override
     public void draw(Canvas canvas) {
         for(int i = 0; i < this.graphics.size(); i++) {
-            canvas.drawImage(canvas.getImage(this.graphics.get(i)), Transform.I.scaled(charSize).translated(this.offsets.get(i).add(charSize* modifier.x, charSize * modifier.y)), 1, -.01f);
+            canvas.drawImage(canvas.getImage(this.graphics.get(i)), new Transform(charSize, 0, position.x + offsets.get(i).x, 0, charSize, this.position.y + offsets.get(i).y), 1, -.01f);
+
         }
     }
 }

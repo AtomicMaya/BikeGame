@@ -11,15 +11,16 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Scenery implements Actor {
-    private Vector minimumCoords, maximumCoords;
+    private Vector minimumCoords, maximumCoords, minimumSpawn;
     private int preset;
     private ArrayList<GraphicalObjects> graphics;
     private Vector position;
-    private float ratio, length, height;
+    private float ratio, length, height, length2;
 
     public Scenery(Vector position, float translationRatio) {
         setViewPointPosition(position, translationRatio);
-        graphics = new ArrayList<>();
+        this.graphics = new ArrayList<>();
+
         ArrayList<Integer> presetContents = Preset.Breezy.getObjectCount();
         for(int count : presetContents) {
             float randX, randY;
@@ -35,17 +36,21 @@ public class Scenery implements Actor {
     }
 
     public void setViewPointPosition(Vector position, float translationRatio) {
-        minimumCoords = new Vector(position.x -1.1f * translationRatio, position.y -0.75f * translationRatio);
-        maximumCoords = minimumCoords.mul(QuickMafs.xyInverted);
-        this.position = minimumCoords;
+        this.minimumCoords = new Vector(position.x -1.1f * translationRatio, position.y -0.75f * translationRatio);
+        this.maximumCoords = this.minimumCoords.mul(QuickMafs.xyInverted);
+        this.position = this.minimumCoords;
+        this.minimumSpawn = new Vector(this.position.x + this.minimumCoords.x + this.maximumCoords.x + this.ratio * 2.25f, this.minimumCoords.y);
         this.ratio = translationRatio;
         this.length = 2 * 1.3f * this.ratio;
         this.height = this.ratio;
+        this.length2 = translationRatio * 0.5f;
     }
 
     @Override
     public void update(float deltaTime) {
         Transform transformOfBox = Transform.I.translated(this.position.x - this.length / this.ratio, this.position.y - this.height / this.ratio + this.ratio / 2.7f);
+        //System.out.println(transformOfBox.getAffineTransform().getTranslateX() + ", " + transformOfBox.getAffineTransform().getTranslateY());
+        System.out.println(this.minimumSpawn + "," + this.maximumCoords);
     }
 
     @Override

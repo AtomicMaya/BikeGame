@@ -159,7 +159,7 @@ public final class Transform implements Serializable {
             m10 * sy, m11 * sy, m12 * sy
         );
     }
-    
+
     /**
      * Appends scale (applied after this transform).
      * @param s scale
