@@ -9,6 +9,7 @@ public enum Preset {
 
     private ArrayList<Integer> objectCount;
     Preset(int... objectCounter) {
+        objectCount = new ArrayList<>();
         for (int i : objectCounter) this.objectCount.add(i);
     }
 

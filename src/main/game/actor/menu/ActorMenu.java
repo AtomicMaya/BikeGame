@@ -4,9 +4,6 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.actorBuilder.CrateBuilder;
 import main.game.actor.entities.GraphicalButton;
@@ -16,6 +13,9 @@ import main.math.Vector;
 import main.window.Canvas;
 import main.window.Mouse;
 import main.window.Window;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class ActorMenu extends Menu {
 
@@ -33,18 +33,18 @@ public class ActorMenu extends Menu {
 		mouse = window.getMouse();
 
 		Polygon shape = new Polygon(0f, 0f, 0f, .8f, 1.8f, .8f, 1.8f, 0f);
-		boutons.add(new GraphicalButton(game, Vector.ZERO, shape, "", 1));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
 		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
 		boutons.get(0).addOnClickAction(() -> levelEditor.addActor(new CrateBuilder(game)), .1f);
 		boutonsPosition.add(new Vector(.1f, -.9f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, shape, "", 1));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
 		boutonsPosition.add(new Vector(2.1f, -.9f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, shape, "", 1));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
 		boutonsPosition.add(new Vector(.1f, -1.9f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, shape, "", 1));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
 		boutonsPosition.add(new Vector(2.1f, -1.9f));
 
 		float maxX = Float.MAX_VALUE;

@@ -4,6 +4,8 @@ import main.game.GameObjects.Rectangle;
 import main.game.actor.Audio;
 import main.game.actor.entities.*;
 import main.game.actor.graphicalStuff.Cloud;
+import main.game.actor.graphicalStuff.Preset;
+import main.game.actor.graphicalStuff.Scenery;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.math.Polygon;
@@ -24,6 +26,8 @@ public class TestGame extends ActorGame {
     private BetterTextGraphics betterTextGraphics;
     private Window window;
     private Cloud cloud;
+    private Scenery scenery;
+    private Bike player;
 
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
@@ -50,7 +54,7 @@ public class TestGame extends ActorGame {
 
 		Ground ground = new Ground(this, null, p);
 
-		Bike player = new Bike(this, new Vector(4, 5));
+		player = new Bike(this, new Vector(4, 5));
 
 		Polygon shape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 3.f, .0f, 3.f);
 		//sensor = new KeyboardProximitySensor(this, new Vector(12, 3), shape, KeyEvent.VK_E);
@@ -65,20 +69,27 @@ public class TestGame extends ActorGame {
 
        // BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(-2, 2), "Test some random words", 6, 10, 3);
 
-		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), "One does not simply code a video game !", 1f);
+		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), "One does not simply code a video game !", .5f);
         //button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png");
         //button.addOnClickAction(() -> player.character.triggerYayAnimation(), 5);
 
+
+
         this.betterTextGraphics = new BetterTextGraphics(new Vector(0, 0), "Some text !", .5f, 5, 3);
-        cloud = new Cloud(new Vector(3, 4), new Rectangle(2, 4));
+        cloud = new Cloud(new Vector(3, 4), new Rectangle(2, 4), new Vector(1, 0));
 
 
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
         emitter = new ParticleEmitter(this, new Vector(0,6), 800, (float) Math.PI * 0.5f, 1f, 3, 0xFFFFFF00, 0xFFFF0000);
 
+        System.out.println(Preset.Breezy);
+
         sensor = new ProximitySensor(this, new Vector(0,0), shape);
-        this.setViewScaleModifier(20f);
+        this.setViewScaleModifier(30f);
+
+        scenery = new Scenery(new Vector(0,0), 30f);
+
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		a = new FinishActor(this, new Vector(7, 0), player, s);
@@ -101,7 +112,9 @@ public class TestGame extends ActorGame {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 		betterTextGraphics.draw(window);
-		cloud.draw(window);
+		scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
+		scenery.draw(window);
+        scenery.update(deltaTime);
 
 	}
 

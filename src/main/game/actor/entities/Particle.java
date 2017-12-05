@@ -29,8 +29,8 @@ public class Particle implements Graphics {
         this.speed = speed;
         this.gravity = gravity;
 
-        this.startColor = new int[]{QuickMafs.getAlpha(endColor), QuickMafs.getRed(endColor), QuickMafs.getGreen(endColor), QuickMafs.getBlue(endColor)};
-        this.endColor = new int[]{QuickMafs.getAlpha(startColor), QuickMafs.getRed(startColor), QuickMafs.getGreen(startColor), QuickMafs.getBlue(startColor)};
+        this.startColor = new int[]{QuickMafs.getAlpha(startColor), QuickMafs.getRed(startColor), QuickMafs.getGreen(startColor), QuickMafs.getBlue(startColor)};
+        this.endColor = new int[]{QuickMafs.getAlpha(endColor), QuickMafs.getRed(endColor), QuickMafs.getGreen(endColor), QuickMafs.getBlue(endColor)};
         this.currentColor = this.startColor.clone();
 
         this.modA = this.startColor[0] >= this.endColor[0] ? -1 : 1;
@@ -56,7 +56,7 @@ public class Particle implements Graphics {
 
     public void update(float deltaTime) {
         this.elapsedLifeTime += deltaTime;
-        float lifePercent = 1 - this.elapsedLifeTime / this.lifeTime;
+        float lifePercent = this.elapsedLifeTime / this.lifeTime;
 
         if (this.elapsedLifeTime > this.lifeTime) {
             this.flaggedForDestruction = true;

@@ -78,7 +78,7 @@ public class MainMenu extends Menu {
 		Polygon buttonShape = new Polygon(0, .1f, 6, .1f, 6, .9f, 0, .9f);
 		for (int i = 0; i < list.length; i++) {
 			Vector position = new Vector(-9, -(i % maxNumberButtonsSave) + 2.5f);
-			buttons.add(new GraphicalButton(game, position, buttonShape, list[i].getName(), 1f));
+			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1f));
 			int p = i;
 			buttons.get(i).addOnClickAction(() -> load(list[p]), 0f);
 		}
@@ -86,10 +86,10 @@ public class MainMenu extends Menu {
 		// Arrow buttons to navigate in the save menu
 		Polygon arrowShape = new Polygon(0, 0, 1, 0, 1, 1, 1, 0);
 
-		right = new GraphicalButton(game, new Vector(-6, -7), arrowShape, "", 6);
+		right = new GraphicalButton(game, new Vector(-6, -7), "", 6);
 		right.addOnClickAction(() -> PagePlusPlus(), 0f);
 
-		left = new GraphicalButton(game, new Vector(-8, -7), arrowShape, "", 6);
+		left = new GraphicalButton(game, new Vector(-8, -7), "", 6);
 		left.addOnClickAction(() -> PageMinusMinus(), 0f);
 
 		// set arrows graphics
@@ -100,7 +100,7 @@ public class MainMenu extends Menu {
 
 		// level editor
 		levelEditor = new LevelEditor(game, window);
-		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), new Polygon(0, 0, 0, 1, 5, 1, 5, 0),
+		levelEditorButton = new GraphicalButton(game, new Vector(4, 3),
 				"Level Editor", 1f);
 
 		levelEditorButton.addOnClickAction(() -> inLevelEditor = true, 0);

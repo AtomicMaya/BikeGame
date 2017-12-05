@@ -100,7 +100,7 @@ public class Bike extends GameEntity {
 	        for(Entity entity : this.contactListener.getEntities()) {
 	            if(entity.getCollisionGroup() == 1) {
 	                //TODO trigger death ->
-                    System.out.println("is dead");
+
                 }
             }
         }

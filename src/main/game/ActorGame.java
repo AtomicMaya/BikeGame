@@ -357,4 +357,8 @@ public class ActorGame implements Game {
 	public void setViewScaleModifier(float newModifier) {
 	    VIEW_SCALE_MOD = newModifier;
     }
+
+    public float getViewScale() {
+        return VIEW_SCALE_CURRENT;
+    }
 }

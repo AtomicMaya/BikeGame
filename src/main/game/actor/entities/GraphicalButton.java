@@ -27,7 +27,7 @@ public class GraphicalButton extends GameEntity {
 
     private Vector maxPosition;
 
-    public GraphicalButton(ActorGame game, Vector position, Polygon shape, String text, float fontSize) {
+    public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
         super(game, true, position);
         this.mouse = game.getMouse();
 
@@ -44,8 +44,8 @@ public class GraphicalButton extends GameEntity {
         this.maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
         this.minX = position.x;
         this.minY = position.y;
-        this.maxX = this.minX + this.maxPosition.x;
-        this.maxY = this.minY + this.maxPosition.y;
+        this.maxX = this.minX + maxPosition.x;
+        this.maxY = this.minY + maxPosition.y;
 
         textGraphics = new BetterTextGraphics(position, text, fontSize, length, height);
 

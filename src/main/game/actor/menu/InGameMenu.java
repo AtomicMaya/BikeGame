@@ -32,14 +32,14 @@ public class InGameMenu extends Menu {
 		this.game = game;
 		shape = new Polygon(-10, -10, -10, 10, 10, 10, 10, -10);
 
-		close = new GraphicalButton(game, new Vector(6, -3), new Polygon(0, 0, 1, 0, 1, 1, 1, 0), "Close", 1);
+		close = new GraphicalButton(game, new Vector(6, -3), "Close", 1);
 
 		close.setNewGraphics("./res/images/button.white.1.png",
 				"./res/images/button.white.2.png");
 
 		close.addOnClickAction(() -> changeStatut(), .1f);
 
-		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), new Polygon(0, 0, 0, 1, 1, 1, 1, 0), "Back to Menu", .5f);
+		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), "Back to Menu", .5f);
 		backToMainMenu.addOnClickAction(() -> game.goToMainMenu(), 0f);
 	}
 
