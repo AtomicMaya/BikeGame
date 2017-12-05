@@ -49,7 +49,7 @@ public class MainMenu extends Menu {
 	private boolean busy = false;
 
 	public MainMenu(ActorGame game, Window window) {
-		super(game, window, true, Color.GRAY);
+		super(game, window, true, Color.GRAY, true);
 		this.window = window;
 		this.game = game;
 		float fontSize = 4f;
@@ -68,7 +68,7 @@ public class MainMenu extends Menu {
 			graphics.add(new ShapeGraphics(t, Color.BLACK, null, 0));
 			graphics.get(i).setRelativeTransform(Transform.I.translated(new Vector(1f * i - size / 2, 0)));
 		}
-		Shape t2 = new Polygon(-size/2, -w, size / 2, -w, size / 2, w, -size / 2, w);
+		Shape t2 = new Polygon(-size / 2, -w, size / 2, -w, size / 2, w, -size / 2, w);
 		for (int i = 0; i < size; i++) {
 			graphics.add(new ShapeGraphics(t2, Color.BLACK, null, 0));
 			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
@@ -79,10 +79,10 @@ public class MainMenu extends Menu {
 
 		Polygon buttonShape = new Polygon(0, .1f, 6, .1f, 6, .9f, 0, .9f);
 		for (int i = 0; i < list.length; i++) {
-			Vector position = new Vector(-9, -(i % maxNumberButtonsSave) + 2.5f);
-			buttons.add(new GraphicalButton(game, position, list[i].getName(), .5f));
+			Vector position = new Vector(-12, -(i % maxNumberButtonsSave) * 2f + 2.5f);
+			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1f));
 			int p = i;
-			buttons.get(i).addOnClickAction(() -> load(list[p]), 0f);
+			buttons.get(i).addOnClickAction(() -> load(list[p]));
 		}
 
 		// Arrow buttons to navigate in the save menu
@@ -104,14 +104,16 @@ public class MainMenu extends Menu {
 		levelEditor = new LevelEditor(game, window);
 		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1f);
 
-		levelEditorButton.addOnClickAction(() -> inLevelEditor = true, 0);
+		levelEditorButton.addOnClickAction(() -> inLevelEditor = true);
 	}
 
 	private void load(File file) {
 		if (!busy && waitBeforeClick > .5f) {
+			
 			game.destroyAllActors();
 			changeStatut();
 			busy = true;
+			game.setGameFreezeStatus(false);
 			game.load(file.getName());
 		}
 

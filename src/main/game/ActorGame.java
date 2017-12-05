@@ -1,16 +1,26 @@
 package main.game;
 
-import main.game.actor.Actor;
-import main.io.FileSystem;
-import main.io.Save;
-import main.math.*;
-import main.window.Keyboard;
-import main.window.Mouse;
-import main.window.Window;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import main.game.actor.Actor;
+import main.io.FileSystem;
+import main.io.Save;
+import main.math.DistanceConstraintBuilder;
+import main.math.Entity;
+import main.math.EntityBuilder;
+import main.math.PointConstraintBuilder;
+import main.math.Positionable;
+import main.math.PrismaticConstraintBuilder;
+import main.math.Transform;
+import main.math.Vector;
+import main.math.WheelConstraintBuilder;
+import main.math.World;
+import main.window.Canvas;
+import main.window.Keyboard;
+import main.window.Mouse;
+import main.window.Window;
 
 public class ActorGame implements Game {
 
@@ -21,7 +31,7 @@ public class ActorGame implements Game {
 	private static final float VIEW_TARGET_VELOCITY_COMPENSATION = 0.2f;
 
 	private static final float VIEW_INTERPOLATION_RATIO_PER_SECOND = 0.1f;
-	private static final float VIEW_SCALE = 10.0f;
+	private static final float VIEW_SCALE = 20.0f;
 	private static float VIEW_SCALE_MOD = 0.0f;
 	private static float VIEW_SCALE_CURRENT = VIEW_SCALE;
 	private static float VIEW_SCALE_PREVIOUS = VIEW_SCALE;
@@ -74,7 +84,8 @@ public class ActorGame implements Game {
 
 	@Override
 	public void update(float deltaTime) {
-		if (gameFrozen) return;
+		if (gameFrozen)
+			return;
 
 		world.update(deltaTime);
 
@@ -83,7 +94,7 @@ public class ActorGame implements Game {
 		}
 
 		if (!actorsToRemove.isEmpty()) {
-		    // peut etre plus propre mais ca fait des ConcurrentModificationException
+			// peut etre plus propre mais ca fait des ConcurrentModificationException
 			for (int i = 0; i < actorsToRemove.size(); i++) {
 				actorsToRemove.get(i).destroy();
 			}
@@ -95,8 +106,14 @@ public class ActorGame implements Game {
 			actorsToAdd.clear();
 		}
 
-		if (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD && !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT && VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f)) VIEW_SCALE_CURRENT -= VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
-		else if (VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD && !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT && VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f)) VIEW_SCALE_CURRENT += VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
+		if (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD
+				&& !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT
+						&& VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f))
+			VIEW_SCALE_CURRENT -= VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
+		else if (VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD
+				&& !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT
+						&& VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f))
+			VIEW_SCALE_CURRENT += VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
 
 		// Update expected viewport center
 		if (viewCandidate != null) {
@@ -129,15 +146,19 @@ public class ActorGame implements Game {
 		return window.getKeyboard();
 	}
 
+	public Canvas getCanvas() {
+		return window;
+	}
+
 	public Mouse getMouse() {
 		return window.getMouse();
 	}
 
-    public Vector getGravity() {
-        return world.getGravity();
-    }
+	public Vector getGravity() {
+		return world.getGravity();
+	}
 
-    /**
+	/**
 	 * @param p : the object (Positionable) to follow with the camera
 	 */
 	public void setViewCandidate(Positionable p) {
@@ -198,7 +219,7 @@ public class ActorGame implements Game {
 			}
 		}
 	}
-	
+
 	/**
 	 * @param actorsToKeep : a list of actor to keep in the game
 	 */
@@ -212,6 +233,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new Entity in the world
+	 * 
 	 * @param position : position given to the entity
 	 * @param fixed : whether the entity can move or not
 	 * @return a new Entity
@@ -225,6 +247,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new Entity in the world
+	 * 
 	 * @param fixed : whether the Entity can move or not
 	 * @return a new Entity
 	 */
@@ -271,6 +294,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Set the frozen status of the game
+	 * 
 	 * @param freeze : whether or not we want to freeze the game
 	 */
 	public void setGameFreezeStatus(boolean freeze) {
@@ -280,6 +304,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Modify the value of the world's gravity
+	 * 
 	 * @param vector : the new gravity values.
 	 */
 	protected void setGravity(Vector vector) {
@@ -306,6 +331,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Save all actors of the current game
+	 * 
 	 * @param saveName path to the folder to save the game
 	 */
 	public void save(String saveName) {
@@ -355,15 +381,16 @@ public class ActorGame implements Game {
 	}
 
 	public void setViewScaleModifier(float newModifier) {
-	    VIEW_SCALE_MOD = newModifier;
-    }
+		VIEW_SCALE_MOD = newModifier;
+	}
 
-    public float getViewScale() {
-        return VIEW_SCALE_CURRENT;
-    }
+	public float getViewScale() {
+		return VIEW_SCALE_CURRENT;
+	}
 
-    protected void setViewScale(float newViewScale) {
-	    VIEW_SCALE_CURRENT = newViewScale;
-	    VIEW_SCALE_MOD = (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD ? VIEW_SCALE_CURRENT - VIEW_SCALE : VIEW_SCALE_CURRENT - VIEW_SCALE);
-    }
+	protected void setViewScale(float newViewScale) {
+		VIEW_SCALE_CURRENT = newViewScale;
+		VIEW_SCALE_MOD = (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD ? VIEW_SCALE_CURRENT - VIEW_SCALE
+				: VIEW_SCALE_CURRENT - VIEW_SCALE);
+	}
 }

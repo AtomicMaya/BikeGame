@@ -5,9 +5,12 @@
 package main.game.actor.menu;
 
 import main.game.ActorGame;
+import main.game.actor.QuickMafs;
+import main.game.actor.ShapeGraphics;
 import main.game.actor.actorBuilder.CrateBuilder;
 import main.game.actor.entities.GraphicalButton;
 import main.math.Polygon;
+import main.math.Shape;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
@@ -29,44 +32,50 @@ public class ActorMenu extends Menu {
 	float width, height;
 
 	public ActorMenu(ActorGame game, LevelEditor levelEditor, Window window, Color backgroundColor) {
-		super(game, window, false, backgroundColor);
+		super(game, window, false, backgroundColor, false);
 		mouse = window.getMouse();
 
 		Polygon shape = new Polygon(0f, 0f, 0f, .8f, 1.8f, .8f, 1.8f, 0f);
-		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
+
+		// crate pos 0,0
+		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
 		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
 		boutons.get(0).addOnClickAction(() -> {
 			levelEditor.addActor(new CrateBuilder(game));
 			changeStatut();
 		}, .1f);
-		boutonsPosition.add(new Vector(.1f, -.9f));
+		boutonsPosition.add(new Vector(0f, 0f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
-		boutonsPosition.add(new Vector(2.1f, -.9f));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
+		boutonsPosition.add(new Vector(1f, 0f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
-		boutonsPosition.add(new Vector(.1f, -1.9f));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
+		boutonsPosition.add(new Vector(0f, -1f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
-		boutonsPosition.add(new Vector(2.1f, -1.9f));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
+		boutonsPosition.add(new Vector(1f, -1f));
 
+		for (int i = 0; i < boutonsPosition.size(); i++) {
+			boutonsPosition.set(i, boutonsPosition.get(i).add(.1f, -.9f));
+		}
 		float maxX = Float.MAX_VALUE;
 		float maxY = Float.MAX_VALUE;
 		for (Vector v : boutonsPosition) {
 			maxX = (maxX < v.x) ? v.x : maxY;
 			maxY = Math.min(maxY, v.y);
+
 		}
 
 		// System.out.println(maxPosition);
-		maxPosition = new Vector(maxX, maxY).add(.4f, -.4f).add(2, 0);
+		maxPosition = new Vector(maxX, maxY).add(.4f, -.4f).add(1, 0);
 
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		super.update(deltaTime);
+
 		if (mouse.getRightButton().isPressed()) {
-			this.changeStatut();
+			this.setStatut(true);
 			if (isOpen()) {
 				minPosition = mouse.getPosition().add(-.2f, .2f);
 
@@ -75,19 +84,30 @@ public class ActorMenu extends Menu {
 				}
 			}
 
+		} else if (mouse.getLeftButton().isPressed()) {
+			Vector mousePos = mouse.getPosition();
+			
+			if (!QuickMafs.isInRectangle(minPosition, maxPosition, mousePos))
+				this.setStatut(false);
 		}
-
-		if (isOpen())
+		if (isOpen()) {
 			for (GraphicalButton gb : boutons) {
 				gb.update(deltaTime);
 			}
+		}
+
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
+		super.draw(canvas);
+		// canvas.drawShape(new Polygon(0, 0, 0, 1, 1, 1, 1, 0), Transform.I,
+		// Color.BLACK, null, 0, 1, 2);
 		if (isOpen()) {
+
 			canvas.drawShape(new Polygon(getRectangle(minPosition, minPosition.add(maxPosition))), Transform.I,
 					Color.LIGHT_GRAY, Color.LIGHT_GRAY, .1f, 1, -1);
+
 			for (GraphicalButton gb : boutons) {
 				gb.draw(canvas);
 			}

@@ -11,18 +11,19 @@ import main.window.Canvas;
 import java.util.ArrayList;
 
 public class BetterTextGraphics extends Node implements Attachable, Graphics {
-    private final ArrayList<String> graphics;
-    private final ArrayList<Vector> offsets;
-    private Vector position;
+    private ArrayList<String> graphics;
+    private ArrayList<Vector> offsets;
+    //private Vector position;
     private float charSize;
     private Vector modifier;
     private float textLength;
-
-    public BetterTextGraphics(Vector position, String text, float fontSize) {
+    private float alpha = 1, debth = .01f;
+    
+    public BetterTextGraphics(/*Vector position, */String text, float fontSize) {
         this.graphics = getFileLocations(text.toUpperCase());
         this.offsets = new ArrayList<>();
         this.textLength = text.length();
-        this.position = position;
+     //   this.position = position;
         this.charSize = fontSize;
 
         this.offsets.add(new Vector(charSize, 0.25f * charSize));
@@ -30,7 +31,23 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
             this.offsets.add(this.offsets.get(i).add(new Vector(this.charSize, 0)));
         }
     }
+    
+    public void setText(String text) {
+    	this.graphics = getFileLocations(text.toUpperCase());
+    	this.offsets = new ArrayList<>();
+    	this.offsets.add(new Vector(charSize, 0.25f * charSize));
+        for (int i = 0; i < this.graphics.size() - 1; i++) {
+            this.offsets.add(this.offsets.get(i).add(new Vector(this.charSize, 0)));
+        }
+    }
 
+    public void setAlpha(float alpha) {
+    	this.alpha = alpha;
+    }
+    
+    public void setDepth(float depth) {
+    	
+    }
 
     /**
      * Gets all related paths to letters of font...
@@ -98,7 +115,10 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
     @Override
     public void draw(Canvas canvas) {
         for(int i = 0; i < this.graphics.size(); i++) {
-            canvas.drawImage(canvas.getImage(this.graphics.get(i)), new Transform(charSize, 0, position.x + offsets.get(i).x, 0, charSize, this.position.y + offsets.get(i).y), 1, -.01f);
+        	// j'ai changé avec getPosition pour avoir la position du parent (donc Vector.ZERO si pas de parent)
+        	//Transform t = new Transform(charSize, 0, position.x + offsets.get(i).x, 0, charSize, this.position.y + offsets.get(i).y);
+        	Transform t = new Transform(charSize, 0, getPosition().x + offsets.get(i).x, 0, charSize, getPosition().y + offsets.get(i).y);
+            canvas.drawImage(canvas.getImage(this.graphics.get(i)), t/*.transformed(getTransform())*/, alpha, debth);
 
         }
     }

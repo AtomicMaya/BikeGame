@@ -71,7 +71,7 @@ public class SwingWindow extends Node implements Window {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 		    synchronized (SwingWindow.this) {
-		        bufferWheelOffset = e.getUnitsToScroll() / 3;
+		        bufferWheelOffset = e.getWheelRotation();
             }
 			// TODO mouse scroll?
 		}

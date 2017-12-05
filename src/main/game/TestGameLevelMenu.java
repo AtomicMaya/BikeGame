@@ -7,6 +7,9 @@ package main.game;
 import java.util.Arrays;
 import java.util.List;
 
+import com.sun.xml.internal.bind.v2.model.annotation.Quick;
+
+import main.game.actor.QuickMafs;
 import main.game.actor.entities.Bike;
 import main.game.actor.entities.Ground;
 import main.game.levels.Level;
@@ -27,14 +30,13 @@ public class TestGameLevelMenu extends GameWithLevelAndMenu {
 		// 0.0f, 6500.0f, -1000.0f);
 		//
 		// Ground ground = new Ground(this, null, p);
-		//
+		// //
 		// Bike player = new Bike(this, new Vector(4, 5));
-		//
+		// //
 		// addActor(player);
 		// addActor(ground);
 		// setPayload(player);
 		// setViewCandidate(player);
-		this.setViewScaleModifier(20);
 		return true;
 	}
 

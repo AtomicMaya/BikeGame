@@ -12,7 +12,7 @@ import java.awt.*;
 public class ParametersMenu extends Menu {
 
 	public ParametersMenu(ActorGame game, Window window, Color backgroundColor) {
-		super(game, window, false, backgroundColor);
+		super(game, window, false, backgroundColor, false);
 	}
 
 }

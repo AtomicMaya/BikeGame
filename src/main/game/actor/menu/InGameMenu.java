@@ -26,16 +26,14 @@ public class InGameMenu extends Menu {
 
 	private BetterTextGraphics menuText;
 
-	
 	public InGameMenu(GameWithLevelAndMenu game, Window window) {
-		super(game, window, false, Color.GRAY);
+		super(game, window, false, Color.GRAY, true);
 		this.game = game;
 		shape = new Polygon(-10, -10, -10, 10, 10, 10, 10, -10);
 
 		close = new GraphicalButton(game, new Vector(6, -3), "Close", 1);
 
-		close.setNewGraphics("./res/images/button.white.1.png",
-				"./res/images/button.white.2.png");
+		close.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.2.png");
 
 		close.addOnClickAction(() -> changeStatut(), .1f);
 
@@ -60,7 +58,7 @@ public class InGameMenu extends Menu {
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
 		if (isOpen()) {
-			
+
 			close.draw(canvas);
 			backToMainMenu.draw(canvas);
 		}

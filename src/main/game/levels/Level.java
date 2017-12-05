@@ -11,7 +11,7 @@ import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.math.Node;
 
-public abstract class Level extends Node implements Actor, Serializable {
+public abstract class Level extends Node implements Actor {
 
 	/**
 	 * Because its asked
