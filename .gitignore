@@ -6,4 +6,5 @@
 .classpath
 /out
 saves/*
-sh.exe.stackdump
+*.py
+*.exe

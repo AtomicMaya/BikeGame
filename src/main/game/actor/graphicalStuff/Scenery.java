@@ -46,7 +46,6 @@ public class Scenery implements Actor {
     @Override
     public void update(float deltaTime) {
         Transform transformOfBox = Transform.I.translated(this.position.x - this.length / this.ratio, this.position.y - this.height / this.ratio + this.ratio / 2.7f);
-        System.out.println();
     }
 
     @Override

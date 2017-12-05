@@ -30,6 +30,9 @@ public class GraphicalButton extends GameEntity {
     public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
         super(game, true, position);
         this.mouse = game.getMouse();
+        fontSize = fontSize - fontSize % 0.5f;
+        if(fontSize < .5f) fontSize = .5f;
+        else if (5f < fontSize) fontSize = 5f;
 
         float length = (text.length() + 2) * fontSize, height = fontSize * 1.5f;
         Polygon shape = new Polygon(0, 0, length, 0, length, height, 0, height);
@@ -46,6 +49,7 @@ public class GraphicalButton extends GameEntity {
         this.minY = position.y;
         this.maxX = this.minX + maxPosition.x;
         this.maxY = this.minY + maxPosition.y;
+
 
         textGraphics = new BetterTextGraphics(position, text, fontSize, length, height);
     }
