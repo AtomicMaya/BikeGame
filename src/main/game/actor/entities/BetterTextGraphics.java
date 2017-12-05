@@ -29,10 +29,11 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
             this.offsets.add(this.offsets.get(i).add(new Vector(this.charSize, 0)));
         }
 
-        ArrayList<Vector> mods = new ArrayList<>(Arrays.asList(new Vector(10.5f, 5.25f), new Vector(0, 0), new Vector(-10.25f, -1.75f),
-                new Vector(-20.5f, -2.8f), new Vector(-30.75f, -3.4f), new Vector(-41, -3.8f),
-                new Vector(-51.25f, -4.2f), new Vector(-61.5f, -4.5f), new Vector(-71.75f, -4.75f),
-                new Vector(-82f, -4.95f)));
+        ArrayList<Vector> mods = new ArrayList<>(Arrays.asList(new Vector(position.x + 10.5f, position.y), new Vector(position.x + 0, position.y),
+                new Vector(position.x - 10.25f, position.y), new Vector(position.x - 20.5f, position.y),
+                new Vector(position.x - 30.75f, position.y), new Vector(position.x - 41, position.y),
+                new Vector(position.x - 51.25f, position.y), new Vector(position.x - 61.5f, position.y),
+                new Vector(position.x - 71.75f, position.y), new Vector(position.x - 82f, position.y)));
         this.modifier = mods.get((int) ((charSize - 0.5f) * 2));
     }
 

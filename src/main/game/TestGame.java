@@ -69,7 +69,7 @@ public class TestGame extends ActorGame {
 
        // BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(-2, 2), "Test some random words", 6, 10, 3);
 
-		GraphicalButton button = new GraphicalButton(this, new Vector(0, 5), "One does not simply code a video game !", 0.6f);
+		GraphicalButton button = new GraphicalButton(this, new Vector(10, 7), "One does not simply code a video game !", 0.5f);
         //button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png");
         //button.addOnClickAction(() -> player.character.triggerYayAnimation(), 5);
 
