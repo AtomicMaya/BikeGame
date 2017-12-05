@@ -34,17 +34,6 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
                 new Vector(-51.25f, -4.2f), new Vector(-61.5f, -4.5f), new Vector(-71.75f, -4.75f),
                 new Vector(-82f, -4.95f)));
         this.modifier = mods.get((int) ((charSize - 0.5f) * 2));
-
-/*        if (charSize == 0.5f) modifier = new Vector(10.5f, 5.25f);
-        else if (charSize == 1.f) modifier = new Vector(0, 0);
-        else if (charSize == 1.5f) modifier = new Vector(-10.25f, -1.75f);
-        else if (charSize == 2.f) modifier = new Vector(-20.5f, -2.8f);
-        else if (charSize == 2.5f) modifier = new Vector(-30.75f, -3.4f);
-        else if (charSize == 3.f) modifier = new Vector(-41, -3.8f);
-        else if (charSize == 3.5f) modifier = new Vector(-51.25f, -4.2f);
-        else if (charSize == 4.f) modifier = new Vector(-61.5f, -4.5f);
-        else if (charSize == 4.5f) modifier = new Vector(-71.75f, -4.75f);
-        else if (charSize == 5) modifier = new Vector(-82f, -4.95f);*/
     }
 
     /**
