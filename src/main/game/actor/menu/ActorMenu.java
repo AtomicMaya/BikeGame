@@ -35,7 +35,10 @@ public class ActorMenu extends Menu {
 		Polygon shape = new Polygon(0f, 0f, 0f, .8f, 1.8f, .8f, 1.8f, 0f);
 		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));
 		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
-		boutons.get(0).addOnClickAction(() -> levelEditor.addActor(new CrateBuilder(game)), .1f);
+		boutons.get(0).addOnClickAction(() -> {
+			levelEditor.addActor(new CrateBuilder(game));
+			changeStatut();
+		}, .1f);
 		boutonsPosition.add(new Vector(.1f, -.9f));
 
 		boutons.add(new GraphicalButton(game, Vector.ZERO, "", 1));

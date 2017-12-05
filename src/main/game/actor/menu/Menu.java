@@ -13,6 +13,7 @@ import main.window.Canvas;
 import main.window.Window;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public abstract class Menu implements Graphics {
 
@@ -23,6 +24,9 @@ public abstract class Menu implements Graphics {
 
 	private ActorGame game;
 
+	private float zoom = 20;
+
+	private boolean fullScreen = false;
 	/**
 	 * Create a new Menu
 	 * 
@@ -33,14 +37,22 @@ public abstract class Menu implements Graphics {
 		this.open = isOpen;
 		this.window = window;
 		this.game = game;
+		zoom = game.getViewScale();
 		background = new ShapeGraphics(new Polygon(-10, -10, -10, 10, 10, 10, 10, -10), backgroundColor, null, 0, 1,
 				-10);
 		game.setGameFreezeStatus(isOpen());
 	}
 
 	public void update(float detlaTime) {
-		if (open)
-			window.setRelativeTransform(Transform.I.scaled(10));
+		if (open) {
+			window.setRelativeTransform(Transform.I.scaled(zoom));
+			if (zoom != game.getViewScale()) {
+				zoom = game.getViewScale();
+				background = new ShapeGraphics(
+						new Polygon(-zoom * 2, -zoom * 2, -zoom * 2, zoom * 2, zoom * 2, zoom * 2, zoom * 2, -zoom * 2),
+						background.getFillColor(), null, 0, 1, -10);
+			}
+		}
 	}
 
 	@Override
@@ -56,7 +68,7 @@ public abstract class Menu implements Graphics {
 	public void changeStatut() {
 		open = !open;
 	}
-	
+
 	public void setStatut(boolean isOpen) {
 		open = isOpen;
 	}

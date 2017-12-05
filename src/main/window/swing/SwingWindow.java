@@ -172,7 +172,8 @@ public class SwingWindow extends Node implements Window {
 
 		// Show frame
 		frame.pack();
-		frame.setSize(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().getSize());
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		frame.setMinimumSize(new Dimension(640, 480));
 		frame.setVisible(true);
 	}
 

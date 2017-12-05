@@ -16,6 +16,7 @@ import main.math.Vector;
 public class Level1 extends Level {
 
 	private FinishActor finishActor;
+
 	public Level1(ActorGame game) {
 		super(game);
 	}
@@ -29,28 +30,29 @@ public class Level1 extends Level {
 
 		GameEntity player = new Bike(game, new Vector(4, 5));
 
-		//Crate crate1 = new Crate(game, new Vector(6, 5), "res/images/crate.1.png", false, 1);
+		// Crate crate1 = new Crate(game, new Vector(6, 5), "res/images/crate.1.png",
+		// false, 1);
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		finishActor = new FinishActor(game, new Vector(0, 0), player, s);
-		
+
 		this.addActor(finishActor);
-		//this.addActor(crate1);
+		// this.addActor(crate1);
 		this.addActor(ground);
 		this.addActor(player);
-		
+
 		this.setViewCandidate(player);
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		
-	}
-	
 
+	}
 
 	@Override
 	public boolean isFinished() {
+		if (finishActor == null)
+			return false;
 		return finishActor.isFinished();
 	}
 

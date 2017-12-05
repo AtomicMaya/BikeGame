@@ -52,7 +52,7 @@ public class MainMenu extends Menu {
 		super(game, window, true, Color.GRAY);
 		this.window = window;
 		this.game = game;
-		float fontSize = 2f;
+		float fontSize = 4f;
 		tg = new TextGraphics("Menu", fontSize, Color.BLACK, Color.BLUE, .1f, false, false, new Vector(.5f, fontSize),
 				1, 1);
 
@@ -61,15 +61,17 @@ public class MainMenu extends Menu {
 
 		// cadrillage
 		float w = .01f;
-		Shape t = new Polygon(-w, -10, -w, 10, w, 10, w, -10);
-		for (int i = 0; i < 20; i++) {
+		int size = 40;
+		Shape t = new Polygon(-w, -size / 2, -w, size / 2, w, size / 2, w, -size / 2);
+
+		for (int i = 0; i < size; i++) {
 			graphics.add(new ShapeGraphics(t, Color.BLACK, null, 0));
-			graphics.get(i).setRelativeTransform(Transform.I.translated(new Vector(1f * i - 10, 0)));
+			graphics.get(i).setRelativeTransform(Transform.I.translated(new Vector(1f * i - size / 2, 0)));
 		}
-		Shape t2 = new Polygon(-10, -w, 10, -w, 10, w, -10, w);
-		for (int i = 0; i < 20; i++) {
+		Shape t2 = new Polygon(-size/2, -w, size / 2, -w, size / 2, w, -size / 2, w);
+		for (int i = 0; i < size; i++) {
 			graphics.add(new ShapeGraphics(t2, Color.BLACK, null, 0));
-			graphics.get(i + 20).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - 10)));
+			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
 		}
 
 		// get tha saves
@@ -78,7 +80,7 @@ public class MainMenu extends Menu {
 		Polygon buttonShape = new Polygon(0, .1f, 6, .1f, 6, .9f, 0, .9f);
 		for (int i = 0; i < list.length; i++) {
 			Vector position = new Vector(-9, -(i % maxNumberButtonsSave) + 2.5f);
-			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1f));
+			buttons.add(new GraphicalButton(game, position, list[i].getName(), .5f));
 			int p = i;
 			buttons.get(i).addOnClickAction(() -> load(list[p]), 0f);
 		}
@@ -86,11 +88,11 @@ public class MainMenu extends Menu {
 		// Arrow buttons to navigate in the save menu
 		Polygon arrowShape = new Polygon(0, 0, 1, 0, 1, 1, 1, 0);
 
-		right = new GraphicalButton(game, new Vector(-6, -7), "", 6);
-		right.addOnClickAction(() -> PagePlusPlus(), 0f);
+		right = new GraphicalButton(game, new Vector(-6, -7), 1, 1);
+		right.addOnClickAction(() -> PagePlusPlus());
 
-		left = new GraphicalButton(game, new Vector(-8, -7), "", 6);
-		left.addOnClickAction(() -> PageMinusMinus(), 0f);
+		left = new GraphicalButton(game, new Vector(-8, -7), 1, 1);
+		left.addOnClickAction(() -> PageMinusMinus());
 
 		// set arrows graphics
 		right.setNewGraphics("./res/images/arrows/right_arrow_dark_green.png",
@@ -100,8 +102,7 @@ public class MainMenu extends Menu {
 
 		// level editor
 		levelEditor = new LevelEditor(game, window);
-		levelEditorButton = new GraphicalButton(game, new Vector(4, 3),
-				"Level Editor", 1f);
+		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1f);
 
 		levelEditorButton.addOnClickAction(() -> inLevelEditor = true, 0);
 	}
@@ -165,7 +166,7 @@ public class MainMenu extends Menu {
 		for (ShapeGraphics sg : graphics) {
 			sg.draw(canvas);
 		}
-		
+
 		for (int i = 0; i < buttons.size(); i++) {
 			// draw only the buttons on the current page
 			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
