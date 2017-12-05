@@ -92,7 +92,6 @@ public class GraphicalButton extends GameEntity {
     public void draw(Canvas canvas) {
         if (this.hovered) this.graphics.get(1).draw(canvas);
         else this.graphics.get(0).draw(canvas);
-        textGraphics.draw(canvas);
         if (textGraphics != null)
             textGraphics.draw(canvas);
     }
