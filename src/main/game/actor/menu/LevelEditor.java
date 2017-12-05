@@ -63,15 +63,15 @@ public class LevelEditor implements Graphics {
 
 		Polygon p = new Polygon(0, 0, 0, 1, 1, 1, 1, 0);
 		regSquareGraphics = new ShapeGraphics(p, Color.RED, null, 0, .5f, 100);
-		redSquarePosText = new BetterTextGraphics("0.0", .7f);
+		redSquarePosText = new BetterTextGraphics(game, "0.0", .7f);
 		redSquarePosText.setAlpha(101);
 		redSquarePosText.setParent(regSquareGraphics);
 		game.setGameFreezeStatus(true);
 		gridLine = grid();
 
 		// get or not the position on screen when click
-		getPositionButtonPosition = new Vector(-30, 14);
-		getPositionButton = new GraphicalButton(game, getPositionButtonPosition, "Positioneur", .62f);
+		getPositionButtonPosition = new Vector(-20, 10);
+		getPositionButton = new GraphicalButton(game, getPositionButtonPosition, "qwer,    t, zuiopasdfghjklyxcvbnm1234567890", .62f);
 		getPositionButton.addOnClickAction(() -> {
 			hasClicked = false;
 			showRedSquare = !showRedSquare;
@@ -80,7 +80,22 @@ public class LevelEditor implements Graphics {
 		// reset the camera when clicked
 		carmeraResetButtonPosition = new Vector(-21, 14);
 		carmeraResetButton = new GraphicalButton(game, carmeraResetButtonPosition, "Reset camera", .62f);
-		carmeraResetButton.addOnClickAction(() -> cameraPosition = Vector.ZERO);
+		carmeraResetButton.addOnClickAction(() -> {
+			cameraPosition = Vector.ZERO;
+			zoom = 1;
+		});
+	}
+
+	private void updateButtons(float deltaTime) {
+		// camera reset button update
+		carmeraResetButton.setText("Reset camera", .62f * zoom);
+		carmeraResetButton.setPosition((carmeraResetButtonPosition).mul(zoom).add(cameraPosition));
+		carmeraResetButton.update(deltaTime);
+
+		// position button update
+		getPositionButton.setText("qwert ,  zu  . w,   w ,  iopasdfgvbnm1234567890", .62f * zoom);
+		getPositionButton.setPosition((getPositionButtonPosition).mul(zoom).add(cameraPosition));
+		getPositionButton.update(deltaTime);
 	}
 
 	public void update(float deltaTime) {
@@ -98,23 +113,23 @@ public class LevelEditor implements Graphics {
 		if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
 			cameraPosition = cameraPosition.add(new Vector(deltaTime * cameraSpeed, 0));
 		}
+
+		// gestion du zoom
 		if (game.getMouse().getMouseScrolledUp()) {
-			System.out.println("up");
-			zoom += .2f;
-			zoom = (zoom + .1f > 2) ? 2f : zoom;
+			zoom -= .1f;
+			zoom = (zoom < .4f) ? .4f : zoom;
 		} else if (game.getMouse().getMouseScrolledDown()) {
-			System.out.println("down");
-			zoom -= .2f;
-			zoom = (zoom - .1f < 0.4f) ? .4f : zoom;
+			zoom += .1f;
+			zoom = (zoom > 2f) ? 2f : zoom;
 		}
-		
-		
+
+		// ligne de placement
 		gridLine = grid();
-		window.setRelativeTransform(Transform.I.scaled(30 * zoom).translated(cameraPosition));
 
 		// right click menu
 		actorMenu.update(deltaTime);
 
+		// positionneur stuff
 		if (showRedSquare && game.getMouse().getLeftButton().isPressed()) {
 			hasClicked = true;
 			redSquarePosition = game.getMouse().getPosition();
@@ -123,18 +138,16 @@ public class LevelEditor implements Graphics {
 					.setText((int) Math.floor(redSquarePosition.x) + " " + (int) Math.floor(redSquarePosition.y));
 		}
 
-		// camera reset button update
-		carmeraResetButton.update(deltaTime);
-		carmeraResetButton.setPosition(cameraPosition.add(carmeraResetButtonPosition));
-
-		// position when clicked button update
-		getPositionButton.update(deltaTime);
-		getPositionButton.setPosition(cameraPosition.add(getPositionButtonPosition));
-
+		updateButtons(deltaTime);
+		
 		// current actors update
 		for (Actor actor : actors) {
 			actor.update(deltaTime);
 		}
+
+		// finalement placement de la camera
+		window.setRelativeTransform(Transform.I.scaled(30 * zoom).translated(cameraPosition));
+
 	}
 
 	@Override
@@ -152,7 +165,7 @@ public class LevelEditor implements Graphics {
 			redSquarePosText.draw(canvas);
 		}
 		getPositionButton.draw(canvas);
-		carmeraResetButton.draw(canvas);
+		//carmeraResetButton.draw(canvas);
 	}
 
 	public ArrayList<Actor> getActors() {

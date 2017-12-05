@@ -26,7 +26,7 @@ public class ActorMenu extends Menu {
 
 	private ArrayList<GraphicalButton> boutons = new ArrayList<>();
 	private ArrayList<Vector> boutonsPosition = new ArrayList<>();
-
+	private ArrayList<String> description = new ArrayList<>();
 	private Vector maxPosition = Vector.ZERO, minPosition = Vector.ZERO;
 
 	float width, height;
@@ -44,7 +44,7 @@ public class ActorMenu extends Menu {
 			levelEditor.addActor(new CrateBuilder(game));
 			changeStatut();
 		}, .1f);
-		boutonsPosition.add(new Vector(0f, 0f));
+		boutonsPosition.add(new Vector(0f, 0f)); 
 
 		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
 		boutonsPosition.add(new Vector(1f, 0f));

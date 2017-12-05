@@ -74,15 +74,16 @@ public class MainMenu extends Menu {
 			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
 		}
 
-		// get tha saves
+		// get the saves
 		File[] list = Save.availableSaves(new File(game.getSaveDirectory()));
 
 		Polygon buttonShape = new Polygon(0, .1f, 6, .1f, 6, .9f, 0, .9f);
 		for (int i = 0; i < list.length; i++) {
 			Vector position = new Vector(-12, -(i % maxNumberButtonsSave) * 2f + 2.5f);
-			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1f));
+			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1.4f));
 			int p = i;
 			buttons.get(i).addOnClickAction(() -> load(list[p]));
+			buttons.get(i).forceShape(6, -1);
 		}
 
 		// Arrow buttons to navigate in the save menu

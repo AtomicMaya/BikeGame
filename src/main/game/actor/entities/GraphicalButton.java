@@ -4,6 +4,7 @@ import main.game.ActorGame;
 import main.game.actor.Graphics;
 import main.game.actor.QuickMafs;
 import main.math.Polygon;
+import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Mouse;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 public class GraphicalButton extends GameEntity {
 	private Mouse mouse;
 
-	private ArrayList<Graphics> graphics;
-	private ArrayList<Float> time;
-	private ArrayList<Runnable> actions;
+	private ArrayList<Graphics> graphics = new ArrayList<>();
+	private ArrayList<Float> time = new ArrayList<>();
+	private ArrayList<Runnable> actions = new ArrayList<>();
 
 	private float minX, minY, maxX, maxY;
 
@@ -27,33 +28,26 @@ public class GraphicalButton extends GameEntity {
 	private BetterTextGraphics textGraphics;
 
 	private Vector maxPosition;
+	private Vector shiftText = Vector.ZERO;
 
 	public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
 		super(game, true, position);
-
-		float length = (text.length() + 2) * fontSize, height = fontSize * 1.5f;
-		Polygon shape = new Polygon(0, 0, length, 0, length, height, 0, height);
-
-		textGraphics = new BetterTextGraphics(/* position, */text, fontSize);
-		textGraphics.setParent(this);// comme ca le text graphics est link a this
-		create(game, position, shape);
-
+		this.mouse = game.getMouse();
+		this.setText(text, fontSize);
 	}
 
 	public GraphicalButton(ActorGame game, Vector position, float width, float height) {
 		super(game, true, position);
-		create(game, position, new Polygon(0, 0, width, 0, width, height, 0, height));
+		this.mouse = game.getMouse();
+		Polygon shape = new Polygon(0, 0, width, 0, width, height, 0, height);
+
+		changeStuff(position, shape);
 	}
 
-	private void create(ActorGame game, Vector position, Polygon shape) {
-		this.mouse = game.getMouse();
-
+	private void changeStuff(Vector position, Polygon shape) {
 		this.graphics = new ArrayList<>();
 		this.graphics.add(addGraphics(shape, Color.GREEN, Color.ORANGE, .1f, 0.6f, -0.2f));
 		this.graphics.add(addGraphics(shape, Color.RED, Color.ORANGE, .1f, 0.6f, -0.2f));
-
-		this.actions = new ArrayList<>();
-		this.time = new ArrayList<>();
 
 		this.maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
 		this.minX = position.x;
@@ -97,6 +91,7 @@ public class GraphicalButton extends GameEntity {
 		else
 			this.graphics.get(0).draw(canvas);
 		if (textGraphics != null) {
+			textGraphics.setRelativeTransform(Transform.I.translated(shiftText));
 			textGraphics.draw(canvas);
 		}
 	}
@@ -133,6 +128,11 @@ public class GraphicalButton extends GameEntity {
 		this.time.add(expirationTime);
 	}
 
+	/**
+	 * Adds runnable actions to this button
+	 * 
+	 * @param action : the action to run, with default stop spam time
+	 */
 	public void addOnClickAction(Runnable action) {
 		this.actions.add(action);
 		this.time.add(.1f);
@@ -157,5 +157,52 @@ public class GraphicalButton extends GameEntity {
 		this.minY = position.y;
 		this.maxX = this.minX + maxPosition.x;
 		this.maxY = this.minY + maxPosition.y;
+	}
+
+	/**
+	 * Change the text and the fontSize
+	 * 
+	 * @param text new text
+	 * @param fontSize new font size
+	 */
+	public void setText(String text, float fontSize) {
+
+		textGraphics = new BetterTextGraphics(getOwner(), text, fontSize);
+		textGraphics.setParent(this);
+
+		float length = textGraphics.getTotalWidth() + fontSize / 5f, height = fontSize + fontSize / 5f;
+		Polygon shape = new Polygon(0, 0, length, 0, length, height, 0, height);
+
+		changeStuff(getPosition(), shape);
+
+		shiftText = new Vector(length / 2f - textGraphics.getTotalWidth() / 2f, height / 2 - fontSize / 2f);
+	}
+
+	/**
+	 * Force a width and a height to this button, a negative parameter will take the
+	 * default/previous one
+	 * 
+	 * @param width width of the button
+	 * @param height height of the button
+	 */
+	public void forceShape(float width, float height) {
+		if (textGraphics != null) {
+
+			width = (width < 0) ? textGraphics.getTotalWidth() + textGraphics.getCharSize() / 5f : width;
+			height = (height < 0) ? textGraphics.getCharSize() + textGraphics.getCharSize() / 5f : height;
+		} else {
+			width = (width < 0) ? maxX - minX : width;
+			height = (height < 0) ? maxY - minY : height;
+		}
+		Polygon shape = new Polygon(0, 0, width, 0, width, height, 0, height);
+
+		changeStuff(getPosition(), shape);
+	}
+
+	/**
+	 * @return weather this button is hovered
+	 */
+	public boolean isHovered() {
+		return this.hovered;
 	}
 }
