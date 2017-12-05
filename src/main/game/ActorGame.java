@@ -361,4 +361,11 @@ public class ActorGame implements Game {
     public float getViewScale() {
         return VIEW_SCALE_CURRENT;
     }
+
+    protected void setViewScale(float newViewScale) {
+        System.out.println(VIEW_SCALE + ", " + VIEW_SCALE_CURRENT + ", " + VIEW_SCALE_MOD);
+	    VIEW_SCALE_CURRENT = newViewScale;
+	    VIEW_SCALE_MOD = (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD ? VIEW_SCALE_CURRENT - VIEW_SCALE : VIEW_SCALE_CURRENT - VIEW_SCALE);
+	    System.out.println(VIEW_SCALE + ", " + VIEW_SCALE_CURRENT + ", " + VIEW_SCALE_MOD);
+    }
 }

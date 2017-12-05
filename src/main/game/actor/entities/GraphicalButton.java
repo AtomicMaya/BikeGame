@@ -48,9 +48,6 @@ public class GraphicalButton extends GameEntity {
         this.maxY = this.minY + maxPosition.y;
 
         textGraphics = new BetterTextGraphics(position, text, fontSize, length, height);
-
-        build(shape, -1, -1, true);
-
     }
 
     @Override

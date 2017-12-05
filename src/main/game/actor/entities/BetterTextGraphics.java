@@ -92,7 +92,7 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
     @Override
     public void draw(Canvas canvas) {
         for(int i = 0; i < this.graphics.size(); i++) {
-            canvas.drawImage(canvas.getImage(this.graphics.get(i)), Transform.I.scaled(charSize).translated(this.offsets.get(i).div(2)), 1, -.01f);
+            canvas.drawImage(canvas.getImage(this.graphics.get(i)), Transform.I.scaled(charSize).translated(this.offsets.get(i)), 1, -.01f);
         }
     }
 }

@@ -83,12 +83,12 @@ public class TestGame extends ActorGame {
 
         emitter = new ParticleEmitter(this, new Vector(0,6), 800, (float) Math.PI * 0.5f, 1f, 3, 0xFFFFFF00, 0xFFFF0000);
 
-        System.out.println(Preset.Breezy);
+        System.out.println(Preset.Breezy.getObjectCount());
 
         sensor = new ProximitySensor(this, new Vector(0,0), shape);
-        this.setViewScaleModifier(30f);
+        this.setViewScale(5f);
 
-        scenery = new Scenery(new Vector(0,0), 30f);
+        scenery = new Scenery(new Vector(0,0), this.getViewScale());
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
