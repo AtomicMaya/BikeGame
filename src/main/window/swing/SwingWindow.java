@@ -51,6 +51,9 @@ public class SwingWindow extends Node implements Window {
 		int buffer = 0;
 		Vector position = Vector.ZERO;
 
+		int bufferWheelOffset = 0, previousWheelOffset;
+		boolean mouseScrolledDown, mouseScrolledUp;
+
 		@Override
 		public void mousePressed(MouseEvent e) {
 			synchronized (SwingWindow.this) {
@@ -67,6 +70,9 @@ public class SwingWindow extends Node implements Window {
 
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
+		    synchronized (SwingWindow.this) {
+		        bufferWheelOffset = e.getUnitsToScroll() / 3;
+            }
 			// TODO mouse scroll?
 		}
 
@@ -87,7 +93,27 @@ public class SwingWindow extends Node implements Window {
 			return new Button((previous & mask) != 0, (current & mask) != 0);
 		}
 
-	}
+        @Override
+        public int getMouseWheelMovement() {
+		    synchronized (SwingWindow.this) {
+                return current;
+            }
+        }
+
+        @Override
+        public boolean getMouseScrolledDown() {
+		    synchronized (SwingWindow.this) {
+                return mouseScrolledDown;
+		    }
+        }
+
+        @Override
+        public boolean getMouseScrolledUp() {
+            synchronized (SwingWindow.this) {
+                return mouseScrolledUp;
+            }
+        }
+    }
 
 	// Define keyboard manager
 	private class KeyboardProxy extends KeyAdapter implements Keyboard {
@@ -268,10 +294,20 @@ public class SwingWindow extends Node implements Window {
 		synchronized (this) {
 
 			// Update mouse buttons
-			mouseProxy.previous = mouseProxy.current;
+            mouseProxy.previous = mouseProxy.current;
 			mouseProxy.current = mouseProxy.buffer;
 
-			// Update keyboard buttons
+			if(mouseProxy.bufferWheelOffset != mouseProxy.previousWheelOffset) {
+                mouseProxy.mouseScrolledUp = mouseProxy.bufferWheelOffset == -1;
+                mouseProxy.mouseScrolledDown = mouseProxy.bufferWheelOffset == 1;
+                mouseProxy.bufferWheelOffset = 0;
+            } else {
+                mouseProxy.mouseScrolledUp = false;
+                mouseProxy.mouseScrolledDown = false;
+            }
+            mouseProxy.previousWheelOffset = mouseProxy.bufferWheelOffset;
+
+            // Update keyboard buttons
 			Set<Integer> tmp = keyboardProxy.previous;
 			keyboardProxy.previous = keyboardProxy.current;
 			keyboardProxy.current = keyboardProxy.buffer;

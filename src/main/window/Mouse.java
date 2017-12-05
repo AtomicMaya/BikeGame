@@ -28,7 +28,11 @@ public interface Mouse extends Positionable {
     default Button getRightButton() {
         return getButton(2);
     }
-    
+
+    default int getMouseWheelMovement() { return 0; }
+
+    boolean getMouseScrolledUp();
+    boolean getMouseScrolledDown();
     // TODO wheel/scroll if needed
     
 }
