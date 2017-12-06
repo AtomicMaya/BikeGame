@@ -1,4 +1,4 @@
-package main.game.actor.graphicalStuff;
+package main.game.graphicalStuff;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,7 +6,7 @@ import java.util.Collections;
 
 public enum Preset {
     //Clouds, Leaves, Trees
-    Breezy(new String[]{"main.game.actor.graphicalStuff.Cloud", "main.game.actor.graphicalStuff.BlowingLeaf"},
+    Breezy(new String[]{"main.game.graphicalStuff.Cloud", "main.game.graphicalStuff.BlowingLeaf"},
             new Integer[]{3, 6},
             new Float[][]{new Float[]{-1f, 0f, -2f, 0f}, new Float[]{-0.5f, -0.05f, -3f, -0.5f}},
             new Float[][]{new Float[]{2f, .05f, 6f, 1.5f}, new Float[]{.5f, .5f, .5f, .5f}});

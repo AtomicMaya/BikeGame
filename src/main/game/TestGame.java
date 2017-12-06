@@ -2,7 +2,7 @@ package main.game;
 
 import main.game.actor.Audio;
 import main.game.actor.entities.*;
-import main.game.actor.graphicalStuff.Scenery;
+import main.game.graphicalStuff.Scenery;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.math.Polygon;

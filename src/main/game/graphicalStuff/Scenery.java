@@ -1,4 +1,4 @@
-package main.game.actor.graphicalStuff;
+package main.game.graphicalStuff;
 
 import main.game.GameObjects.Rectangle;
 import main.game.actor.Actor;

@@ -1,4 +1,4 @@
-package main.game.actor.graphicalStuff;
+package main.game.graphicalStuff;
 
 import main.game.actor.Graphics;
 import main.math.Vector;
