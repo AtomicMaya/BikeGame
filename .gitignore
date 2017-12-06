@@ -10,3 +10,6 @@ saves/*
 *.exe
 *.stackdump
 *.stackdump
+.settings/org.eclipse.ltk.core.refactoring.prefs
+res/images/Thumbs.db
+sh.exe.stackdump

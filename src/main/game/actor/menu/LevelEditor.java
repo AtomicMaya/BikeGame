@@ -4,16 +4,14 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.Graphics;
 import main.game.actor.QuickMafs;
 import main.game.actor.ShapeGraphics;
 import main.game.actor.actorBuilder.ActorBuilder;
+import main.game.actor.actorBuilder.BikeBuilder;
+import main.game.actor.actorBuilder.GroundBuilder;
 import main.game.actor.entities.BetterTextGraphics;
 import main.game.actor.entities.GraphicalButton;
 import main.math.Polygon;
@@ -23,11 +21,18 @@ import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
 public class LevelEditor implements Graphics {
 
-	// list actors
+	// actorBuilder stuff
 	private ArrayList<ActorBuilder> actors = new ArrayList<>();
+	private GroundBuilder gb;
+	private BikeBuilder bb;
 
+	// stuffs
 	private ActorGame game;
 	private ActorMenu actorMenu;
 	private Window window;
@@ -38,12 +43,18 @@ public class LevelEditor implements Graphics {
 	private float zoom = 1f;
 	private float maxPosX = 120;
 	private float maxPosY = 30;
+	private float cameraAcceleration = .4f;
+	private float xPP = 1;// camera acceleration
+	private final float maxCameraXPP = 3;
 
 	// Grid parameters
 	private ArrayList<ShapeGraphics> gridLine = new ArrayList<>();
 	private ShapeGraphics axeX, axeY;
 	private int lineNumberX = 120, lineNumberY = 66;
 	private float lineThickness = .01f;
+
+	// button font size
+	private float fontSize = .63f;
 
 	// position showing
 	private Vector redSquarePosition = Vector.ZERO;
@@ -54,13 +65,21 @@ public class LevelEditor implements Graphics {
 
 	// activate/desactivate position pointer
 	private GraphicalButton getPositionButton;
-	private Vector getPositionButtonPosition;
+	private Vector getPositionButtonPosition = new Vector(-29, 14);
 	private final String getPosButtonText = "Positionneur";
 
 	// reset camera button + position (absolue sur l'ecran)
 	private GraphicalButton carmeraResetButton;
-	private Vector carmeraResetButtonPosition;
+	private Vector carmeraResetButtonPosition = new Vector(-21, 14);
 	private final String resetCameraButtonText = "Reset camera";
+
+	// test play button
+	private GraphicalButton playButton;
+	private Vector playButtonPosition = new Vector(0, 14);
+	private final String playButtonText = "Play";
+
+	// test play stuff
+	private ArrayList<Actor> actorPlay = new ArrayList<>();
 
 	public LevelEditor(ActorGame game, Window window) {
 		this.game = game;
@@ -90,49 +109,96 @@ public class LevelEditor implements Graphics {
 
 		// get or not the position on screen when click
 		getPositionButtonPosition = new Vector(-29, 14);
-		getPositionButton = new GraphicalButton(game, getPositionButtonPosition, getPosButtonText, 1f);
+		getPositionButton = new GraphicalButton(game, getPositionButtonPosition, getPosButtonText, fontSize);
 		getPositionButton.addOnClickAction(() -> {
 			hasClicked = false;
 			showRedSquare = !showRedSquare;
 		});
 
 		// reset the camera when clicked
-		carmeraResetButtonPosition = new Vector(-21, 14);
-		carmeraResetButton = new GraphicalButton(game, carmeraResetButtonPosition, resetCameraButtonText, 1f);
+		carmeraResetButton = new GraphicalButton(game, carmeraResetButtonPosition, resetCameraButtonText, fontSize);
 		carmeraResetButton.addOnClickAction(() -> {
 			cameraPosition = Vector.ZERO;
 			zoom = 1;
 		});
+
+		// playButton
+		playButton = new GraphicalButton(game, playButtonPosition, playButtonText, fontSize);
+		playButton.setDepth(51);
+		playButtonPosition = new Vector(-playButton.getWidth() / 2, playButtonPosition.y);
+		playButton.addOnClickAction(() -> {
+
+			game.setGameFreezeStatus(!game.isGameFrozen());
+			if (!game.isGameFrozen()) {
+				actorPlay = getActors();
+				game.setViewCandidate(this.bb.getActor());
+			} else {
+				for (Actor a : actorPlay) {
+					a.destroy();
+				}
+				actorPlay.clear();
+				game.setViewCandidate(null);
+				for (ActorBuilder ab : actors) {
+					ab.reCreate();
+				}
+			}
+
+		});
+
 	}
 
 	private void updateButtons(float deltaTime) {
 		// camera reset button update
-		carmeraResetButton.setText(resetCameraButtonText, .83f * zoom);
+		carmeraResetButton.setText(resetCameraButtonText, fontSize * zoom);
 		carmeraResetButton.setPosition((carmeraResetButtonPosition).mul(zoom).add(cameraPosition));
 		carmeraResetButton.update(deltaTime);
 
 		// position button update
-		getPositionButton.setText(getPosButtonText, .83f * zoom);
+		getPositionButton.setText(getPosButtonText, fontSize * zoom);
 		getPositionButton.setPosition((getPositionButtonPosition).mul(zoom).add(cameraPosition));
 		getPositionButton.update(deltaTime);
+
+		// play button update
+		playButton.setText(playButtonText, fontSize * zoom);
+		playButton.setPosition((playButtonPosition).mul(zoom).add(cameraPosition));
+		playButton.update(deltaTime);
 	}
 
 	public void update(float deltaTime) {
 
+		if (!game.isGameFrozen()) {
+
+			float z = game.getViewScale() / 30f;
+			playButton.setText(playButtonText, fontSize * z);
+			playButton.setPosition((playButtonPosition).mul(z).add(game.getCameraPosition()));
+			playButton.update(deltaTime);
+
+			for (Actor a : actorPlay) {
+				a.update(deltaTime);
+			}
+			return;
+		}
+		// camera accelaration
+		if (game.getKeyboard().get(KeyEvent.VK_CONTROL).isDown()) {
+			xPP += cameraAcceleration * deltaTime;
+			xPP = (xPP >= maxCameraXPP) ? maxCameraXPP : xPP;
+		}
+		if (game.getKeyboard().get(KeyEvent.VK_CONTROL).isReleased())
+			xPP = 1;
 		// camera controls
 		float posX = cameraPosition.x;
 		float posY = cameraPosition.y;
 		if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
-			posY += deltaTime * cameraSpeed;
+			posY += deltaTime * cameraSpeed * xPP;
 		}
 		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
-			posY += -deltaTime * cameraSpeed;
+			posY += -deltaTime * cameraSpeed * xPP;
 		}
 		if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-			posX += -deltaTime * cameraSpeed;
+			posX += -deltaTime * cameraSpeed * xPP;
 		}
 		if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-			posX += deltaTime * cameraSpeed;
+			posX += deltaTime * cameraSpeed * xPP;
 		}
 
 		posX = (posX >= maxPosX) ? maxPosX : posX;
@@ -154,7 +220,12 @@ public class LevelEditor implements Graphics {
 		gridLine = grid();
 
 		// right click menu
-		actorMenu.update(deltaTime);
+		boolean temp = true;
+		for (ActorBuilder actor : actors) {
+			temp = actor.isDone() & temp;
+		}
+		if (temp)
+			actorMenu.update(deltaTime);
 
 		// positionneur stuff
 		if (showRedSquare && game.getMouse().getLeftButton().isPressed()) {
@@ -170,7 +241,7 @@ public class LevelEditor implements Graphics {
 		updateButtons(deltaTime);
 
 		// current actors update
-		for (Actor actor : actors) {
+		for (ActorBuilder actor : actors) {
 			actor.update(deltaTime);
 		}
 
@@ -181,15 +252,26 @@ public class LevelEditor implements Graphics {
 
 	@Override
 	public void draw(Canvas canvas) {
+
+		playButton.draw(canvas);
+
+		if (!game.isGameFrozen()) {
+			for (Actor a : actorPlay) {
+				a.draw(canvas);
+			}
+			return;
+		}
+
 		// draw right click menu
 		actorMenu.draw(canvas);
-		
+
 		// draw current actors
-		for (Actor actor : actors) {
+		for (ActorBuilder actor : actors) {
 			actor.draw(canvas);
 		}
 
 		// draw grid
+
 		for (ShapeGraphics sg : gridLine) {
 			sg.draw(canvas);
 		}
@@ -203,14 +285,41 @@ public class LevelEditor implements Graphics {
 		}
 		getPositionButton.draw(canvas);
 		carmeraResetButton.draw(canvas);
+
 	}
 
 	public ArrayList<Actor> getActors() {
-		return null;
+		ArrayList<Actor> a = new ArrayList<>();
+		for (ActorBuilder ab : actors) {
+			a.add(ab.getActor());
+		}
+		return a;
 	}
 
 	public void addActor(ActorBuilder actor) {
 		actors.add(actor);
+	}
+
+	/**
+	 * Make sure we have a unique ground
+	 */
+	public void addGround(GroundBuilder gb) {
+		if (this.gb != null) {
+			this.gb.getActor().destroy();
+			actors.remove(this.gb);
+		}
+		actors.add(gb);
+		this.gb = gb;
+	}
+
+	/**
+	 * Make sure we have a unique bike
+	 */
+	public void addBike(BikeBuilder bb) {
+		if (this.bb != null)
+			actors.remove(this.bb);
+		this.bb = bb;
+		actors.add(bb);
 	}
 
 	private ArrayList<ShapeGraphics> grid() {
@@ -236,6 +345,15 @@ public class LevelEditor implements Graphics {
 					Transform.I.translated(new Vector(0, 1f * i - lineNumberX / 2)).translated(c2));
 		}
 		return lines;
+
+	}
+
+	public float getZoom() {
+		return this.zoom;
+	}
+
+	public Vector getCameraPosition() {
+		return this.cameraPosition;
 	}
 
 }

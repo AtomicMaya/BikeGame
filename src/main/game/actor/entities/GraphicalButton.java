@@ -15,9 +15,11 @@ public class GraphicalButton extends GameEntity {
 	private Mouse mouse;
 
 	private ArrayList<Graphics> graphics = new ArrayList<>();
+	private String idleGraphics, hoverGraphics;
 	private ArrayList<Float> time = new ArrayList<>();
 	private ArrayList<Runnable> actions = new ArrayList<>();
 
+	private float alpha = .6f, depth = -.02f;
 	private float minX, minY, maxX, maxY;
 
 	private boolean hovered, clicked;
@@ -30,6 +32,7 @@ public class GraphicalButton extends GameEntity {
 
 	private final Vector defaultTextOffset;
 	private Vector shiftText = Vector.ZERO;
+	private boolean forcedTextShift = false;
 
 	public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
 		super(game, true, position);
@@ -50,8 +53,13 @@ public class GraphicalButton extends GameEntity {
 
 	private void changeStuff(Vector position, Polygon shape) {
 		this.graphics = new ArrayList<>();
-		this.graphics.add(addGraphics(shape, Color.GREEN, Color.ORANGE, .1f, 0.6f, -0.2f));
-		this.graphics.add(addGraphics(shape, Color.RED, Color.ORANGE, .1f, 0.6f, -0.2f));
+		if (this.idleGraphics == null) {
+			this.graphics.add(addGraphics(shape, Color.GREEN, Color.ORANGE,
+					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth));
+			this.graphics.add(addGraphics(shape, Color.RED, Color.ORANGE,
+					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth));
+		} else
+			this.setNewGraphics(idleGraphics, hoverGraphics);
 
 		this.maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
 		this.minX = position.x;
@@ -113,11 +121,13 @@ public class GraphicalButton extends GameEntity {
 	 * @param hoverGraphics : Graphics when the button is Hovered
 	 */
 	public void setNewGraphics(String idleGraphics, String hoverGraphics) {
+		this.idleGraphics = idleGraphics;
+		this.hoverGraphics = hoverGraphics;
 		this.graphics = new ArrayList<>();
 		this.graphics
-				.add(addGraphics(idleGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, -0.2f));
+				.add(addGraphics(idleGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, depth));
 		this.graphics
-				.add(addGraphics(hoverGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, -0.2f));
+				.add(addGraphics(hoverGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, depth));
 	}
 
 	/**
@@ -171,7 +181,8 @@ public class GraphicalButton extends GameEntity {
 	 */
 	public void setText(String text, float fontSize) {
 
-		textGraphics = new BetterTextGraphics(getOwner(), text, fontSize);
+		textGraphics = new BetterTextGraphics(getOwner(), (text == null) ? textGraphics.getText() : text, fontSize);
+		textGraphics.setDepth(depth+.1f);
 		textGraphics.setParent(this);
 
 		forceShape(-1, -1);
@@ -190,6 +201,8 @@ public class GraphicalButton extends GameEntity {
 			width = (width < 0) ? textGraphics.getTotalWidth() + shiftText.x * 2f : width;
 			height = (height < 0) ? textGraphics.getCharSize() + shiftText.y * 2f : height;
 
+			if (!forcedTextShift)
+				shiftText = new Vector(textGraphics.getCharSize() / 4f, textGraphics.getCharSize() / 4f);
 		} else {
 			width = (width < 0) ? maxX - minX : width;
 			height = (height < 0) ? maxY - minY : height;
@@ -206,10 +219,11 @@ public class GraphicalButton extends GameEntity {
 	 */
 	public void forceStartEndOffset(Vector offset) {
 		if (textGraphics != null) {
+			forcedTextShift = true;
 			if (offset != null)
 				shiftText = offset;
 			else
-				shiftText = new Vector(textGraphics.getCharSize() / 5, textGraphics.getCharSize() / 5);
+				shiftText = new Vector(textGraphics.getCharSize() / 4f, textGraphics.getCharSize() / 4f);
 			float width = textGraphics.getTotalWidth();
 			float height = textGraphics.getCharSize();
 
@@ -235,5 +249,14 @@ public class GraphicalButton extends GameEntity {
 			textGraphics.setInBetweenCharTextOffset(value);
 			forceShape(-1, -1);
 		}
+	}
+
+	public float getWidth() {
+		return maxX - minX;
+	}
+
+	public void setDepth(float depth) {
+		this.depth = depth;
+		this.setNewGraphics(idleGraphics, hoverGraphics);
 	}
 }

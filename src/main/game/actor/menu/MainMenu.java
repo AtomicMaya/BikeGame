@@ -136,8 +136,8 @@ public class MainMenu extends Menu {
 			levelEditor.update(deltaTime);
 			return;
 		}
-
 		super.update(deltaTime);
+		
 		waitBeforeClick += deltaTime;
 		for (int i = 0; i < buttons.size(); i++) {
 			// update only the buttons on the current page
