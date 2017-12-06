@@ -18,10 +18,11 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 
 	// text parameters
 	private String text;
-	private float charSize = 0;
+	private float charSize = 1;
 	private float textLength;
 	private float alpha = 1, debth = -.01f;
 	private float letterRatio = 73f;
+	private float inBeetweenCharOffset = 0;
 
 	private Canvas canvas;
 
@@ -125,29 +126,26 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 	 * Change the text of this better text graphics
 	 * 
 	 * @param text new text
-	 * @param charSize new char size
+	 * @param charSize new char size, negative value will flip the text through f(x)
+	 *            = -x;
 	 */
 	public void setText(String text, float fontSize) {
-		this.charSize = (fontSize < 0) ? this.charSize : fontSize;
+		this.charSize = fontSize;
 		this.text = (text == null) ? "" : text;
-
 		this.graphics = getFileLocations(text.toUpperCase(Locale.ROOT));
 		this.offsets = new ArrayList<>();
 		this.charSizes = new ArrayList<>();
 		this.text = text;
-		this.charSize = fontSize;
-
-		// letterRatio = canvas.getImage(graphics.get(0)).getHeight();// always 73;
 
 		float o = 0;
 		for (int i = 0; i < this.graphics.size(); i++) {
 			float letterWidth = canvas.getImage(graphics.get(i)).getWidth() / letterRatio;
 			this.offsets.add(new Vector(o, 0));
 			this.charSizes.add(new float[] { letterWidth * this.charSize, this.charSize });
-			o += letterWidth*this.charSize;
+			o += letterWidth * this.charSize + inBeetweenCharOffset;
 
 		}
-		textLength = o;
+		textLength = o - inBeetweenCharOffset; // - inBeetweenCharOffset pour corigé, il y en a un en trop
 	}
 
 	/**
@@ -156,7 +154,7 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 	 * @param text new text
 	 */
 	public void setText(String text) {
-		this.setText(text, -1);
+		this.setText(text, this.charSize);
 	}
 
 	/**
@@ -178,5 +176,15 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 	 */
 	public float getTotalWidth() {
 		return textLength;
+	}
+
+	/**
+	 * Add a space between each char in the text
+	 * 
+	 * @param value space value
+	 */
+	public void setInBetweenCharTextOffset(float value) {
+		this.inBeetweenCharOffset = value;
+		setText(text);
 	}
 }

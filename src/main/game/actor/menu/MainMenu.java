@@ -76,10 +76,8 @@ public class MainMenu extends Menu {
 
 		// get the saves
 		File[] list = Save.availableSaves(new File(game.getSaveDirectory()));
-
-		Polygon buttonShape = new Polygon(0, .1f, 6, .1f, 6, .9f, 0, .9f);
 		for (int i = 0; i < list.length; i++) {
-			Vector position = new Vector(-12, -(i % maxNumberButtonsSave) * 2f + 2.5f);
+			Vector position = new Vector(-28, -(i % maxNumberButtonsSave) * 2f + 8f);
 			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1.4f));
 			int p = i;
 			buttons.get(i).addOnClickAction(() -> load(list[p]));
@@ -103,8 +101,8 @@ public class MainMenu extends Menu {
 
 		// level editor
 		levelEditor = new LevelEditor(game, window);
-		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1f);
-
+		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1.4f);
+		//levelEditorButton.forceInbetweenCharOffset(1.4f/2f);
 		levelEditorButton.addOnClickAction(() -> inLevelEditor = true);
 	}
 

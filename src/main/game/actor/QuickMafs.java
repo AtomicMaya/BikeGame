@@ -3,6 +3,7 @@ package main.game.actor;
 import main.math.Vector;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // ASCII
@@ -107,11 +108,74 @@ public class QuickMafs {
 		float maxX = Math.max(min.x, max.x);
 		float minY = Math.min(min.y, max.y);
 		float maxY = Math.max(min.y, max.y);
-		
+
 		if (minX > toTest.x || maxX < toTest.x)
 			return false;
 		if (minY > toTest.y || maxY < toTest.y)
 			return false;
 		return true;
+	}
+
+	public static ArrayList<Vector> sortVectorByX(ArrayList<Vector> points) {
+		if (points.isEmpty())
+			return points;
+		else {
+			ArrayList<Vector> smaller = new ArrayList<>();
+			ArrayList<Vector> equals = new ArrayList<>();
+			ArrayList<Vector> bigger = new ArrayList<>();
+
+			Vector p = points.get(0);
+			for (Vector v : points) {
+				if (p.x > v.x) {
+					smaller.add(v);
+				} else if (p.x < v.x) {
+					bigger.add(v);
+				} else
+					equals.add(v);
+			}
+			ArrayList<Vector> sorted = new ArrayList<>();
+			sorted.addAll(sortVectorByX(smaller));
+			sorted.addAll(deleteUselessInY(equals, smaller, bigger));
+			sorted.addAll(sortVectorByX(bigger));
+			return sorted;
+		}
+
+	}
+
+	public static ArrayList<Vector> deleteUselessInY(ArrayList<Vector> points, ArrayList<Vector> before,
+			ArrayList<Vector> after) {
+		if (points.size() == 1)
+			return points;
+		Vector s = points.get(0);
+		Vector b = points.get(0);
+		for (Vector v : points) {
+			if (s.y > v.y)
+				s = v;
+			if (b.y < v.y)
+				b = v;
+		}
+		ArrayList<Vector> p = new ArrayList<>();
+		// cas limites
+		if (before.isEmpty() && !after.isEmpty()) {
+			p.add(s);
+			p.add(b);
+		} else if (!before.isEmpty() && after.isEmpty()) {
+			p.add(b);
+			p.add(s);
+		} else {
+//			System.out.println(before.size() + " " + after.size() + " " + before.isEmpty() + " " + after.isEmpty());
+//			for (Vector v : points) {
+//				System.out.println(v);
+//			}
+			if (getDistance(s, before.get(before.size() - 1)) < getDistance(s, after.get(0))) {
+				p.add(s);
+				p.add(b);
+			} else {
+				p.add(b);
+				p.add(s);
+			}
+		}
+
+		return p;
 	}
 }

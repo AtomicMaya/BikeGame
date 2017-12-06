@@ -2,7 +2,6 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.Graphics;
-import main.game.actor.QuickMafs;
 import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
@@ -28,20 +27,25 @@ public class GraphicalButton extends GameEntity {
 	private BetterTextGraphics textGraphics;
 
 	private Vector maxPosition;
+
+	private final Vector defaultTextOffset;
 	private Vector shiftText = Vector.ZERO;
 
 	public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
 		super(game, true, position);
 		this.mouse = game.getMouse();
+
+		defaultTextOffset = new Vector(fontSize / 4f, fontSize / 4f);
+
+		shiftText = new Vector(defaultTextOffset.x, defaultTextOffset.y);
 		this.setText(text, fontSize);
 	}
 
 	public GraphicalButton(ActorGame game, Vector position, float width, float height) {
 		super(game, true, position);
 		this.mouse = game.getMouse();
-		Polygon shape = new Polygon(0, 0, width, 0, width, height, 0, height);
-
-		changeStuff(position, shape);
+		defaultTextOffset = new Vector(0, 0);// does not matter
+		forceShape(width, height);
 	}
 
 	private void changeStuff(Vector position, Polygon shape) {
@@ -170,12 +174,7 @@ public class GraphicalButton extends GameEntity {
 		textGraphics = new BetterTextGraphics(getOwner(), text, fontSize);
 		textGraphics.setParent(this);
 
-		float length = textGraphics.getTotalWidth() + fontSize / 5f, height = fontSize + fontSize / 5f;
-		Polygon shape = new Polygon(0, 0, length, 0, length, height, 0, height);
-
-		changeStuff(getPosition(), shape);
-
-		shiftText = new Vector(length / 2f - textGraphics.getTotalWidth() / 2f, height / 2 - fontSize / 2f);
+		forceShape(-1, -1);
 	}
 
 	/**
@@ -188,8 +187,9 @@ public class GraphicalButton extends GameEntity {
 	public void forceShape(float width, float height) {
 		if (textGraphics != null) {
 
-			width = (width < 0) ? textGraphics.getTotalWidth() + textGraphics.getCharSize() / 5f : width;
-			height = (height < 0) ? textGraphics.getCharSize() + textGraphics.getCharSize() / 5f : height;
+			width = (width < 0) ? textGraphics.getTotalWidth() + shiftText.x * 2f : width;
+			height = (height < 0) ? textGraphics.getCharSize() + shiftText.y * 2f : height;
+
 		} else {
 			width = (width < 0) ? maxX - minX : width;
 			height = (height < 0) ? maxY - minY : height;
@@ -200,9 +200,40 @@ public class GraphicalButton extends GameEntity {
 	}
 
 	/**
+	 * Force the start and end offset
+	 * 
+	 * @param offset shift
+	 */
+	public void forceStartEndOffset(Vector offset) {
+		if (textGraphics != null) {
+			if (offset != null)
+				shiftText = offset;
+			else
+				shiftText = new Vector(textGraphics.getCharSize() / 5, textGraphics.getCharSize() / 5);
+			float width = textGraphics.getTotalWidth();
+			float height = textGraphics.getCharSize();
+
+			forceShape(width, height);
+		}
+
+	}
+
+	/**
 	 * @return weather this button is hovered
 	 */
 	public boolean isHovered() {
 		return this.hovered;
+	}
+
+	/**
+	 * Add a space between each char in the text
+	 * 
+	 * @param value space value
+	 */
+	public void forceInbetweenCharOffset(float value) {
+		if (textGraphics != null) {
+			textGraphics.setInBetweenCharTextOffset(value);
+			forceShape(-1, -1);
+		}
 	}
 }

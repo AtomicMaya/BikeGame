@@ -44,8 +44,8 @@ public class Program {
 			// Game game = new PolyLineGame();
 			// Game game = new CrateGame();
 
-			Game game = new TestGame();
-			//Game game = new TestGameLevelMenu();
+			//Game game = new TestGame();
+			Game game = new TestGameLevelMenu();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

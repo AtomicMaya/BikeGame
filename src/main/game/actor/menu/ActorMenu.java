@@ -8,6 +8,7 @@ import main.game.ActorGame;
 import main.game.actor.QuickMafs;
 import main.game.actor.ShapeGraphics;
 import main.game.actor.actorBuilder.CrateBuilder;
+import main.game.actor.actorBuilder.GroundBuilder;
 import main.game.actor.entities.GraphicalButton;
 import main.math.Polygon;
 import main.math.Shape;
@@ -37,22 +38,27 @@ public class ActorMenu extends Menu {
 
 		Polygon shape = new Polygon(0f, 0f, 0f, .8f, 1.8f, .8f, 1.8f, 0f);
 
+		float butonSizeX = .8f, butonSizeY = .8f;
 		// crate pos 0,0
-		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
 		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
 		boutons.get(0).addOnClickAction(() -> {
 			levelEditor.addActor(new CrateBuilder(game));
 			changeStatut();
-		}, .1f);
-		boutonsPosition.add(new Vector(0f, 0f)); 
+		});
+		boutonsPosition.add(new Vector(0f, 0f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
 		boutonsPosition.add(new Vector(1f, 0f));
+		boutons.get(1).addOnClickAction(() -> {
+			levelEditor.addActor(new GroundBuilder(game));
+			changeStatut();
+		});
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
 		boutonsPosition.add(new Vector(0f, -1f));
 
-		boutons.add(new GraphicalButton(game, Vector.ZERO, .8f, .8f));
+		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
 		boutonsPosition.add(new Vector(1f, -1f));
 
 		for (int i = 0; i < boutonsPosition.size(); i++) {
@@ -86,7 +92,7 @@ public class ActorMenu extends Menu {
 
 		} else if (mouse.getLeftButton().isPressed()) {
 			Vector mousePos = mouse.getPosition();
-			
+
 			if (!QuickMafs.isInRectangle(minPosition, maxPosition, mousePos))
 				this.setStatut(false);
 		}

@@ -5,6 +5,7 @@
 package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
+import main.game.actor.Actor;
 import main.game.actor.QuickMafs;
 import main.game.actor.crate.Crate;
 import main.window.Canvas;
@@ -38,6 +39,11 @@ public class CrateBuilder extends ActorBuilder {
 	@Override
 	public void draw(Canvas canvas) {
 		crate.draw(canvas);
+	}
+
+	@Override
+	public Actor getActor() {
+		return crate;
 	}
 
 }

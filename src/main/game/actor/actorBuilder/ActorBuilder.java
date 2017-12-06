@@ -24,5 +24,7 @@ public abstract class ActorBuilder implements Actor {
 	public Vector getVelocity() {
 		return null;
 	}
+	
+	public abstract Actor getActor();
 
 }
