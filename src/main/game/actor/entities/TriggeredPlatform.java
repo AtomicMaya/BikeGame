@@ -28,25 +28,25 @@ public class TriggeredPlatform extends GameEntity {
         this.currentLoopCount = 0;
 
         Shape platformShape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 1.f, .0f, 1.f);
-        platform = new Platform(game, position, platformShape);
+        this.platform = new Platform(game, position, platformShape);
 
         this.build(new Circle(0.1f), -1f, -1, false);
-        platform.attach(this.getEntity(), Vector.ZERO);
+        this.platform.attach(this.getEntity(), Vector.ZERO);
 
-        game.addActor(platform);
+        game.addActor(this.platform);
     }
 
     @Override
     public void update(float deltaTime) {
-        if (triggered) {
-            elapsedTime += deltaTime;
+        if (this.triggered) {
+            this.elapsedTime += deltaTime;
             if (this.currentLoopCount < this.maxLoops) {
-                if (delay < elapsedTime && elapsedTime < loopTime + delay) {
-                    platform.setPosition(evolution.mul(speed * deltaTime, speed * deltaTime));
-                } else if (loopTime + pauseTime + delay < elapsedTime && elapsedTime < 2 * loopTime + pauseTime + delay) {
-                    platform.setPosition(evolution.mul(-speed * deltaTime, -speed * deltaTime));
-                } else if (elapsedTime > 2 * (loopTime + pauseTime) + delay){
-                    elapsedTime = 0.f;
+                if (this.delay < this.elapsedTime && this.elapsedTime < this.loopTime + this.delay) {
+                    this.platform.setPosition(this.evolution.mul(this.speed * deltaTime, this.speed * deltaTime));
+                } else if (this.loopTime + this.pauseTime + this.delay < this.elapsedTime && this.elapsedTime < 2 * this.loopTime + this.pauseTime + this.delay) {
+                    this.platform.setPosition(this.evolution.mul(-this.speed * deltaTime, -this.speed * deltaTime));
+                } else if (this.elapsedTime > 2 * (this.loopTime + this.pauseTime) + this.delay){
+                    this.elapsedTime = 0.f;
                     this.currentLoopCount += 1;
                 }
             } else {
@@ -54,18 +54,19 @@ public class TriggeredPlatform extends GameEntity {
                 this.triggered = false;
             }
         }
-        platform.update(deltaTime);
+        this.platform.update(deltaTime);
     }
 
     @Override
     public void destroy() {
+        this.platform.destroy();
         super.destroy();
         super.getOwner().destroyActor(this);
     }
 
     @Override
     public void draw(Canvas canvas) {
-        platform.draw(canvas);
+        this.platform.draw(canvas);
     }
 
     public void triggerAction() {

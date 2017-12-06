@@ -34,8 +34,8 @@ public class Scenery implements Actor {
             Float[] speeds = thisPreset.getSpeedBounds().get(counter);
             Float[] sizes = thisPreset.getSizeBounds().get(counter);
             for(int i = 0; i < quantities; i++) {
-                float randX = this.minimumSpawn.x + this.random.nextFloat() * (this.maximumCoords.x - this.minimumSpawn.x);
-                float randY = this.minimumSpawn.y + this.random.nextFloat() * (this.maximumCoords.y - this.minimumSpawn.y);
+                float randX = this.minimumCoords.x + this.random.nextFloat() * (this.maximumCoords.x - this.minimumCoords.x);
+                float randY = this.minimumCoords.y + this.random.nextFloat() * (this.maximumCoords.y - this.minimumCoords.y);
                 System.out.println(randX + "," + randY + "," + minimumSpawn.x + "," + minimumSpawn.y + "," + maximumCoords.x + "," + maximumCoords.y);
                 float randSpeedX = speeds[0] + this.random.nextFloat() * (speeds[2] - speeds[0]);
                 float randSpeedY = speeds[1] + this.random.nextFloat() * (speeds[3] - speeds[1]);

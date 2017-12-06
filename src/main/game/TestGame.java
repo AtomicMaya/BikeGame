@@ -26,6 +26,7 @@ public class TestGame extends ActorGame {
     private Scenery scenery;
     private Bike player;
 
+
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
@@ -80,7 +81,7 @@ public class TestGame extends ActorGame {
         //emitter = new ParticleEmitter(this, new Vector(-3,5), 200, (float) Math.PI * 0.5f, (float) Math.PI, .75f, 0.2f, 3, 0.3f, 0xFFFFFF00, 0xFFFF0000, 2, 5);
 
        //sensor = new ProximitySensor(this, new Vector(0,0), shape);
-        this.setViewScale(10f);
+        this.setViewScale(15f);
 
         scenery = new Scenery(player.getPosition(), this.getViewScale());
 
@@ -103,7 +104,7 @@ public class TestGame extends ActorGame {
 		this.addActor(button);
 		this.addActor(coin);
 		//this.addActor(emitter);
-		//this.addActor(scenery);
+		this.addActor(scenery);
 		return true;
 	}
 
@@ -113,9 +114,9 @@ public class TestGame extends ActorGame {
 		if(window.getMouse().getMouseScrolledDown()) System.out.println("Mouse Down");
 		if(window.getMouse().getMouseScrolledUp()) System.out.println("Mouse Up");
 		//System.out.println(window.getMouse().getMouseWheelMovement());
-		//scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
+		scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
 		//scenery.draw(window);
-       // scenery.update(deltaTime);
+        scenery.update(deltaTime);
 
 	}
 

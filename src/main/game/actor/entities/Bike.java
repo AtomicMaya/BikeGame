@@ -147,7 +147,7 @@ public class Bike extends GameEntity {
 				this.getEntity().applyAngularForce(-10.f);
 			}
 			float speed = ((this.lookRight ? this.leftWheel : this.rightWheel).getSpeed() / (deltaTime * 100)) % 360 * (lookRight ? 1 : -1);
-            this.angle -= (speed < 10f * this.character.getDirectionModifier() ? 10f * this.character.getDirectionModifier() : speed) * this.character.getDirectionModifier();
+            this.angle -= (speed < 7f * this.character.getDirectionModifier() ? 7f * this.character.getDirectionModifier() : speed) * this.character.getDirectionModifier();
             this.character.nextPedal(this.angle);
 		}
 
