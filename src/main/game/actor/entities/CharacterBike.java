@@ -48,10 +48,9 @@ public class CharacterBike extends GameEntity {
         this.lKneePos = new Vector(.2f, .3f); this.lFootPos = new Vector(.1f, -.3f);
         this.rKneePos = new Vector(.0f, .2f); this.rFootPos = new Vector(-.1f, -.3f);
 
-		this.graphics = new ArrayList<>();
-
+        updateGraphics();
 		Circle anchor = new Circle(0.1f);
-		this.build(anchor, -1f, -1, true);
+		this.build(anchor);
 	}
 
 	private void updateGraphics() {
@@ -144,8 +143,8 @@ public class CharacterBike extends GameEntity {
                 (float) (Math.sin(toRadians(angle)) * 0.4 - 0.25f));
         this.rFootPos = new Vector((float) (Math.cos(toRadians(angle) - Math.PI) * 0.4 + 0.15f) * this.directionModifier,
                 (float) (Math.sin(toRadians(angle) - Math.PI) * 0.4 - 0.25f));
-        this.lKneePos = new Vector((this.lFootPos.x + 0.0f) , (this.lFootPos.y + 0.5f) );
-        this.rKneePos = new Vector((this.rFootPos.x + 0.0f) , (this.rFootPos.y + 0.5f));
+        this.lKneePos = new Vector(this.lFootPos.x , (this.lFootPos.y + 0.5f) );
+        this.rKneePos = new Vector(this.rFootPos.x , (this.rFootPos.y + 0.5f));
     }
 
 	/**

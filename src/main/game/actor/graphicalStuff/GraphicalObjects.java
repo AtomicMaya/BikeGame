@@ -13,9 +13,7 @@ public interface GraphicalObjects extends Graphics {
 
     }
 
-    default void callNextGraphics() {
-
-    }
+    void update(float deltaTime);
 
     Vector getSpeed();
     Vector getPosition();

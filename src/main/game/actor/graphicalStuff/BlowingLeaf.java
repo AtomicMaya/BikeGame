@@ -7,15 +7,17 @@ import main.window.Canvas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created on 12/4/2017 at 5:28 PM.
  */
 public class BlowingLeaf implements GraphicalObjects {
     private ArrayList<String> file;
-    private int graphicsCounter;
+    private int graphicsCounter, initialOffset;
     private Vector position, speed;
     private float length, height;
+    private float animationTime, elapsedAnimationTime;
 
     public BlowingLeaf(Vector position, Rectangle shape, Vector speed) {
         this.file = new ArrayList<>();
@@ -26,16 +28,18 @@ public class BlowingLeaf implements GraphicalObjects {
         this.length = shape.getHeight();
         this.height = shape.getLength();
         this.speed = speed;
-        this.graphicsCounter = 0;
+        this.initialOffset = new Random().nextInt(this.file.size() - 1);
+        this.animationTime = 1.05f;
+        this.elapsedAnimationTime = 0;
     }
 
     @Override
-    public void callNextGraphics() {
-        this.graphicsCounter += 1;
-        if (this.graphicsCounter >= this.file.size() - 1) this.graphicsCounter = 0;
+    public void update(float deltaTime) {
+        this.position = this.position.add(this.speed.mul(deltaTime));
+        this.elapsedAnimationTime += deltaTime;
+        if (this.elapsedAnimationTime > this.animationTime) this.elapsedAnimationTime = 0;
+       this.graphicsCounter = ((int) (elapsedAnimationTime / this.animationTime * this.file.size()) + this.initialOffset) % this.file.size();
     }
-
-
 
     @Override
     public void draw(Canvas canvas) {

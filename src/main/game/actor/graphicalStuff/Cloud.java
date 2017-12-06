@@ -19,6 +19,11 @@ public class Cloud implements GraphicalObjects {
     }
 
     @Override
+    public void update(float deltaTime) {
+        this.position = this.position.add(this.speed.mul(deltaTime));
+    }
+
+    @Override
     public void draw(Canvas canvas) {
         canvas.drawImage(canvas.getImage(this.file), Transform.I.translated(this.position).scaled(this.length, this.height), 1, 0);
     }

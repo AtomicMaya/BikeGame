@@ -58,7 +58,7 @@ public class Bike extends GameEntity {
 	 */
 	private void create() {
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		this.build(hitbox);
+		this.build(hitbox, -1, -1, false, 0);
 
 		this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);

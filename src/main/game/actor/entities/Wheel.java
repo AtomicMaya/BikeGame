@@ -1,16 +1,15 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
-import main.game.actor.ShapeGraphics;
+import main.game.actor.ImageGraphics;
 import main.math.*;
 import main.window.Canvas;
-
-import java.awt.*;
 
 public class Wheel extends GameEntity {
 	// keep references
 	private WheelConstraint constraint = null;
-	private ShapeGraphics graphics;
+	private ImageGraphics graphics;
+	private BasicContactListener listener;
 
 	private float radius;
 	/**
@@ -32,8 +31,8 @@ public class Wheel extends GameEntity {
 	 */
 	private void create() {
 		Circle circle = new Circle(radius - .05f);
-		this.build(circle, .6f, -1, false);
-		graphics = this.addGraphics(circle, Color.LIGHT_GRAY, Color.DARK_GRAY, .15f, 1.f, 9.9f);
+		this.build(circle, 20f, -1, false);
+		graphics = this.addGraphics("/res/images/wheel.png", this.radius * 2, this.radius * 2, new Vector(this.radius, this.radius), 1, 0);
 	}
 	
 //	@Override
