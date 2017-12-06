@@ -1,16 +1,17 @@
 package main.game.actor.entities;
 
+import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
+
 import main.game.ActorGame;
 import main.game.actor.ShapeGraphics;
 import main.math.Polyline;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
-import java.util.List;
-
 public class Ground extends GameEntity {
-    private static final long serialVersionUID = 7454750386019416210L;
+	private static final long serialVersionUID = 7454750386019416210L;
 
 	// keep reference to the graphics
 	private transient ShapeGraphics graphics;
@@ -19,6 +20,7 @@ public class Ground extends GameEntity {
 
 	/**
 	 * Create a Ground
+	 * 
 	 * @param game : ActorGame where the ground exists
 	 * @param position : the position of the ground
 	 * @param shape : a polyline shape of the ground
@@ -30,8 +32,8 @@ public class Ground extends GameEntity {
 	}
 
 	/**
-	 * Actual creation of the parameters of the GameEntity, not in the constructor to
-	 * avoid duplication with the method reCreate
+	 * Actual creation of the parameters of the GameEntity, not in the constructor
+	 * to avoid duplication with the method reCreate
 	 */
 	private void create() {
 		Polyline p = new Polyline(points);

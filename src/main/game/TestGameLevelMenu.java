@@ -7,7 +7,6 @@ package main.game;
 import java.util.Arrays;
 import java.util.List;
 
-import com.sun.xml.internal.bind.v2.model.annotation.Quick;
 
 import main.game.actor.QuickMafs;
 import main.game.actor.entities.Bike;

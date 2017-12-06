@@ -26,10 +26,10 @@ public class GroundBuilder extends ActorBuilder {
 	private ArrayList<Vector> points = new ArrayList<>();
 	private ArrayList<Vector> fixStart = new ArrayList<>();
 	private ArrayList<Vector> fixEnd = new ArrayList<>();
-	private Vector start = new Vector(-999, 0), end = new Vector(999, 0);
+	private Vector start = new Vector(-400, 0), end = new Vector(400, 0);
 	private ActorGame game;
 
-	private Polyline ground;
+	private Polyline groundLine;
 
 	// current mousePosition
 	private Vector currentPoint;
@@ -50,15 +50,17 @@ public class GroundBuilder extends ActorBuilder {
 	private LevelEditor lv;
 	private boolean isDone = false;
 
+	private Ground ground;
+
 	public GroundBuilder(ActorGame game, LevelEditor lv) {
 		super(game);
 		this.game = game;
 		this.lv = lv;
 
-		fixStart.add(new Vector(-1000, -1000));
-		fixStart.add(new Vector(-1000, 0));
-		fixEnd.add(new Vector(1000, 0));
-		fixEnd.add(new Vector(1000, -1000));
+		fixStart.add(new Vector(-500, -500));
+		fixStart.add(new Vector(-500, 0));
+		fixEnd.add(new Vector(500, 0));
+		fixEnd.add(new Vector(500, -500));
 
 		points.add(start);
 		points.add(end);
@@ -76,8 +78,9 @@ public class GroundBuilder extends ActorBuilder {
 		finishPosition = new Vector(-finish.getWidth() / 2, finishPosition.y);
 		finish.addOnClickAction(() -> {
 			this.isDone = true;
-			ground = new Polyline(updateGround(null));
+			groundLine = new Polyline(updateGround(null));
 		});
+		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
 	}
 
 	@Override
@@ -92,8 +95,7 @@ public class GroundBuilder extends ActorBuilder {
 			drawModeButton.draw(canvas);
 			finish.draw(canvas);
 		}
-
-		canvas.drawShape(ground, Transform.I, Color.decode("#6D5D49"), Color.decode("#548540"), .1f, 1, -10);
+		canvas.drawShape(groundLine, Transform.I, Color.decode("#6D5D49"), Color.decode("#548540"), .1f, 1, -10);
 
 	}
 
@@ -108,7 +110,7 @@ public class GroundBuilder extends ActorBuilder {
 			}
 
 			points = updatePoints(points);
-			ground = new Polyline(updateGround(currentPoint));
+			groundLine = new Polyline(updateGround(currentPoint));
 
 			// buttons update
 			drawModeButton.setText(null, fontSize * lv.getZoom());
@@ -165,12 +167,21 @@ public class GroundBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
-		return new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
+		if (ground != null)
+			ground.destroy();
+		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
+		return ground;
 	}
 
 	@Override
 	public boolean isDone() {
 		return isDone;
+	}
+
+	@Override
+	public void reCreate() {
+		ground.destroy();
+		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
 	}
 
 }

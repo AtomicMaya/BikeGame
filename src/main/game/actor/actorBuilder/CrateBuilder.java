@@ -48,12 +48,18 @@ public class CrateBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
-		return new Crate(game, position, null, false, 1);
+		return crate;
 	}
 
 	@Override
 	public boolean isDone() {
 		return placed;
+	}
+
+	@Override
+	public void reCreate() {
+		crate.destroy();
+		crate = new Crate(game, position, null, false, 1);
 	}
 
 }

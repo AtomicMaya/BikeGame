@@ -124,18 +124,24 @@ public class LevelEditor implements Graphics {
 
 		// playButton
 		playButton = new GraphicalButton(game, playButtonPosition, playButtonText, fontSize);
-		playButtonPosition = new Vector(playButton.getWidth(), playButtonPosition.y);
+		playButton.setDepth(51);
+		playButtonPosition = new Vector(-playButton.getWidth() / 2, playButtonPosition.y);
 		playButton.addOnClickAction(() -> {
-			actorPlay.clear();
+
 			game.setGameFreezeStatus(!game.isGameFrozen());
-			if (game.isGameFrozen()) {
-				for (ActorBuilder ab : actors) {
-					actorPlay.add(ab.getActor());
-					System.out.println("new ");
-				}
+			if (!game.isGameFrozen()) {
+				actorPlay = getActors();
 				game.setViewCandidate(this.bb.getActor());
-			} else
+			} else {
+				for (Actor a : actorPlay) {
+					a.destroy();
+				}
+				actorPlay.clear();
 				game.setViewCandidate(null);
+				for (ActorBuilder ab : actors) {
+					ab.reCreate();
+				}
+			}
 
 		});
 
@@ -162,11 +168,11 @@ public class LevelEditor implements Graphics {
 
 		if (!game.isGameFrozen()) {
 
-			float z = 30 / game.getViewScale();
+			float z = game.getViewScale() / 30f;
 			playButton.setText(playButtonText, fontSize * z);
 			playButton.setPosition((playButtonPosition).mul(z).add(game.getCameraPosition()));
 			playButton.update(deltaTime);
-			System.out.println(playButton.getPosition());
+
 			for (Actor a : actorPlay) {
 				a.update(deltaTime);
 			}
@@ -298,8 +304,10 @@ public class LevelEditor implements Graphics {
 	 * Make sure we have a unique ground
 	 */
 	public void addGround(GroundBuilder gb) {
-		if (this.gb != null)
+		if (this.gb != null) {
+			this.gb.getActor().destroy();
 			actors.remove(this.gb);
+		}
 		actors.add(gb);
 		this.gb = gb;
 	}

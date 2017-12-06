@@ -395,4 +395,9 @@ public class ActorGame implements Game {
         VIEW_SCALE_MOD = (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD ? VIEW_SCALE_CURRENT - VIEW_SCALE
                 : VIEW_SCALE_CURRENT - VIEW_SCALE);
     }
+
+
+    public Vector getCameraPosition() {
+        return this.viewCenter;
+    }
 }
