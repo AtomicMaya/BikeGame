@@ -21,22 +21,20 @@ public class CharacterBike extends GameEntity {
 	private ArrayList<ShapeGraphics> graphics;
 	private PrismaticConstraint constraint;
 
-	private float angle;
 	private boolean isYaying;
 	private final float timeTillYayEnd = 1.5f;
 	private float elapsedYayTime;
-    private final float pedalingAngleIncrement = 3.f;
 
 	// Insurance Vectors, so as to reset the various moving limbs to default positions
 	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f);
 	private Vector initRElbowPos = new Vector(.5f, 1.f), initRHandPos = new Vector(1.f, .8f);
-	private Vector lElbowRaisedPos = new Vector(.1f, 2.2f), lHandRaisedPos = new Vector(.1f, 2.75f);
+	private Vector lElbowRaisedPos = new Vector(.4f, 2.2f), lHandRaisedPos = new Vector(.4f, 2.75f);
 	private Vector rElbowRaisedPos = new Vector(.2f, 2.2f), rHandRaisedPos = new Vector(.2f, 2.75f);
 
 	/**
 	 * Initialize a Character
-	 * @param game : the game in which this character exists
-	 * @param position : the position the character occupies
+	 * @param game : The game in which this character exists
+	 * @param position : The position the character occupies
 	 */
 	public CharacterBike(ActorGame game, Vector position) {
 		super(game, false, position);
@@ -107,9 +105,9 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/**
-	 * Attaches this to the entity, at the anchor point
-	 * @param vehicle : the entity on which this will be attached
-	 * @param anchor : the point were this should be centered
+	 * Attaches this to an entity, at the anchor point.
+	 * @param vehicle : The entity on which this will be attached.
+	 * @param anchor : The point were this should be centered.
 	 */
 	protected void attach(Entity vehicle, Vector anchor) {
 		PrismaticConstraintBuilder builder = super.getOwner().createPrismaticConstraintBuilder();
@@ -129,7 +127,7 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/**
-	 * Removes the constraint
+	 * Removes the constraint.
 	 */
 	public void detach() {
 		if (constraint != null) constraint.destroy();
@@ -148,17 +146,17 @@ public class CharacterBike extends GameEntity {
     }
 
 	/**
-	 * Calculates the coordinates of the next point relative to time
-	 * @param anchor : the point to which this point is 'attached', can moved
-	 * @param initial : the absolute initial coordinates that this point occupied
-	 * @param goal : the point that this point should attain
-	 * @return the new coordinates of this point
+	 * Calculates the coordinates of the next point relative to time.
+	 * @param anchor : the point to which this point is 'attached', can moved.
+	 * @param initial : the absolute initial coordinates that this point occupied.
+	 * @param goal : the point that this point should attain.
+	 * @return the new coordinates of this point.
 	 */
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
 		float radius = QuickMafs.getDistance(anchor, initial);
 		float angle = QuickMafs.getAngle(anchor, initial, goal);
 		angle += angle * this.directionModifier * this.elapsedYayTime / (this.timeTillYayEnd / 2.f);
-		return new Vector((float) (anchor.x + radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
+		return new Vector((float) (anchor.x - radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}
 
 	/**

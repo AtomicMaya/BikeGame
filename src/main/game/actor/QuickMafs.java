@@ -3,7 +3,6 @@ package main.game.actor;
 import main.math.Vector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 // ASCII
@@ -11,11 +10,10 @@ import java.util.List;
 
 public class QuickMafs {
 	/**
-	 * Gets distance between two points
-	 *
-	 * @param first : first point
-	 * @param second : second point
-	 * @return the distance between both points
+	 * Gets distance between two points.
+	 * @param first : The first point.
+	 * @param second : The second point.
+	 * @return the distance between both points.
 	 */
 	public static float getDistance(Vector first, Vector second) {
 		return (float) Math.sqrt(Math.pow(first.x - second.x, 2) + Math.pow(first.y - second.y, 2));
@@ -27,8 +25,7 @@ public class QuickMafs {
 
 	/**
 	 * Converts from degrees to radians
-	 *
-	 * @param angle : an angle in degrees
+	 * @param angle : An angle in degrees
 	 * @return : an angle in radians
 	 */
 	public static float toRadians(float angle) {
@@ -37,9 +34,8 @@ public class QuickMafs {
 
 	/**
 	 * Inverts a list of vectors on an axis.
-	 *
-	 * @param vectors : the given list of vectors
-	 * @param axis : the given axis, should be ([-1.f | 1.f], [-1.f | 1.f]) for
+	 * @param vectors : The given list of vectors
+	 * @param axis : The given axis, should be ([-1.f | 1.f], [-1.f | 1.f]) for
 	 *            clean inversion.
 	 * @return a list with the inverted vectors
 	 */
@@ -62,8 +58,7 @@ public class QuickMafs {
 
 	/**
 	 * Returns green component from given packed color.
-	 *
-	 * @param rgb : a 32-bits RGB color
+	 * @param rgb : A 32-bits ARGB color
 	 * @return an integer between 0 and 255
 	 */
 	public static int getGreen(int rgb) {
@@ -72,17 +67,22 @@ public class QuickMafs {
 
 	/**
 	 * Returns blue component from given packed color.
-	 *
-	 * @param rgb : a 32-bits RGB color
-	 * @return an integer between 0 and 255
+	 * @param rgb : A 32-bits ARGB color.
+	 * @return an integer between 0 and 255.
 	 */
 	public static int getBlue(int rgb) {
 		return rgb & 0xFF;
 	}
 
+    /**
+     * Returns alpha component from given packed color.
+     * @param argb : A 32-bits ARGB color.
+     * @return an int between 0 and 255.
+     */
 	public static int getAlpha(int argb) {
 		return (argb >> 24) & 0xFF;
 	}
+
 
 	public static int validate8bit(int someInt) {
 		if (someInt < 0)
@@ -111,10 +111,8 @@ public class QuickMafs {
 
 		if (minX > toTest.x || maxX < toTest.x)
 			return false;
-		if (minY > toTest.y || maxY < toTest.y)
-			return false;
-		return true;
-	}
+        return !(minY > toTest.y) && !(maxY < toTest.y);
+    }
 
 	public static ArrayList<Vector> sortVectorByX(ArrayList<Vector> points) {
 		if (points.isEmpty())

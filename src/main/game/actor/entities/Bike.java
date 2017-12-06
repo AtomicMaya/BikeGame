@@ -39,6 +39,8 @@ public class Bike extends GameEntity {
 	private transient Wheel leftWheel, rightWheel;
 	public transient CharacterBike character;
 	private float angle;
+	private boolean isDead;
+	private ParticleEmitter deathEmitter;
 
 	/**
 	 * Create a Bike, the BikeGame's main actor.
@@ -48,6 +50,7 @@ public class Bike extends GameEntity {
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
 		this.game = game;
+		this.isDead = false;
 
 		this.create();
 	}
@@ -94,13 +97,20 @@ public class Bike extends GameEntity {
 
 	}
 
+	public boolean hasDied() {
+	    return this.isDead;
+    }
+
+    public void triggerDeathAnimation(Vector velocity) {
+	   game.addActor(new ParticleEmitter(this.game, this.getPosition(), 100, velocity.getAngle(), (float) Math.PI / 4f, 1, .1f, 2, .1f, 0xFF830303,  	0x00830303, 2, 5));
+    }
+
 	@Override
 	public void update(float deltaTime) {
 	    if(this.contactListener.getEntities().size() > 0) {
 	        for(Entity entity : this.contactListener.getEntities()) {
 	            if(entity.getCollisionGroup() == CollisionGroups.TERRAIN.group) {
-	                //TODO trigger death ->
-
+	                this.isDead = true;
                 }
             }
         }
