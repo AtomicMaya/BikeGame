@@ -8,3 +8,5 @@
 saves/*
 *.py
 *.exe
+*.stackdump
+*.stackdump
