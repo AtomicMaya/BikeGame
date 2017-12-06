@@ -115,9 +115,7 @@ public abstract class GameEntity implements Actor, Savable {
 	 * @return a new ImageGraphics associated to this
 	 */
 	public ImageGraphics addGraphics(String imagePath, float width, float height) {
-		ImageGraphics graphics = new ImageGraphics(imagePath, width, height);
-		graphics.setParent(this.entity);
-		return graphics;
+	    return addGraphics(imagePath,width,height, Vector.ZERO, 1, 0);
 	}
 
     /**
@@ -136,7 +134,20 @@ public abstract class GameEntity implements Actor, Savable {
 		return graphics;
 	}
 
-	/**
+    /**
+     *
+     * @param imagePath
+     * @param width
+     * @param height
+     * @param anchor
+     * @return
+     */
+    public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor) {
+        return addGraphics(imagePath, width, height, anchor, 1, 0);
+    }
+
+
+    /**
 	 * Create and add a ShapeGraphics to this entity
 	 * 
 	 * @param shape : a shape, may be null

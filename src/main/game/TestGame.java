@@ -77,12 +77,14 @@ public class TestGame extends ActorGame {
 
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
-        emitter = new ParticleEmitter(this, new Vector(-3,5), 200, (float) Math.PI * 0.5f, (float) Math.PI, .75f, 0.2f, 3, 0.3f, 0xFFFFFF00, 0xFFFF0000, 2, 5);
+        //emitter = new ParticleEmitter(this, new Vector(-3,5), 200, (float) Math.PI * 0.5f, (float) Math.PI, .75f, 0.2f, 3, 0.3f, 0xFFFFFF00, 0xFFFF0000, 2, 5);
 
        //sensor = new ProximitySensor(this, new Vector(0,0), shape);
         this.setViewScale(10f);
 
         scenery = new Scenery(player.getPosition(), this.getViewScale());
+
+        Coin coin = new Coin(this, new Vector(2, 3));
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
@@ -99,7 +101,8 @@ public class TestGame extends ActorGame {
 		this.addActor(platform);
 		this.addActor(movingPlatform);
 		this.addActor(button);
-		this.addActor(emitter);
+		this.addActor(coin);
+		//this.addActor(emitter);
 		//this.addActor(scenery);
 		return true;
 	}
@@ -111,10 +114,6 @@ public class TestGame extends ActorGame {
 		if(window.getMouse().getMouseScrolledUp()) System.out.println("Mouse Up");
 		//System.out.println(window.getMouse().getMouseWheelMovement());
 		//scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
-		if(((Bike) this.getPayload()).hasDied()) {
-            ((Bike) this.getPayload()).triggerDeathAnimation(this.getPayload().getVelocity());
-		    this.destroyActor(this.getPayload());
-        }
 		//scenery.draw(window);
        // scenery.update(deltaTime);
 

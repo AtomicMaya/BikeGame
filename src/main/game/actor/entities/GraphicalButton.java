@@ -151,7 +151,7 @@ public class GraphicalButton extends GameEntity {
 	private void runAction(Runnable runnable, float time) {
 		this.buttonBusy = true;
 		this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
-		Runner.generateWorker(runnable).execute();
+		ParallelAction.generateWorker(runnable).execute();
 	}
 
 	@Override

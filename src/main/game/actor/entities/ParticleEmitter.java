@@ -23,13 +23,14 @@ public class ParticleEmitter implements Actor{
     private float speed, speedVariation;
 
     private int startColor, endColor;
-    private float deathStartTime, elapsedTime;
+    private float deathStartTime, elapsedTime = 0;
 
     private Vector position, gravity;
 
     public ParticleEmitter(ActorGame game, Vector position, int particlesPerSecond, float angle, float angleVariation,
                            float speed, float speedVariation, float particleLifeTime, float particleLifeTimeVariation,
                            int startColor, int endColor, float deathStartTime, int decayRate) {
+        System.out.println("called");
         this.game = game;
 
         this.particlesPerSecond = particlesPerSecond;
@@ -75,16 +76,23 @@ public class ParticleEmitter implements Actor{
     public void update(float deltaTime) {
         if (this.deathStartTime >= 0) {
             this.elapsedTime += deltaTime;
+            if(this.elapsedTime >= this.deathStartTime && this.particlesPerSecond > 0) {
+                this.particlesPerSecond -= decayRate;
+            }
+            if (this.particlesPerSecond < 0) this.particlesPerSecond = 0;
         }
-        if(this.deathStartTime >= 0 && this.elapsedTime >= this.deathStartTime) this.particlesPerSecond -= this.decayRate;
+
+       //System.out.println(particlesPerSecond);
 
         ArrayList<Particle> particlesToRemove = new ArrayList<>();
         int newParticlesCount = (int) (this.particlesPerSecond * deltaTime);
-        for (int i = 0; i < newParticlesCount; i++) {
-            this.spawnParticle((1f + i) / newParticlesCount * deltaTime);
+        if (this.particlesPerSecond > 0) {
+            for (int i = 0; i < newParticlesCount; i++) {
+                this.spawnParticle((1f + i) / newParticlesCount * deltaTime);
+            }
         }
 
-        for(Particle particle : this.particles) {
+        for (Particle particle : this.particles) {
             if(particle.isFlaggedForDestruction()) {
                 particlesToRemove.add(particle);
             } else {
@@ -92,11 +100,11 @@ public class ParticleEmitter implements Actor{
             }
         }
 
-        for(Particle particle :  particlesToRemove) {
+        for (Particle particle :  particlesToRemove) {
             this.particles.remove(particle);
         }
 
-        if(this.particles.size() == 0) {
+        if (this.particles.size() == 0) {
             this.destroy();
         }
     }

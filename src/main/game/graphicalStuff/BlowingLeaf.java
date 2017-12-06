@@ -13,8 +13,8 @@ public class BlowingLeaf implements GraphicalObjects {
     private ArrayList<String> file;
     private int graphicsCounter, initialOffset;
     private Vector position, speed;
-    private float length, height;
-    private float animationTime, elapsedAnimationTime;
+    private float length, height, elapsedAnimationTime;
+    private final float animationTime;
 
     public BlowingLeaf(Vector position, Rectangle shape, Vector speed) {
         this.file = new ArrayList<>();

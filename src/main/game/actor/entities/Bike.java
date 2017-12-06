@@ -38,9 +38,8 @@ public class Bike extends GameEntity {
 	// Entities associated to the Bike.
 	private transient Wheel leftWheel, rightWheel;
 	public transient CharacterBike character;
-	private float angle;
-	private boolean isDead;
-	private ParticleEmitter deathEmitter;
+	private float angle, timer, elapsedTime = 0;
+	private boolean isDead, wasTriggered = false;
 
 	/**
 	 * Create a Bike, the BikeGame's main actor.
@@ -101,9 +100,13 @@ public class Bike extends GameEntity {
 	    return this.isDead;
     }
 
-    public void triggerDeathAnimation(Vector velocity) {
-	   game.addActor(new ParticleEmitter(this.game, this.getPosition(), 100, velocity.getAngle(), (float) Math.PI / 4f, 1, .1f, 2, .1f, 0xFF830303,  	0x00830303, 2, 5));
-    }
+    public void triggerDeathAnimation() {
+	   game.addActor(new ParticleEmitter(this.game, this.getPosition().sub(0, 1), 100, (float) -Math.PI / 2f,
+               (float) Math.PI, 1, .1f, 2, .1f,
+               0xFF830303,  	0x00830303, 1, 5));
+	   try { Thread.sleep(5); }catch (InterruptedException ignored) {}
+	   this.destroy();
+	}
 
 	@Override
 	public void update(float deltaTime) {
@@ -111,6 +114,10 @@ public class Bike extends GameEntity {
 	        for(Entity entity : this.contactListener.getEntities()) {
 	            if(entity.getCollisionGroup() == CollisionGroups.TERRAIN.group) {
 	                this.isDead = true;
+	                if(!this.wasTriggered) {
+	                    triggerDeathAnimation();
+	                    wasTriggered = true;
+                    }
                 }
             }
         }
@@ -139,7 +146,8 @@ public class Bike extends GameEntity {
 			} else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
 				this.getEntity().applyAngularForce(-10.f);
 			}
-            this.angle += ((this.lookRight ? this.leftWheel : this.rightWheel).getSpeed() / (deltaTime * 100)) % 360 * (lookRight ? 1 : -1);
+			float speed = ((this.lookRight ? this.leftWheel : this.rightWheel).getSpeed() / (deltaTime * 100)) % 360 * (lookRight ? 1 : -1);
+            this.angle -= (speed < 10f * this.character.getDirectionModifier() ? 10f * this.character.getDirectionModifier() : speed) * this.character.getDirectionModifier();
             this.character.nextPedal(this.angle);
 		}
 

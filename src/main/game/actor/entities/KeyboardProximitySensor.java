@@ -83,7 +83,7 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 	public void runAction(Runnable runnable, float time) {
 		this.sensorOccupied = true;
         this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
-		Runner.generateWorker(runnable).execute();
+		ParallelAction.generateWorker(runnable).execute();
 	}
 
 	@Override

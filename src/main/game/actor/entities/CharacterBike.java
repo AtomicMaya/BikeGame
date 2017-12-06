@@ -53,7 +53,7 @@ public class CharacterBike extends GameEntity {
 
 	private void updateGraphics() {
         Circle head = new Circle(.35f, this.headPos.add(.1f * this.directionModifier, .1f));
-        Polygon body = new Polygon(this.headPos, this.armJointPos, backPos);
+        Polygon body = new Polygon(this.headPos, this.armJointPos, this.backPos);
         this.graphics = new ArrayList<>();
         this.graphics.add(this.addGraphics(head, Color.decode("#f5c396"), Color.BLACK, .02f, 1.f, 10.1f));
         this.graphics.add(this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10));
@@ -205,21 +205,25 @@ public class CharacterBike extends GameEntity {
 	 * Inverts all the xCoordinates on the x axis
 	 */
 	public void invertX() {
-		directionModifier = directionModifier * -1;
-		headPos = headPos.mul(xInverted); armJointPos = armJointPos.mul(xInverted);
-		backPos = backPos.mul(xInverted);
-		lElbowPos = lElbowPos.mul(xInverted); lHandPos = lHandPos.mul(xInverted);
-		rElbowPos = rElbowPos.mul(xInverted); rHandPos = rHandPos.mul(xInverted);
+        this.directionModifier = this.directionModifier * -1;
+        this.headPos = this.headPos.mul(xInverted); this.armJointPos = this.armJointPos.mul(xInverted);
+        this.backPos = this.backPos.mul(xInverted);
+        this.lElbowPos = this.lElbowPos.mul(xInverted); this.lHandPos = this.lHandPos.mul(xInverted);
+        this.rElbowPos = this.rElbowPos.mul(xInverted); this.rHandPos = this.rHandPos.mul(xInverted);
 
 		// Insurance against bad math...
-		lKneePos = new Vector(.2f, .3f).mul(directionModifier == 1 ? xyNormal : xInverted);
-		lFootPos = new Vector(.1f, -.3f).mul(directionModifier == 1 ? xyNormal : xInverted);
-		rKneePos = new Vector(.0f, .2f).mul(directionModifier == 1 ? xyNormal : xInverted);
-		rFootPos = new Vector(-.1f, -.3f).mul(directionModifier == 1 ? xyNormal : xInverted);
+        this.lKneePos = new Vector(.2f, .3f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
+        this.lFootPos = new Vector(.1f, -.3f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
+        this.rKneePos = new Vector(.0f, .2f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
+        this.rFootPos = new Vector(-.1f, -.3f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
 
-		lElbowRaisedPos = lElbowRaisedPos.mul(xInverted); lHandRaisedPos = lHandRaisedPos.mul(xInverted);
-		rElbowRaisedPos = rElbowRaisedPos.mul(xInverted); rHandRaisedPos = rHandRaisedPos.mul(xInverted);
-		initLElbowPos = initLElbowPos.mul(xInverted); initLHandPos = initLHandPos.mul(xInverted);
-		initRElbowPos = initRElbowPos.mul(xInverted); initRHandPos = initRHandPos.mul(xInverted);
+        this.lElbowRaisedPos = this.lElbowRaisedPos.mul(xInverted); this.lHandRaisedPos = this.lHandRaisedPos.mul(xInverted);
+        this.rElbowRaisedPos = this.rElbowRaisedPos.mul(xInverted); this.rHandRaisedPos = this.rHandRaisedPos.mul(xInverted);
+        this.initLElbowPos = this.initLElbowPos.mul(xInverted); this.initLHandPos = this.initLHandPos.mul(xInverted);
+        this.initRElbowPos = this.initRElbowPos.mul(xInverted); this.initRHandPos = this.initRHandPos.mul(xInverted);
 	}
+
+    public float getDirectionModifier() {
+        return this.directionModifier;
+    }
 }
