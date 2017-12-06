@@ -30,8 +30,8 @@ public class CharacterBike extends GameEntity {
 	// Insurance Vectors, so as to reset the various moving limbs to default positions
 	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f);
 	private Vector initRElbowPos = new Vector(.5f, 1.f), initRHandPos = new Vector(1.f, .8f);
-	private Vector lElbowRaisedPos = new Vector(.0f, 2.2f), lHandRaisedPos = new Vector(.0f, 2.75f);
-	private Vector rElbowRaisedPos = new Vector(-.2f, 2.2f), rHandRaisedPos = new Vector(-.2f, 2.75f);
+	private Vector lElbowRaisedPos = new Vector(.1f, 2.2f), lHandRaisedPos = new Vector(.1f, 2.75f);
+	private Vector rElbowRaisedPos = new Vector(.2f, 2.2f), rHandRaisedPos = new Vector(.2f, 2.75f);
 
 	/**
 	 * Initialize a Character
@@ -173,10 +173,10 @@ public class CharacterBike extends GameEntity {
 			this.rElbowPos = getNewPosition(this.armJointPos, this.initRElbowPos, this.rElbowRaisedPos);
 			this.rHandPos = getNewPosition(this.armJointPos, this.initRHandPos, this.rHandRaisedPos);
 		} else if (this.elapsedYayTime < this.timeTillYayEnd) {
-            this.lHandPos = getNewPosition(this.armJointPos, this.lHandRaisedPos, this.initLHandPos);
             this.lElbowPos = getNewPosition(this.armJointPos, this.lElbowRaisedPos, this.initLElbowPos);
-            this.rHandPos = getNewPosition(this.armJointPos, this.rHandRaisedPos, this.initRHandPos);
+            this.lHandPos = getNewPosition(this.armJointPos, this.lHandRaisedPos, this.initLHandPos);
             this.rElbowPos = getNewPosition(this.armJointPos, this.rElbowRaisedPos, this.initRElbowPos);
+            this.rHandPos = getNewPosition(this.armJointPos, this.rHandRaisedPos, this.initRHandPos);
 		}
 
 		if (this.elapsedYayTime > this.timeTillYayEnd) {

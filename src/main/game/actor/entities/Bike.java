@@ -18,32 +18,32 @@ public class Bike extends GameEntity {
 	 */
 	private static final long serialVersionUID = -5894386848192144642L;
 
-	// game where the Bike evolves
+	// Game where the Bike evolves.
 	private transient ActorGame game;
 
 	private final float MAX_WHEEL_SPEED = 20f;
 
-	// Whether or not the bike is looking towards the right
+	// Whether or not the bike is looking towards the right.
 	private boolean lookRight = true;
 
 	private BasicContactListener contactListener;
 
-	// Physical shape of the Bike
+	// Physical shape of the Bike.
 	private transient Polygon hitbox;
 	private transient Polyline bikeFrame;
 
-	// Graphics to represent the Bike
+	// Graphics representing the Bike.
 	private transient ShapeGraphics bikeFrameGraphic;
 
-	// Entities associated to the bike
+	// Entities associated to the Bike.
 	private transient Wheel leftWheel, rightWheel;
 	public transient CharacterBike character;
 	private float angle;
 
 	/**
-	 * Create a Bike, controllable by the player
-	 * @param game : the actorGame in which this object exists
-	 * @param position : the initial position of the bike
+	 * Create a Bike, the BikeGame's main actor.
+	 * @param game : The actorGame in which this object exists.
+	 * @param position : The initial position of the Bike.
 	 */
 	public Bike(ActorGame game, Vector position) {
 		super(game, false, position);
@@ -58,7 +58,7 @@ public class Bike extends GameEntity {
 	 */
 	private void create() {
 		hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-		this.build(hitbox, -1, -1, false, 0);
+		this.build(hitbox, -1, -1, false, CollisionGroups.PLAYER.group);
 
 		this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);
@@ -98,7 +98,7 @@ public class Bike extends GameEntity {
 	public void update(float deltaTime) {
 	    if(this.contactListener.getEntities().size() > 0) {
 	        for(Entity entity : this.contactListener.getEntities()) {
-	            if(entity.getCollisionGroup() == 1) {
+	            if(entity.getCollisionGroup() == CollisionGroups.TERRAIN.group) {
 	                //TODO trigger death ->
 
                 }
@@ -129,7 +129,7 @@ public class Bike extends GameEntity {
 			} else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
 				this.getEntity().applyAngularForce(-10.f);
 			}
-            this.angle += ((this.lookRight ? this.leftWheel : this.rightWheel).getSpeed() / (deltaTime * 50)) % 360 * (lookRight ? 1 : -1);
+            this.angle += ((this.lookRight ? this.leftWheel : this.rightWheel).getSpeed() / (deltaTime * 100)) % 360 * (lookRight ? 1 : -1);
             this.character.nextPedal(this.angle);
 		}
 

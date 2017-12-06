@@ -62,7 +62,8 @@ public class TestGame extends ActorGame {
         this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 8, 5, 2);
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		//lever.addAction(() -> this.platform.triggerAction(), 1);
-		lever.addAction(() -> this.setViewScaleModifier(30), 1);
+		//lever.addAction(() -> this.setViewScaleModifier(30), 1);
+        lever.addAction(() -> player.character.triggerYayAnimation(), 1);
 
 		//this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 

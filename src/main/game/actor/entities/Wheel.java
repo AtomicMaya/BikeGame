@@ -31,7 +31,7 @@ public class Wheel extends GameEntity {
 	 */
 	private void create() {
 		Circle circle = new Circle(radius - .05f);
-		this.build(circle, 20f, -1, false);
+		this.build(circle, 20f, -1, false, CollisionGroups.WHEEL.group);
 		graphics = this.addGraphics("/res/images/wheel.png", this.radius * 2, this.radius * 2, new Vector(this.radius, this.radius), 1, 0);
 	}
 	

@@ -20,6 +20,7 @@ public class Cloud implements GraphicalObjects {
 
     @Override
     public void update(float deltaTime) {
+
         this.position = this.position.add(this.speed.mul(deltaTime));
     }
 

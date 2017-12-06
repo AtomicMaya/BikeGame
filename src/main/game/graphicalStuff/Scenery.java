@@ -20,6 +20,8 @@ public class Scenery implements Actor {
     private float ratio, length, height;
     private Random random;
 
+    float totalTime = 0;
+
     public Scenery(Vector position, float translationRatio) {
         setViewPointPosition(position, translationRatio);
         this.graphics = new ArrayList<>();
@@ -58,13 +60,13 @@ public class Scenery implements Actor {
 
     public void setViewPointPosition(Vector position, float translationRatio) {
         this.ratio = translationRatio;
-        this.length = 2.5f * this.ratio;
+        this.length = 2.4f * this.ratio;
         this.height = 1.1f * this.ratio;
 
-        this.minimumCoords = new Vector(position.x - this.length / 2f, position.y - this.height * 0.3f);
-        this.maximumCoords = this.minimumCoords.add(length, height);
+        this.minimumCoords = new Vector(position.x - this.length / 2f, position.y - this.height / 3f);
+        this.maximumCoords = this.minimumCoords.add(length * 1.1f, height * 1.1f);
         this.position = this.minimumCoords;
-        this.minimumSpawn = new Vector(this.position.x + this.length * 0.8f, this.position.y + 0.8f * height);
+        this.minimumSpawn = new Vector(this.maximumCoords.x - this.length * 0.2f, this.minimumCoords.y + this.height * 0.5f);
         //System.out.println(this.position.x + "," + this.position.y + "," + minimumSpawn.x + "," + minimumSpawn.y);
         //wSystem.out.println((minimumSpawn.x > maximumCoords.x) + "," +  (minimumSpawn.y > maximumCoords.y));
 
@@ -74,15 +76,19 @@ public class Scenery implements Actor {
     public void update(float deltaTime) {
         //Transform transformOfBox = Transform.I.translated(this.position.x - this.length / this.ratio, this.position.y - this.height / this.ratio + this.ratio / 2.7f);
         int counter2 = 0;
+
+        totalTime += deltaTime;
+
         for(GraphicalObjects object : this.graphics) {
             if(object.getPosition().x < this.minimumCoords.x || object.getPosition().y > this.maximumCoords.y) {
                 object.setPosition(new Vector(this.minimumSpawn.x + random.nextFloat() * (this.maximumCoords.x - this.minimumSpawn.x),  this.minimumSpawn.y + this.random.nextFloat() * (this.maximumCoords.y - this.minimumSpawn.y)));
             }
             if(object instanceof BlowingLeaf && counter2 == 0) {
-                System.out.println(position.x + "," + position.y + "," + object.getPosition().x + "," + object.getPosition().y + "," + maximumCoords.x + "," + maximumCoords.y + "," + minimumSpawn.x + "," + minimumSpawn.y + "," +  minimumCoords.x + "," + minimumCoords.y);
+                //System.out.println(object.getPosition().x + "," + object.getPosition().y + "," + maximumCoords.x + "," + maximumCoords.y + "," + minimumSpawn.x + "," + minimumSpawn.y);
                 counter2 += 1; }
             object.update(deltaTime);
         }
+        System.out.println(totalTime + "," + this.minimumSpawn.x + "," + this.minimumSpawn.y);
     }
 
     @Override

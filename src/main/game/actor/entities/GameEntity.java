@@ -12,9 +12,6 @@ import java.awt.*;
 
 
 public abstract class GameEntity implements Actor, Savable {
-	/**
-	 * Because its asked
-	 */
 	private static final long serialVersionUID = 8519429675636563656L;
 	
 	private transient Entity entity;
@@ -22,7 +19,6 @@ public abstract class GameEntity implements Actor, Savable {
 
 	private Vector position;
 	private boolean fixed;
-	private int collisionGroup;
 
 	/**
 	 * Create a new GameEntity, and its associated Entity
@@ -210,8 +206,4 @@ public abstract class GameEntity implements Actor, Savable {
 	public void setPosition(Vector newPosition) {
 		entity.setPosition(newPosition);
 	}
-
-	public int getCollisionGroup() {
-	    return this.collisionGroup;
-    }
 }
