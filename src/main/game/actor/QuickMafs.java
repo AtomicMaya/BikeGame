@@ -3,7 +3,6 @@ package main.game.actor;
 import main.math.Vector;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 // ASCII
@@ -117,7 +116,8 @@ public class QuickMafs {
 	}
 
 	public static ArrayList<Vector> sortVectorByX(ArrayList<Vector> points) {
-		if (points.isEmpty())
+
+		if (points.size() < 2)
 			return points;
 		else {
 			ArrayList<Vector> smaller = new ArrayList<>();
@@ -125,6 +125,7 @@ public class QuickMafs {
 			ArrayList<Vector> bigger = new ArrayList<>();
 
 			Vector p = points.get(0);
+
 			for (Vector v : points) {
 				if (p.x > v.x) {
 					smaller.add(v);
@@ -135,16 +136,14 @@ public class QuickMafs {
 			}
 			ArrayList<Vector> sorted = new ArrayList<>();
 			sorted.addAll(sortVectorByX(smaller));
-			sorted.addAll(deleteUselessInY(equals, smaller, bigger));
+			sorted.addAll(deleteUselessInY(equals));
 			sorted.addAll(sortVectorByX(bigger));
 			return sorted;
 		}
-
 	}
 
-	public static ArrayList<Vector> deleteUselessInY(ArrayList<Vector> points, ArrayList<Vector> before,
-			ArrayList<Vector> after) {
-		if (points.size() == 1)
+	public static ArrayList<Vector> deleteUselessInY(ArrayList<Vector> points) {
+		if (points.size() <= 1)
 			return points;
 		Vector s = points.get(0);
 		Vector b = points.get(0);
@@ -155,26 +154,8 @@ public class QuickMafs {
 				b = v;
 		}
 		ArrayList<Vector> p = new ArrayList<>();
-		// cas limites
-		if (before.isEmpty() && !after.isEmpty()) {
-			p.add(s);
-			p.add(b);
-		} else if (!before.isEmpty() && after.isEmpty()) {
-			p.add(b);
-			p.add(s);
-		} else {
-//			System.out.println(before.size() + " " + after.size() + " " + before.isEmpty() + " " + after.isEmpty());
-//			for (Vector v : points) {
-//				System.out.println(v);
-//			}
-			if (getDistance(s, before.get(before.size() - 1)) < getDistance(s, after.get(0))) {
-				p.add(s);
-				p.add(b);
-			} else {
-				p.add(b);
-				p.add(s);
-			}
-		}
+		p.add(s);
+		p.add(b);
 
 		return p;
 	}

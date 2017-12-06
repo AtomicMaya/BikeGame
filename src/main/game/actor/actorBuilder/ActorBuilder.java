@@ -2,29 +2,36 @@ package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.math.Transform;
 import main.math.Vector;
+import main.window.Canvas;
 
-public abstract class ActorBuilder implements Actor {
+public abstract class ActorBuilder {
+
+	private ActorGame game;
 
 	public ActorBuilder(ActorGame game) {
-
+		this.game = game;
 	}
 
-	public void update(float deltaTime) {
-		
-	}
-	
-	@Override
-	public Transform getTransform() {
-		return null;
+	public abstract void update(float deltaTime);
+
+	public abstract void draw(Canvas canvas);
+
+	public Vector getMousePosition() {
+		return game.getMouse().getPosition();
 	}
 
-	@Override
-	public Vector getVelocity() {
-		return null;
+	public boolean isLeftPressed() {
+		return game.getMouse().getLeftButton().isPressed();
 	}
-	
+
+	public boolean isRightPressed() {
+		return game.getMouse().getRightButton().isPressed();
+	}
+
 	public abstract Actor getActor();
+
+	public abstract boolean isDone();
+
 
 }
