@@ -21,22 +21,20 @@ public class CharacterBike extends GameEntity {
 	private ArrayList<ShapeGraphics> graphics;
 	private PrismaticConstraint constraint;
 
-	private float angle;
 	private boolean isYaying;
 	private final float timeTillYayEnd = 1.5f;
 	private float elapsedYayTime;
-    private final float pedalingAngleIncrement = 3.f;
 
 	// Insurance Vectors, so as to reset the various moving limbs to default positions
 	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f);
 	private Vector initRElbowPos = new Vector(.5f, 1.f), initRHandPos = new Vector(1.f, .8f);
-	private Vector lElbowRaisedPos = new Vector(.0f, 2.2f), lHandRaisedPos = new Vector(.0f, 2.75f);
-	private Vector rElbowRaisedPos = new Vector(-.2f, 2.2f), rHandRaisedPos = new Vector(-.2f, 2.75f);
+	private Vector lElbowRaisedPos = new Vector(.4f, 2.2f), lHandRaisedPos = new Vector(.4f, 2.75f);
+	private Vector rElbowRaisedPos = new Vector(.2f, 2.2f), rHandRaisedPos = new Vector(.2f, 2.75f);
 
 	/**
 	 * Initialize a Character
-	 * @param game : the game in which this character exists
-	 * @param position : the position the character occupies
+	 * @param game : The game in which this character exists
+	 * @param position : The position the character occupies
 	 */
 	public CharacterBike(ActorGame game, Vector position) {
 		super(game, false, position);
@@ -55,7 +53,7 @@ public class CharacterBike extends GameEntity {
 
 	private void updateGraphics() {
         Circle head = new Circle(.35f, this.headPos.add(.1f * this.directionModifier, .1f));
-        Polygon body = new Polygon(this.headPos, this.armJointPos, backPos);
+        Polygon body = new Polygon(this.headPos, this.armJointPos, this.backPos);
         this.graphics = new ArrayList<>();
         this.graphics.add(this.addGraphics(head, Color.decode("#f5c396"), Color.BLACK, .02f, 1.f, 10.1f));
         this.graphics.add(this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10));
@@ -107,9 +105,9 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/**
-	 * Attaches this to the entity, at the anchor point
-	 * @param vehicle : the entity on which this will be attached
-	 * @param anchor : the point were this should be centered
+	 * Attaches this to an entity, at the anchor point.
+	 * @param vehicle : The entity on which this will be attached.
+	 * @param anchor : The point were this should be centered.
 	 */
 	protected void attach(Entity vehicle, Vector anchor) {
 		PrismaticConstraintBuilder builder = super.getOwner().createPrismaticConstraintBuilder();
@@ -129,7 +127,7 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/**
-	 * Removes the constraint
+	 * Removes the constraint.
 	 */
 	public void detach() {
 		if (constraint != null) constraint.destroy();
@@ -148,17 +146,17 @@ public class CharacterBike extends GameEntity {
     }
 
 	/**
-	 * Calculates the coordinates of the next point relative to time
-	 * @param anchor : the point to which this point is 'attached', can moved
-	 * @param initial : the absolute initial coordinates that this point occupied
-	 * @param goal : the point that this point should attain
-	 * @return the new coordinates of this point
+	 * Calculates the coordinates of the next point relative to time.
+	 * @param anchor : the point to which this point is 'attached', can moved.
+	 * @param initial : the absolute initial coordinates that this point occupied.
+	 * @param goal : the point that this point should attain.
+	 * @return the new coordinates of this point.
 	 */
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
 		float radius = QuickMafs.getDistance(anchor, initial);
 		float angle = QuickMafs.getAngle(anchor, initial, goal);
 		angle += angle * this.directionModifier * this.elapsedYayTime / (this.timeTillYayEnd / 2.f);
-		return new Vector((float) (anchor.x + radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
+		return new Vector((float) (anchor.x - radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}
 
 	/**
@@ -173,10 +171,10 @@ public class CharacterBike extends GameEntity {
 			this.rElbowPos = getNewPosition(this.armJointPos, this.initRElbowPos, this.rElbowRaisedPos);
 			this.rHandPos = getNewPosition(this.armJointPos, this.initRHandPos, this.rHandRaisedPos);
 		} else if (this.elapsedYayTime < this.timeTillYayEnd) {
-            this.lHandPos = getNewPosition(this.armJointPos, this.lHandRaisedPos, this.initLHandPos);
             this.lElbowPos = getNewPosition(this.armJointPos, this.lElbowRaisedPos, this.initLElbowPos);
-            this.rHandPos = getNewPosition(this.armJointPos, this.rHandRaisedPos, this.initRHandPos);
+            this.lHandPos = getNewPosition(this.armJointPos, this.lHandRaisedPos, this.initLHandPos);
             this.rElbowPos = getNewPosition(this.armJointPos, this.rElbowRaisedPos, this.initRElbowPos);
+            this.rHandPos = getNewPosition(this.armJointPos, this.rHandRaisedPos, this.initRHandPos);
 		}
 
 		if (this.elapsedYayTime > this.timeTillYayEnd) {
@@ -207,21 +205,25 @@ public class CharacterBike extends GameEntity {
 	 * Inverts all the xCoordinates on the x axis
 	 */
 	public void invertX() {
-		directionModifier = directionModifier * -1;
-		headPos = headPos.mul(xInverted); armJointPos = armJointPos.mul(xInverted);
-		backPos = backPos.mul(xInverted);
-		lElbowPos = lElbowPos.mul(xInverted); lHandPos = lHandPos.mul(xInverted);
-		rElbowPos = rElbowPos.mul(xInverted); rHandPos = rHandPos.mul(xInverted);
+        this.directionModifier = this.directionModifier * -1;
+        this.headPos = this.headPos.mul(xInverted); this.armJointPos = this.armJointPos.mul(xInverted);
+        this.backPos = this.backPos.mul(xInverted);
+        this.lElbowPos = this.lElbowPos.mul(xInverted); this.lHandPos = this.lHandPos.mul(xInverted);
+        this.rElbowPos = this.rElbowPos.mul(xInverted); this.rHandPos = this.rHandPos.mul(xInverted);
 
 		// Insurance against bad math...
-		lKneePos = new Vector(.2f, .3f).mul(directionModifier == 1 ? xyNormal : xInverted);
-		lFootPos = new Vector(.1f, -.3f).mul(directionModifier == 1 ? xyNormal : xInverted);
-		rKneePos = new Vector(.0f, .2f).mul(directionModifier == 1 ? xyNormal : xInverted);
-		rFootPos = new Vector(-.1f, -.3f).mul(directionModifier == 1 ? xyNormal : xInverted);
+        this.lKneePos = new Vector(.2f, .3f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
+        this.lFootPos = new Vector(.1f, -.3f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
+        this.rKneePos = new Vector(.0f, .2f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
+        this.rFootPos = new Vector(-.1f, -.3f).mul(this.directionModifier == 1 ? xyNormal : xInverted);
 
-		lElbowRaisedPos = lElbowRaisedPos.mul(xInverted); lHandRaisedPos = lHandRaisedPos.mul(xInverted);
-		rElbowRaisedPos = rElbowRaisedPos.mul(xInverted); rHandRaisedPos = rHandRaisedPos.mul(xInverted);
-		initLElbowPos = initLElbowPos.mul(xInverted); initLHandPos = initLHandPos.mul(xInverted);
-		initRElbowPos = initRElbowPos.mul(xInverted); initRHandPos = initRHandPos.mul(xInverted);
+        this.lElbowRaisedPos = this.lElbowRaisedPos.mul(xInverted); this.lHandRaisedPos = this.lHandRaisedPos.mul(xInverted);
+        this.rElbowRaisedPos = this.rElbowRaisedPos.mul(xInverted); this.rHandRaisedPos = this.rHandRaisedPos.mul(xInverted);
+        this.initLElbowPos = this.initLElbowPos.mul(xInverted); this.initLHandPos = this.initLHandPos.mul(xInverted);
+        this.initRElbowPos = this.initRElbowPos.mul(xInverted); this.initRHandPos = this.initRHandPos.mul(xInverted);
 	}
+
+    public float getDirectionModifier() {
+        return this.directionModifier;
+    }
 }

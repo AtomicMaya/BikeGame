@@ -17,16 +17,20 @@ public class ParticleEmitter implements Actor{
 
     private ShapeGraphics graphics;
     private LinkedList<Particle> particles;
-    private int particlesPerSecond;
+    private int particlesPerSecond, decayRate;
 
     private float angle, angleVariation, particleLifeTime, particleLifeTimeVariation;
     private float speed, speedVariation;
 
     private int startColor, endColor;
+    private float deathStartTime, elapsedTime = 0;
 
     private Vector position, gravity;
 
-    public ParticleEmitter(ActorGame game, Vector position, int particlesPerSecond, float angle, float angleVariation, float speed, float speedVariation, float particleLifeTime, float particleLifeTimeVariation, int startColor, int endColor) {
+    public ParticleEmitter(ActorGame game, Vector position, int particlesPerSecond, float angle, float angleVariation,
+                           float speed, float speedVariation, float particleLifeTime, float particleLifeTimeVariation,
+                           int startColor, int endColor, float deathStartTime, int decayRate) {
+        System.out.println("called");
         this.game = game;
 
         this.particlesPerSecond = particlesPerSecond;
@@ -43,6 +47,9 @@ public class ParticleEmitter implements Actor{
         this.startColor = startColor;
         this.endColor = endColor;
 
+        this.deathStartTime = deathStartTime;
+        this.decayRate = decayRate;
+
         this.particles = new LinkedList<>();
 
         this.position = position;
@@ -50,7 +57,7 @@ public class ParticleEmitter implements Actor{
     }
 
     public ParticleEmitter(ActorGame game, Vector position, int particlesPerSecond, float angle, float speed, float particleLifeTime, int startColor, int endColor) {
-        new ParticleEmitter(game, position, particlesPerSecond, angle, (float) Math.PI / 6f, speed, speed * 0.1f, particleLifeTime, particleLifeTime * 0.1f, startColor, endColor);
+        new ParticleEmitter(game, position, particlesPerSecond, angle, (float) Math.PI / 6f, speed, speed * 0.1f, particleLifeTime, particleLifeTime * 0.1f, startColor, endColor, -1, 0);
     }
 
     private void spawnParticle(float offset) {
@@ -67,13 +74,25 @@ public class ParticleEmitter implements Actor{
 
     @Override
     public void update(float deltaTime) {
-        ArrayList<Particle> particlesToRemove = new ArrayList<>();
-        int newParticlesCount = (int) (this.particlesPerSecond * deltaTime);
-        for (int i = 0; i < newParticlesCount; i++) {
-            this.spawnParticle((1f + i) / newParticlesCount * deltaTime);
+        if (this.deathStartTime >= 0) {
+            this.elapsedTime += deltaTime;
+            if(this.elapsedTime >= this.deathStartTime && this.particlesPerSecond > 0) {
+                this.particlesPerSecond -= decayRate;
+            }
+            if (this.particlesPerSecond < 0) this.particlesPerSecond = 0;
         }
 
-        for(Particle particle : this.particles) {
+       //System.out.println(particlesPerSecond);
+
+        ArrayList<Particle> particlesToRemove = new ArrayList<>();
+        int newParticlesCount = (int) (this.particlesPerSecond * deltaTime);
+        if (this.particlesPerSecond > 0) {
+            for (int i = 0; i < newParticlesCount; i++) {
+                this.spawnParticle((1f + i) / newParticlesCount * deltaTime);
+            }
+        }
+
+        for (Particle particle : this.particles) {
             if(particle.isFlaggedForDestruction()) {
                 particlesToRemove.add(particle);
             } else {
@@ -81,11 +100,11 @@ public class ParticleEmitter implements Actor{
             }
         }
 
-        for(Particle particle :  particlesToRemove) {
+        for (Particle particle :  particlesToRemove) {
             this.particles.remove(particle);
         }
 
-        if(this.particles.size() == 0) {
+        if (this.particles.size() == 0) {
             this.destroy();
         }
     }

@@ -12,9 +12,6 @@ import java.awt.*;
 
 
 public abstract class GameEntity implements Actor, Savable {
-	/**
-	 * Because its asked
-	 */
 	private static final long serialVersionUID = 8519429675636563656L;
 	
 	private transient Entity entity;
@@ -22,7 +19,6 @@ public abstract class GameEntity implements Actor, Savable {
 
 	private Vector position;
 	private boolean fixed;
-	private int collisionGroup;
 
 	/**
 	 * Create a new GameEntity, and its associated Entity
@@ -119,18 +115,39 @@ public abstract class GameEntity implements Actor, Savable {
 	 * @return a new ImageGraphics associated to this
 	 */
 	public ImageGraphics addGraphics(String imagePath, float width, float height) {
-		ImageGraphics graphics = new ImageGraphics(imagePath, width, height);
-		graphics.setParent(this.entity);
-		return graphics;
+	    return addGraphics(imagePath,width,height, Vector.ZERO, 1, 0);
 	}
 
+    /**
+     *
+     * @param imagePath
+     * @param width
+     * @param height
+     * @param anchor
+     * @param alpha
+     * @param depth
+     * @return
+     */
 	public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor, float alpha, float depth) {
 		ImageGraphics graphics = new ImageGraphics(imagePath, width, height, anchor, alpha, depth);
 		graphics.setParent(this.entity);
 		return graphics;
 	}
 
-	/**
+    /**
+     *
+     * @param imagePath
+     * @param width
+     * @param height
+     * @param anchor
+     * @return
+     */
+    public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor) {
+        return addGraphics(imagePath, width, height, anchor, 1, 0);
+    }
+
+
+    /**
 	 * Create and add a ShapeGraphics to this entity
 	 * 
 	 * @param shape : a shape, may be null
@@ -169,13 +186,11 @@ public abstract class GameEntity implements Actor, Savable {
 	}
 
 	/**
-	 * Build the entity, which gives it a physical representation in the engine
-	 * 
-	 * @param shape : the shape to be given to the entity
-	 * @param friction : the friction to be given to the entity, defaults if
-	 *            negative
-	 * @param density : the density of the entity, defaults if negative
-	 * @param ghost : whether this part is hidden and should act only as a sensor
+	 * Builds the entity, which gives it a physical representation in the engine.
+	 * @param shape : The shape to be given to the entity.
+	 * @param friction : The friction to be given to the entity, defaults if negative.
+	 * @param density : The density of the entity, defaults if negative.
+	 * @param ghost : Whether this part is hidden and should act only as a sensor.
 	 */
 	public void build(Shape shape, float friction, float density, boolean ghost) {
 		PartBuilder partBuilder = this.entity.createPartBuilder();
@@ -188,6 +203,14 @@ public abstract class GameEntity implements Actor, Savable {
 		partBuilder.build();
 	}
 
+    /**
+     * Builds the entity, which gives it a physical representation in the engine.
+     * @param shape : The shape to be given to the entity.
+     * @param friction : The friction to be given to the entity, defaults if negative.
+     * @param density : The density of the entity, defaults if negative.
+     * @param ghost : Whether this part is hidden and should act only as a sensor.
+     * @param collisionGroup : This entity's collision group.
+     */
 	public void build(Shape shape, float friction, float density, boolean ghost, int collisionGroup) {
         PartBuilder partBuilder = this.entity.createPartBuilder();
         partBuilder.setShape(shape);
@@ -206,12 +229,12 @@ public abstract class GameEntity implements Actor, Savable {
 	public void addContactListener(ContactListener listener) {
 		this.entity.addContactListener(listener);
 	}
-	
+
+    /**
+     * Gives a new position to this entity.
+     * @param newPosition : A position Vector (x-axis value, y-axis value).
+     */
 	public void setPosition(Vector newPosition) {
 		entity.setPosition(newPosition);
 	}
-
-	public int getCollisionGroup() {
-	    return this.collisionGroup;
-    }
 }

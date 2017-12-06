@@ -9,15 +9,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Created on 12/4/2017 at 5:28 PM.
- */
 public class BlowingLeaf implements GraphicalObjects {
     private ArrayList<String> file;
     private int graphicsCounter, initialOffset;
     private Vector position, speed;
-    private float length, height;
-    private float animationTime, elapsedAnimationTime;
+    private float length, height, elapsedAnimationTime;
+    private final float animationTime;
 
     public BlowingLeaf(Vector position, Rectangle shape, Vector speed) {
         this.file = new ArrayList<>();
@@ -38,7 +35,7 @@ public class BlowingLeaf implements GraphicalObjects {
         this.position = this.position.add(this.speed.mul(deltaTime));
         this.elapsedAnimationTime += deltaTime;
         if (this.elapsedAnimationTime > this.animationTime) this.elapsedAnimationTime = 0;
-       this.graphicsCounter = ((int) (elapsedAnimationTime / this.animationTime * this.file.size()) + this.initialOffset) % this.file.size();
+        this.graphicsCounter = ((int) (elapsedAnimationTime / this.animationTime * this.file.size()) + this.initialOffset) % this.file.size();
     }
 
     @Override

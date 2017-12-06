@@ -10,10 +10,7 @@ import java.awt.*;
 import java.util.List;
 
 public class Ground extends GameEntity {
-	/**
-	 * Because its asked
-	 */
-	private static final long serialVersionUID = 7454750386019416210L;
+    private static final long serialVersionUID = 7454750386019416210L;
 
 	// keep reference to the graphics
 	private transient ShapeGraphics graphics;
@@ -38,7 +35,7 @@ public class Ground extends GameEntity {
 	 */
 	private void create() {
 		Polyline p = new Polyline(points);
-		this.build(p, 2f, -1, false, 1);
+		this.build(p, 2f, -1, false, CollisionGroups.TERRAIN.group);
 		graphics = this.addGraphics(p, Color.decode("#6D5D49"), Color.decode("#548540"), .2f, 1, -10f);
 	}
 

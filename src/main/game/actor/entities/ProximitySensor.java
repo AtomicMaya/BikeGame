@@ -13,16 +13,14 @@ import java.awt.*;
 public class ProximitySensor extends GameEntity implements Sensor {
 	private Shape sensorArea;
 
-	private ActorGame game;
 	private ShapeGraphics graphics;
 	private boolean detectionStatus, previousDetectionStatus;
 	private BasicContactListener contactListener;
 	private boolean sensorOccupied = false;
-	float timeToActionEnd, elapsedActionTime = 0.f;
+	private float timeToActionEnd = 0, elapsedActionTime = 0.f;
 
 	public ProximitySensor(ActorGame game, Vector position, Shape shape) {
 		super(game, true, position);
-		this.game = game;
 		this.sensorArea = shape;
 
 		this.build(sensorArea, -1, -1, true);
@@ -69,8 +67,8 @@ public class ProximitySensor extends GameEntity implements Sensor {
 	@Override
 	public void runAction(Runnable runnable, float time) {
 		sensorOccupied = true;
-		timeToActionEnd = time;
-		Runner.generateWorker(runnable).execute();
+        this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
+		ParallelAction.generateWorker(runnable).execute();
 	}
 
 	@Override

@@ -62,7 +62,8 @@ public class TestGame extends ActorGame {
         this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 8, 5, 2);
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		//lever.addAction(() -> this.platform.triggerAction(), 1);
-		lever.addAction(() -> this.setViewScaleModifier(30), 1);
+		//lever.addAction(() -> this.setViewScaleModifier(30), 1);
+        lever.addAction(() -> player.character.triggerYayAnimation(), 1);
 
 		//this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 
@@ -76,12 +77,14 @@ public class TestGame extends ActorGame {
 
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
-        //emitter = new ParticleEmitter(this, new Vector(-5,10), 200, (float) Math.PI * 0.5f, (float) Math.PI, .75f, 0.2f, 3, 0.3f, 0xFFFFFF00, 0xFFFF0000);
+        //emitter = new ParticleEmitter(this, new Vector(-3,5), 200, (float) Math.PI * 0.5f, (float) Math.PI, .75f, 0.2f, 3, 0.3f, 0xFFFFFF00, 0xFFFF0000, 2, 5);
 
        //sensor = new ProximitySensor(this, new Vector(0,0), shape);
         this.setViewScale(10f);
 
-        scenery = new Scenery(new Vector(0,0), this.getViewScale());
+        scenery = new Scenery(player.getPosition(), this.getViewScale());
+
+        Coin coin = new Coin(this, new Vector(2, 3));
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
@@ -98,8 +101,9 @@ public class TestGame extends ActorGame {
 		this.addActor(platform);
 		this.addActor(movingPlatform);
 		this.addActor(button);
+		this.addActor(coin);
 		//this.addActor(emitter);
-		this.addActor(scenery);
+		//this.addActor(scenery);
 		return true;
 	}
 
@@ -109,7 +113,7 @@ public class TestGame extends ActorGame {
 		if(window.getMouse().getMouseScrolledDown()) System.out.println("Mouse Down");
 		if(window.getMouse().getMouseScrolledUp()) System.out.println("Mouse Up");
 		//System.out.println(window.getMouse().getMouseWheelMovement());
-		scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
+		//scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
 		//scenery.draw(window);
        // scenery.update(deltaTime);
 

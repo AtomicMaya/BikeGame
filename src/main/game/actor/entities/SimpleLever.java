@@ -3,6 +3,7 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.Audio;
 import main.game.actor.ImageGraphics;
+import main.game.actor.Runner;
 import main.math.Polygon;
 import main.math.Shape;
 import main.math.Vector;
@@ -11,7 +12,7 @@ import main.window.Canvas;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class SimpleLever extends GameEntity implements Lever {
+public class SimpleLever extends GameEntity implements Lever, Runner {
 	private boolean activated;
 	private ActorGame game;
 	private KeyboardProximitySensor sensor;
@@ -72,24 +73,17 @@ public class SimpleLever extends GameEntity implements Lever {
 		(activated ? graphics.get(1) : graphics.get(0)).draw(canvas);
 	}
 
-    /**
-     * Adds runnable actions to this lever
-     * @param action : the action to run
-     * @param expirationTime : When this button shouldn't be considered busy anymore.
-     */
+	@Override
 	public void addAction(Runnable action, float expirationTime) {
 		this.actions.add(action);
 		this.time.add(expirationTime);
 	}
 
-    /**
-     * Runs a runnable action in parallel to this thread.
-     * @param runnable : the action to run
-     * @param time : When the action should expire.
-     */
-	private void runAction(Runnable runnable, float time) {
+
+    @Override
+	public void runAction(Runnable action, float expirationTime) {
 		this.isOccupied = true;
-        this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
-		Runner.generateWorker(runnable).execute();
+        this.timeToActionEnd = expirationTime > this.timeToActionEnd ? expirationTime : this.timeToActionEnd;
+		ParallelAction.generateWorker(action).execute();
 	}
 }
