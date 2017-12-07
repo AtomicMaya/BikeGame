@@ -237,4 +237,5 @@ public abstract class GameEntity implements Actor, Savable {
 	public void setPosition(Vector newPosition) {
 		entity.setPosition(newPosition);
 	}
+
 }

@@ -69,8 +69,8 @@ public class LevelEditor implements Graphics {
 	private final String getPosButtonText = "Positionneur";
 
 	// reset camera button + position (absolue sur l'ecran)
-	private GraphicalButton carmeraResetButton;
-	private Vector carmeraResetButtonPosition = new Vector(-21, 14);
+	private GraphicalButton cameraResetPosition;
+	private Vector cameraResetButtonPosition = new Vector(-21, 14);
 	private final String resetCameraButtonText = "Reset camera";
 
 	// test play button
@@ -116,8 +116,8 @@ public class LevelEditor implements Graphics {
 		});
 
 		// reset the camera when clicked
-		carmeraResetButton = new GraphicalButton(game, carmeraResetButtonPosition, resetCameraButtonText, fontSize);
-		carmeraResetButton.addOnClickAction(() -> {
+		cameraResetPosition = new GraphicalButton(game, cameraResetButtonPosition, resetCameraButtonText, fontSize);
+		cameraResetPosition.addOnClickAction(() -> {
 			cameraPosition = Vector.ZERO;
 			zoom = 1;
 		});
@@ -149,9 +149,9 @@ public class LevelEditor implements Graphics {
 
 	private void updateButtons(float deltaTime) {
 		// camera reset button update
-		carmeraResetButton.setText(resetCameraButtonText, fontSize * zoom);
-		carmeraResetButton.setPosition((carmeraResetButtonPosition).mul(zoom).add(cameraPosition));
-		carmeraResetButton.update(deltaTime);
+		cameraResetPosition.setText(resetCameraButtonText, fontSize * zoom);
+		cameraResetPosition.setPosition((cameraResetButtonPosition).mul(zoom).add(cameraPosition));
+		cameraResetPosition.update(deltaTime);
 
 		// position button update
 		getPositionButton.setText(getPosButtonText, fontSize * zoom);
@@ -284,7 +284,7 @@ public class LevelEditor implements Graphics {
 			redSquarePosText.draw(canvas);
 		}
 		getPositionButton.draw(canvas);
-		carmeraResetButton.draw(canvas);
+		cameraResetPosition.draw(canvas);
 
 	}
 

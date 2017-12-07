@@ -7,9 +7,9 @@ import java.util.Collections;
 public enum Preset {
     //Clouds, Leaves, Trees
     Breezy(new String[]{"main.game.graphicalStuff.Cloud", "main.game.graphicalStuff.BlowingLeaf"},
-            new Integer[]{2, 6},
-            new Float[][]{new Float[]{-1f, 0f, -1.5f, 0f}, new Float[]{-0.5f, -0.05f, -3f, -0.5f}},
-            new Float[][]{new Float[]{2f, .05f, 6f, 1.5f}, new Float[]{.5f, .5f, .5f, .5f}});
+            new Integer[]{2, 9},
+            new Float[][]{new Float[]{-.25f, 0f, -.5f, 0f}, new Float[]{-0.5f, -0.05f, -3f, -0.5f}},
+            new Float[][]{new Float[]{1.5f, .5f, 3f, 1.5f}, new Float[]{.5f, .5f, .5f, .5f}});
 
     private ArrayList<String> objectNames;
     private ArrayList<Integer> objectQuantities;

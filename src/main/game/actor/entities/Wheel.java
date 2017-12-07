@@ -30,8 +30,10 @@ public class Wheel extends GameEntity {
 	 */
 	private void create() {
 		Circle circle = new Circle(radius - .05f);
-		this.build(circle, 20f, -1, false, CollisionGroups.WHEEL.group);
+		this.build(circle, 20f, 1, false, CollisionGroups.WHEEL.group);
 		this.graphics = this.addGraphics("/res/images/wheel.png", this.radius * 2, this.radius * 2, new Vector(this.radius, this.radius), 1, 0);
+		this.listener = new BasicContactListener();
+		this.addContactListener(this.listener);
 	}
 	
 //	@Override
@@ -112,4 +114,12 @@ public class Wheel extends GameEntity {
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
+
+	public boolean isCollidingWithTerrain() {
+	    if (this.listener.getEntities().size() > 0)
+	        for(Entity entity : this.listener.getEntities())
+	            return (entity.getCollisionGroup() == CollisionGroups.TERRAIN.group);
+
+        return false;
+    }
 }

@@ -34,4 +34,6 @@ public interface GraphicalObjects extends Graphics {
      * @param position : a position Vector (x-axis position, y-axis position).
      */
     void setPosition(Vector position);
+
+
 }

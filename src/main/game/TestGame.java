@@ -18,7 +18,7 @@ public class TestGame extends ActorGame {
 	private ProximitySensor sensor;
 
 	private Audio backgroundAudio, backgroundAudio2;
-	private TriggeredPlatform platform;
+	private MovingPlatform platform;
 	private MovingPlatform movingPlatform;
     private ParticleEmitter emitter;
     private BetterTextGraphics betterTextGraphics;
@@ -56,15 +56,15 @@ public class TestGame extends ActorGame {
 
 		player = new Bike(this, new Vector(4, 5));
 
+        this.setPayload(player);
 		Polygon shape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 3.f, .0f, 3.f);
 		//sensor = new KeyboardProximitySensor(this, new Vector(12, 3), shape, KeyEvent.VK_E);
 
-        this.platform = new TriggeredPlatform(this, new Vector(30, 2), new Vector(1, 0),6,5, 2, 3, 2);
-        this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 8, 5, 2);
+        this.platform = new MovingPlatform(this, new Vector(25, 2), new Vector(1, 0),6,5, 3);
+        //this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 8, 5, 2);
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		//lever.addAction(() -> this.platform.triggerAction(), 1);
 		//lever.addAction(() -> this.setViewScaleModifier(30), 1);
-        lever.addAction(() -> player.character.triggerYayAnimation(), 1);
 
 		//this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 
@@ -81,11 +81,13 @@ public class TestGame extends ActorGame {
         //emitter = new ParticleEmitter(this, new Vector(-3,5), 200, (float) Math.PI * 0.5f, (float) Math.PI, .75f, 0.2f, 3, 0.3f, 0xFFFFFF00, 0xFFFF0000, 2, 5);
 
        //sensor = new ProximitySensor(this, new Vector(0,0), shape);
-        this.setViewScale(15f);
+        this.setViewScale(15);
 
-        scenery = new Scenery(player.getPosition(), this.getViewScale());
+        scenery = new Scenery(this);
 
         Coin coin = new Coin(this, new Vector(2, 3));
+
+        Trampoline trampoline = new Trampoline(this, new Vector(20, 2), -1, -1 );
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
@@ -94,15 +96,15 @@ public class TestGame extends ActorGame {
 		//this.addActor(a);
 		//this.addActor(crate1);
 		this.setViewCandidate(player);
-		this.setPayload(player);
 		this.addActor(ground);
 		this.addActor(player);
 		//this.addActor(sensor);
 		this.addActor(lever);
 		this.addActor(platform);
-		this.addActor(movingPlatform);
+		//this.addActor(movingPlatform);
 		this.addActor(button);
 		this.addActor(coin);
+		this.addActor(trampoline);
 		//this.addActor(emitter);
 		this.addActor(scenery);
 		return true;
@@ -110,14 +112,7 @@ public class TestGame extends ActorGame {
 
 	@Override
 	public void update(float deltaTime) {
-		super.update(deltaTime);
-		if(window.getMouse().getMouseScrolledDown()) System.out.println("Mouse Down");
-		if(window.getMouse().getMouseScrolledUp()) System.out.println("Mouse Up");
-		//System.out.println(window.getMouse().getMouseWheelMovement());
-		scenery.setViewPointPosition(player.getPosition(), this.getViewScale());
-		//scenery.draw(window);
-        scenery.update(deltaTime);
-
+        super.update(deltaTime);
 	}
 
 	@Override
