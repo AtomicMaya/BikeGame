@@ -4,11 +4,12 @@
  */
 package main.game.levels;
 
+import java.util.ArrayList;
+
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.math.Node;
-
-import java.util.ArrayList;
+import main.math.Positionable;
 
 public abstract class Level extends Node implements Actor {
 
@@ -24,7 +25,10 @@ public abstract class Level extends Node implements Actor {
 	protected transient ActorGame game;
 
 	// Actor to follow with the camera in the game
-	private Actor viewCandidate;
+	private Positionable viewCandidate;
+	
+	// player's actor
+	private Actor payload;
 
 	/**
 	 * Create a new level
@@ -54,18 +58,31 @@ public abstract class Level extends Node implements Actor {
 		this.viewCandidate = player;
 	}
 
+	public void setPayload(Actor payload) {
+		this.payload = payload;
+	}
 	/**
 	 * @return the list of all the actors in this level
 	 */
 	public ArrayList<Actor> getActors() {
-		return actors;
+		ArrayList<Actor> temp = new ArrayList<>();
+		temp.addAll(actors);
+		actors.clear();
+		return temp;
 	}
 
 	/**
 	 * @return the Actor to follow with he camera in the level
 	 */
-	public Actor getViewCandidate() {
+	public Positionable getViewCandidate() {
 		return viewCandidate;
+	}
+	
+	/**
+	 * @return the playable Actor
+	 * */
+	public Actor getPayload() {
+		return payload;
 	}
 
 	/**

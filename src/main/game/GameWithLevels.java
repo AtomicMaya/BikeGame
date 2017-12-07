@@ -4,6 +4,7 @@
  */
 package main.game;
 
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import main.game.levels.Level;
@@ -26,29 +27,43 @@ public abstract class GameWithLevels extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		if (getKeyboard().get(KeyEvent.VK_R).isPressed()) {
+			resetLevel();
+		}
 		if (levels != null && !levels.isEmpty() && levels.get(currentLevel).isFinished()) {
 			nextLevel();
 		}
 	}
 
 	protected void nextLevel() {
-		clearCurrentLevel();
+		
 		beginLevel(currentLevel + 1);
+	}
+
+	protected void resetLevel() {
+		clearCurrentLevel();
+		beginLevel(currentLevel);
 	}
 
 	protected void clearCurrentLevel() {
 		super.destroyAllActors();
 	}
 
-	protected void beginLevel(int i) {
+	public void beginLevel(int i) {
+		clearCurrentLevel();
 		currentLevel = i;
-		if (currentLevel > levels.size())
+		if (currentLevel > levels.size()-1)
 			currentLevel = 0;
-		super.addActor(levels.get(i));
-		levels.get(i).createAllActors();
-		super.addActor(levels.get(i).getActors());
-		super.setViewCandidate(levels.get(i).getViewCandidate());
+		super.addActor(levels.get(currentLevel));
+		this.levels.get(currentLevel).createAllActors();
+		super.addActor(levels.get(currentLevel).getActors());
+		super.setViewCandidate(levels.get(currentLevel).getViewCandidate());
+		super.setPayload(levels.get(currentLevel).getPayload());
 	}
 
 	protected abstract List<Level> createLevelList();
+	
+	public int numberOfLevel() {
+		return levels.size();
+	}
 }

@@ -6,6 +6,7 @@ package main.game.actor.crate;
 
 import main.game.ActorGame;
 import main.game.actor.ImageGraphics;
+import main.game.actor.Saveable;
 import main.game.actor.entities.GameEntity;
 import main.math.Polygon;
 import main.math.Vector;
@@ -16,7 +17,7 @@ import java.io.Serializable;
 /**
  * Part 4.5, Test de l'architecture: Crate
  */
-public class Crate extends GameEntity implements Serializable {
+public class Crate extends GameEntity {
 
 	/**
 	 * 

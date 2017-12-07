@@ -80,4 +80,15 @@ public class PlatformBuilder extends ActorBuilder {
 
 	}
 
+	@Override
+	public boolean isHovered() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public void destroy() {
+		this.platform.destroy();
+	}
+
 }

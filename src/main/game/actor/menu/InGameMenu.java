@@ -38,7 +38,10 @@ public class InGameMenu extends Menu {
 		close.addOnClickAction(() -> changeStatut(), .1f);
 
 		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), "Back to Menu", .5f);
-		backToMainMenu.addOnClickAction(() -> game.goToMainMenu(), 0f);
+		backToMainMenu.addOnClickAction(() -> {
+			game.destroyAllActors();
+			game.goToMainMenu();
+		}, 0f);
 	}
 
 	@Override

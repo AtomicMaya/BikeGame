@@ -4,32 +4,43 @@
  */
 package main.game.actor.menu;
 
+import java.awt.Color;
+import java.io.File;
+import java.util.ArrayList;
+
 import main.game.ActorGame;
-import main.game.actor.ImageGraphics;
+import main.game.GameWithLevelAndMenu;
 import main.game.actor.ShapeGraphics;
 import main.game.actor.TextGraphics;
 import main.game.actor.entities.GraphicalButton;
 import main.io.Save;
+import main.math.Circle;
 import main.math.Polygon;
 import main.math.Shape;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
-
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
+import main.window.swing.FontList;
+import main.window.swing.MyFont;
 
 public class MainMenu extends Menu {
 
 	private Window window;
-	private TextGraphics tg;
-	private ImageGraphics ig;
+	private TextGraphics menuMainGraphics;
+	private final String menuMainTest = "Menu";
 	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
 
 	private ArrayList<GraphicalButton> buttons = new ArrayList<>();
 
+	// our level buttons
+	private ArrayList<GraphicalButton> levelButtons = new ArrayList<>();
+	private final float sizeX = 5f;
+	private final float sizeY = 2f;
+	private final float shiftLB = .3f;
+	private final Vector topLeftLB = new Vector(6, -4);
+
+	private GraphicalButton play;
 	private ActorGame game;
 
 	private int savePage = 0;
@@ -46,18 +57,18 @@ public class MainMenu extends Menu {
 
 	private boolean inLevelEditor = false;
 
+	// if a save is clicked
 	private boolean busy = false;
 
-	public MainMenu(ActorGame game, Window window) {
+	public MainMenu(GameWithLevelAndMenu game, Window window) {
 		super(game, window, true, Color.GRAY, true);
 		this.window = window;
 		this.game = game;
-		float fontSize = 4f;
-		tg = new TextGraphics("Menu", fontSize, Color.BLACK, Color.BLUE, .1f, false, false, new Vector(.5f, fontSize),
-				1, 1);
 
-		ig = new ImageGraphics("res/images/box.4.png", 2, 1);
-		ig.setAnchor(new Vector(.5f, .5f));
+		float fontSize = 4f;
+		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
+		menuMainGraphics = new TextGraphics(menuMainTest, fontSize, Color.BLACK, Color.BLUE, .1f, false, false, anchor,
+				1, 1);
 
 		// cadrillage
 		float w = .01f;
@@ -75,7 +86,7 @@ public class MainMenu extends Menu {
 		}
 
 		// get the saves
-		File[] list = Save.availableSaves(new File(game.getSaveDirectory()));
+		File[] list = Save.availableSaves(game);
 		for (int i = 0; i < list.length; i++) {
 			Vector position = new Vector(-28, -(i % maxNumberButtonsSave) * 2f + 8f);
 			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1.4f));
@@ -87,10 +98,10 @@ public class MainMenu extends Menu {
 		// Arrow buttons to navigate in the save menu
 		Polygon arrowShape = new Polygon(0, 0, 1, 0, 1, 1, 1, 0);
 
-		right = new GraphicalButton(game, new Vector(-6, -7), 1, 1);
+		right = new GraphicalButton(game, new Vector(-24, -11), 2, 2);
 		right.addOnClickAction(() -> PagePlusPlus());
 
-		left = new GraphicalButton(game, new Vector(-8, -7), 1, 1);
+		left = new GraphicalButton(game, new Vector(-28, -11), 2, 2);
 		left.addOnClickAction(() -> PageMinusMinus());
 
 		// set arrows graphics
@@ -100,15 +111,41 @@ public class MainMenu extends Menu {
 				"./res/images/arrows/left_arrow_light_green.png");
 
 		// level editor
-		levelEditor = new LevelEditor(game, window);
 		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1.4f);
-		//levelEditorButton.forceInbetweenCharOffset(1.4f/2f);
-		levelEditorButton.addOnClickAction(() -> inLevelEditor = true);
+		// levelEditorButton.forceInbetweenCharOffset(1.4f/2f);
+		levelEditorButton.addOnClickAction(() -> {
+			levelEditor = new LevelEditor(game, window);
+			inLevelEditor = true;
+		});
+
+		// play button
+		play = new GraphicalButton(game, new Vector(0, 0), "Play", 1f);
+		play.setPosition(new Vector(-play.getWidth() / 2f, 0));
+		play.addOnClickAction(() -> {
+			game.beginLevel(0);
+			game.setGameFreezeStatus(false);
+			changeStatut();
+		});
+
+		// our level
+		int n = game.numberOfLevel();
+		for (int i = 0; i < n; i++) {
+			Vector position = new Vector(topLeftLB.x + (i % 3) * (sizeX + shiftLB), topLeftLB.y - (i / 3) * sizeY);
+			levelButtons.add(new GraphicalButton(game, position, "Level" + (i + 1), 1));
+			levelButtons.get(i).forceShape(sizeX, -1);
+			int temp = i;
+			levelButtons.get(i).addOnClickAction(() -> {
+				game.beginLevel(temp);
+				game.setGameFreezeStatus(false);
+				changeStatut();
+			});
+		}
+
 	}
 
 	private void load(File file) {
 		if (!busy && waitBeforeClick > .5f) {
-			
+
 			game.destroyAllActors();
 			changeStatut();
 			busy = true;
@@ -130,6 +167,7 @@ public class MainMenu extends Menu {
 			savePage++;
 	}
 
+	@Override
 	public void update(float deltaTime) {
 
 		if (inLevelEditor) {
@@ -137,7 +175,7 @@ public class MainMenu extends Menu {
 			return;
 		}
 		super.update(deltaTime);
-		
+
 		waitBeforeClick += deltaTime;
 		for (int i = 0; i < buttons.size(); i++) {
 			// update only the buttons on the current page
@@ -149,8 +187,11 @@ public class MainMenu extends Menu {
 			left.update(deltaTime);
 			right.update(deltaTime);
 		}
+		for (GraphicalButton gb : levelButtons) {
+			gb.update(deltaTime);
+		}
 		levelEditorButton.update(deltaTime);
-
+		play.update(deltaTime);
 	}
 
 	@Override
@@ -162,8 +203,7 @@ public class MainMenu extends Menu {
 		}
 
 		super.draw(canvas);
-		tg.draw(canvas);
-		ig.draw(canvas);
+		menuMainGraphics.draw(canvas);
 		for (ShapeGraphics sg : graphics) {
 			sg.draw(canvas);
 		}
@@ -178,7 +218,12 @@ public class MainMenu extends Menu {
 			left.draw(canvas);
 			right.draw(canvas);
 		}
+		for (GraphicalButton gb : levelButtons) {
+			gb.draw(canvas);
+		}
 		levelEditorButton.draw(canvas);
+		play.draw(canvas);
+		canvas.drawShape(new Circle(.2f), Transform.I, Color.MAGENTA, Color.RED, .02f, 1, 10000);
 	}
 
 	@Override

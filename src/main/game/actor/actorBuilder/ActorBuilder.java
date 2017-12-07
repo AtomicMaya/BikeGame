@@ -39,5 +39,9 @@ public abstract class ActorBuilder {
 	public abstract boolean isDone();
 
 	public abstract void reCreate();
+	
+	public abstract boolean isHovered();
+	
+	public abstract void destroy();
 
 }

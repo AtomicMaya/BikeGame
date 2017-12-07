@@ -1,6 +1,8 @@
 package main.game.actor;
 
 import main.math.Vector;
+import main.window.Canvas;
+import main.window.Image;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,5 +179,25 @@ public class QuickMafs {
 		p.add(b);
 
 		return p;
+	}
+	
+	/**
+	 * Test if a string is a numerical value
+	 * 
+	 * @param string:
+	 *            : the input string
+	 * @param return
+	 *            : true if input is a numeric value
+	 */
+	public static boolean isNumeric(String string) {
+		return string != null && string.matches("-?\\d+(\\.\\d+)?");
+		// work as well:
+		// try {
+		// Integer.parseInt(string);
+		// return true;
+		// } catch (NumberFormatException e) {
+		// return false;
+		// }
+
 	}
 }

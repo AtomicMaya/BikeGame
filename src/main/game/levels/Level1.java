@@ -17,6 +17,8 @@ public class Level1 extends Level {
 
 	private FinishActor finishActor;
 
+	private Bike player;
+
 	public Level1(ActorGame game) {
 		super(game);
 	}
@@ -28,7 +30,7 @@ public class Level1 extends Level {
 
 		Ground ground = new Ground(game, null, p);
 
-		GameEntity player = new Bike(game, new Vector(4, 5));
+		player = new Bike(game, new Vector(4, 5));
 
 		// Crate crate1 = new Crate(game, new Vector(6, 5), "res/images/crate.1.png",
 		// false, 1);
@@ -41,6 +43,7 @@ public class Level1 extends Level {
 		this.addActor(player);
 
 		this.setViewCandidate(player);
+		this.setPayload(player);
 	}
 
 	@Override

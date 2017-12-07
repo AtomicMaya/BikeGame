@@ -48,8 +48,10 @@ public class GroundBuilder extends ActorBuilder {
 	private final String finishText = "Finish";
 
 	private LevelEditor lv;
+
 	private boolean isDone = false;
 
+	// actor build
 	private Ground ground;
 
 	public GroundBuilder(ActorGame game, LevelEditor lv) {
@@ -80,7 +82,7 @@ public class GroundBuilder extends ActorBuilder {
 			this.isDone = true;
 			groundLine = new Polyline(updateGround(null));
 		});
-		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
+		// ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
 	}
 
 	@Override
@@ -103,7 +105,7 @@ public class GroundBuilder extends ActorBuilder {
 	public void update(float deltaTime) {
 
 		if (!isDone) {
-			currentPoint =getFlooredMousePosition();
+			currentPoint = getFlooredMousePosition();
 			if (isLeftPressed() && !drawModeButton.isHovered() && !finish.isHovered()) {
 				addPoint(currentPoint);
 
@@ -182,6 +184,20 @@ public class GroundBuilder extends ActorBuilder {
 	public void reCreate() {
 		ground.destroy();
 		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
+	}
+
+	@Override
+	public boolean isHovered() {
+		return false;
+	}
+
+	public void continueBuilding() {
+		this.isDone = false;
+	}
+	
+	@Override
+	public void destroy() {
+		this.ground.destroy();
 	}
 
 }

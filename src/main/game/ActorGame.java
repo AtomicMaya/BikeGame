@@ -76,6 +76,7 @@ public class ActorGame implements Game {
 
     @Override
     public void update(float deltaTime) {
+    	System.out.println(actors.size() + " " + world.getEntities().size());
         if(this.gameFrozen) return;
         this.world.update(deltaTime);
 
@@ -352,7 +353,7 @@ public class ActorGame implements Game {
      * Load all saved actors.
      * @param saveName : The name of the save to load.
      */
-    public void load(String saveName) {
+    public boolean load(String saveName) {
 
         File save = new File(saveDirectory + saveName);
         if (save.exists()) {
@@ -367,7 +368,8 @@ public class ActorGame implements Game {
             }
             setViewCandidate(
                     actors.get(Save.viewCandidateNumberInFile(this.fileSystem, new File(save.getPath() + "/params.param"))));
-        }
+            return true;
+        }return false;
     }
 
     /**

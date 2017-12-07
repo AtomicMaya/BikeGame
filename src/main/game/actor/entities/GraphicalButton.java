@@ -202,7 +202,7 @@ public class GraphicalButton extends GameEntity {
 			height = (height < 0) ? textGraphics.getCharSize() + shiftText.y * 2f : height;
 
 			if (!forcedTextShift)
-				shiftText = new Vector(textGraphics.getCharSize() / 4f, textGraphics.getCharSize() / 4f);
+				shiftText = new Vector((width - textGraphics.getTotalWidth())/2f, textGraphics.getCharSize() / 4f);
 		} else {
 			width = (width < 0) ? maxX - minX : width;
 			height = (height < 0) ? maxY - minY : height;

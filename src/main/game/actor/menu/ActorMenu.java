@@ -50,7 +50,7 @@ public class ActorMenu extends Menu {
 		// ground pos 1, 0
 		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
 		boutons.get(1).addOnClickAction(() -> {
-			levelEditor.addGround(new GroundBuilder(game, levelEditor));
+			levelEditor.addGround();
 			changeStatut();
 		});
 		boutonsPosition.add(new Vector(1f, 0f));

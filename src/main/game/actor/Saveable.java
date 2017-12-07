@@ -8,7 +8,7 @@ import main.game.ActorGame;
 
 import java.io.Serializable;
 
-public interface Savable extends Serializable, Actor {
+public interface Saveable extends Serializable, Actor {
 
 	/**
 	 * Method used recreate an actor when loaded from a file, ActorGame can't be

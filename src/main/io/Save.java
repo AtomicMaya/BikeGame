@@ -6,7 +6,7 @@ package main.io;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.Savable;
+import main.game.actor.Saveable;
 
 import java.io.*;
 
@@ -48,7 +48,7 @@ public class Save {
 
 			// transform the object into an actor
 			try {
-				Savable actor = (Savable) o;
+				Saveable actor = (Saveable) o;
 				actor.reCreate(game);
 				return (Actor) actor;
 			} catch (ClassCastException cce) {
@@ -97,8 +97,9 @@ public class Save {
 	/**
 	 * @return the files in a folder
 	 */
-	public static File[] availableSaves(File folder) {
+	public static File[] availableSaves(ActorGame game) {
 
+		File folder = new File(game.getSaveDirectory());
 		if (folder.isDirectory()) {
 			return folder.listFiles();
 		}
