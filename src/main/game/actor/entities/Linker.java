@@ -36,8 +36,8 @@ public class Linker {
         WeldConstraintBuilder builder = game.createWeldConstraintBuilder();
         builder.setFirstEntity(anchor);
         builder.setSecondEntity(attached);
-        builder.setFirstAnchor(anchorPoint);
-        builder.setSecondAnchor(Vector.ZERO);
+        builder.setFirstAnchor(Vector.ZERO);
+        builder.setSecondAnchor(anchorPoint);
         builder.setReferenceAngle(referenceAngle);
         builder.setFrequency(frequency);
         builder.setDamping(damping);

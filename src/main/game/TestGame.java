@@ -57,14 +57,14 @@ public class TestGame extends ActorGame {
 		player = new Bike(this, new Vector(4, 5));
 
         this.setPayload(player);
-		Polygon shape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 3.f, .0f, 3.f);
-		//sensor = new KeyboardProximitySensor(this, new Vector(12, 3), shape, KeyEvent.VK_E);
+		Polygon shape = new Polygon(.0f, .0f, 3.f, 3f, 9.f, 3.f, 6, 0);
+		sensor = new ProximitySensor(this, new Vector(12, 3), shape);
 
-        this.platform = new MovingPlatform(this, new Vector(25, 2), new Vector(1, 0),6,5, 3);
-        //this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 8, 5, 2);
+        //this.platform = new MovingPlatform(this, new Vector(25, 2), new Vector(1, 0),6,5, 3);
+        //this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 6, 5, 2);
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		//lever.addAction(() -> this.platform.triggerAction(), 1);
-		//lever.addAction(() -> this.setViewScaleModifier(30), 1);
+		lever.addAction(() -> this.setViewScaleModifier(30), 1);
 
 		//this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 
@@ -78,16 +78,19 @@ public class TestGame extends ActorGame {
 
 		//Crate crate1 = new Crate(this, new Vector(6,5), "res/crate.1.png", false, 1);
 
-        //emitter = new ParticleEmitter(this, new Vector(-3,5), 200, (float) Math.PI * 0.5f, (float) Math.PI, .75f, 0.2f, 3, 0.3f, 0xFFFFFF00, 0xFFFF0000, 2, 5);
-
+        /*emitter = new ParticleEmitter(this, new Vector(-3,5), null, 200, (float) Math.PI * 0.5f,
+                (float) Math.PI, .75f, 0.2f, 3, 0.3f,
+                0xFFFFFF00, 0xFFFF0000, 2, 5);
+*/
        //sensor = new ProximitySensor(this, new Vector(0,0), shape);
         this.setViewScale(15);
 
-        scenery = new Scenery(this);
+        //scenery = new Scenery(this);
 
         Coin coin = new Coin(this, new Vector(2, 3));
 
-        Trampoline trampoline = new Trampoline(this, new Vector(20, 2), -1, -1 );
+        RightFacingTrampoline rightFacingTrampoline = new RightFacingTrampoline(this, new Vector(19.5f, 2),
+                -1, -1);
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
@@ -98,15 +101,15 @@ public class TestGame extends ActorGame {
 		this.setViewCandidate(player);
 		this.addActor(ground);
 		this.addActor(player);
-		//this.addActor(sensor);
+		this.addActor(sensor);
 		this.addActor(lever);
-		this.addActor(platform);
+		//this.addActor(platform);
 		//this.addActor(movingPlatform);
 		this.addActor(button);
 		this.addActor(coin);
-		this.addActor(trampoline);
+		this.addActor(rightFacingTrampoline);
 		//this.addActor(emitter);
-		this.addActor(scenery);
+		//this.addActor(scenery);
 		return true;
 	}
 

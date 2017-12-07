@@ -2,7 +2,6 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.ShapeGraphics;
 import main.math.Circle;
 import main.math.Transform;
 import main.math.Vector;
@@ -12,10 +11,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class ParticleEmitter implements Actor{
+public class ParticleEmitter implements Actor {
     private ActorGame game;
 
-    private ShapeGraphics graphics;
     private LinkedList<Particle> particles;
     private int particlesPerSecond, decayRate;
 
@@ -26,7 +24,6 @@ public class ParticleEmitter implements Actor{
     private float deathStartTime, elapsedTime = 0;
 
     private Vector position, gravity;
-    private boolean streaming;
 
     public ParticleEmitter(ActorGame game, Vector position, Vector gravity, int particlesPerSecond, float angle, float angleVariation,
                            float speed, float speedVariation, float particleLifeTime, float particleLifeTimeVariation,
