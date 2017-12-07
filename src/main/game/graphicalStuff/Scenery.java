@@ -1,46 +1,64 @@
 package main.game.graphicalStuff;
 
+import main.game.ActorGame;
 import main.game.GameObjects.Rectangle;
 import main.game.actor.Actor;
-import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Scenery implements Actor {
     private Vector minimumCoords, maximumCoords, minimumSpawn;
-    private int preset;
+    private Preset preset;
     private ArrayList<GraphicalObjects> graphics;
-    private Vector position;
-    private float ratio, length, height;
+    private float length, height;
     private Random random;
-
-    float totalTime = 0;
-
-    public Scenery(Vector position, float translationRatio) {
-        setViewPointPosition(position, translationRatio);
+    private ActorGame game;
+    private float elapsedTime, timeUntilAnimationStart;
+    public Scenery(ActorGame game) {
+        this.game = game;
         this.graphics = new ArrayList<>();
-
         this.random = new Random();
-        Preset thisPreset = Preset.Breezy;
-        ArrayList<String> classPaths = thisPreset.getObjectNames();
+
+        elapsedTime = 0;
+        timeUntilAnimationStart = 2;
+
+    }
+
+    public Scenery(int preset) {
+
+    }
+
+    public void resetViewPointPosition() {
+        AffineTransform windowTransform = this.game.getRelativeTransform().getAffineTransform();
+        this.length = (float) (windowTransform.getScaleX() * 2.2f);
+        this.height = (float) windowTransform.getScaleY() * 2f;
+        this.minimumCoords = new Vector(game.getPayload().getPosition().x - length * .2f, (float) (windowTransform.getTranslateY() - this.height * .1f));
+        this.maximumCoords = this.minimumCoords.add(this.length * 1.8f, this.height * .5f);
+        this.minimumSpawn = this.minimumCoords.add(this.length * 1.6f, 0);
+    }
+
+    private void instantiate() {
+        this.preset = Preset.Breezy;
+        ArrayList<String> classPaths = this.preset.getObjectNames();
+        float ratio = game.getRelativeTransform().m00;
+        this.graphics = new ArrayList<>();
         int counter = 0;
-        for(Integer quantities : thisPreset.getObjectQuantities()) {
-            Float[] speeds = thisPreset.getSpeedBounds().get(counter);
-            Float[] sizes = thisPreset.getSizeBounds().get(counter);
+        for(Integer quantities : this.preset.getObjectQuantities()) {
+            Float[] speeds = this.preset.getSpeedBounds().get(counter);
+            Float[] sizes = this.preset.getSizeBounds().get(counter);
             for(int i = 0; i < quantities; i++) {
-                float randX = this.minimumCoords.x + this.random.nextFloat() * (this.maximumCoords.x - this.minimumCoords.x);
-                float randY = this.minimumCoords.y + this.random.nextFloat() * (this.maximumCoords.y - this.minimumCoords.y);
-                System.out.println(randX + "," + randY + "," + minimumSpawn.x + "," + minimumSpawn.y + "," + maximumCoords.x + "," + maximumCoords.y);
-                float randSpeedX = speeds[0] + this.random.nextFloat() * (speeds[2] - speeds[0]);
-                float randSpeedY = speeds[1] + this.random.nextFloat() * (speeds[3] - speeds[1]);
-                float sizeX = sizes[1] + this.random.nextFloat() * (sizes[3] - sizes[1]);
-                float sizeY = sizes[0] + this.random.nextFloat() * (sizes[2] - sizes[0]);
+                float randX = this.minimumSpawn.x + this.random.nextFloat() * (this.maximumCoords.x - this.minimumSpawn.x);
+                float randY = this.minimumSpawn.y + this.random.nextFloat() * (this.maximumCoords.y - this.minimumSpawn.y);
+                float randSpeedX = speeds[0] + this.random.nextFloat() * (speeds[2] - speeds[0]) * ratio / 30f;
+                float randSpeedY = speeds[1] + this.random.nextFloat() * (speeds[3] - speeds[1]) * ratio / 30f;
+                float sizeX = sizes[1] + this.random.nextFloat() * (sizes[3] - sizes[1]) * ratio / 30f;
+                float sizeY = sizes[0] + this.random.nextFloat() * (sizes[2] - sizes[0]) * ratio / 30f;
                 try {
                     this.graphics.add((GraphicalObjects) Class.forName(classPaths.get(counter))
                             .getConstructor(Vector.class, Rectangle.class, Vector.class)
@@ -49,47 +67,26 @@ public class Scenery implements Actor {
             }
             counter += 1;
         }
-
-        this.ratio = translationRatio;
-
-    }
-
-    public Scenery(int preset) {
-
-    }
-
-    public void setViewPointPosition(Vector position, float translationRatio) {
-        this.ratio = translationRatio;
-        this.length = 2.4f * this.ratio;
-        this.height = 1.1f * this.ratio;
-
-        this.minimumCoords = new Vector(position.x - this.length / 2f, position.y - this.height * 0.3f);
-        this.maximumCoords = this.minimumCoords.add(length * 1.5f, height * 1.5f);
-        System.out.println((this.maximumCoords.x - this.minimumCoords.x) + "," + (this.maximumCoords.y - this.minimumCoords.y) + "," + length + "," + height);
-        this.position = this.minimumCoords;
-        this.minimumSpawn = new Vector(this.maximumCoords.x - this.length * 0.2f, this.minimumCoords.y + this.height * 0.5f);
-        //System.out.println(this.position.x + "," + this.position.y + "," + minimumSpawn.x + "," + minimumSpawn.y);
-        //wSystem.out.println((minimumSpawn.x > maximumCoords.x) + "," +  (minimumSpawn.y > maximumCoords.y));
-
     }
 
     @Override
     public void update(float deltaTime) {
-        //Transform transformOfBox = Transform.I.translated(this.position.x - this.length / this.ratio, this.position.y - this.height / this.ratio + this.ratio / 2.7f);
-        int counter2 = 0;
-
-        totalTime += deltaTime;
-
+        if (elapsedTime < timeUntilAnimationStart) {
+            resetViewPointPosition();
+            instantiate();
+            elapsedTime += deltaTime;
+            return;
+        }
+        resetViewPointPosition();
         for(GraphicalObjects object : this.graphics) {
-            if(object.getPosition().x < this.minimumCoords.x || object.getPosition().y > this.maximumCoords.y) {
-                object.setPosition(new Vector(this.minimumSpawn.x + random.nextFloat() * (this.maximumCoords.x - this.minimumSpawn.x),  this.minimumSpawn.y + this.random.nextFloat() * (this.maximumCoords.y - this.minimumSpawn.y)));
+            if(object.getPosition().x < this.minimumCoords.x || object.getPosition().y < this.minimumCoords.y ||
+                    object.getPosition().x > this.maximumCoords.x || object.getPosition().y > this.maximumCoords.y) {
+                float newX = this.minimumSpawn.x + this.random.nextFloat() * (this.maximumCoords.x - this.minimumSpawn.x);
+                float newY = this.minimumSpawn.y + this.random.nextFloat() * (this.maximumCoords.y - this.minimumSpawn.y);
+                object.setPosition(new Vector(newX,  newY));
             }
-            if(object instanceof BlowingLeaf && counter2 == 0) {
-                //System.out.println(object.getPosition().x + "," + object.getPosition().y + "," + maximumCoords.x + "," + maximumCoords.y + "," + minimumSpawn.x + "," + minimumSpawn.y);
-                counter2 += 1; }
             object.update(deltaTime);
         }
-        //System.out.println(totalTime + "," + this.minimumSpawn.x + "," + this.minimumSpawn.y);
     }
 
     @Override
@@ -99,12 +96,11 @@ public class Scenery implements Actor {
 
     @Override
     public void draw(Canvas canvas) {
+        if (elapsedTime < timeUntilAnimationStart)
+            return;
         for(GraphicalObjects object : this.graphics) {
             object.draw(canvas);
         }
-
-        canvas.drawShape(new Polygon(0, 0, length, 0, length, height, 0, height),
-                Transform.I.translated(minimumCoords), Color.CYAN, Color.GREEN, .1f, 0.65f, 20);
     }
 
 

@@ -77,10 +77,7 @@ public class ActorGame implements Game {
     @Override
     public void update(float deltaTime) {
         if(this.gameFrozen) return;
-
-
         this.world.update(deltaTime);
-
 
         if (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD
                 && !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT
@@ -291,6 +288,8 @@ public class ActorGame implements Game {
         return this.world.createPointConstraintBuilder();
     }
 
+    public WeldConstraintBuilder createWeldConstraintBuilder() { return this.world.createWeldConstraintBuilder(); }
+
     /**
      * @return whether the game is frozen.
      */
@@ -399,5 +398,9 @@ public class ActorGame implements Game {
 
     public Vector getCameraPosition() {
         return this.viewCenter;
+    }
+
+    public Transform getRelativeTransform() {
+        return this.window.getRelativeTransform();
     }
 }

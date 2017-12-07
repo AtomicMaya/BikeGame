@@ -2,7 +2,6 @@ package main.game.actor.entities;
 
 import main.game.actor.Graphics;
 import main.game.actor.QuickMafs;
-import main.game.actor.ShapeGraphics;
 import main.math.Shape;
 import main.math.Transform;
 import main.math.Vector;
@@ -11,7 +10,6 @@ import main.window.Canvas;
 import java.awt.*;
 
 public class Particle implements Graphics {
-    private ShapeGraphics graphics;
     private int[] currentColor, startColor, endColor;
     private Shape shape;
 
@@ -21,7 +19,8 @@ public class Particle implements Graphics {
     private float modA, modR, modG, modB;
 
 
-    public Particle(Vector position, Shape shape, int startColor, int endColor, float lifeTime, Vector speed, Vector gravity) {
+    public Particle(Vector position, Shape shape, int startColor, int endColor, float lifeTime,
+                    Vector speed, Vector gravity) {
         this.lifeTime = lifeTime;
         this.elapsedLifeTime = 0;
         this.flaggedForDestruction = false;

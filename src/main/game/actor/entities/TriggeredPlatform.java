@@ -31,7 +31,7 @@ public class TriggeredPlatform extends GameEntity {
         this.platform = new Platform(game, position, platformShape);
 
         this.build(new Circle(0.1f), -1f, -1, false);
-        this.platform.attach(this.getEntity(), Vector.ZERO);
+        this.platform.setConstraint(Linker.attachPrismatically(game, this.getEntity(), this.platform.getEntity(), Vector.ZERO));
 
         game.addActor(this.platform);
     }

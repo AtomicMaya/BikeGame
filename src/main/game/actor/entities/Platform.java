@@ -2,7 +2,9 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.ImageGraphics;
-import main.math.*;
+import main.math.PrismaticConstraint;
+import main.math.Shape;
+import main.math.Vector;
 import main.window.Canvas;
 
 /**
@@ -24,29 +26,7 @@ public class Platform extends GameEntity {
         this.shape = shape;
 
         this.build(shape, 100.f, 1.f, false, CollisionGroups.TERRAIN.group);
-        graphics = addGraphics("./res/images/stone.3.png", 5.f, 1.f);
-    }
-
-    /**
-     * Attaches this platform to a moving entity
-     * @param mobile : The moving entity
-     * @param anchor : Where on the moving entity this platform should be anchored
-     */
-    protected void attach(Entity mobile, Vector anchor) {
-        PrismaticConstraintBuilder builder = super.getOwner().createPrismaticConstraintBuilder();
-        builder.setFirstEntity(mobile);
-        builder.setSecondEntity(this.getEntity());
-        builder.setFirstAnchor(anchor);
-        builder.setSecondAnchor(Vector.ZERO);
-        builder.setLimitEnabled(true);
-        builder.setMotorEnabled(true);
-        builder.setMotorSpeed(0);
-        builder.setMotorMaxTorque(10f);
-        builder.setLowerTranslationLimit(0);
-        builder.setUpperTranslationLimit(0);
-        builder.setAxis(Vector.Y);
-        builder.setInternalCollision(false);
-        constraint = builder.build();
+        this.graphics = addGraphics("./res/images/stone.3.png", 5.f, 1.f);
     }
 
     /**
@@ -65,6 +45,10 @@ public class Platform extends GameEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        graphics.draw(canvas);
+        this.graphics.draw(canvas);
+    }
+
+    public void setConstraint(PrismaticConstraint constraint) {
+        this.constraint = constraint;
     }
 }

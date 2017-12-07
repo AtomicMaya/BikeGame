@@ -40,7 +40,7 @@ public class BlowingLeaf implements GraphicalObjects {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(canvas.getImage(this.file.get(this.graphicsCounter)), Transform.I.translated(this.position).scaled(this.length, this.height), 1, 0);
+        canvas.drawImage(canvas.getImage(this.file.get(this.graphicsCounter)), Transform.I.translated(this.position).scaled(this.length, this.height), 1, -20);
     }
 
     @Override
