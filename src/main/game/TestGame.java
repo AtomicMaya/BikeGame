@@ -60,7 +60,7 @@ public class TestGame extends ActorGame {
 		//sensor = new KeyboardProximitySensor(this, new Vector(12, 3), shape, KeyEvent.VK_E);
 
         this.platform = new TriggeredPlatform(this, new Vector(30, 2), new Vector(1, 0),6,5, 2, 3, 2);
-        this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 8, 5, 2);
+        this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(1f, 0f), 8, .1f, .1f);
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		//lever.addAction(() -> this.platform.triggerAction(), 1);
 		//lever.addAction(() -> this.setViewScaleModifier(30), 1);

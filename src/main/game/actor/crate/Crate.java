@@ -4,17 +4,14 @@
  */
 package main.game.actor.crate;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.ImageGraphics;
 import main.game.actor.entities.GameEntity;
 import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.io.Serializable;
 
 /**
  * Part 4.5, Test de l'architecture: Crate
@@ -31,7 +28,7 @@ public class Crate extends GameEntity implements Serializable {
 
 	// keep the argument in case of save
 	private String imagePath;
-	private float size;
+	private float width, height;
 
 	/**
 	 * Create a new Crate
@@ -44,23 +41,28 @@ public class Crate extends GameEntity implements Serializable {
 	 * @param size of the crate
 	 */
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
+		this(game, position, imagePath, fixed, size, size);
+	}
+
+	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float width, float height) {
 		super(game, fixed, position);
 		this.imagePath = (imagePath == null || imagePath.equals("")) ? "res/images/crate.1.png" : imagePath;
-		this.size = size;
+		this.width = width;
+		this.height = height;
 
 		create();
 	}
 
 	/**
-	 * Actual creation of the parameters of the GameEntity, not in the constructor to
-	 * avoid duplication with the method reCreate
+	 * Actual creation of the parameters of the GameEntity, not in the constructor
+	 * to avoid duplication with the method reCreate
 	 */
 	private void create() {
 		imagePath = (imagePath == null || imagePath == "") ? "res/images/crate.1.png" : imagePath;
 
-		Polygon square = new Polygon(0, 0, size, 0, size, size, 0, size);
+		Polygon square = new Polygon(0, 0, 0, height, width, height, width, 0);
 		this.build(square);
-		graphic = this.addGraphics(this.imagePath, size, size);
+		graphic = this.addGraphics(this.imagePath, width, height);
 	}
 
 	@Override
@@ -72,6 +74,12 @@ public class Crate extends GameEntity implements Serializable {
 	@Override
 	public void draw(Canvas canvas) {
 		graphic.draw(canvas);
+	}
+
+	public void setSize(float width, float height) {
+		this.width = width;
+		this.height = height;
+		create();
 	}
 
 	@Override

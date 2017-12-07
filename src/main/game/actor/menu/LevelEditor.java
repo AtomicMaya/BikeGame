@@ -39,6 +39,7 @@ public class LevelEditor implements Graphics {
 
 	// Camera stuff
 	private Vector cameraPosition = Vector.ZERO;
+	private final float windowZoom = 30f;
 	private final float cameraSpeed = 20;
 	private float zoom = 1f;
 	private float maxPosX = 120;
@@ -77,9 +78,10 @@ public class LevelEditor implements Graphics {
 	private GraphicalButton playButton;
 	private Vector playButtonPosition = new Vector(0, 14);
 	private final String playButtonText = "Play";
+	private final String playButtonEditText = "Edit";
 
 	// test play stuff
-	private ArrayList<Actor> actorPlay = new ArrayList<>();
+	// private ArrayList<Actor> actorPlay = new ArrayList<>();
 
 	public LevelEditor(ActorGame game, Window window) {
 		this.game = game;
@@ -130,13 +132,10 @@ public class LevelEditor implements Graphics {
 
 			game.setGameFreezeStatus(!game.isGameFrozen());
 			if (!game.isGameFrozen()) {
-				actorPlay = getActors();
+				game.addActor(getActors());
 				game.setViewCandidate(this.bb.getActor());
 			} else {
-				for (Actor a : actorPlay) {
-					a.destroy();
-				}
-				actorPlay.clear();
+				game.destroyAllActors();
 				game.setViewCandidate(null);
 				for (ActorBuilder ab : actors) {
 					ab.reCreate();
@@ -168,14 +167,11 @@ public class LevelEditor implements Graphics {
 
 		if (!game.isGameFrozen()) {
 
-			float z = game.getViewScale() / 30f;
-			playButton.setText(playButtonText, fontSize * z);
+			float z = game.getViewScale() / windowZoom;
+			playButton.setText(playButtonEditText, fontSize * z);
 			playButton.setPosition((playButtonPosition).mul(z).add(game.getCameraPosition()));
 			playButton.update(deltaTime);
 
-			for (Actor a : actorPlay) {
-				a.update(deltaTime);
-			}
 			return;
 		}
 		// camera accelaration
@@ -216,6 +212,9 @@ public class LevelEditor implements Graphics {
 			zoom = (zoom > 2f) ? 2f : zoom;
 		}
 
+		// finalement placement de la camera
+		window.setRelativeTransform(Transform.I.scaled(windowZoom * zoom).translated(cameraPosition));
+
 		// ligne de placement
 		gridLine = grid();
 
@@ -245,9 +244,6 @@ public class LevelEditor implements Graphics {
 			actor.update(deltaTime);
 		}
 
-		// finalement placement de la camera
-		window.setRelativeTransform(Transform.I.scaled(30 * zoom).translated(cameraPosition));
-
 	}
 
 	@Override
@@ -256,9 +252,9 @@ public class LevelEditor implements Graphics {
 		playButton.draw(canvas);
 
 		if (!game.isGameFrozen()) {
-			for (Actor a : actorPlay) {
-				a.draw(canvas);
-			}
+			// for (Actor a : actorPlay) {
+			// a.draw(canvas);
+			// }
 			return;
 		}
 
@@ -350,6 +346,10 @@ public class LevelEditor implements Graphics {
 
 	public float getZoom() {
 		return this.zoom;
+	}
+
+	public float getWindowScale() {
+		return this.windowZoom;
 	}
 
 	public Vector getCameraPosition() {

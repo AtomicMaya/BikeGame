@@ -103,7 +103,7 @@ public class GroundBuilder extends ActorBuilder {
 	public void update(float deltaTime) {
 
 		if (!isDone) {
-			currentPoint = QuickMafs.floor(getMousePosition());
+			currentPoint =getFlooredMousePosition();
 			if (isLeftPressed() && !drawModeButton.isHovered() && !finish.isHovered()) {
 				addPoint(currentPoint);
 

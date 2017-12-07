@@ -21,7 +21,7 @@ public class BikeBuilder extends ActorBuilder {
 	public BikeBuilder(ActorGame game) {
 		super(game);
 		this.game = game;
-		bike = new Bike(game, getMousePosition());
+		bike = new Bike(game, getFlooredMousePosition());
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class BikeBuilder extends ActorBuilder {
 			isDone = true;
 		}
 		if (!isDone) {
-			position = getMousePosition();
+			position = getFlooredMousePosition();
 			bike.destroy();
 			bike = new Bike(game, position);
 		} 

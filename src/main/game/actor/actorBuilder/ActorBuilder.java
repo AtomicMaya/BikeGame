@@ -2,6 +2,7 @@ package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.QuickMafs;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -17,8 +18,8 @@ public abstract class ActorBuilder {
 
 	public abstract void draw(Canvas canvas);
 
-	public Vector getMousePosition() {
-		return game.getMouse().getPosition();
+	public Vector getFlooredMousePosition() {
+		return QuickMafs.floor(game.getMouse().getPosition());
 	}
 
 	public boolean isLeftPressed() {
@@ -27,6 +28,10 @@ public abstract class ActorBuilder {
 
 	public boolean isRightPressed() {
 		return game.getMouse().getRightButton().isPressed();
+	}
+
+	public ActorGame getOwner() {
+		return game;
 	}
 
 	public abstract Actor getActor();

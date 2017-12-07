@@ -11,6 +11,7 @@ import java.util.List;
 public class QuickMafs {
 	/**
 	 * Gets distance between two points.
+	 * 
 	 * @param first : The first point.
 	 * @param second : The second point.
 	 * @return the distance between both points.
@@ -23,8 +24,24 @@ public class QuickMafs {
 		return (float) Math.atan2((from.y - center.y) - (to.y - center.y), (from.x - center.x) - (to.x - center.x));
 	}
 
+	public static float getAngle(Vector un, Vector deux) {
+		
+		float lengtUn = un.getLength();
+		float lengthDeux = deux.getLength();
+
+		float C = (un.x * deux.x + un.y * deux.y) / (lengtUn * lengthDeux);
+		float S = (un.x * deux.y - un.y * deux.x);
+
+		return (float) (Math.signum(S) * Math.acos(C));
+	}
+
+	public float dotProduct(Vector un, Vector deux) {
+		return un.x * deux.x + un.y * deux.y;
+	}
+
 	/**
 	 * Converts from degrees to radians
+	 * 
 	 * @param angle : An angle in degrees
 	 * @return : an angle in radians
 	 */
@@ -34,6 +51,7 @@ public class QuickMafs {
 
 	/**
 	 * Inverts a list of vectors on an axis.
+	 * 
 	 * @param vectors : The given list of vectors
 	 * @param axis : The given axis, should be ([-1.f | 1.f], [-1.f | 1.f]) for
 	 *            clean inversion.
@@ -58,6 +76,7 @@ public class QuickMafs {
 
 	/**
 	 * Returns green component from given packed color.
+	 * 
 	 * @param rgb : A 32-bits ARGB color
 	 * @return an integer between 0 and 255
 	 */
@@ -67,6 +86,7 @@ public class QuickMafs {
 
 	/**
 	 * Returns blue component from given packed color.
+	 * 
 	 * @param rgb : A 32-bits ARGB color.
 	 * @return an integer between 0 and 255.
 	 */
@@ -74,15 +94,15 @@ public class QuickMafs {
 		return rgb & 0xFF;
 	}
 
-    /**
-     * Returns alpha component from given packed color.
-     * @param argb : A 32-bits ARGB color.
-     * @return an int between 0 and 255.
-     */
+	/**
+	 * Returns alpha component from given packed color.
+	 * 
+	 * @param argb : A 32-bits ARGB color.
+	 * @return an int between 0 and 255.
+	 */
 	public static int getAlpha(int argb) {
 		return (argb >> 24) & 0xFF;
 	}
-
 
 	public static int validate8bit(int someInt) {
 		if (someInt < 0)
@@ -111,8 +131,8 @@ public class QuickMafs {
 
 		if (minX > toTest.x || maxX < toTest.x)
 			return false;
-        return !(minY > toTest.y) && !(maxY < toTest.y);
-    }
+		return !(minY > toTest.y) && !(maxY < toTest.y);
+	}
 
 	public static ArrayList<Vector> sortVectorByX(ArrayList<Vector> points) {
 

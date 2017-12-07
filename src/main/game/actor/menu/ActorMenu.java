@@ -6,9 +6,7 @@ package main.game.actor.menu;
 
 import main.game.ActorGame;
 import main.game.actor.QuickMafs;
-import main.game.actor.actorBuilder.BikeBuilder;
-import main.game.actor.actorBuilder.CrateBuilder;
-import main.game.actor.actorBuilder.GroundBuilder;
+import main.game.actor.actorBuilder.*;
 import main.game.actor.entities.GraphicalButton;
 import main.math.Polygon;
 import main.math.Transform;
@@ -44,7 +42,7 @@ public class ActorMenu extends Menu {
 		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
 		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
 		boutons.get(0).addOnClickAction(() -> {
-			levelEditor.addActor(new CrateBuilder(game));
+			levelEditor.addActor(new CrateBuilder(game, levelEditor));
 			changeStatut();
 		});
 		boutonsPosition.add(new Vector(0f, 0f));
@@ -65,9 +63,22 @@ public class ActorMenu extends Menu {
 		});
 		boutonsPosition.add(new Vector(2f, 0f));
 
+		// mouving platform pos 1, -1
 		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
-		boutonsPosition.add(new Vector(1f, -1f));
+		boutons.get(3).addOnClickAction(()->{
+			levelEditor.addActor(new PlatformBuilder(game));
+			changeStatut();
+		});
+		boutonsPosition.add(new Vector(0f, -1f));
 
+		// particle Emitter pos 2 -1
+		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
+		boutons.get(3).addOnClickAction(()->{
+			levelEditor.addActor(new ParticleEmitterBuilder(game));
+			changeStatut();
+		});
+		boutonsPosition.add(new Vector(1f, -1f));
+		
 		for (int i = 0; i < boutonsPosition.size(); i++) {
 			boutonsPosition.set(i, boutonsPosition.get(i).add(.1f, -.9f));
 		}
