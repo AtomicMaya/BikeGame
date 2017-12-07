@@ -27,7 +27,7 @@ public class QuickMafs {
 	}
 
 	public static float getAngle(Vector un, Vector deux) {
-		
+
 		float lengtUn = un.getLength();
 		float lengthDeux = deux.getLength();
 
@@ -56,7 +56,7 @@ public class QuickMafs {
 	 * 
 	 * @param vectors : The given list of vectors
 	 * @param axis : The given axis, should be ([-1.f | 1.f], [-1.f | 1.f]) for
-	 *            clean inversion.
+	 * clean inversion.
 	 * @return a list with the inverted vectors
 	 */
 	public static List<Vector> invertXCoordinates(List<Vector> vectors, Vector axis) {
@@ -124,18 +124,29 @@ public class QuickMafs {
 		return new Vector((float) Math.floor(v.x), (float) Math.floor(v.y));
 	}
 
-	public static boolean isInRectangle(Vector min, Vector max, Vector toTest) {
+	/**
+	 * Test whether a Vector is between two other
+	 * @param first first position
+	 * @param second : second position
+	 * @param toTest : position to test
+	 */
+	public static boolean isInRectangle(Vector first, Vector second, Vector toTest) {
 
-		float minX = Math.min(min.x, max.x);
-		float maxX = Math.max(min.x, max.x);
-		float minY = Math.min(min.y, max.y);
-		float maxY = Math.max(min.y, max.y);
+		float minX = Math.min(first.x, second.x);
+		float maxX = Math.max(first.x, second.x);
+		float minY = Math.min(first.y, second.y);
+		float maxY = Math.max(first.y, second.y);
 
 		if (minX > toTest.x || maxX < toTest.x)
 			return false;
 		return !(minY > toTest.y) && !(maxY < toTest.y);
 	}
 
+	/**
+	 * Sort Vectors by their x coordinate
+	 * @param points : List of Vectors
+	 * @return the list sorted
+	 */
 	public static ArrayList<Vector> sortVectorByX(ArrayList<Vector> points) {
 
 		if (points.size() < 2)
@@ -163,6 +174,12 @@ public class QuickMafs {
 		}
 	}
 
+	/**
+	 * Delete useless {@linkplain Vector} which have the same x coordinate
+	 * @param points : {@linkplain Vector}s to test
+	 * @return a list with two {@linkplain Vector}s, the one with the smallest
+	 * and the one with the biggest y coordinate
+	 */
 	public static ArrayList<Vector> deleteUselessInY(ArrayList<Vector> points) {
 		if (points.size() <= 1)
 			return points;
@@ -180,14 +197,12 @@ public class QuickMafs {
 
 		return p;
 	}
-	
+
 	/**
 	 * Test if a string is a numerical value
 	 * 
-	 * @param string:
-	 *            : the input string
-	 * @param return
-	 *            : true if input is a numeric value
+	 * @param string: : the input string
+	 * @param return : true if input is a numeric value
 	 */
 	public static boolean isNumeric(String string) {
 		return string != null && string.matches("-?\\d+(\\.\\d+)?");

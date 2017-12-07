@@ -8,12 +8,15 @@ import main.game.ActorGame;
 
 import java.io.Serializable;
 
+/** Represent an {@linkplain Actor} which can be saved */
 public interface Saveable extends Serializable, Actor {
 
 	/**
-	 * Method used recreate an actor when loaded from a file, ActorGame can't be
-	 * save and would anyway not be the same in a new game so this method create the
-	 * Actor using its parameters and an ActorGame given in parameters.
+	 * Method used recreate an {@linkplain Actor} when loaded from a file,
+	 * {@linkplain ActorGame} can't be save and would anyway not be the same in
+	 * a new game so this method create the {@linkplain Actor} using its
+	 * parameters and an {@linkplain ActorGame} given in parameters.
+	 * @param game {@linkplain ActorGame} where the {@linkplain Actor} evolve
 	 */
-    void reCreate(ActorGame game);
+	void reCreate(ActorGame game);
 }

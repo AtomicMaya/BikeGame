@@ -11,6 +11,7 @@ import main.game.levels.Level;
 import main.io.FileSystem;
 import main.window.Window;
 
+/** Represent an {@linkplain ActorGame} with {@linkplain Level}s*/
 public abstract class GameWithLevels extends ActorGame {
 
 	private List<Level> levels;
@@ -35,24 +36,31 @@ public abstract class GameWithLevels extends ActorGame {
 		}
 	}
 
+	/** Go to the next {@linkplain Level} */
 	protected void nextLevel() {
-		
 		beginLevel(currentLevel + 1);
 	}
 
+	/** Reset the current {@linkplain Level} */
 	protected void resetLevel() {
 		clearCurrentLevel();
 		beginLevel(currentLevel);
 	}
 
+	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
 	protected void clearCurrentLevel() {
 		super.destroyAllActors();
 	}
 
+	/**
+	 * Begin a {@linkplain Level}
+	 * @param i : Number in the {@linkplain List} of the {@linkplain Level} to
+	 * start
+	 */
 	public void beginLevel(int i) {
 		clearCurrentLevel();
 		currentLevel = i;
-		if (currentLevel > levels.size()-1)
+		if (currentLevel > levels.size() - 1)
 			currentLevel = 0;
 		super.addActor(levels.get(currentLevel));
 		this.levels.get(currentLevel).createAllActors();
@@ -61,8 +69,15 @@ public abstract class GameWithLevels extends ActorGame {
 		super.setPayload(levels.get(currentLevel).getPayload());
 	}
 
+	/**
+	 * Create all the {@linkplain Level} for this {@linkplain GameWithLevels}
+	 */
 	protected abstract List<Level> createLevelList();
-	
+
+	/**
+	 * @return the number of {@linkplain Level} in this
+	 * {@linkplain GameWithLevels}
+	 */
 	public int numberOfLevel() {
 		return levels.size();
 	}

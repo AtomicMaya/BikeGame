@@ -7,30 +7,33 @@ package main.game.actor;
 import main.game.ActorGame;
 import main.math.Node;
 import main.math.Polygon;
+import main.math.Positionable;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
 
-public class Comments extends Node implements Graphics {
+/** Comment which can be attached to a {@linkplain Positionable} */
+public class Comment extends Node implements Graphics {
 
 	private String text;
 	private float fontSize = 1f;
 
 	private float zoom = 1;
-	private Vector position = new Vector(-4, -12);
+	private Vector position = new Vector(-4, -12); // default position on the
+													// screen
 	private ActorGame game;
 
-	public Comments(ActorGame game, String text) {
+	public Comment(ActorGame game, String text) {
 		this.game = game;
 		this.text = text;
 	}
 
 	/**
-	 * Update this Comment
+	 * Update this {@linkplain Comment}
 	 * 
-	 * @param zoom, default is 1
+	 * @param zoom, 1 for default
 	 */
 	public void update(float zoom) {
 		this.zoom = zoom;
@@ -53,7 +56,19 @@ public class Comments extends Node implements Graphics {
 				false, false, Vector.ZERO, 1, 1001);
 	}
 
+	/**
+	 * Set the relative position of this {@linkplain Comment}
+	 * @param newPosition the new position
+	 */
 	public void setPosition(Vector newPosition) {
 		this.position = newPosition;
+	}
+
+	/**
+	 * Set the text of this {@linkplain Comment}
+	 * @param newText : text to be displayed
+	 */
+	public void setText(String newText) {
+		this.text = newText;
 	}
 }

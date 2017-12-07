@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.Comments;
+import main.game.actor.Comment;
 import main.game.actor.NumberField;
 import main.game.actor.QuickMafs;
 import main.game.actor.crate.Crate;
@@ -29,7 +29,7 @@ public class CrateBuilder extends ActorBuilder {
 	// number field stuff
 	private NumberField height, width;
 	private Vector heightNumberFieldPos, widthNumberFieldPos;
-	private Comments heightComment, widthComments;
+	private Comment heightComment, widthComments;
 
 	private boolean isWriting = true;
 	private boolean hoover = false;
@@ -43,14 +43,14 @@ public class CrateBuilder extends ActorBuilder {
 		heightNumberFieldPos = new Vector(26, 6);
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
 
-		heightComment = new Comments(game, "Crate Height");
+		heightComment = new Comment(game, "Crate Height");
 		heightComment.setParent(height);
 		heightComment.setPosition(new Vector(-6, 0));
 
 		widthNumberFieldPos = new Vector(26, 8);
 		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
 
-		widthComments = new Comments(game, "Crate Width");
+		widthComments = new Comment(game, "Crate Width");
 		widthComments.setParent(width);
 		widthComments.setPosition(new Vector(-6, 0));
 	}
@@ -67,17 +67,14 @@ public class CrateBuilder extends ActorBuilder {
 
 		}
 		if (!isDone()) {
-
-			height.setZoom(lv.getZoom());
-			width.setZoom(lv.getZoom());
-			height.update(deltaTime);
-			width.update(deltaTime);
+			height.update(lv.getZoom(), deltaTime);
+			width.update(lv.getZoom(), deltaTime);
 
 			heightComment.update(lv.getZoom());
 			widthComments.update(lv.getZoom());
 
 			if (game.getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
-				isWriting = !(height.finishTyping() & width.finishTyping());
+				isWriting = !(height.hasFocus() & width.hasFocus());
 				crate.setSize(width.getNumber(), height.getNumber());
 			}
 		} else
@@ -120,7 +117,7 @@ public class CrateBuilder extends ActorBuilder {
 	public boolean isHovered() {
 		return hoover;
 	}
-	
+
 	@Override
 	public void destroy() {
 		this.crate.destroy();

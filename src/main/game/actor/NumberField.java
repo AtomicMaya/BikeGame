@@ -14,6 +14,7 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+/** Field to enter a number which can be then recover */
 public class NumberField extends Node implements Graphics {
 
 	private String text;
@@ -31,6 +32,14 @@ public class NumberField extends Node implements Graphics {
 	private float clignote = 0;
 	private final float timeClignotMax = .6f;
 
+	/**
+	 * Create a new {@linkplain NumberField}
+	 * @param game : {@linkplain ActorGame} where this belong
+	 * @param position : position on the screen
+	 * @param width : width of the background
+	 * @param height : height of the background
+	 * @param value : initial value of the field
+	 */
 	public NumberField(ActorGame game, Vector position, float width, float height, int value) {
 		this.game = game;
 		this.width = width;
@@ -42,7 +51,12 @@ public class NumberField extends Node implements Graphics {
 
 	}
 
-	public void update(float deltaTime) {
+	/**
+	 * Simulates a single time step.
+	 * @param zoom, 1 for default
+	 * @param deltaTime elapsed time since last update, in seconds, non-negative
+	 */
+	public void update(float zoom, float deltaTime) {
 		clignote += deltaTime;
 		clignote = (clignote > timeClignotMax) ? 0 : clignote;
 
@@ -76,6 +90,7 @@ public class NumberField extends Node implements Graphics {
 		setRelativeTransform(Transform.I.translated(position).scaled(zoom).translated(game.getCanvas().getPosition()));
 	}
 
+	/** @return the number entered in the field */
 	public float getNumber() {
 		return Float.parseFloat((text.isEmpty()) ? "1" : text);
 	}
@@ -84,7 +99,7 @@ public class NumberField extends Node implements Graphics {
 	public void draw(Canvas canvas) {
 		canvas.drawShape(new Polygon(0, 0, 0, height, width, height, width, 0), getTransform(),
 				(focus) ? Color.RED : Color.LIGHT_GRAY, Color.BLACK, .03f * zoom, (focus) ? .5f : .7f, 59);
-		
+
 		float l = (text.length() == 0) ? 1 : text.length();
 
 		Vector clignotePos = new Vector(width / 2 + text.length() * .22f, .1f).mul(zoom);
@@ -99,22 +114,31 @@ public class NumberField extends Node implements Graphics {
 
 	}
 
+	/**
+	 * Set the font size
+	 * @param size : font size
+	 */
 	public void setFontSize(float size) {
 		this.fontSize = size;
 	}
 
-	public void setNumber(float n) {
-		text = "" + n;
+	/***
+	 * Set the number in the {@linkplain NumberField}
+	 * @param number : number to set in the field
+	 */
+	public void setNumber(float number) {
+		text = "" + number;
 	}
 
-	public void setZoom(float zoom) {
-		this.zoom = zoom;
-	}
-
-	public boolean finishTyping() {
+	/** @return whether this {@linkplain NumberField} has the focus */
+	public boolean hasFocus() {
 		return !focus;
 	}
 
+	/**
+	 * @return whether this {@linkplain NumberField} is hovered by the
+	 * {@linkplain Mouse}
+	 */
 	public boolean isHovered() {
 		return this.hover;
 	}

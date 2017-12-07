@@ -15,13 +15,13 @@ import main.window.Canvas;
 import java.io.Serializable;
 
 /**
- * Part 4.5, Test de l'architecture: Crate
+ * Part 4.5, Test de l'architecture: Crate:
+ * <p>
+ * Simple Crate added to an {@linkplain ActorGame}
+ * </p>
  */
 public class Crate extends GameEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -677571549932797093L;
 
 	// keep reference to our images
@@ -37,7 +37,7 @@ public class Crate extends GameEntity {
 	 * @param game ActorGame where the Crate evolve
 	 * @param position initial position of the Crate
 	 * @param imagePath path to the image to give to the Crate, if null, default
-	 *            image
+	 * image
 	 * @param fixed weather the crate is fixed
 	 * @param size of the crate
 	 */
@@ -55,8 +55,8 @@ public class Crate extends GameEntity {
 	}
 
 	/**
-	 * Actual creation of the parameters of the GameEntity, not in the constructor
-	 * to avoid duplication with the method reCreate
+	 * Actual creation of the parameters of the GameEntity, not in the
+	 * constructor to avoid duplication with the method reCreate
 	 */
 	private void create() {
 		imagePath = (imagePath == null || imagePath == "") ? "res/images/crate.1.png" : imagePath;

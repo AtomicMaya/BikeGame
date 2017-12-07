@@ -27,6 +27,10 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
+ * the game
+ */
 public class LevelEditor implements Graphics {
 
 	// actorBuilder stuff
@@ -41,9 +45,14 @@ public class LevelEditor implements Graphics {
 
 	// Camera stuff
 	private Vector cameraPosition = Vector.ZERO;
-	private final float windowZoom = 30f;
-	private final float cameraSpeed = 20;
+	private static final float windowZoom = 30f;
+	private static final float cameraSpeed = 20f;
+	/** Curent zoom, between {@value #minZoom} and {@value #maxZoom} */
 	private float zoom = 1f;
+	/** Maximum zoom value : {@value #maxZoom} */
+	private static final float maxZoom = 2f;
+	/** Maximum zoom value : {@value #minZoom} */
+	private static final float minZoom = 0.4f;
 	private float maxPosX = 120;
 	private float maxPosY = 30;
 	private float cameraAcceleration = .4f;
@@ -64,7 +73,8 @@ public class LevelEditor implements Graphics {
 	private Vector redSquarePosition = Vector.ZERO;
 	private ShapeGraphics redSquareGraphics;
 	private boolean showRedSquare = false; // true if the red square is show
-	private boolean hasClicked = false; // true if we clicked once to get position on screen
+	private boolean hasClicked = false; // true if we clicked once to get
+										// position on screen
 	private BetterTextGraphics redSquarePosText;
 
 	// activate/desactivate position pointer
@@ -89,6 +99,12 @@ public class LevelEditor implements Graphics {
 	private Vector saveButonPos = new Vector(4, 14);
 	private final String currentSaveName;
 
+	/**
+	 * Create a new {@linkplain LevelEditor}
+	 * @param game {@linkplain ActorGame} where this {@linkplain LevelEditor}
+	 * belong
+	 * @param window {@linkplain Window} graphical context
+	 */
 	public LevelEditor(ActorGame game, Window window) {
 		this.game = game;
 		this.window = window;
@@ -170,16 +186,20 @@ public class LevelEditor implements Graphics {
 				number.add(Integer.parseInt(savesNames.get(i)));
 		}
 		String temp = "";
-		for (int i = 1; i < number.size()+1; i++) {
+		for (int i = 1; i < number.size() + 1; i++) {
 			if (!number.contains(i)) {
 				temp = "save" + ((i < 10) ? "0" : "") + i;
 				break;
 			}
 		}
-		
+
 		currentSaveName = (temp);
 	}
 
+	/**
+	 * Update all the buttons of this {@linkplain LevelEditor} * @param
+	 * deltaTime elapsed time since last update, in seconds, non-negative
+	 */
 	private void updateButtons(float deltaTime) {
 		// camera reset button update
 		cameraResetPosition.setText(resetCameraButtonText, fontSize * zoom);
@@ -198,6 +218,10 @@ public class LevelEditor implements Graphics {
 		playButton.update(deltaTime);
 	}
 
+	/**
+	 * Simulates a single time step.
+	 * @param deltaTime elapsed time since last update, in seconds, non-negative
+	 */
 	public void update(float deltaTime) {
 
 		if (!game.isGameFrozen()) {
@@ -216,6 +240,7 @@ public class LevelEditor implements Graphics {
 		}
 		if (game.getKeyboard().get(KeyEvent.VK_CONTROL).isReleased())
 			xPP = 1;
+
 		// camera controls
 		float posX = cameraPosition.x;
 		float posY = cameraPosition.y;
@@ -241,10 +266,10 @@ public class LevelEditor implements Graphics {
 		// zoom control
 		if (game.getMouse().getMouseScrolledUp()) {
 			zoom -= .1f;
-			zoom = (zoom < .4f) ? .4f : zoom;
+			zoom = (zoom < minZoom) ? minZoom : zoom;
 		} else if (game.getMouse().getMouseScrolledDown()) {
 			zoom += .1f;
-			zoom = (zoom > 2f) ? 2f : zoom;
+			zoom = (zoom > maxZoom) ? maxZoom : zoom;
 		}
 
 		// finalement placement de la camera
@@ -261,7 +286,7 @@ public class LevelEditor implements Graphics {
 		if (temp)
 			actorMenu.update(deltaTime);
 		else if (game.getMouse().getLeftButton().isPressed() || game.getMouse().getRightButton().isPressed())
-			actorMenu.setStatut(false);
+			actorMenu.setStatus(false);
 
 		// positionneur stuff
 		if (showRedSquare && game.getMouse().getLeftButton().isPressed()) {
@@ -297,10 +322,8 @@ public class LevelEditor implements Graphics {
 
 		playButton.draw(canvas);
 
+		// if we are playing, return
 		if (!game.isGameFrozen()) {
-			// for (Actor a : actorPlay) {
-			// a.draw(canvas);
-			// }
 			return;
 		}
 
@@ -330,6 +353,7 @@ public class LevelEditor implements Graphics {
 
 	}
 
+	/** @return the list of all {@linkplain Actor}s created */
 	public ArrayList<Actor> getActors() {
 		ArrayList<Actor> a = new ArrayList<>();
 		for (ActorBuilder ab : actors) {
@@ -338,12 +362,14 @@ public class LevelEditor implements Graphics {
 		return a;
 	}
 
+	/** @param actor {@linkplain ActorBuilder} to add */
 	public void addActor(ActorBuilder actor) {
 		actors.add(actor);
 	}
 
 	/**
-	 * Make sure we have a unique ground
+	 * Make sure we have a unique {@linkplain Ground}
+	 * @param {@linkplain Ground} to add to the game
 	 */
 	public void addGround() {
 		if (this.gb != null) {
@@ -355,18 +381,20 @@ public class LevelEditor implements Graphics {
 	}
 
 	/**
-	 * Make sure we have a unique bike
+	 * Make sure we have a unique {@linkplain Bike}
+	 * @param bike {@linkplain Bike} to add to the game
 	 */
-	public void addBike(BikeBuilder bb) {
+	public void addBike(BikeBuilder bike) {
 		if (this.bb != null) {
 			this.bb.getActor().destroy();
 			actors.remove(this.bb);
 		}
 
-		this.bb = bb;
-		actors.add(bb);
+		this.bb = bike;
+		actors.add(bike);
 	}
 
+	/** @return an ArrayList containing an updated grid */
 	private ArrayList<ShapeGraphics> grid() {
 		ArrayList<ShapeGraphics> lines = new ArrayList<>();
 
@@ -397,12 +425,32 @@ public class LevelEditor implements Graphics {
 		return this.zoom;
 	}
 
+	/**
+	 * @return the current {@link #zoom}, between {@value #minZoom} and
+	 * {@value #maxZoom}
+	 */
 	public float getWindowScale() {
-		return this.windowZoom;
+		return windowZoom;
 	}
 
+	/**
+	 * @return the current camera position
+	 */
 	public Vector getCameraPosition() {
 		return this.cameraPosition;
+	}
+
+	/**
+	 * Destroy this
+	 */
+	public void destroy() {
+		this.actorMenu.destroy();
+		for (ActorBuilder a : actors)
+			a.destroy();
+		this.cameraResetPosition.destroy();
+		this.playButton.destroy();
+		this.getPositionButton.destroy();
+		this.cameraResetPosition.destroy();
 	}
 
 }
