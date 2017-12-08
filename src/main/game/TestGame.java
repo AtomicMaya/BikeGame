@@ -89,11 +89,11 @@ public class TestGame extends ActorGame {
         this.setViewScale(15);
         //scenery = new Scenery(this);
 
-        Coin coin = new Coin(this, new Vector(2, 1));
-        Coin coin1 = new Coin(this, new Vector(3, 1));
-        Coin coin2 = new Coin(this, new Vector(4, 1));
-        Coin coin3 = new Coin(this, new Vector(5, 1));
-        Coin coin4 = new Coin(this, new Vector(6, 1));
+        Coin coin = new Coin(this, new Vector(2, 1), true);
+        Coin coin1 = new Coin(this, new Vector(3, 1), true);
+        Coin coin2 = new Coin(this, new Vector(4, 1), true);
+        Coin coin3 = new Coin(this, new Vector(5, 1), true);
+        Coin coin4 = new Coin(this, new Vector(6, 1), true);
 
         RightFacingTrampoline rightFacingTrampoline = new RightFacingTrampoline(this, new Vector(19.5f, 2),
                 -1, -1);
