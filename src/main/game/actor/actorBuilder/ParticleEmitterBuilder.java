@@ -22,7 +22,7 @@ public class ParticleEmitterBuilder extends ActorBuilder {
 	private Vector position, startAngle, endAngle;
 
 	private ParticleEmitter pe;
-	
+
 	private boolean isDone = false;
 
 	public ParticleEmitterBuilder(ActorGame game) {
@@ -83,7 +83,7 @@ public class ParticleEmitterBuilder extends ActorBuilder {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	@Override
 	public void destroy() {
 		this.pe.destroy();

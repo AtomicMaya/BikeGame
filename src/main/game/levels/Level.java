@@ -30,8 +30,7 @@ public abstract class Level extends Node implements Actor {
 	private Actor payload;
 
 	/**
-	 * Create a new {@linkplain Level}
-	 * 
+	 * Create a new {@linkplain Level}.
 	 * @param game {@linkplain ActorGame} in which the {@linkplain Actor}s will evolve
 	 */
 	public Level(ActorGame game) {
@@ -80,7 +79,7 @@ public abstract class Level extends Node implements Actor {
 	}
 
 	/**
-	 * @return the playable {@linkplain Actor}
+	 * @return the playable {@linkplain Actor}.
 	 */
 	public Actor getPayload() {
 		return payload;

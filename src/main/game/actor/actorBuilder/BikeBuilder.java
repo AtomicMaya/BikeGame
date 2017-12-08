@@ -6,7 +6,6 @@ package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.QuickMafs;
 import main.game.actor.entities.Bike;
 import main.math.Vector;
 import main.window.Canvas;

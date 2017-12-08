@@ -2,8 +2,8 @@ package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.math.ExtendedMath;
 import main.game.actor.Graphics;
-import main.game.actor.QuickMafs;
 import main.game.actor.menu.Menu;
 import main.math.Vector;
 import main.window.Button;
@@ -23,14 +23,14 @@ public abstract class ActorBuilder implements Graphics{
 
 	/**
 	 * Simulates a single time step.
-	 * 
+	 *
 	 * @param deltaTime :elapsed time since last update, in seconds, non-negative
 	 */
 	public abstract void update(float deltaTime);
 
 	/** @return the {@linkplain Mouse} position, floored to the closest {@linkplain Integer} */
 	public Vector getFlooredMousePosition() {
-		return QuickMafs.floor(game.getMouse().getPosition());
+		return ExtendedMath.floor(game.getMouse().getPosition());
 	}
 
 	/** @return the {@linkplain Actor} created by the {@linkplain ActorBuilder} */

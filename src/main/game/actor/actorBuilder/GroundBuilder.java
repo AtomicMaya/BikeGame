@@ -6,14 +6,10 @@ package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.QuickMafs;
 import main.game.actor.entities.GraphicalButton;
 import main.game.actor.entities.Ground;
 import main.game.actor.menu.LevelEditor;
-import main.math.Circle;
-import main.math.Polyline;
-import main.math.Transform;
-import main.math.Vector;
+import main.math.*;
 import main.window.Canvas;
 
 import java.awt.*;
@@ -101,7 +97,7 @@ public class GroundBuilder extends ActorBuilder {
 			for (Vector v : points) {
 				canvas.drawShape(new Circle(.1f), Transform.I.translated(v), Color.ORANGE, null, 0, 1, 12);
 			}
-			canvas.drawShape(new Circle(.1f), Transform.I.translated(QuickMafs.floor(game.getMouse().getPosition())),
+			canvas.drawShape(new Circle(.1f), Transform.I.translated(ExtendedMath.floor(game.getMouse().getPosition())),
 					new Color(22, 84, 44), null, 0, 1, 15);
 
 			drawModeButton.draw(canvas);
@@ -151,7 +147,7 @@ public class GroundBuilder extends ActorBuilder {
 	private ArrayList<Vector> updatePoints(ArrayList<Vector> points) {
 		// normal draw mode, with insertion point in the middle
 		if (this.drawMode == 0) {
-			points = QuickMafs.sortVectorByX(points);
+			points = ExtendedMath.sortVectorByX(points);
 			// free draw mode, can be strange
 		} else if (drawMode == 1) {
 			points.remove(end);

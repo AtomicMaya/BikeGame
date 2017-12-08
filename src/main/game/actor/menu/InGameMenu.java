@@ -8,8 +8,6 @@ import main.game.ActorGame;
 import main.game.GameWithLevelAndMenu;
 import main.game.actor.entities.BetterTextGraphics;
 import main.game.actor.entities.GraphicalButton;
-import main.math.Polygon;
-import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;

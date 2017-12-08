@@ -10,9 +10,6 @@ import main.window.Canvas;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created on 12/6/2017 at 1:58 PM.
- */
 public class Coin extends GameEntity implements Lever, Runner {
     private ActorGame game;
 

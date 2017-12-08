@@ -1,7 +1,6 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
-import main.game.actor.QuickMafs;
 import main.game.actor.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
@@ -10,7 +9,7 @@ import main.window.Canvas;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static main.game.actor.QuickMafs.*;
+import static main.math.ExtendedMath.*;
 
 public class CharacterBike extends GameEntity {
 	private Vector headPos, armJointPos, backPos;
@@ -153,8 +152,8 @@ public class CharacterBike extends GameEntity {
 	 * @return the new coordinates of this point.
 	 */
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
-		float radius = QuickMafs.getDistance(anchor, initial);
-		float angle = QuickMafs.getAngle(anchor, initial, goal);
+		float radius = ExtendedMath.getDistance(anchor, initial);
+		float angle = ExtendedMath.getAngle(anchor, initial, goal);
 		angle += angle * this.directionModifier * this.elapsedYayTime / (this.timeTillYayEnd / 2.f);
 		return new Vector((float) (anchor.x - radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}

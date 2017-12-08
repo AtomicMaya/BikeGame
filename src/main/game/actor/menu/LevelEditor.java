@@ -13,7 +13,6 @@ import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.Comment;
 import main.game.actor.Graphics;
-import main.game.actor.QuickMafs;
 import main.game.actor.ShapeGraphics;
 import main.game.actor.actorBuilder.ActorBuilder;
 import main.game.actor.actorBuilder.BikeBuilder;
@@ -23,10 +22,9 @@ import main.game.actor.entities.Bike;
 import main.game.actor.entities.GraphicalButton;
 import main.game.actor.entities.Ground;
 import main.io.Save;
+import main.math.*;
 import main.math.Polygon;
 import main.math.Shape;
-import main.math.Transform;
-import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
@@ -185,7 +183,7 @@ public class LevelEditor implements Graphics {
 		}
 		ArrayList<Integer> number = new ArrayList<>();
 		for (int i = 1; i < savesNames.size(); i++) {
-			if (QuickMafs.isNumeric(savesNames.get(i)))
+			if (ExtendedMath.isNumeric(savesNames.get(i)))
 				number.add(Integer.parseInt(savesNames.get(i)));
 		}
 		String temp = "";
@@ -322,7 +320,7 @@ public class LevelEditor implements Graphics {
 		if (showRedSquare && game.getMouse().getLeftButton().isPressed()) {
 			hasClicked = true;
 			redSquarePosition = game.getMouse().getPosition();
-			redSquareGraphics.setRelativeTransform(Transform.I.translated(QuickMafs.floor(redSquarePosition)));
+			redSquareGraphics.setRelativeTransform(Transform.I.translated(ExtendedMath.floor(redSquarePosition)));
 			redSquarePosText
 					.setText((int) Math.floor(redSquarePosition.x) + ", " + (int) Math.floor(redSquarePosition.y));
 			redSquarePosText.setRelativeTransform(Transform.I.translated(new Vector(1, 1)));
@@ -442,7 +440,7 @@ public class LevelEditor implements Graphics {
 		Shape t = new Polygon(-lineThickness, -lineNumberY / 2, -lineThickness, lineNumberY / 2, lineThickness,
 				lineNumberY / 2, lineThickness, -lineNumberY / 2);
 
-		Vector c2 = QuickMafs.floor(cameraPosition);
+		Vector c2 = ExtendedMath.floor(cameraPosition);
 		for (int i = 0; i < lineNumberX; i++) {
 			lines.add(new ShapeGraphics(t, Color.BLACK, null, 0, .8f, -3));
 			lines.get(i).setRelativeTransform(

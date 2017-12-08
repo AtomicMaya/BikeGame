@@ -1,7 +1,5 @@
 package main.game.actor;
 
-import main.window.Canvas;
-
 public interface Sensor extends Actor {
 	boolean getSensorDetectionStatus();
 	boolean isOccupied();
@@ -22,10 +20,4 @@ public interface Sensor extends Actor {
 	default void destroy() {
 		// By default , actors have nothing to destroy
 	}
-
-	@Override
-	default void draw(Canvas canvas) {
-		// By default , actors have nothing to draw
-	}
-
 }

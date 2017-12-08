@@ -1,7 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.actor.Graphics;
-import main.game.actor.QuickMafs;
+import main.math.ExtendedMath;
 import main.math.Shape;
 import main.math.Transform;
 import main.math.Vector;
@@ -28,8 +28,8 @@ public class Particle implements Graphics {
         this.speed = speed;
         this.gravity = gravity;
 
-        this.startColor = new int[]{QuickMafs.getAlpha(startColor), QuickMafs.getRed(startColor), QuickMafs.getGreen(startColor), QuickMafs.getBlue(startColor)};
-        this.endColor = new int[]{QuickMafs.getAlpha(endColor), QuickMafs.getRed(endColor), QuickMafs.getGreen(endColor), QuickMafs.getBlue(endColor)};
+        this.startColor = new int[]{ExtendedMath.getAlpha(startColor), ExtendedMath.getRed(startColor), ExtendedMath.getGreen(startColor), ExtendedMath.getBlue(startColor)};
+        this.endColor = new int[]{ExtendedMath.getAlpha(endColor), ExtendedMath.getRed(endColor), ExtendedMath.getGreen(endColor), ExtendedMath.getBlue(endColor)};
         this.currentColor = this.startColor.clone();
 
         this.modA = this.startColor[0] >= this.endColor[0] ? -1 : 1;
@@ -41,7 +41,7 @@ public class Particle implements Graphics {
     }
 
     private String getColor(int[] color) {
-        return String.format("#%02x%02x%02x", QuickMafs.validate8bit(color[1]),  QuickMafs.validate8bit(color[2]),  QuickMafs.validate8bit(color[3]));
+        return String.format("#%02x%02x%02x", ExtendedMath.validate8bit(color[1]),  ExtendedMath.validate8bit(color[2]),  ExtendedMath.validate8bit(color[3]));
     }
 
 

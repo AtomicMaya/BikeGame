@@ -3,7 +3,6 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.ImageGraphics;
-import main.game.actor.Saveable;
 import main.game.actor.ShapeGraphics;
 import main.math.*;
 import main.math.Shape;
@@ -11,7 +10,7 @@ import main.math.Shape;
 import java.awt.*;
 
 /** Represent an {@linkplain Actor} in its physical sense */
-public abstract class GameEntity implements Actor, Saveable {
+public abstract class GameEntity implements Actor {
 	private static final long serialVersionUID = 8519429675636563656L;
 
 	private transient Entity entity;
@@ -23,9 +22,9 @@ public abstract class GameEntity implements Actor, Saveable {
 	/**
 	 * Create a new {@linkplain GameEntity}, and its associated {@linkplain Entity}
 	 * 
-	 * @param game : The {@linkplain ActorGame} where this {@linkplain Entity} inhabits
-	 * @param fixed : Whether the {@linkplain Entity} is fixed
-	 * @param position : The position of the {@linkplain Entity}
+	 * @param game : The {@linkplain ActorGame} where this {@linkplain Entity} inhabits.
+	 * @param fixed : Whether the {@linkplain Entity} is fixed.
+	 * @param position : The position of the {@linkplain Entity}.
 	 */
 	public GameEntity(ActorGame game, boolean fixed, Vector position) {
 		if (game == null)
@@ -48,12 +47,13 @@ public abstract class GameEntity implements Actor, Saveable {
 		if (entity == null)
 			this.entity = this.actorGame.newEntity(this.position, this.fixed);
 	}
-
+/*
 	@Override
 	public void reCreate(ActorGame game) {
 		actorGame = game;
 		create();
 	}
+	*/
 
 	/**
 	 * Create a new {@linkplain GameEntity}, and its associated Entity
@@ -73,24 +73,22 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Get the {@linkplain Entity} associated with this {@linkplain GameEntity}
-	 * 
-	 * @return the {@linkplain Entity}
+	 * @return the {@linkplain Entity}.
 	 */
 	protected Entity getEntity() {
 		return this.entity;
 	}
 
 	/**
-	 * Get the ActorGame associated with this GameEntity
-	 * 
-	 * @return The {@linkplain ActorGame}
+	 * Get the ActorGame associated with this GameEntity.
+	 * @return the {@linkplain ActorGame}.
 	 */
 	protected ActorGame getOwner() {
 		return this.actorGame;
 	}
 
 	/**
-	 * Destroy the {@linkplain Entity} associated with this {@linkplain GameEntity}
+	 * Destroy the {@linkplain Entity} associated with this {@linkplain GameEntity}.
 	 */
 	public void destroy() {
 		this.entity.destroy();
@@ -149,7 +147,6 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Create and add a {@linkplain ShapeGraphics} to this {@linkplain Entity}
-	 * 
 	 * @param shape : a {@linkplain Shape}, may be null
 	 * @param fillColor : a fill {@linkplain Color}, may be null
 	 * @param outlineColor : an outline {@linkplain Color}, may be null
@@ -178,7 +175,6 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Build the {@linkplain Entity}, which gives it a physical representation in the engine
-	 * 
 	 * @param shape : the {@linkplain Shape} to be given to the {@linkplain Entity}
 	 */
 	public void build(Shape shape) {
@@ -187,7 +183,6 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
-	 * 
 	 * @param shape : The {@linkplain Shape} to be given to the {@linkplain Entity}.
 	 * @param friction : The friction to be given to the {@linkplain Entity}, defaults if
 	 *            negative.
@@ -207,7 +202,6 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
-	 * 
 	 * @param shape : The {@linkplain Shape} to be given to the {@linkplain Entity}.
 	 * @param friction : The friction to be given to the {@linkplain Entity}, defaults if
 	 *            negative.
@@ -228,7 +222,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * @param listener : the listener to add this {@linkplain Entity}
+	 * @param listener : the listener to add this {@linkplain Entity}.
 	 */
 	public void addContactListener(ContactListener listener) {
 		this.entity.addContactListener(listener);
@@ -236,7 +230,6 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Gives a new position to this {@linkplain Entity}.
-	 * 
 	 * @param newPosition : A position {@linkplain Vector} (x-axis value, y-axis value).
 	 */
 	public void setPosition(Vector newPosition) {

@@ -4,24 +4,24 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
-import main.game.actor.QuickMafs;
 import main.game.actor.actorBuilder.BikeBuilder;
 import main.game.actor.actorBuilder.CrateBuilder;
 import main.game.actor.actorBuilder.ParticleEmitterBuilder;
 import main.game.actor.actorBuilder.PlatformBuilder;
 import main.game.actor.entities.GraphicalButton;
+import main.math.ExtendedMath;
 import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
+import java.awt.*;
+import java.util.ArrayList;
+
 public class ActorMenu extends Menu {
-	
+
 	private ArrayList<GraphicalButton> boutons = new ArrayList<>();
 	private ArrayList<Vector> boutonsPosition = new ArrayList<>();
 	private ArrayList<String> description = new ArrayList<>();
@@ -33,7 +33,7 @@ public class ActorMenu extends Menu {
 		super(game, window, false, backgroundColor, false);
 
 		float butonSizeX = .8f, butonSizeY = .8f;
-		
+
 		// crate pos 0,0
 		boutons.add(new GraphicalButton(game, Vector.ZERO, butonSizeX, butonSizeY));
 		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
@@ -105,7 +105,7 @@ public class ActorMenu extends Menu {
 		} else if (isLeftPressed()) {
 			Vector mousePos = getMousePosition();
 
-			if (!QuickMafs.isInRectangle(minPosition, minPosition.add(maxPosition), mousePos)) {
+			if (!ExtendedMath.isInRectangle(minPosition, minPosition.add(maxPosition), mousePos)) {
 				this.setStatus(false);
 			}
 

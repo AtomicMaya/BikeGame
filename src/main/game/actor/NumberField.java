@@ -1,14 +1,8 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	6 déc. 2017
- */
 package main.game.actor;
 
 import main.game.ActorGame;
-import main.math.Node;
+import main.math.*;
 import main.math.Polygon;
-import main.math.Transform;
-import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
@@ -51,6 +45,7 @@ public class NumberField extends Node implements Graphics {
 
 	}
 
+
 	/**
 	 * Simulates a single time step.
 	 * @param zoom, 1 for default
@@ -60,7 +55,7 @@ public class NumberField extends Node implements Graphics {
 		clignote += deltaTime;
 		clignote = (clignote > timeClignotMax) ? 0 : clignote;
 
-		hover = QuickMafs.isInRectangle(getPosition(), getPosition().add(width * zoom, height * zoom),
+		hover = ExtendedMath.isInRectangle(getPosition(), getPosition().add(width * zoom, height * zoom),
 				game.getMouse().getPosition());
 
 		if (game.getMouse().getLeftButton().isPressed())

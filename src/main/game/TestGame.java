@@ -30,9 +30,6 @@ public class TestGame extends ActorGame {
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
-		// TODO creation objects du program
-		//Polygon p1 = new Polygon(-10.f, 0.f, -5.f, 5.f, 0.f, -2.5f, -7.5f, -5.f);
-
         this.window = window;
 		Polyline p = new Polyline(
 				-1000.0f, -1000.0f,
@@ -60,7 +57,7 @@ public class TestGame extends ActorGame {
 		Polygon shape = new Polygon(.0f, .0f, 3.f, 3f, 9.f, 3.f, 6, 0);
 		sensor = new ProximitySensor(this, new Vector(12, 3), shape);
 
-        //this.platform = new MovingPlatform(this, new Vector(25, 2), new Vector(1, 0),6,5, 3);
+        //this.platform = new MovingPlatform(this, new Vector(25, 2), new Vector(1, 0),6,.1f, 3);
         //this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 6, 5, 2);
 		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		//lever.addAction(() -> this.platform.triggerAction(), 1);
@@ -70,7 +67,7 @@ public class TestGame extends ActorGame {
 
        // BetterTextGraphics betterTextGraphics = new BetterTextGraphics(this, new Vector(-2, 2), "Test some random words", 6, 10, 3);
 
-		GraphicalButton button = new GraphicalButton(this, new Vector(-3, -4), "One does not simply code a video game !", .5f);
+		//GraphicalButton button = new GraphicalButton(this, new Vector(-3, -4), "One does not simply code a video game !", .5f);
         //button.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.1.png");
         //button.addOnClickAction(() -> player.character.triggerYayAnimation(), 5);
 
@@ -92,6 +89,12 @@ public class TestGame extends ActorGame {
         RightFacingTrampoline rightFacingTrampoline = new RightFacingTrampoline(this, new Vector(19.5f, 2),
                 -1, -1);
 
+        Laser laser = new Laser(this, new Vector(0, 6), 6, 3);
+        Laser laser2 = new Laser(this, new Vector(1, 6), 6, 3);
+        Laser laser3 = new Laser(this, new Vector(2, 6), 5, 3);
+        Laser laser4 = new Laser(this, new Vector(3, 6), 5, 3);
+        Laser laser5 = new Laser(this, new Vector(4, 6), 5, 3);
+
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		a = new FinishActor(this, new Vector(7, 0), player, s);
@@ -105,9 +108,14 @@ public class TestGame extends ActorGame {
 		this.addActor(lever);
 		//this.addActor(platform);
 		//this.addActor(movingPlatform);
-		this.addActor(button);
+		//this.addActor(button);
 		this.addActor(coin);
 		this.addActor(rightFacingTrampoline);
+		this.addActor(laser);
+		this.addActor(laser2);
+		this.addActor(laser3);
+		this.addActor(laser4);
+		this.addActor(laser5);
 		//this.addActor(emitter);
 		//this.addActor(scenery);
 		return true;
