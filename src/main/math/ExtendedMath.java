@@ -153,7 +153,7 @@ public class ExtendedMath {
 		float minY = Math.min(first.y, second.y);
 		float maxY = Math.max(first.y, second.y);
 
-        return !(minX > toTest.x) && !(maxX < toTest.x) && !(minY > toTest.y) && !(maxY < toTest.y);
+        return (minX < toTest.x) && (maxX > toTest.x) && (minY < toTest.y) && (maxY > toTest.y);
     }
 
 	/**

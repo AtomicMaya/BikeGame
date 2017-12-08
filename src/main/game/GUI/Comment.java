@@ -4,15 +4,14 @@
  */
 package main.game.GUI;
 
+import java.awt.Color;
+
 import main.game.ActorGame;
-import main.math.Node;
 import main.math.Polygon;
 import main.math.Positionable;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
-
-import java.awt.*;
 
 /** Comment which can be attached to a {@linkplain Positionable} */
 public class Comment extends GUIComponent {
@@ -21,12 +20,12 @@ public class Comment extends GUIComponent {
 	private float fontSize = 1f;
 
 	private float zoom = 1;
-	private Vector position = new Vector(-4, -12); // default position on the
-													// screen
 	private ActorGame game;
 
 	public Comment(ActorGame game, String text) {
-		super(game, new Vector(-4, -12)); // TODO better
+		super(game, new Vector(-4, -12)); // default position on the
+											// screen
+											// TODO better
 		this.game = game;
 		this.text = text;
 	}
@@ -38,10 +37,8 @@ public class Comment extends GUIComponent {
 	 */
 	public void update(float deltaTime, float zoom) {
 		this.zoom = zoom;
-
-		setRelativeTransform(Transform.I.translated(position));
 		if (getParent() == null)
-			setRelativeTransform(getRelativeTransform().scaled(zoom).translated(game.getCanvas().getPosition()));
+			setRelativeTransform(Transform.I.scaled(zoom).translated(game.getCanvas().getPosition()));
 	}
 
 	@Override
@@ -55,14 +52,6 @@ public class Comment extends GUIComponent {
 		Vector v = new Vector(-l + l / 2 + .13f, .1f).mul(zoom);
 		canvas.drawText((text.length() == 0) ? "1" : text, fontSize, getTransform().translated(v), Color.BLACK, null, 0,
 				false, false, Vector.ZERO, 1, 1001);
-	}
-
-	/**
-	 * Set the relative position of this {@linkplain Comment}
-	 * @param newPosition the new position
-	 */
-	public void setPosition(Vector newPosition) {
-		this.position = newPosition;
 	}
 
 	/**
@@ -82,11 +71,6 @@ public class Comment extends GUIComponent {
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public ActorGame getOwner() {
-		return game;
 	}
 }

@@ -28,7 +28,7 @@ public class CrateBuilder extends ActorBuilder {
 
 	// number field stuff
 	private NumberField height, width;
-	private Vector heightNumberFieldPos, widthNumberFieldPos;
+	private Vector heightNumberFieldPos= new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
 	private Comment heightComment, widthComments;
 
 	private boolean isWriting = true;
@@ -40,25 +40,21 @@ public class CrateBuilder extends ActorBuilder {
 		this.lv = lv;
 		crate = new Crate(game, getFlooredMousePosition(), null, false, 1);
 
-		heightNumberFieldPos = new Vector(26, 6);
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
 
 		heightComment = new Comment(game, "Crate Height");
 		heightComment.setParent(height);
-		heightComment.setPosition(new Vector(-6, 0));
+		heightComment.setAnchor(new Vector(-6, 0));
 
-		widthNumberFieldPos = new Vector(26, 8);
 		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
 
 		widthComments = new Comment(game, "Crate Width");
 		widthComments.setParent(width);
-		widthComments.setPosition(new Vector(-6, 0));
+		widthComments.setAnchor(new Vector(-6, 0));
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-
-
 		if (!placed) {
 			position = getFlooredMousePosition();
 			if (isLeftPressed()) {
@@ -68,8 +64,8 @@ public class CrateBuilder extends ActorBuilder {
 
 		}
 		if (!isDone()) {
-			height.update(lv.getZoom(), deltaTime);
-			width.update(lv.getZoom(), deltaTime);
+			height.update(deltaTime, lv.getZoom());
+			width.update(deltaTime, lv.getZoom());
 
 			heightComment.update(deltaTime, lv.getZoom());
 			widthComments.update(deltaTime, lv.getZoom());

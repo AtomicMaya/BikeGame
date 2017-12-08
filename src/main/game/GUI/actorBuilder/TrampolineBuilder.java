@@ -42,14 +42,14 @@ public class TrampolineBuilder extends ActorBuilder {
 
 		heightComment = new Comment(game, "Crate Height");
 		heightComment.setParent(height);
-		heightComment.setPosition(new Vector(-6, 0));
+		heightComment.setAnchor(new Vector(-6, 0));
 
 		widthNumberFieldPos = new Vector(26, 8);
 		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
 
 		widthComments = new Comment(game, "Crate Width");
 		widthComments.setParent(width);
-		widthComments.setPosition(new Vector(-6, 0));
+		widthComments.setAnchor(new Vector(-6, 0));
 	}
 
 	@Override

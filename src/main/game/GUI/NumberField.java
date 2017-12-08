@@ -15,7 +15,7 @@ public class NumberField extends GUIComponent {
 	private ActorGame game;
 	private float fontSize = 1f;
 
-	private Vector position = Vector.ZERO;
+	// private Vector position = Vector.ZERO;
 	private boolean focus = false;
 
 	private float height, width;
@@ -39,8 +39,6 @@ public class NumberField extends GUIComponent {
 		this.game = game;
 		this.width = width;
 		this.height = height;
-		if (position != null)
-			this.position = position;
 		this.text = "" + value;
 	}
 
@@ -54,9 +52,9 @@ public class NumberField extends GUIComponent {
 		clignote = (clignote > timeClignotMax) ? 0 : clignote;
 
 		hover = ExtendedMath.isInRectangle(getPosition(), getPosition().add(width * zoom, height * zoom),
-				game.getMouse().getPosition());
+				getMousePosition());
 
-		if (game.getMouse().getLeftButton().isPressed())
+		if (isLeftPressed())
 			focus = hover;
 
 		if (focus) {
@@ -80,7 +78,9 @@ public class NumberField extends GUIComponent {
 			}
 
 		}
-		setRelativeTransform(Transform.I.translated(position).scaled(zoom).translated(game.getCanvas().getPosition()));
+//		if (getParent() == null)
+//			setRelativeTransform(Transform.I.scaled(zoom).translated(game.getCanvas().getPosition()));
+		 //setRelativeTransform(Transform.I.translated(getPosition()).translated(game.getCanvas().getPosition()));
 	}
 
 	/** @return the number entered in the field */

@@ -200,6 +200,7 @@ public class LevelEditor implements Graphics {
 		saveButon.setDepth(butonDepth);
 		saveButon.addOnClickAction(() -> {
 			errorText = null;
+			displayErrorText = false;
 			if (isBusy()) {
 				errorText = "Please finish editing the actor";
 				displayErrorText = true;
@@ -211,7 +212,7 @@ public class LevelEditor implements Graphics {
 				errorText = "Please create a bike";
 			if (this.gb == null && this.bb == null)
 				errorText = "Please create a bike and a ground";
-			if (errorText != null) {
+			if (errorText == null) {
 				// TODO save
 			} else
 				displayErrorText = true;
@@ -219,7 +220,7 @@ public class LevelEditor implements Graphics {
 		});
 		error = new Comment(game, "");
 		error.setParent(saveButon);
-		error.setPosition(new Vector(saveButon.getWidth() / 2, -4));
+		error.setAnchor(new Vector(saveButon.getWidth() / 2, -4));
 	}
 
 	/**
@@ -349,8 +350,10 @@ public class LevelEditor implements Graphics {
 		if (displayErrorText && errorTimer > maxErrorTimer) {
 			displayErrorText = false;
 			errorTimer = 0;
-		} else if (displayErrorText)
+		} else if (displayErrorText) {
+			error.setText(errorText);
 			errorTimer += deltaTime;
+		}
 
 	}
 
