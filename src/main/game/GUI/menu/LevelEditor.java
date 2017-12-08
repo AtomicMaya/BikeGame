@@ -119,7 +119,7 @@ public class LevelEditor implements Graphics {
 		// red square
 		Polygon p = new Polygon(0, 0, 0, 1, 1, 1, 1, 0);
 		redSquareGraphics = new ShapeGraphics(p, Color.RED, null, 0, .5f, 100);
-		redSquarePosText = new BetterTextGraphics(game, "0.0", 1f);
+		redSquarePosText = new BetterTextGraphics(game, "0.0", 1f, new Vector(1, 1));
 		redSquarePosText.setDepth(101);
 		redSquarePosText.setParent(redSquareGraphics);
 
@@ -138,7 +138,6 @@ public class LevelEditor implements Graphics {
 		axeY = new ShapeGraphics(line2, Color.BLACK, null, 0, 1, 50);
 
 		// get or not the position on screen when click
-
 		getPositionButton = new GraphicalButton(game, getPositionButtonPosition, getPosButtonText, fontSize);
 		getPositionButton.setDepth(butonDepth);
 		getPositionButton.addOnClickAction(() -> {
@@ -225,7 +224,8 @@ public class LevelEditor implements Graphics {
 
 	/**
 	 * Update all the buttons of this {@linkplain LevelEditor}
-	 * @param : deltaTime elapsed time since last update, in seconds, non-negative
+	 * @param : deltaTime elapsed time since last update, in seconds,
+	 * non-negative
 	 */
 	private void updateButtons(float deltaTime) {
 		// camera reset button update
@@ -323,7 +323,6 @@ public class LevelEditor implements Graphics {
 			redSquareGraphics.setRelativeTransform(Transform.I.translated(ExtendedMath.floor(redSquarePosition)));
 			redSquarePosText
 					.setText((int) Math.floor(redSquarePosition.x) + ", " + (int) Math.floor(redSquarePosition.y));
-			redSquarePosText.setRelativeTransform(Transform.I.translated(new Vector(1, 1)));
 		}
 
 		// static buttons update

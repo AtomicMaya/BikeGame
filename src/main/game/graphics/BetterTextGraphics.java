@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import main.game.ActorGame;
-import main.math.Attachable;
 import main.math.Node;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
-public class BetterTextGraphics extends Node implements Attachable, Graphics {
+public class BetterTextGraphics extends Node implements Graphics {
 	private ArrayList<String> graphics;
 	private ArrayList<Vector> offsets;
 	private ArrayList<float[]> charSizes = new ArrayList<>();
@@ -25,8 +24,9 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 
 	private Canvas canvas;
 
-	public BetterTextGraphics(ActorGame game, String text, float fontSize) {
+	public BetterTextGraphics(ActorGame game, String text, float fontSize, Vector anchor) {
 		canvas = game.getCanvas();
+		setRelativeTransform(Transform.I.translated(anchor));
 		setText(text, fontSize);
 	}
 
@@ -45,49 +45,49 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 				fileLocations.add("./res/font/n" + c + ".png");
 			else {
 				switch (c) {
-				case '\'':
-					fileLocations.add("./res/font/sApostrophe.png");
+					case '\'':
+						fileLocations.add("./res/font/sApostrophe.png");
 					break;
-				case '\\':
-					fileLocations.add("./res/font/sBackslash.png");
+					case '\\':
+						fileLocations.add("./res/font/sBackslash.png");
 					break;
-				case '/':
-					fileLocations.add("./res/font/sSlash.png");
+					case '/':
+						fileLocations.add("./res/font/sSlash.png");
 					break;
-				case ':':
-					fileLocations.add("./res/font/sColon.png");
+					case ':':
+						fileLocations.add("./res/font/sColon.png");
 					break;
-				case ',':
-					fileLocations.add("./res/font/sComma.png");
+					case ',':
+						fileLocations.add("./res/font/sComma.png");
 					break;
-				case '.':
-					fileLocations.add("./res/font/sDot.png");
+					case '.':
+						fileLocations.add("./res/font/sDot.png");
 					break;
-				case '-':
-					fileLocations.add("./res/font/sDash.png");
+					case '-':
+						fileLocations.add("./res/font/sDash.png");
 					break;
-				case '+':
-					fileLocations.add("./res/font/sPlus.png");
+					case '+':
+						fileLocations.add("./res/font/sPlus.png");
 					break;
-				case '!':
-					fileLocations.add("./res/font/sEMark.png");
+					case '!':
+						fileLocations.add("./res/font/sEMark.png");
 					break;
-				case '?':
-					fileLocations.add("./res/font/sQMark.png");
+					case '?':
+						fileLocations.add("./res/font/sQMark.png");
 					break;
-				case '(':
-					fileLocations.add("./res/font/sLParen.png");
+					case '(':
+						fileLocations.add("./res/font/sLParen.png");
 					break;
-				case ')':
-					fileLocations.add("./res/font/sRParen.png");
+					case ')':
+						fileLocations.add("./res/font/sRParen.png");
 					break;
-				case '"':
-					fileLocations.add("./res/font/sQuot.png");
+					case '"':
+						fileLocations.add("./res/font/sQuot.png");
 					break;
-				case ' ':
-					fileLocations.add("./res/font/sSpace.png");
+					case ' ':
+						fileLocations.add("./res/font/sSpace.png");
 					break;
-				default:
+					default:
 					break;
 				}
 			}
@@ -125,8 +125,8 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 	 * Change the text of this better text graphics
 	 * 
 	 * @param text new text
-	 * @param charSize new char size, negative value will flip the text through f(x)
-	 *            = -x;
+	 * @param charSize new char size, negative value will flip the text through
+	 * f(x) = -x;
 	 */
 	public void setText(String text, float fontSize) {
 		this.charSize = fontSize;
@@ -144,7 +144,8 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 			o += letterWidth * this.charSize + inBeetweenCharOffset;
 
 		}
-		textLength = o - inBeetweenCharOffset; // - inBeetweenCharOffset pour corigé, il y en a un en trop
+		textLength = o - inBeetweenCharOffset; // - inBeetweenCharOffset pour
+												// corigé, il y en a un en trop
 	}
 
 	/**
@@ -179,11 +180,18 @@ public class BetterTextGraphics extends Node implements Attachable, Graphics {
 
 	/**
 	 * Add a space between each char in the text
-	 * 
 	 * @param value space value
 	 */
 	public void setInBetweenCharTextOffset(float value) {
 		this.inBeetweenCharOffset = value;
 		setText(text);
+	}
+
+	/**
+	 * Sets text anchor, i.e. how to orient it.
+	 * @param anchor text anchor
+	 */
+	public void setAnchor(Vector anchor) {
+		this.setRelativeTransform(Transform.I.translated(anchor));
 	}
 }

@@ -64,9 +64,11 @@ public class GraphicalButton extends GUIComponent {
 					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth);
 
 			this.graphics.add(g1);
+			g1.setParent(this);
 			ShapeGraphics g2 = new ShapeGraphics(shape, Color.RED, Color.ORANGE,
 					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth);
 			this.graphics.add(g2);
+			g2.setParent(this);
 
 		} else
 			this.setNewGraphics(idleGraphics, hoverGraphics);
@@ -135,9 +137,11 @@ public class GraphicalButton extends GUIComponent {
 		this.graphics = new ArrayList<>();
 		ImageGraphics g1 = new ImageGraphics(idleGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1,
 				depth);
+		g1.setParent(this);
 		this.graphics.add(g1);
 		ImageGraphics g2 = new ImageGraphics(hoverGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO,
 				1, depth);
+		g2.setParent(this);
 		this.graphics.add(g2);
 	}
 
@@ -191,7 +195,7 @@ public class GraphicalButton extends GUIComponent {
 	 */
 	public void setText(String text, float fontSize) {
 
-		textGraphics = new BetterTextGraphics(getOwner(), (text == null) ? textGraphics.getText() : text, fontSize);
+		textGraphics = new BetterTextGraphics(getOwner(), (text == null) ? textGraphics.getText() : text, fontSize, shiftText);
 		textGraphics.setDepth(depth + .1f);
 		textGraphics.setParent(this);
 
