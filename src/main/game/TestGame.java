@@ -108,6 +108,7 @@ public class TestGame extends ActorGame {
         FinishActor finishActor = new FinishActor(this, new Vector(40, -5));
 
 
+        GravityWell well = new GravityWell(this, new Vector(10,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		a = new FinishActor(this, new Vector(7, 0), player, s);
@@ -119,6 +120,7 @@ public class TestGame extends ActorGame {
 		this.addActor(player);
 		this.addActor(sensor);
 		this.addActor(lever);
+		this.addActor(well);
 		//this.addActor(platform);
 		//this.addActor(movingPlatform);
 		//this.addActor(button);

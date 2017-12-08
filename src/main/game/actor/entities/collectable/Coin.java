@@ -57,8 +57,7 @@ public class Coin extends GameEntity implements Switcher {
             this.shape = new Polygon(0, 0, .75f, 0, .75f, .75f, 0, .75f);
         }
 
-
-        this.sensor = new ProximitySensor(game, position, shape);
+        this.sensor = new ProximitySensor(game, position, this.shape);
         this.animationTime = 1.5f;
         this.graphicsCounter = 0;
         this.elapsedAnimationTime = 0;
@@ -66,6 +65,8 @@ public class Coin extends GameEntity implements Switcher {
 
     @Override
     public void update(float deltaTime) {
+        this.sensor.update(deltaTime);
+
         if (this.sensor.getSensorDetectionStatus()) {
             this.game.addToScore(isBigCoin ? 200 : 20);
             this.destroy();
@@ -75,7 +76,6 @@ public class Coin extends GameEntity implements Switcher {
         if (this.elapsedAnimationTime > this.animationTime) this.elapsedAnimationTime = 0;
         this.graphicsCounter = (int) (this.elapsedAnimationTime / this.animationTime * this.graphics.size());
 
-        this.sensor.update(deltaTime);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class Coin extends GameEntity implements Switcher {
 
     @Override
     public void draw(Canvas canvas) {
-        graphics.get(graphicsCounter).draw(canvas);
+        this.graphics.get(this.graphicsCounter).draw(canvas);
     }
 
     @Override

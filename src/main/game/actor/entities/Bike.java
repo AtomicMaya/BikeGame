@@ -42,7 +42,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 
     // Entities associated to the Bike.
     private transient Wheel leftWheel, rightWheel;
-    public transient CharacterBike character;
+    private transient CharacterBike character;
     private float angle;
 
     private boolean isDead, wasTriggered = false;
