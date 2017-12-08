@@ -2,6 +2,8 @@ package main.game;
 
 import main.game.actor.Actor;
 import main.game.actor.entities.GameEntity;
+import main.game.actor.entities.PlayableEntity;
+import main.game.graphicalStuff.EndGameGraphics;
 import main.io.FileSystem;
 import main.io.Save;
 import main.math.*;
@@ -14,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
 public class ActorGame implements Game {
@@ -30,6 +33,8 @@ public class ActorGame implements Game {
 	private static float VIEW_SCALE_CURRENT = VIEW_SCALE;
 	private static float VIEW_SCALE_PREVIOUS = VIEW_SCALE;
 	private static final float TRANSLATION_TIME = 3f;
+    private EndGameGraphics endGameGraphics;
+    private boolean displayed;
 
 	// list of all actors in the game
 	private ArrayList<Actor> actors = new ArrayList<>();
@@ -49,6 +54,8 @@ public class ActorGame implements Game {
 
 	// list to add or remove actors
 	private ArrayList<Actor> actorsToRemove = new ArrayList<>(), actorsToAdd = new ArrayList<>();
+
+
 
 	/**
 	 * The Save directory path : {@value #saveDirectory}
@@ -74,7 +81,10 @@ public class ActorGame implements Game {
 		this.fileSystem = fileSystem;
 		this.viewCenter = Vector.ZERO;
 		this.viewTarget = Vector.ZERO;
-		return true;
+
+        this.endGameGraphics = null;
+		this.displayed = false;
+        return true;
 	}
 
 	@Override
@@ -421,6 +431,33 @@ public class ActorGame implements Game {
 	public Transform getRelativeTransform() {
 		return this.window.getRelativeTransform();
 	}
+
+
+    public void displayDeathMessage() {
+        this.displayed = true;
+        boolean secretDiceRoll = new Random().nextFloat() < 2 * 4.2 / 404;
+        boolean killedByGravity = ((PlayableEntity) this.getPayload()).getIfWasKilledByGravity();
+        if (killedByGravity)
+            this.endGameGraphics = new EndGameGraphics(this, secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
+        else
+            this.endGameGraphics = new EndGameGraphics(this, "./res/images/fatality.2.png");
+        this.addActor(endGameGraphics);
+    }
+
+    public boolean isDisplayed() {
+        return displayed;
+    }
+
+    public void displayVictoryMessage() {
+        this.displayed = true;
+        this.endGameGraphics = new EndGameGraphics(this, "/res/images/victory.png");
+        this.addActor(endGameGraphics);
+    }
+
+    public void resetGraphics() {
+        this.displayed = false;
+        this.endGameGraphics = null;
+    }
 
 
 }

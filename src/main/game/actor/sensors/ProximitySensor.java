@@ -21,7 +21,7 @@ public class ProximitySensor extends GameEntity implements Sensor {
 		super(game, true, position);
 		this.sensorArea = shape;
 
-		this.build(this.sensorArea, -1, -1, true);
+		this.build(this.sensorArea, -1, -1, true, ObjectGroup.SENSOR.group);
 
         this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);
@@ -29,12 +29,12 @@ public class ProximitySensor extends GameEntity implements Sensor {
 
 	@Override
 	public void update(float deltaTime) {
+	    this.detectionStatus = false;
 	    if(this.contactListener.getEntities().size() > 0) {
 	        for(Entity entity : this.contactListener.getEntities())
 	            if (entity.getCollisionGroup() == ObjectGroup.PLAYER.group || entity.getCollisionGroup() == ObjectGroup.WHEEL.group)
 	                this.detectionStatus = true;
         }
-        this.detectionStatus = this.contactListener.getEntities().size() > 0;
         this.previousDetectionStatus = this.detectionStatus;
 
 		if (this.sensorOccupied) {
