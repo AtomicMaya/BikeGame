@@ -2,7 +2,7 @@ package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.QuickMafs;
+import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -19,7 +19,7 @@ public abstract class ActorBuilder {
 	public abstract void draw(Canvas canvas);
 
 	public Vector getFlooredMousePosition() {
-		return QuickMafs.floor(game.getMouse().getPosition());
+		return ExtendedMath.floor(game.getMouse().getPosition());
 	}
 
 	public boolean isLeftPressed() {

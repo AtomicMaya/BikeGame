@@ -22,7 +22,7 @@ public class TrampolinePlatform extends GameEntity {
 
     private void create() {
         Shape shape = new Polygon(0, 0, this.width, 0, this.width, this.height, 0, this.height);
-        this.build(shape, 1.f, 1f, false, CollisionGroups.TERRAIN.group);
+        this.build(shape, 1.f, 1f, false, ObjectGroup.TERRAIN.group);
 
         this.graphics = this.addGraphics("/res/images/wood.3.png", this.width, this.height, Vector.ZERO, .9f, 1);
     }

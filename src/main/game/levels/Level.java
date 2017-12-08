@@ -38,7 +38,7 @@ public abstract class Level extends Node implements Actor {
 	/**
 	 * Creation of all the actors in the level
 	 */
-	public abstract void createAllActors();
+    public abstract void createAllActors();
 
 	/**
 	 * @param actor to ads in the level
@@ -69,7 +69,7 @@ public abstract class Level extends Node implements Actor {
 	}
 
 	/**
-	 * @return weather this level is finished
+	 * @return : Whether this level is finished
 	 */
 	public abstract boolean isFinished();
 }

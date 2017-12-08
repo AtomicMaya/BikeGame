@@ -5,9 +5,9 @@
 package main.game.actor.menu;
 
 import main.game.ActorGame;
-import main.game.actor.QuickMafs;
 import main.game.actor.actorBuilder.*;
 import main.game.actor.entities.GraphicalButton;
+import main.math.ExtendedMath;
 import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
@@ -110,7 +110,7 @@ public class ActorMenu extends Menu {
 		} else if (mouse.getLeftButton().isPressed()) {
 			Vector mousePos = mouse.getPosition();
 
-			if (!QuickMafs.isInRectangle(minPosition, minPosition.add(maxPosition), mousePos)) {
+			if (!ExtendedMath.isInRectangle(minPosition, minPosition.add(maxPosition), mousePos)) {
 				this.setStatut(false);
 			}
 

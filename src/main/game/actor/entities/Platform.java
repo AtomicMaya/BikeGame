@@ -25,7 +25,7 @@ public class Platform extends GameEntity {
         super(game, true, position);
         this.shape = shape;
 
-        this.build(shape, 100.f, 1.f, false, CollisionGroups.TERRAIN.group);
+        this.build(shape, 100.f, 1.f, false, ObjectGroup.TERRAIN.group);
         this.graphics = addGraphics("./res/images/stone.3.png", 5.f, 1.f);
     }
 

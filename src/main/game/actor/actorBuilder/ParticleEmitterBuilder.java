@@ -7,7 +7,6 @@ package main.game.actor.actorBuilder;
 import main.NumberField;
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.entities.ParticleEmitter;
 import main.math.Circle;
 import main.math.Polyline;
 import main.math.Transform;
@@ -58,12 +57,19 @@ public class ParticleEmitterBuilder extends ActorBuilder {
 
 	}
 
-	@Override
-	public Actor getActor() {
-		ParticleEmitter p = new ParticleEmitter(getOwner(), null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-		return p;
-	}
 
+    @Override
+    public Actor getActor() {
+        return null;
+    }
+
+    /*
+        @Override
+        public Actor getActor() {
+            ParticleEmitter p = new ParticleEmitter(getOwner(), null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+            return p;
+        }
+    */
 	@Override
 	public boolean isDone() {
 		return isDone;

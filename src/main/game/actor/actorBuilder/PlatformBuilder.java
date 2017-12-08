@@ -6,12 +6,8 @@ package main.game.actor.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.QuickMafs;
 import main.game.actor.entities.MovingPlatform;
-import main.math.Circle;
-import main.math.Polyline;
-import main.math.Transform;
-import main.math.Vector;
+import main.math.*;
 import main.window.Canvas;
 
 import java.awt.*;
@@ -36,7 +32,7 @@ public class PlatformBuilder extends ActorBuilder {
 					start = getFlooredMousePosition();
 				else if (end == null) {
 					end = getFlooredMousePosition();
-					float distance = QuickMafs.getDistance(start, end);
+					float distance = ExtendedMath.getDistance(start, end);
 					Vector v = new Vector(start.x - end.x, start.y - end.y).div(-distance);
 					platform = new MovingPlatform(getOwner(), start, v, distance, .1f, .1f);
 					isDone = true;

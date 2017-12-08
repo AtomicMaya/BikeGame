@@ -6,11 +6,8 @@ package main;
 
 import main.game.ActorGame;
 import main.game.actor.Graphics;
-import main.game.actor.QuickMafs;
-import main.math.Node;
+import main.math.*;
 import main.math.Polygon;
-import main.math.Transform;
-import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
@@ -42,7 +39,7 @@ public class NumberField extends Node implements Graphics {
 	}
 
 	public void update(float deltaTime) {
-		hover = QuickMafs.isInRectangle(getPosition(), getPosition().add(width * zoom, height * zoom),
+		hover = ExtendedMath.isInRectangle(getPosition(), getPosition().add(width * zoom, height * zoom),
 				game.getMouse().getPosition());
 		
 		if (game.getMouse().getLeftButton().isPressed())
@@ -80,9 +77,9 @@ public class NumberField extends Node implements Graphics {
 				Color.BLACK, .02f, .5f, 59);
 		float l = (text.length() == 0) ? 1 : text.length();
 
-		Vector v = new Vector(width / 2 - l * .26f, .13f).mul(zoom);;
+		Vector v = new Vector(width / 2 - l * .26f, .13f).mul(zoom);
 
-		canvas.drawText((text.length() == 0) ? "1" : text, fontSize, getTransform().translated(v), Color.BLACK, null, 0,
+        canvas.drawText((text.length() == 0) ? "1" : text, fontSize, getTransform().translated(v), Color.BLACK, null, 0,
 				false, false, Vector.ZERO, 1, 60);
 
 	}

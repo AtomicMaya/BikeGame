@@ -9,10 +9,10 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import static main.game.actor.QuickMafs.invertXCoordinates;
-import static main.game.actor.QuickMafs.xInverted;
+import static main.math.ExtendedMath.invertXCoordinates;
+import static main.math.ExtendedMath.xInverted;
 
-public class Bike extends GameEntity {
+public class Bike extends GameEntity implements PlayableEntity {
     /**
      * Because its asked
      */
@@ -25,6 +25,7 @@ public class Bike extends GameEntity {
 
     // Whether or not the bike is looking towards the rightEmitter.
     private boolean lookRight = true;
+    private boolean wasKilledByGravity;
     private int jumpCount;
     private float timeTillRejump, elapsedRejumpTime;
 
@@ -42,6 +43,7 @@ public class Bike extends GameEntity {
     private transient Wheel leftWheel, rightWheel;
     public transient CharacterBike character;
     private float angle;
+
     private boolean isDead, wasTriggered = false;
 
     /**
@@ -64,7 +66,7 @@ public class Bike extends GameEntity {
      */
     private void create() {
         hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-        this.build(hitbox, -1, 5, false, CollisionGroups.PLAYER.group);
+        this.build(hitbox, -1, 5, false, ObjectGroup.PLAYER.group);
 
         this.contactListener = new BasicContactListener();
         this.addContactListener(this.contactListener);
@@ -100,22 +102,14 @@ public class Bike extends GameEntity {
 
     }
 
-    public void triggerDeathAnimation() {
-        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().sub(0, 1), null, 100, (float) -Math.PI / 2f,
-                (float) Math.PI, 1.2f, .1f, 1, .3f,
-                0xFF830303,  	0x00830303, 1, 20));
-        try { Thread.sleep(10); } catch (InterruptedException ignored) {}
-        this.destroy();
-    }
-
     @Override
     public void update(float deltaTime) {
         if(this.contactListener.getEntities().size() > 0) {
             for(Entity entity : this.contactListener.getEntities()) {
-                if(entity.getCollisionGroup() == CollisionGroups.TERRAIN.group) {
+                if(entity.getCollisionGroup() == ObjectGroup.TERRAIN.group) {
                     this.isDead = true;
                     if(!this.wasTriggered) {
-                        this.triggerDeathAnimation();
+                        this.triggerDeath(true);
                         this.wasTriggered = true;
                     }
                 }
@@ -188,6 +182,33 @@ public class Bike extends GameEntity {
         this.character.destroy();
         super.destroy();
         super.getOwner().destroyActor(this);
+    }
+
+
+    @Override
+    public void triggerDeath(boolean wasGravity) {
+        this.isDead = true;
+        this.wasKilledByGravity = true;
+
+        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().sub(0, 1), null, 100, (float) -Math.PI / 2f,
+                (float) Math.PI, 1.2f, .1f, 1, .3f,
+                0xFF830303,  	0x00830303, 1, 20));
+        try { Thread.sleep(10); } catch (InterruptedException ignored) {}
+        this.destroy();
+    }
+
+    @Override
+    public void triggerVictory() {
+
+    }
+
+    @Override
+    public boolean getDeathStatus() {
+        return this.isDead;
+    }
+
+    public boolean getIfWasKilledByGravity() {
+        return this.wasKilledByGravity;
     }
 }
 
