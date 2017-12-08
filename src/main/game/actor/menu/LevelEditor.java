@@ -4,26 +4,29 @@
  */
 package main.game.actor.menu;
 
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.ArrayList;
+
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.Comment;
 import main.game.actor.Graphics;
 import main.game.actor.ShapeGraphics;
 import main.game.actor.actorBuilder.ActorBuilder;
 import main.game.actor.actorBuilder.BikeBuilder;
 import main.game.actor.actorBuilder.GroundBuilder;
 import main.game.actor.entities.BetterTextGraphics;
+import main.game.actor.entities.Bike;
 import main.game.actor.entities.GraphicalButton;
+import main.game.actor.entities.Ground;
 import main.io.Save;
 import main.math.*;
 import main.math.Polygon;
 import main.math.Shape;
 import main.window.Canvas;
 import main.window.Window;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
@@ -96,6 +99,11 @@ public class LevelEditor implements Graphics {
 	private final String saveButonText = "Save";
 	private Vector saveButonPos = new Vector(4, 14);
 	private final String currentSaveName;
+	private Comment error;
+	private String errorText;
+	private float errorTimer = 0;
+	private final float maxErrorTimer = 2f;
+	private boolean displayErrorText = false;
 
 	/**
 	 * Create a new {@linkplain LevelEditor}
@@ -166,11 +174,6 @@ public class LevelEditor implements Graphics {
 
 		});
 
-		// create save button
-		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
-		saveButon.setDepth(butonDepth);
-		saveButon.addOnClickAction(() -> {});
-
 		// get available name for the save
 		File[] saves = Save.availableSaves(game);
 		ArrayList<String> savesNames = new ArrayList<>();
@@ -192,6 +195,32 @@ public class LevelEditor implements Graphics {
 		}
 
 		currentSaveName = (temp);
+
+		// create save button
+		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
+		saveButon.setDepth(butonDepth);
+		saveButon.addOnClickAction(() -> {
+			errorText = null;
+			if (isBusy()) {
+				errorText = "Please finish editing the actor";
+				displayErrorText = true;
+				return;
+			}
+			if (this.gb == null)
+				errorText = "Please create a ground";
+			if (this.bb == null)
+				errorText = "Please create a bike";
+			if (this.gb == null && this.bb == null)
+				errorText = "Please create a bike and a ground";
+			if (errorText != null) {
+				// TODO save
+			} else
+				displayErrorText = true;
+
+		});
+		error = new Comment(game, "");
+		error.setParent(saveButon);
+		error.setPosition(new Vector(saveButon.getWidth() / 2, -4));
 	}
 
 	/**
@@ -279,6 +308,7 @@ public class LevelEditor implements Graphics {
 		// right click menu
 		boolean temp = true;
 		for (ActorBuilder actor : actors) {
+			// make sure no ActorBuilder is being created
 			temp = actor.isDone() & !actor.isHovered() & temp;
 		}
 		if (temp)
@@ -307,11 +337,21 @@ public class LevelEditor implements Graphics {
 				current = actor;
 		}
 
-		// destroy selected actor id delete is pressed
+		// destroy selected actor if delete is pressed
 		if (current != null && game.getKeyboard().get(KeyEvent.VK_DELETE).isPressed()) {
 			current.destroy();
 			actors.remove(current);
 		}
+
+		// save button and stuff update
+		saveButon.update(deltaTime);
+		error.update(this.zoom);
+
+		if (displayErrorText && errorTimer > maxErrorTimer) {
+			displayErrorText = false;
+			errorTimer = 0;
+		} else if (displayErrorText)
+			errorTimer += deltaTime;
 
 	}
 
@@ -449,6 +489,18 @@ public class LevelEditor implements Graphics {
 		this.playButton.destroy();
 		this.getPositionButton.destroy();
 		this.cameraResetPosition.destroy();
+	}
+
+	/** @return whether an {@linkplain ActorBuilder} is being created/edited */
+	public boolean isBusy() {
+		boolean temp = true;
+		for (ActorBuilder actor : actors) {
+			// make sure no ActorBuilder is being created
+			if (!actor.isDone())
+				return true;
+			temp = actor.isDone() & !actor.isHovered() & temp;
+		}
+		return temp;
 	}
 
 }
