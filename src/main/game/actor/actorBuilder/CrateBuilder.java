@@ -4,17 +4,17 @@
  */
 package main.game.actor.actorBuilder;
 
-import main.Comments;
-import main.NumberField;
+import java.awt.event.KeyEvent;
+
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.Comment;
+import main.game.actor.NumberField;
+import main.game.actor.QuickMafs;
 import main.game.actor.crate.Crate;
 import main.game.actor.menu.LevelEditor;
-import main.game.actor.menu.ParametersMenu;
 import main.math.Vector;
 import main.window.Canvas;
-
-import java.awt.event.KeyEvent;
 
 public class CrateBuilder extends ActorBuilder {
 
@@ -23,15 +23,16 @@ public class CrateBuilder extends ActorBuilder {
 
 	boolean placed = false;
 
-	private ParametersMenu pm;
 	private ActorGame game;
 	private LevelEditor lv;
 
+	// number field stuff
 	private NumberField height, width;
-	private Vector heightPos, widthPos;
+	private Vector heightNumberFieldPos, widthNumberFieldPos;
+	private Comment heightComment, widthComments;
 
 	private boolean isWriting = true;
-	private Comments heightComment, widthComments;
+	private boolean hoover = false;
 
 	public CrateBuilder(ActorGame game, LevelEditor lv) {
 		super(game);
@@ -39,20 +40,23 @@ public class CrateBuilder extends ActorBuilder {
 		this.lv = lv;
 		crate = new Crate(game, getFlooredMousePosition(), null, false, 1);
 
-		heightPos = new Vector(26, 6);
-		height = new NumberField(game, heightPos, 3, 1, 1);
+		heightNumberFieldPos = new Vector(26, 6);
+		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
 
-		heightComment = new Comments(game, "Crate Height");
+		heightComment = new Comment(game, "Crate Height");
+		heightComment.setParent(height);
+		heightComment.setPosition(new Vector(-6, 0));
 
-		widthPos = new Vector(26, 8);
-		width = new NumberField(game, widthPos, 3, 1, 1);
+		widthNumberFieldPos = new Vector(26, 8);
+		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
 
-		widthComments = new Comments(game, "Crate Width");
+		widthComments = new Comment(game, "Crate Width");
+		widthComments.setParent(width);
+		widthComments.setPosition(new Vector(-6, 0));
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		// crate.update(deltaTime);
 
 		if (!placed) {
 			position = getFlooredMousePosition();
@@ -63,23 +67,21 @@ public class CrateBuilder extends ActorBuilder {
 
 		}
 		if (!isDone()) {
-			
+			height.update(lv.getZoom(), deltaTime);
+			width.update(lv.getZoom(), deltaTime);
 
-			height.setZoom(lv.getZoom());
-			width.setZoom(lv.getZoom());
-			height.update(deltaTime);
-			width.update(deltaTime);
-			
-			heightComment.setZoom(lv.getZoom());
-			widthComments.setZoom(lv.getZoom());
-			heightComment.update(deltaTime);
-			widthComments.update(deltaTime);
+			heightComment.update(lv.getZoom());
+			widthComments.update(lv.getZoom());
 
 			if (game.getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
-				isWriting = !(height.finishTyping() & width.finishTyping());
+				isWriting = !(height.hasFocus() & width.hasFocus());
 				crate.setSize(width.getNumber(), height.getNumber());
 			}
-		}
+		} else
+			hoover = QuickMafs.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
+					getFlooredMousePosition());
+		if (hoover && isRightPressed())
+			isWriting = true;
 	}
 
 	@Override
@@ -109,6 +111,16 @@ public class CrateBuilder extends ActorBuilder {
 	public void reCreate() {
 		crate.destroy();
 		crate = new Crate(game, position, null, false, width.getNumber(), height.getNumber());
+	}
+
+	@Override
+	public boolean isHovered() {
+		return hoover;
+	}
+
+	@Override
+	public void destroy() {
+		this.crate.destroy();
 	}
 
 }

@@ -4,12 +4,16 @@
  */
 package main.game.actor.menu;
 
-import main.game.ActorGame;
-import main.game.actor.ImageGraphics;
+import java.awt.Color;
+import java.io.File;
+import java.util.ArrayList;
+
+import main.game.GameWithLevelAndMenu;
 import main.game.actor.ShapeGraphics;
 import main.game.actor.TextGraphics;
 import main.game.actor.entities.GraphicalButton;
 import main.io.Save;
+import main.math.Circle;
 import main.math.Polygon;
 import main.math.Shape;
 import main.math.Transform;
@@ -17,49 +21,58 @@ import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
-import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
-
 public class MainMenu extends Menu {
 
-	private Window window;
-	private TextGraphics tg;
-	private ImageGraphics ig;
+	// text main menu
+	private TextGraphics menuMainGraphics;
+	private final String menuMainTest = "Menu";
+
+	// TODO remove this, for placing purpose #grid lines
 	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
 
+	// buttons list
 	private ArrayList<GraphicalButton> buttons = new ArrayList<>();
 
-	private ActorGame game;
+	// our level buttons
+	private ArrayList<GraphicalButton> levelButtons = new ArrayList<>();
+	private final float sizeX = 5f;
+	private final float sizeY = 2f;
+	private final float shiftLB = .3f;
+	private final Vector topLeftLB = new Vector(6, -4);
 
-	private int savePage = 0;
-
-	private final int maxNumberButtonsSave = 9;
-
-	private GraphicalButton left, right;
-
-	private GraphicalButton levelEditorButton;
-
-	private float waitBeforeClick = 0;
-
-	private LevelEditor levelEditor;
-
-	private boolean inLevelEditor = false;
-
+	// if a save is clicked
 	private boolean busy = false;
 
-	public MainMenu(ActorGame game, Window window) {
+	private GraphicalButton play;
+
+	// load saved created with level editor
+	private int savePage = 0;
+	private final int maxNumberButtonsSave = 9;
+	private GraphicalButton left, right; // navigate between the saves
+	private float waitBeforeClick = 0; // avoid spam click with this timer
+
+	// level editor
+	private GraphicalButton levelEditorButton;
+	private LevelEditor levelEditor;
+	private boolean inLevelEditor = false;
+
+	/**
+	 * Create a MainMenu for a {@linkplain GameWithLevelAndMenu }
+	 * 
+	 * @param game : {@linkplain GameWithLevelAndMenu} the game in which
+	 *            {@link this} MainMenu belong
+	 * @param window : {@linkplain Window} Window context
+	 */
+	public MainMenu(GameWithLevelAndMenu game, Window window) {
 		super(game, window, true, Color.GRAY, true);
-		this.window = window;
-		this.game = game;
+
+		// main menu text
 		float fontSize = 4f;
-		tg = new TextGraphics("Menu", fontSize, Color.BLACK, Color.BLUE, .1f, false, false, new Vector(.5f, fontSize),
+		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
+		menuMainGraphics = new TextGraphics(menuMainTest, fontSize, Color.BLACK, Color.BLUE, .1f, false, false, anchor,
 				1, 1);
 
-		ig = new ImageGraphics("res/images/box.4.png", 2, 1);
-		ig.setAnchor(new Vector(.5f, .5f));
-
-		// cadrillage
+		// TODO remove this grid
 		float w = .01f;
 		int size = 40;
 		Shape t = new Polygon(-w, -size / 2, -w, size / 2, w, size / 2, w, -size / 2);
@@ -74,23 +87,30 @@ public class MainMenu extends Menu {
 			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
 		}
 
-		// get the saves
-		File[] list = Save.availableSaves(new File(game.getSaveDirectory()));
+		// get the saves and create buttons to load them
+		File[] list = Save.availableSaves(game);
 		for (int i = 0; i < list.length; i++) {
 			Vector position = new Vector(-28, -(i % maxNumberButtonsSave) * 2f + 8f);
 			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1.4f));
 			int p = i;
-			buttons.get(i).addOnClickAction(() -> load(list[p]));
+			buttons.get(i).addOnClickAction(() -> {
+				// load a saves
+				if (!busy && waitBeforeClick > .5f) {
+					game.destroyAllActors();
+					changeStatus();
+					busy = true;
+					game.setGameFreezeStatus(false);
+					game.load(list[p].getName());
+				}
+			});
 			buttons.get(i).forceShape(6, -1);
 		}
 
 		// Arrow buttons to navigate in the save menu
-		Polygon arrowShape = new Polygon(0, 0, 1, 0, 1, 1, 1, 0);
-
-		right = new GraphicalButton(game, new Vector(-6, -7), 1, 1);
+		right = new GraphicalButton(game, new Vector(-24, -11), 2, 2);
 		right.addOnClickAction(() -> PagePlusPlus());
 
-		left = new GraphicalButton(game, new Vector(-8, -7), 1, 1);
+		left = new GraphicalButton(game, new Vector(-28, -11), 2, 2);
 		left.addOnClickAction(() -> PageMinusMinus());
 
 		// set arrows graphics
@@ -100,22 +120,35 @@ public class MainMenu extends Menu {
 				"./res/images/arrows/left_arrow_light_green.png");
 
 		// level editor
-		levelEditor = new LevelEditor(game, window);
 		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1.4f);
-		//levelEditorButton.forceInbetweenCharOffset(1.4f/2f);
-		levelEditorButton.addOnClickAction(() -> inLevelEditor = true);
-	}
+		levelEditorButton.addOnClickAction(() -> {
+			levelEditor = new LevelEditor(game, window);
+			inLevelEditor = true;
+		});
 
-	private void load(File file) {
-		if (!busy && waitBeforeClick > .5f) {
-			
-			game.destroyAllActors();
-			changeStatut();
-			busy = true;
+		// play button
+		play = new GraphicalButton(game, new Vector(0, 0), "Play", 1f);
+		play.setPosition(new Vector(-play.getWidth() / 2f, 0));
+		play.addOnClickAction(() -> {
+			// start the first level
+			game.beginLevel(0);
 			game.setGameFreezeStatus(false);
-			game.load(file.getName());
-		}
+			changeStatus();
+		});
 
+		// our level
+		int n = game.numberOfLevel();
+		for (int i = 0; i < n; i++) {
+			Vector position = new Vector(topLeftLB.x + (i % 3) * (sizeX + shiftLB), topLeftLB.y - (i / 3) * sizeY);
+			levelButtons.add(new GraphicalButton(game, position, "Level" + (i + 1), 1));
+			levelButtons.get(i).forceShape(sizeX, -1);
+			int temp = i;
+			levelButtons.get(i).addOnClickAction(() -> {
+				game.beginLevel(temp);
+				game.setGameFreezeStatus(false);
+				changeStatus();
+			});
+		}
 	}
 
 	private void PagePlusPlus() {
@@ -130,14 +163,16 @@ public class MainMenu extends Menu {
 			savePage++;
 	}
 
+	@Override
 	public void update(float deltaTime) {
 
+		// if in level editor, don't zpdate the rest
 		if (inLevelEditor) {
 			levelEditor.update(deltaTime);
 			return;
 		}
 		super.update(deltaTime);
-		
+
 		waitBeforeClick += deltaTime;
 		for (int i = 0; i < buttons.size(); i++) {
 			// update only the buttons on the current page
@@ -149,8 +184,11 @@ public class MainMenu extends Menu {
 			left.update(deltaTime);
 			right.update(deltaTime);
 		}
+		for (GraphicalButton gb : levelButtons) {
+			gb.update(deltaTime);
+		}
 		levelEditorButton.update(deltaTime);
-
+		play.update(deltaTime);
 	}
 
 	@Override
@@ -162,8 +200,7 @@ public class MainMenu extends Menu {
 		}
 
 		super.draw(canvas);
-		tg.draw(canvas);
-		ig.draw(canvas);
+		menuMainGraphics.draw(canvas);
 		for (ShapeGraphics sg : graphics) {
 			sg.draw(canvas);
 		}
@@ -178,13 +215,30 @@ public class MainMenu extends Menu {
 			left.draw(canvas);
 			right.draw(canvas);
 		}
+		for (GraphicalButton gb : levelButtons) {
+			gb.draw(canvas);
+		}
 		levelEditorButton.draw(canvas);
+		play.draw(canvas);
+		canvas.drawShape(new Circle(.2f), Transform.I, Color.MAGENTA, Color.RED, .02f, 1, 10000);
 	}
 
 	@Override
-	public void setStatut(boolean isOpen) {
-		super.setStatut(isOpen);
+	public void setStatus(boolean isOpen) {
+		super.setStatus(isOpen);
 		busy = !isOpen;
+	}
+
+	@Override
+	public void destroy() {
+		this.left.destroy();
+		this.right.destroy();
+		for (GraphicalButton gb : this.buttons)
+			gb.destroy();
+		for (GraphicalButton gb : this.levelButtons)
+			gb.destroy();
+		this.levelEditorButton.destroy();
+		this.play.destroy();
 	}
 
 }

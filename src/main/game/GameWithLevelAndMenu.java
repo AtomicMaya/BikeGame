@@ -9,6 +9,11 @@ import main.game.actor.menu.MainMenu;
 import main.io.FileSystem;
 import main.window.Window;
 
+/**
+ * Represent a game with different level, and some menus
+ * 
+ * @see GameWithLevels
+ */
 public abstract class GameWithLevelAndMenu extends GameWithLevels {
 
 	private InGameMenu ingameMenu;
@@ -39,11 +44,13 @@ public abstract class GameWithLevelAndMenu extends GameWithLevels {
 		ingameMenu.update(deltaTime);
 		if (ingameMenu.isOpen())
 			ingameMenu.draw(window);
-		
+
 	}
+
+	/** Go to the MainMenu */
 	public void goToMainMenu() {
 		this.destroyAllActors();
-		mainMenu.setStatut(true);
-		ingameMenu.setStatut(false);
+		mainMenu.setStatus(true);
+		ingameMenu.setStatus(false);
 	}
 }

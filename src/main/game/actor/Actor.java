@@ -3,6 +3,7 @@ package main.game.actor;
 import main.math.Positionable;
 import main.window.Canvas;
 
+/** Represent an actor in its logical sense */
 public interface Actor extends Positionable, Graphics {
 	/**
 	 * Simulates a single time step.
@@ -24,5 +25,5 @@ public interface Actor extends Positionable, Graphics {
 	default void draw(Canvas canvas) {
 		// By default , actors have nothing to draw
 	}
-	
+
 }

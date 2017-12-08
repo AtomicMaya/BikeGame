@@ -22,23 +22,24 @@ public class InGameMenu extends Menu {
 	private ActorGame game;
 
 	private GraphicalButton close, backToMainMenu;
-	private Shape shape;
 
 	private BetterTextGraphics menuText;
 
 	public InGameMenu(GameWithLevelAndMenu game, Window window) {
 		super(game, window, false, Color.GRAY, true);
 		this.game = game;
-		shape = new Polygon(-10, -10, -10, 10, 10, 10, 10, -10);
 
 		close = new GraphicalButton(game, new Vector(6, -3), "Close", 1);
 
 		close.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.2.png");
 
-		close.addOnClickAction(() -> changeStatut(), .1f);
+		close.addOnClickAction(() -> changeStatus(), .1f);
 
 		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), "Back to Menu", .5f);
-		backToMainMenu.addOnClickAction(() -> game.goToMainMenu(), 0f);
+		backToMainMenu.addOnClickAction(() -> {
+			game.destroyAllActors();
+			game.goToMainMenu();
+		}, 0f);
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class InGameMenu extends Menu {
 		super.update(deltaTime);
 		if (game.getKeyboard().get(KeyEvent.VK_M).isPressed()
 				|| game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
-			changeStatut();
+			changeStatus();
 		}
 		if (isOpen()) {
 			close.update(deltaTime);
@@ -65,9 +66,15 @@ public class InGameMenu extends Menu {
 	}
 
 	@Override
-	public void changeStatut() {
-		super.changeStatut();
+	public void changeStatus() {
+		super.changeStatus();
 		game.setGameFreezeStatus(isOpen());
+	}
+
+	@Override
+	public void destroy() {
+		this.backToMainMenu.destroy();
+		this.close.destroy();
 	}
 
 }

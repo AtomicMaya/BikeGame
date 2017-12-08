@@ -13,16 +13,23 @@ import main.game.actor.actorBuilder.BikeBuilder;
 import main.game.actor.actorBuilder.GroundBuilder;
 import main.game.actor.entities.BetterTextGraphics;
 import main.game.actor.entities.GraphicalButton;
-import main.math.*;
+import main.io.Save;
 import main.math.Polygon;
 import main.math.Shape;
+import main.math.Transform;
+import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
+ * the game
+ */
 public class LevelEditor implements Graphics {
 
 	// actorBuilder stuff
@@ -37,9 +44,14 @@ public class LevelEditor implements Graphics {
 
 	// Camera stuff
 	private Vector cameraPosition = Vector.ZERO;
-	private final float windowZoom = 30f;
-	private final float cameraSpeed = 20;
+	private static final float windowZoom = 30f;
+	private static final float cameraSpeed = 20f;
+	/** Curent zoom, between {@value #minZoom} and {@value #maxZoom} */
 	private float zoom = 1f;
+	/** Maximum zoom value : {@value #maxZoom} */
+	private static final float maxZoom = 2f;
+	/** Maximum zoom value : {@value #minZoom} */
+	private static final float minZoom = 0.4f;
 	private float maxPosX = 120;
 	private float maxPosY = 30;
 	private float cameraAcceleration = .4f;
@@ -54,12 +66,14 @@ public class LevelEditor implements Graphics {
 
 	// button font size
 	private float fontSize = .63f;
+	private float butonDepth = 51;
 
 	// position showing
 	private Vector redSquarePosition = Vector.ZERO;
 	private ShapeGraphics redSquareGraphics;
 	private boolean showRedSquare = false; // true if the red square is show
-	private boolean hasClicked = false; // true if we clicked once to get position on screen
+	private boolean hasClicked = false; // true if we clicked once to get
+										// position on screen
 	private BetterTextGraphics redSquarePosText;
 
 	// activate/desactivate position pointer
@@ -78,9 +92,18 @@ public class LevelEditor implements Graphics {
 	private final String playButtonText = "Play";
 	private final String playButtonEditText = "Edit";
 
-	// test play stuff
-	// private ArrayList<Actor> actorPlay = new ArrayList<>();
+	// save button
+	private GraphicalButton saveButon;
+	private final String saveButonText = "Save";
+	private Vector saveButonPos = new Vector(4, 14);
+	private final String currentSaveName;
 
+	/**
+	 * Create a new {@linkplain LevelEditor}
+	 * @param game {@linkplain ActorGame} where this {@linkplain LevelEditor}
+	 * belong
+	 * @param window {@linkplain Window} graphical context
+	 */
 	public LevelEditor(ActorGame game, Window window) {
 		this.game = game;
 		this.window = window;
@@ -108,8 +131,9 @@ public class LevelEditor implements Graphics {
 		axeY = new ShapeGraphics(line2, Color.BLACK, null, 0, 1, 50);
 
 		// get or not the position on screen when click
-		getPositionButtonPosition = new Vector(-29, 14);
+
 		getPositionButton = new GraphicalButton(game, getPositionButtonPosition, getPosButtonText, fontSize);
+		getPositionButton.setDepth(butonDepth);
 		getPositionButton.addOnClickAction(() -> {
 			hasClicked = false;
 			showRedSquare = !showRedSquare;
@@ -117,6 +141,7 @@ public class LevelEditor implements Graphics {
 
 		// reset the camera when clicked
 		cameraResetPosition = new GraphicalButton(game, cameraResetButtonPosition, resetCameraButtonText, fontSize);
+		cameraResetPosition.setDepth(butonDepth);
 		cameraResetPosition.addOnClickAction(() -> {
 			cameraPosition = Vector.ZERO;
 			zoom = 1;
@@ -124,7 +149,7 @@ public class LevelEditor implements Graphics {
 
 		// playButton
 		playButton = new GraphicalButton(game, playButtonPosition, playButtonText, fontSize);
-		playButton.setDepth(51);
+		playButton.setDepth(butonDepth);
 		playButtonPosition = new Vector(-playButton.getWidth() / 2, playButtonPosition.y);
 		playButton.addOnClickAction(() -> {
 
@@ -142,8 +167,38 @@ public class LevelEditor implements Graphics {
 
 		});
 
+		// create save button
+		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
+		saveButon.setDepth(butonDepth);
+		saveButon.addOnClickAction(() -> {});
+
+		// get available name for the save
+		File[] saves = Save.availableSaves(game);
+		ArrayList<String> savesNames = new ArrayList<>();
+
+		for (File f : saves) {
+			savesNames.add(f.getName().replaceAll("save", ""));
+		}
+		ArrayList<Integer> number = new ArrayList<>();
+		for (int i = 1; i < savesNames.size(); i++) {
+			if (QuickMafs.isNumeric(savesNames.get(i)))
+				number.add(Integer.parseInt(savesNames.get(i)));
+		}
+		String temp = "";
+		for (int i = 1; i < number.size() + 1; i++) {
+			if (!number.contains(i)) {
+				temp = "save" + ((i < 10) ? "0" : "") + i;
+				break;
+			}
+		}
+
+		currentSaveName = (temp);
 	}
 
+	/**
+	 * Update all the buttons of this {@linkplain LevelEditor} * @param
+	 * deltaTime elapsed time since last update, in seconds, non-negative
+	 */
 	private void updateButtons(float deltaTime) {
 		// camera reset button update
 		cameraResetPosition.setText(resetCameraButtonText, fontSize * zoom);
@@ -156,11 +211,16 @@ public class LevelEditor implements Graphics {
 		getPositionButton.update(deltaTime);
 
 		// play button update
+		// playButton.forceShape(playButonSizeX*zoom, -1);
 		playButton.setText(playButtonText, fontSize * zoom);
 		playButton.setPosition((playButtonPosition).mul(zoom).add(cameraPosition));
 		playButton.update(deltaTime);
 	}
 
+	/**
+	 * Simulates a single time step.
+	 * @param deltaTime elapsed time since last update, in seconds, non-negative
+	 */
 	public void update(float deltaTime) {
 
 		if (!game.isGameFrozen()) {
@@ -179,6 +239,7 @@ public class LevelEditor implements Graphics {
 		}
 		if (game.getKeyboard().get(KeyEvent.VK_CONTROL).isReleased())
 			xPP = 1;
+
 		// camera controls
 		float posX = cameraPosition.x;
 		float posY = cameraPosition.y;
@@ -204,10 +265,10 @@ public class LevelEditor implements Graphics {
 		// zoom control
 		if (game.getMouse().getMouseScrolledUp()) {
 			zoom -= .1f;
-			zoom = (zoom < .4f) ? .4f : zoom;
+			zoom = (zoom < minZoom) ? minZoom : zoom;
 		} else if (game.getMouse().getMouseScrolledDown()) {
 			zoom += .1f;
-			zoom = (zoom > 2f) ? 2f : zoom;
+			zoom = (zoom > maxZoom) ? maxZoom : zoom;
 		}
 
 		// finalement placement de la camera
@@ -219,10 +280,12 @@ public class LevelEditor implements Graphics {
 		// right click menu
 		boolean temp = true;
 		for (ActorBuilder actor : actors) {
-			temp = actor.isDone() & temp;
+			temp = actor.isDone() & !actor.isHovered() & temp;
 		}
 		if (temp)
 			actorMenu.update(deltaTime);
+		else if (game.getMouse().getLeftButton().isPressed() || game.getMouse().getRightButton().isPressed())
+			actorMenu.setStatus(false);
 
 		// positionneur stuff
 		if (showRedSquare && game.getMouse().getLeftButton().isPressed()) {
@@ -238,8 +301,17 @@ public class LevelEditor implements Graphics {
 		updateButtons(deltaTime);
 
 		// current actors update
+		ActorBuilder current = null;
 		for (ActorBuilder actor : actors) {
 			actor.update(deltaTime);
+			if (!actor.isDone() && !actor.equals(gb))
+				current = actor;
+		}
+
+		// destroy selected actor id delete is pressed
+		if (current != null && game.getKeyboard().get(KeyEvent.VK_DELETE).isPressed()) {
+			current.destroy();
+			actors.remove(current);
 		}
 
 	}
@@ -249,10 +321,8 @@ public class LevelEditor implements Graphics {
 
 		playButton.draw(canvas);
 
+		// if we are playing, return
 		if (!game.isGameFrozen()) {
-			// for (Actor a : actorPlay) {
-			// a.draw(canvas);
-			// }
 			return;
 		}
 
@@ -282,6 +352,7 @@ public class LevelEditor implements Graphics {
 
 	}
 
+	/** @return the list of all {@linkplain Actor}s created */
 	public ArrayList<Actor> getActors() {
 		ArrayList<Actor> a = new ArrayList<>();
 		for (ActorBuilder ab : actors) {
@@ -290,32 +361,39 @@ public class LevelEditor implements Graphics {
 		return a;
 	}
 
+	/** @param actor {@linkplain ActorBuilder} to add */
 	public void addActor(ActorBuilder actor) {
 		actors.add(actor);
 	}
 
 	/**
-	 * Make sure we have a unique ground
+	 * Make sure we have a unique {@linkplain Ground}
+	 * @param {@linkplain Ground} to add to the game
 	 */
-	public void addGround(GroundBuilder gb) {
+	public void addGround() {
 		if (this.gb != null) {
-			this.gb.getActor().destroy();
-			actors.remove(this.gb);
+			gb.continueBuilding();
+		} else {
+			gb = new GroundBuilder(game, this);
+			actors.add(gb);
 		}
-		actors.add(gb);
-		this.gb = gb;
 	}
 
 	/**
-	 * Make sure we have a unique bike
+	 * Make sure we have a unique {@linkplain Bike}
+	 * @param bike {@linkplain Bike} to add to the game
 	 */
-	public void addBike(BikeBuilder bb) {
-		if (this.bb != null)
+	public void addBike(BikeBuilder bike) {
+		if (this.bb != null) {
+			this.bb.getActor().destroy();
 			actors.remove(this.bb);
-		this.bb = bb;
-		actors.add(bb);
+		}
+
+		this.bb = bike;
+		actors.add(bike);
 	}
 
+	/** @return an ArrayList containing an updated grid */
 	private ArrayList<ShapeGraphics> grid() {
 		ArrayList<ShapeGraphics> lines = new ArrayList<>();
 
@@ -346,12 +424,32 @@ public class LevelEditor implements Graphics {
 		return this.zoom;
 	}
 
+	/**
+	 * @return the current {@link #zoom}, between {@value #minZoom} and
+	 * {@value #maxZoom}
+	 */
 	public float getWindowScale() {
-		return this.windowZoom;
+		return windowZoom;
 	}
 
+	/**
+	 * @return the current camera position
+	 */
 	public Vector getCameraPosition() {
 		return this.cameraPosition;
+	}
+
+	/**
+	 * Destroy this
+	 */
+	public void destroy() {
+		this.actorMenu.destroy();
+		for (ActorBuilder a : actors)
+			a.destroy();
+		this.cameraResetPosition.destroy();
+		this.playButton.destroy();
+		this.getPositionButton.destroy();
+		this.cameraResetPosition.destroy();
 	}
 
 }

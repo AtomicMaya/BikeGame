@@ -97,8 +97,9 @@ public class Save {
 	/**
 	 * @return the files in a folder
 	 */
-	public static File[] availableSaves(File folder) {
+	public static File[] availableSaves(ActorGame game) {
 
+		File folder = new File(game.getSaveDirectory());
 		if (folder.isDirectory()) {
 			return folder.listFiles();
 		}

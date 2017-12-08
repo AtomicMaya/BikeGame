@@ -16,6 +16,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+/**
+ * Used to create a {@linkplain Ground}
+ * @see ActorBuilder
+ */
 public class GroundBuilder extends ActorBuilder {
 
 	// points list and stuff
@@ -44,14 +48,21 @@ public class GroundBuilder extends ActorBuilder {
 	private final String finishText = "Finish";
 
 	private LevelEditor lv;
+
 	private boolean isDone = false;
 
+	// actor build
 	private Ground ground;
 
-	public GroundBuilder(ActorGame game, LevelEditor lv) {
+	/**
+	 * Create a new {@linkplain GroundBuilder}
+	 * @param game : {@linkplain ActorGeme} where this belong
+	 * @param levelEditor : {@linkplain LevelEditor} where this is created
+	 */
+	public GroundBuilder(ActorGame game, LevelEditor levelEditor) {
 		super(game);
 		this.game = game;
-		this.lv = lv;
+		this.lv = levelEditor;
 
 		fixStart.add(new Vector(-500, -500));
 		fixStart.add(new Vector(-500, 0));
@@ -63,10 +74,10 @@ public class GroundBuilder extends ActorBuilder {
 
 		// buttons
 		drawModeButton = new GraphicalButton(game, new Vector(18, 14), "Change draw mode to : Free",
-				fontSize * lv.getZoom());
+				fontSize * levelEditor.getZoom());
 		drawModeButton.addOnClickAction(() -> {
 			drawModeButton.setText((drawMode == 0) ? "Change draw mode to : Free" : "Change draw mode to : Normal",
-					fontSize * lv.getZoom());
+					fontSize * levelEditor.getZoom());
 			drawMode = (drawMode == 0) ? 1 : 0;
 		});
 
@@ -76,7 +87,8 @@ public class GroundBuilder extends ActorBuilder {
 			this.isDone = true;
 			groundLine = new Polyline(updateGround(null));
 		});
-		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
+		// ground = new Ground(game, Vector.ZERO, new
+		// Polyline(updateGround(null)));
 	}
 
 	@Override
@@ -99,7 +111,7 @@ public class GroundBuilder extends ActorBuilder {
 	public void update(float deltaTime) {
 
 		if (!isDone) {
-			currentPoint =getFlooredMousePosition();
+			currentPoint = getFlooredMousePosition();
 			if (isLeftPressed() && !drawModeButton.isHovered() && !finish.isHovered()) {
 				addPoint(currentPoint);
 
@@ -126,6 +138,12 @@ public class GroundBuilder extends ActorBuilder {
 		}
 	}
 
+	/**
+	 * Update all points already in the points list, given the strategy (normal,
+	 * or free)
+	 * @param points : points list
+	 * @return the updated list
+	 */
 	private ArrayList<Vector> updatePoints(ArrayList<Vector> points) {
 		// normal draw mode, with insertion point in the middle
 		if (this.drawMode == 0) {
@@ -138,12 +156,17 @@ public class GroundBuilder extends ActorBuilder {
 		return points;
 	}
 
-	private ArrayList<Vector> updateGround(Vector mousePos) {
+	/**
+	 * Update the {@linkplain Ground} which will be created
+	 * @param mousePosition : {@linkplain Mouse} position
+	 * @return a list with the points updated
+	 */
+	private ArrayList<Vector> updateGround(Vector mousePosition) {
 		ArrayList<Vector> temp = new ArrayList<>();
 		temp.addAll(points);
 
-		if (mousePos != null && !temp.contains(mousePos))
-			temp.add(mousePos);
+		if (mousePosition != null && !temp.contains(mousePosition))
+			temp.add(mousePosition);
 
 		temp = updatePoints(temp);
 
@@ -154,6 +177,10 @@ public class GroundBuilder extends ActorBuilder {
 		return points;
 	}
 
+	/**
+	 * Add a point in the list
+	 * @param v : point
+	 */
 	private void addPoint(Vector v) {
 		if (points.contains(v))
 			points.remove(v);
@@ -178,6 +205,20 @@ public class GroundBuilder extends ActorBuilder {
 	public void reCreate() {
 		ground.destroy();
 		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
+	}
+
+	@Override
+	public boolean isHovered() {
+		return false;
+	}
+
+	public void continueBuilding() {
+		this.isDone = false;
+	}
+
+	@Override
+	public void destroy() {
+		this.ground.destroy();
 	}
 
 }

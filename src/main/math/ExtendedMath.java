@@ -1,5 +1,8 @@
 package main.math;
 
+import main.math.Vector;
+import main.window.Canvas;
+import main.window.Image;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +68,7 @@ public class ExtendedMath {
 	 * 
 	 * @param vectors : The given list of vectors
 	 * @param axis : The given axis, should be ([-1.f | 1.f], [-1.f | 1.f]) for
-	 *            clean inversion.
+	 * clean inversion.
 	 * @return a list with the inverted vectors
 	 */
 	public static List<Vector> invertXCoordinates(List<Vector> vectors, Vector axis) {
@@ -139,28 +142,28 @@ public class ExtendedMath {
 		return new Vector((float) Math.floor(vector.x), (float) Math.floor(vector.y));
 	}
 
-    /**
-     * TODO : Clement comment this
-     * @param min :
-     * @param max :
-     * @param toTest :
-     * @return whether the given vector is in the bounds;
-     */
-	public static boolean isInRectangle(Vector min, Vector max, Vector toTest) {
+	/**
+	 * Test whether a Vector is between two other
+	 * @param first : The first position.
+	 * @param second : The second position.
+	 * @param toTest : The position to test.
+     * @return whether the given vector is in the bounds.
+	 */
+	public static boolean isInRectangle(Vector first, Vector second, Vector toTest) {
 
-        float minX = Math.min(min.x, max.x);
-        float maxX = Math.max(min.x, max.x);
-        float minY = Math.min(min.y, max.y);
-        float maxY = Math.max(min.y, max.y);
+		float minX = Math.min(first.x, second.x);
+		float maxX = Math.max(first.x, second.x);
+		float minY = Math.min(first.y, second.y);
+		float maxY = Math.max(first.y, second.y);
 
         return !(minX > toTest.x) && !(maxX < toTest.x) && !(minY > toTest.y) && !(maxY < toTest.y);
     }
 
-    /**
-     * TODO : Clement comment this
-     * @param points : something
-     * @return something
-     */
+	/**
+	 * Sort Vectors by their x coordinate.
+	 * @param points : The list of Vectors.
+	 * @return the sorted list.
+	 */
 	public static ArrayList<Vector> sortVectorByX(ArrayList<Vector> points) {
 
 		if (points.size() < 2)
@@ -188,11 +191,12 @@ public class ExtendedMath {
 		}
 	}
 
-    /**
-     * TODO : Clement comment this
-     * @param points : something
-     * @return : something
-     */
+	/**
+	 * Delete useless {@linkplain Vector} which have the same x coordinate.
+	 * @param points : {@linkplain Vector}s to test.
+	 * @return a list with two {@linkplain Vector}s, the one with the smallest
+	 * and the one with the biggest y coordinate.
+	 */
 	public static ArrayList<Vector> deleteUselessInY(ArrayList<Vector> points) {
 		if (points.size() <= 1)
 			return points;
@@ -209,5 +213,22 @@ public class ExtendedMath {
 		p.add(b);
 
 		return p;
+	}
+
+	/**
+	 * Test if a string is a numerical value.
+	 * @param string: : the input string.
+	 * @return true if input is a numeric value.
+	 */
+	public static boolean isNumeric(String string) {
+		return string != null && string.matches("-?\\d+(\\.\\d+)?");
+		// work as well:
+		// try {
+		// Integer.parseInt(string);
+		// return true;
+		// } catch (NumberFormatException e) {
+		// return false;
+		// }
+
 	}
 }

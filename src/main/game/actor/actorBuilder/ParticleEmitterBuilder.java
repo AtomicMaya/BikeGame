@@ -4,9 +4,10 @@
  */
 package main.game.actor.actorBuilder;
 
-import main.NumberField;
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.NumberField;
+import main.game.actor.entities.ParticleEmitter;
 import main.math.Circle;
 import main.math.Polyline;
 import main.math.Transform;
@@ -20,10 +21,13 @@ public class ParticleEmitterBuilder extends ActorBuilder {
 	private NumberField e;
 	private Vector position, startAngle, endAngle;
 
+	private ParticleEmitter pe;
+
 	private boolean isDone = false;
 
 	public ParticleEmitterBuilder(ActorGame game) {
 		super(game);
+		pe = new ParticleEmitter(getOwner(), null, position, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 
 	@Override
@@ -57,19 +61,12 @@ public class ParticleEmitterBuilder extends ActorBuilder {
 
 	}
 
+	@Override
+	public Actor getActor() {
+		pe = new ParticleEmitter(getOwner(), null, position, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		return pe;
+	}
 
-    @Override
-    public Actor getActor() {
-        return null;
-    }
-
-    /*
-        @Override
-        public Actor getActor() {
-            ParticleEmitter p = new ParticleEmitter(getOwner(), null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-            return p;
-        }
-    */
 	@Override
 	public boolean isDone() {
 		return isDone;
@@ -79,6 +76,17 @@ public class ParticleEmitterBuilder extends ActorBuilder {
 	public void reCreate() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean isHovered() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void destroy() {
+		this.pe.destroy();
 	}
 
 }
