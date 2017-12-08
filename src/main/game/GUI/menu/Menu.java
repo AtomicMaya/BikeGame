@@ -8,7 +8,6 @@ import java.awt.Color;
 
 import main.game.ActorGame;
 import main.game.GUI.GUI;
-import main.game.graphics.Graphics;
 import main.game.graphics.ShapeGraphics;
 import main.math.Polygon;
 import main.math.Shape;
@@ -17,7 +16,6 @@ import main.math.Vector;
 import main.window.Canvas;
 import main.window.Mouse;
 import main.window.Window;
-import main.window.Button;
 
 public abstract class Menu implements GUI {
 
@@ -28,7 +26,7 @@ public abstract class Menu implements GUI {
 	private float scale = 30;
 	private ActorGame game;
 	private Window window;
-	
+
 	private Shape shape;
 	private Color backgroundColor;
 
@@ -89,11 +87,6 @@ public abstract class Menu implements GUI {
 		open = isOpen;
 	}
 
-	/** @return the {@linkplain ActorGame} */
-	public ActorGame getOwner() {
-		return game;
-	}
-
 	/**
 	 * @return whether this {@linkplain Menu} is hovered by the
 	 * {@linkplain Mouse}, default return false
@@ -102,4 +95,22 @@ public abstract class Menu implements GUI {
 	public boolean isHovered() {
 		return false;
 	}
+
+	/** @return the {@linkplain ActorGame} */
+	public ActorGame getOwner() {
+		return game;
+	}
+
+	@Override
+	public Transform getTransform() {
+		// TODO Auto-generated method stub
+		return Transform.I;
+	}
+
+	@Override
+	public Vector getVelocity() {
+		// TODO Auto-generated method stub
+		return Vector.ZERO;
+	}
+
 }

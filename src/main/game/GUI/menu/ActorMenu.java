@@ -107,7 +107,7 @@ public class ActorMenu extends Menu {
 
 		if (isOpen()) {
 			for (GraphicalButton gb : boutons) {
-				gb.update(deltaTime);
+				gb.update(deltaTime, zoom);
 			}
 		}
 

@@ -9,13 +9,13 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 /** Field to enter a number which can be then recover */
-public class NumberField extends Node implements GUI {
+public class NumberField extends GUIComponent {
 
 	private String text;
 	private ActorGame game;
 	private float fontSize = 1f;
 
-	private Vector position;
+	private Vector position = Vector.ZERO;
 	private boolean focus = false;
 
 	private float height, width;
@@ -35,16 +35,14 @@ public class NumberField extends Node implements GUI {
 	 * @param value : initial value of the field
 	 */
 	public NumberField(ActorGame game, Vector position, float width, float height, int value) {
+		super(game, position);
 		this.game = game;
 		this.width = width;
 		this.height = height;
 		if (position != null)
 			this.position = position;
 		this.text = "" + value;
-		setRelativeTransform(Transform.I.translated(position));
-
 	}
-
 
 	/**
 	 * Simulates a single time step.
@@ -138,17 +136,9 @@ public class NumberField extends Node implements GUI {
 		return this.hover;
 	}
 
-
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
-	@Override
-	public ActorGame getOwner() {
-		return game;
-	}
-
 }

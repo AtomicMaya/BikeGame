@@ -48,8 +48,8 @@ public class InGameMenu extends Menu {
 			changeStatus();
 		}
 		if (isOpen()) {
-			close.update(deltaTime);
-			backToMainMenu.update(deltaTime);
+			close.update(deltaTime, zoom);
+			backToMainMenu.update(deltaTime, zoom);
 		}
 	}
 

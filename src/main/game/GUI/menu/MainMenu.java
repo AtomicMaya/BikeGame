@@ -177,18 +177,18 @@ public class MainMenu extends Menu {
 		for (int i = 0; i < buttons.size(); i++) {
 			// update only the buttons on the current page
 			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
-				buttons.get(i).update(deltaTime);
+				buttons.get(i).update(deltaTime, zoom);
 		}
 		// update the left/right buttons only of their is too much saves
 		if (buttons.size() > maxNumberButtonsSave) {
-			left.update(deltaTime);
-			right.update(deltaTime);
+			left.update(deltaTime, zoom);
+			right.update(deltaTime, zoom);
 		}
 		for (GraphicalButton gb : levelButtons) {
-			gb.update(deltaTime);
+			gb.update(deltaTime, zoom);
 		}
-		levelEditorButton.update(deltaTime);
-		play.update(deltaTime);
+		levelEditorButton.update(deltaTime, zoom);
+		play.update(deltaTime, zoom);
 	}
 
 	@Override

@@ -124,11 +124,11 @@ public class GroundBuilder extends ActorBuilder {
 			// buttons update
 			drawModeButton.setText(null, fontSize * lv.getZoom());
 			drawModeButton.setPosition(drawModeButtonPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
-			drawModeButton.update(deltaTime);
+			drawModeButton.update(deltaTime, zoom);
 
 			finish.setText(null, fontSize * lv.getZoom());
 			finish.setPosition(finishPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
-			finish.update(deltaTime);
+			finish.update(deltaTime, zoom);
 
 			// reset if escape is pressed
 			if (game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {

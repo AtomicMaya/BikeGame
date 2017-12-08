@@ -15,7 +15,7 @@ import main.window.Canvas;
 import java.awt.*;
 
 /** Comment which can be attached to a {@linkplain Positionable} */
-public class Comment extends Node implements GUI {
+public class Comment extends GUIComponent {
 
 	private String text;
 	private float fontSize = 1f;
@@ -26,6 +26,7 @@ public class Comment extends Node implements GUI {
 	private ActorGame game;
 
 	public Comment(ActorGame game, String text) {
+		super(game, new Vector(-4, -12)); // TODO better
 		this.game = game;
 		this.text = text;
 	}

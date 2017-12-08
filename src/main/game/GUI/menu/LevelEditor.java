@@ -231,18 +231,18 @@ public class LevelEditor implements Graphics {
 		// camera reset button update
 		cameraResetPosition.setText(resetCameraButtonText, fontSize * zoom);
 		cameraResetPosition.setPosition((cameraResetButtonPosition).mul(zoom).add(cameraPosition));
-		cameraResetPosition.update(deltaTime);
+		cameraResetPosition.update(deltaTime, zoom);
 
 		// position button update
 		getPositionButton.setText(getPosButtonText, fontSize * zoom);
 		getPositionButton.setPosition((getPositionButtonPosition).mul(zoom).add(cameraPosition));
-		getPositionButton.update(deltaTime);
+		getPositionButton.update(deltaTime, zoom);
 
 		// play button update
 		// playButton.forceShape(playButonSizeX*zoom, -1);
 		playButton.setText(playButtonText, fontSize * zoom);
 		playButton.setPosition((playButtonPosition).mul(zoom).add(cameraPosition));
-		playButton.update(deltaTime);
+		playButton.update(deltaTime, zoom);
 	}
 
 	/**
@@ -256,7 +256,7 @@ public class LevelEditor implements Graphics {
 			float z = game.getViewScale() / windowZoom;
 			playButton.setText(playButtonEditText, fontSize * z);
 			playButton.setPosition((playButtonPosition).mul(z).add(game.getCameraPosition()));
-			playButton.update(deltaTime);
+			playButton.update(deltaTime, zoom);
 
 			return;
 		}
@@ -344,7 +344,7 @@ public class LevelEditor implements Graphics {
 		}
 
 		// save button and stuff update
-		saveButon.update(deltaTime);
+		saveButon.update(deltaTime, zoom);
 		error.update(deltaTime, zoom);
 
 		if (displayErrorText && errorTimer > maxErrorTimer) {

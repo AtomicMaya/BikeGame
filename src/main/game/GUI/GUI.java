@@ -6,15 +6,17 @@ package main.game.GUI;
 
 import main.game.ActorGame;
 import main.game.graphics.Graphics;
+import main.math.Attachable;
 import main.math.ExtendedMath;
+import main.math.Positionable;
 import main.math.Vector;
 import main.window.Button;
 import main.window.Mouse;
 
 /** Regroup all methods used to interact with the user */
-public interface GUI extends Graphics {
-	
-	/** @return whether {@link this} is hovered by the {@linkplain Mouse}*/
+public interface GUI extends Graphics, Positionable {
+
+	/** @return whether {@link this} is hovered by the {@linkplain Mouse} */
 	public boolean isHovered();
 
 	/** Destroy this {@linkplain GUI} and all its associated stuff */
@@ -25,28 +27,38 @@ public interface GUI extends Graphics {
 		return getOwner().getMouse().getPosition();
 	}
 
-	/** @return the {@linkplain Mouse} position, (x and y) floored to the closest {@linkplain Integer} */
+	/**
+	 * @return the {@linkplain Mouse} position, (x and y) floored to the closest
+	 * {@linkplain Integer}
+	 */
 	public default Vector getFlooredMousePosition() {
 		return ExtendedMath.floor(getMousePosition());
 	}
-	
-	/** @return whether the left {@linkplain Button} of the {@linkplain Mouse} is pressed */
+
+	/**
+	 * @return whether the left {@linkplain Button} of the {@linkplain Mouse} is
+	 * pressed
+	 */
 	public default boolean isLeftPressed() {
 		return getOwner().getMouse().getLeftButton().isPressed();
 	}
 
-	/** @return whether the right {@linkplain Button} of the {@linkplain Mouse} is pressed */
+	/**
+	 * @return whether the right {@linkplain Button} of the {@linkplain Mouse}
+	 * is pressed
+	 */
 	public default boolean isRightPressed() {
 		return getOwner().getMouse().getRightButton().isPressed();
 	}
 
 	/** @return the {@linkplain ActorGame} where this {@linkplain GUI} belong */
-	public ActorGame getOwner();	
+	public ActorGame getOwner();
 
 	/**
 	 * Simulates a single time step.
 	 *
-	 * @param deltaTime :elapsed time since last update, in seconds, non-negative
+	 * @param deltaTime :elapsed time since last update, in seconds,
+	 * non-negative
 	 * @param zoom current zoom of the game, put 1 for default
 	 */
 	public void update(float deltaTime, float zoom);

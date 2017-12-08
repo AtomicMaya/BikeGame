@@ -1,19 +1,16 @@
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
-import main.game.GUI.GUI;
+import main.game.GUI.GUIComponent;
 import main.game.actor.Actor;
+import main.math.Vector;
 
 /** Used to create an {@linkplain Actor} in the game */
-public abstract class ActorBuilder implements GUI {
+public abstract class ActorBuilder extends GUIComponent {
 
-	private ActorGame game;
-
-	/**
-	 * Create an {@linkplain ActorBuilder} to add an {@linkplain Actor} to the game
-	 */
+	/** Create an {@linkplain ActorBuilder} to add an {@linkplain Actor} to the game */
 	public ActorBuilder(ActorGame game) {
-		this.game = game;
+		super(game, Vector.ZERO);
 	}
 
 	/** @return the {@linkplain Actor} created by the {@linkplain ActorBuilder} */
@@ -28,7 +25,7 @@ public abstract class ActorBuilder implements GUI {
 	/** @return the {@linkplain ActorGame} where this {@linkplain ActorBuilder} belong */
 	@Override
 	public ActorGame getOwner() {
-		return game;
+		return super.getOwner();
 	}
 
 }

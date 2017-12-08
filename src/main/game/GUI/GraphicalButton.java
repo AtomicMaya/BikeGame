@@ -5,7 +5,10 @@ import main.game.actor.ParallelAction;
 import main.game.actor.entities.GameEntity;
 import main.game.graphics.BetterTextGraphics;
 import main.game.graphics.Graphics;
+import main.game.graphics.ImageGraphics;
+import main.game.graphics.ShapeGraphics;
 import main.math.Polygon;
+import main.math.Positionable;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
@@ -14,7 +17,7 @@ import main.window.Mouse;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class GraphicalButton extends GameEntity {
+public class GraphicalButton extends GUIComponent {
 	private Mouse mouse;
 
 	private ArrayList<Graphics> graphics = new ArrayList<>();
@@ -38,7 +41,7 @@ public class GraphicalButton extends GameEntity {
 	private boolean forcedTextShift = false;
 
 	public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
-		super(game, true, position);
+		super(game, position);
 		this.mouse = game.getMouse();
 
 		defaultTextOffset = new Vector(fontSize / 4f, fontSize / 4f);
@@ -48,7 +51,7 @@ public class GraphicalButton extends GameEntity {
 	}
 
 	public GraphicalButton(ActorGame game, Vector position, float width, float height) {
-		super(game, true, position);
+		super(game, position);
 		this.mouse = game.getMouse();
 		defaultTextOffset = new Vector(0, 0);// does not matter
 		forceShape(width, height);
@@ -57,10 +60,14 @@ public class GraphicalButton extends GameEntity {
 	private void changeStuff(Vector position, Polygon shape) {
 		this.graphics = new ArrayList<>();
 		if (this.idleGraphics == null) {
-			this.graphics.add(addGraphics(shape, Color.GREEN, Color.ORANGE,
-					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth));
-			this.graphics.add(addGraphics(shape, Color.RED, Color.ORANGE,
-					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth));
+			ShapeGraphics g1 = new ShapeGraphics(shape, Color.GREEN, Color.ORANGE,
+					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth);
+
+			this.graphics.add(g1);
+			ShapeGraphics g2 = new ShapeGraphics(shape, Color.RED, Color.ORANGE,
+					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth);
+			this.graphics.add(g2);
+
 		} else
 			this.setNewGraphics(idleGraphics, hoverGraphics);
 
@@ -72,7 +79,7 @@ public class GraphicalButton extends GameEntity {
 	}
 
 	@Override
-	public void update(float deltaTime) {
+	public void update(float deltaTime, float zoom) {
 		Vector mousePosition = this.mouse.getPosition();
 		float mouseX = mousePosition.x, mouseY = mousePosition.y;
 		if (this.minX <= mouseX && mouseX <= this.maxX && this.minY < mouseY && mouseY < this.maxY) {
@@ -113,8 +120,7 @@ public class GraphicalButton extends GameEntity {
 
 	@Override
 	public void destroy() {
-		super.destroy();
-		super.getOwner().destroyActor(this);
+		// TODO
 	}
 
 	/**
@@ -127,10 +133,12 @@ public class GraphicalButton extends GameEntity {
 		this.idleGraphics = idleGraphics;
 		this.hoverGraphics = hoverGraphics;
 		this.graphics = new ArrayList<>();
-		this.graphics
-				.add(addGraphics(idleGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, depth));
-		this.graphics
-				.add(addGraphics(hoverGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1, depth));
+		ImageGraphics g1 = new ImageGraphics(idleGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1,
+				depth);
+		this.graphics.add(g1);
+		ImageGraphics g2 = new ImageGraphics(hoverGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO,
+				1, depth);
+		this.graphics.add(g2);
 	}
 
 	/**
@@ -138,7 +146,7 @@ public class GraphicalButton extends GameEntity {
 	 * 
 	 * @param action : the action to run
 	 * @param expirationTime : When this button shouldn't be considered busy
-	 *            anymore.
+	 * anymore.
 	 */
 	public void addOnClickAction(Runnable action, float expirationTime) {
 		this.actions.add(action);
@@ -167,9 +175,8 @@ public class GraphicalButton extends GameEntity {
 		ParallelAction.generateWorker(runnable).execute();
 	}
 
-	@Override
 	public void setPosition(Vector position) {
-		super.setPosition(position);
+		this.setRelativeTransform(Transform.I.translated(position));
 		this.minX = position.x;
 		this.minY = position.y;
 		this.maxX = this.minX + maxPosition.x;
@@ -185,15 +192,15 @@ public class GraphicalButton extends GameEntity {
 	public void setText(String text, float fontSize) {
 
 		textGraphics = new BetterTextGraphics(getOwner(), (text == null) ? textGraphics.getText() : text, fontSize);
-		textGraphics.setDepth(depth+.1f);
+		textGraphics.setDepth(depth + .1f);
 		textGraphics.setParent(this);
 
 		forceShape(-1, -1);
 	}
 
 	/**
-	 * Force a width and a height to this button, a negative parameter will take the
-	 * default/previous one
+	 * Force a width and a height to this button, a negative parameter will take
+	 * the default/previous one
 	 * 
 	 * @param width width of the button
 	 * @param height height of the button
@@ -205,7 +212,7 @@ public class GraphicalButton extends GameEntity {
 			height = (height < 0) ? textGraphics.getCharSize() + shiftText.y * 2f : height;
 
 			if (!forcedTextShift)
-				shiftText = new Vector((width - textGraphics.getTotalWidth())/2f, textGraphics.getCharSize() / 4f);
+				shiftText = new Vector((width - textGraphics.getTotalWidth()) / 2f, textGraphics.getCharSize() / 4f);
 		} else {
 			width = (width < 0) ? maxX - minX : width;
 			height = (height < 0) ? maxY - minY : height;
