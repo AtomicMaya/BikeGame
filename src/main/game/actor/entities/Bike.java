@@ -188,7 +188,7 @@ public class Bike extends GameEntity implements PlayableEntity {
     @Override
     public void triggerDeath(boolean wasGravity) {
         this.isDead = true;
-        this.wasKilledByGravity = true;
+        this.wasKilledByGravity = wasGravity;
 
         this.game.addActor(new ParticleEmitter(this.game, this.getPosition().sub(0, .25f), null, 100, (float) -Math.PI / 2f,
                 (float) Math.PI, 1.2f, .1f, 1, .3f,

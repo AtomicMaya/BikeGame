@@ -7,7 +7,8 @@ public enum ObjectGroup {
     PLAYER (0),
     WHEEL (1),
     TERRAIN (2),
-    FINISH (3);
+    FINISH (3),
+    SENSOR (4);
 
     public final int group;
 
