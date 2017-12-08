@@ -25,7 +25,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 
     // Whether or not the bike is looking towards the rightEmitter.
     private boolean lookRight = true;
-    private boolean wasKilledByGravity;
+    private boolean wonTheGame, wasKilledByGravity;
     private int jumpCount;
     private float timeTillRejump, elapsedRejumpTime;
 
@@ -189,7 +189,7 @@ public class Bike extends GameEntity implements PlayableEntity {
         this.isDead = true;
         this.wasKilledByGravity = true;
 
-        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().sub(0, 1), null, 100, (float) -Math.PI / 2f,
+        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().sub(0, .25f), null, 100, (float) -Math.PI / 2f,
                 (float) Math.PI, 1.2f, .1f, 1, .3f,
                 0xFF830303,  	0x00830303, 1, 20));
         try { Thread.sleep(10); } catch (InterruptedException ignored) {}
@@ -198,7 +198,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 
     @Override
     public void triggerVictory() {
-
+        this.wonTheGame = true;
     }
 
     @Override
@@ -206,6 +206,12 @@ public class Bike extends GameEntity implements PlayableEntity {
         return this.isDead;
     }
 
+    @Override
+    public boolean getVictoryStatus() {
+        return this.wonTheGame;
+    }
+
+    @Override
     public boolean getIfWasKilledByGravity() {
         return this.wasKilledByGravity;
     }

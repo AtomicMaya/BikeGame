@@ -1,7 +1,9 @@
 package main.game;
 
+import main.game.actor.Actor;
 import main.game.actor.Audio;
 import main.game.actor.entities.*;
+import main.game.graphicalStuff.EndGameGraphics;
 import main.game.graphicalStuff.Scenery;
 import main.game.levels.Level;
 import main.io.FileSystem;
@@ -11,6 +13,7 @@ import main.math.Vector;
 import main.window.Window;
 
 import java.util.List;
+import java.util.Random;
 
 public class TestGame extends ActorGame {
 	private List<Level> levels;
@@ -25,6 +28,8 @@ public class TestGame extends ActorGame {
     private Window window;
     private Scenery scenery;
     private Bike player;
+    private Actor endGameGraphics;
+    private boolean displayed;
 
 
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -81,7 +86,7 @@ public class TestGame extends ActorGame {
 */
        //sensor = new ProximitySensor(this, new Vector(0,0), shape);
         this.setViewScale(15);
-
+        this.displayed = false;
         //scenery = new Scenery(this);
 
         Coin coin = new Coin(this, new Vector(2, 3));
@@ -94,6 +99,8 @@ public class TestGame extends ActorGame {
         Laser laser3 = new Laser(this, new Vector(2, 6), 5, 3);
         Laser laser4 = new Laser(this, new Vector(3, 6), 5, 3);
         Laser laser5 = new Laser(this, new Vector(4, 6), 5, 3);
+
+        this.endGameGraphics = null;
 
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
@@ -124,6 +131,9 @@ public class TestGame extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
         super.update(deltaTime);
+
+        if (((PlayableEntity) this.getPayload()).getDeathStatus() && this.displayed == false) this.displayDeathMessage();
+        if (((PlayableEntity) this.getPayload()).getVictoryStatus() && this.displayed == false) this.displayVictoryMessage();
 	}
 
 	@Override
@@ -131,4 +141,27 @@ public class TestGame extends ActorGame {
 		//backgroundAudio.destroy();
 		//backgroundAudio2.destroy();
 	}
+
+
+    public void displayDeathMessage() {
+	    this.displayed = true;
+        boolean secretDiceRoll = new Random().nextFloat() < 2 * 4.2 / 404;
+        boolean killedByGravity = ((PlayableEntity) this.getPayload()).getIfWasKilledByGravity();
+        if (killedByGravity)
+            this.endGameGraphics = new EndGameGraphics(this, secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
+        else
+            this.endGameGraphics = new EndGameGraphics(this, "./res/images/fatality.2.png");
+        this.addActor(endGameGraphics);
+    }
+
+    public void displayVictoryMessage() {
+        this.displayed = true;
+	    this.endGameGraphics = new EndGameGraphics(this, "/res/images/victory.png");
+        this.addActor(endGameGraphics);
+    }
+
+    public void resetGraphics() {
+        this.displayed = false;
+	    this.endGameGraphics = null;
+    }
 }

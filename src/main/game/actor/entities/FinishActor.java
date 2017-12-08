@@ -2,6 +2,7 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.math.BasicContactListener;
+import main.math.Entity;
 import main.math.Shape;
 import main.math.Vector;
 
@@ -9,23 +10,28 @@ import java.util.ArrayList;
 
 public class FinishActor extends GameEntity {
 
-	private GameEntity player;
+    private transient ActorGame game;
 	private BasicContactListener contactListener;
 
 	private boolean finish = false;
 
-	public FinishActor(ActorGame game, Vector position, GameEntity player, Shape shape) {
+	public FinishActor(ActorGame game, Vector position, Shape shape) {
 		super(game, true, position);
 
-		build(shape, -1, -1, true);
+		this.game = game;
+		build(shape, -1, -1, true, ObjectGroup.FINISH.group);
 
-		this.player = player;
 		create();
 	}
 
+	public FinishActor(ActorGame game, Vector position, Shape shape, String newGraphics) {
+	    this(game, position, shape);
+
+    }
+
 	private void create() {
-		contactListener = new BasicContactListener();
-		this.addContactListener(contactListener);
+		this.contactListener = new BasicContactListener();
+		this.addContactListener(this.contactListener);
 	}
 
 	@Override
@@ -36,11 +42,11 @@ public class FinishActor extends GameEntity {
 
 	@Override
 	public void update(float deltaTime) {
-		finish = contactListener.getEntities().contains(player.getEntity());
-	}
-
-	public void setPlayer(GameEntity player) {
-		this.player = player;
+	    if (this.contactListener.getEntities().size() > 0) {
+	        for (Entity entity : this.contactListener.getEntities())
+	            if (entity.getCollisionGroup() == ObjectGroup.PLAYER.group)
+                    ((PlayableEntity) this.game.getPayload()).triggerVictory();
+        }
 	}
 
 	public boolean isFinished() {
@@ -58,7 +64,7 @@ public class FinishActor extends GameEntity {
 		ArrayList<String> classe = new ArrayList<>();
 		classe.add("\"" + this.getClass().toString() + "\"");
 		ArrayList<String> player = new ArrayList<>();
-		player.add("\"player\" : \"" + this.player.getClass().toString() + "\"");
+		//  player.add("\"player\" : \"" + this.player.getClass().toString() + "\"");
 		r.add(classe);
 		r.add(player);
 		return r;

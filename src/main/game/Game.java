@@ -14,15 +14,14 @@ public interface Game {
      * @param fileSystem file system to use, not null
      * @return whether the game was successfully started
      */
-    public abstract boolean begin(Window window, FileSystem fileSystem);
+    boolean begin(Window window, FileSystem fileSystem);
     
     /**
      * Simulates a single time step.
      * @param deltaTime elapsed time since last update, in seconds, non-negative
      */
-    public abstract void update(float deltaTime);
+    void update(float deltaTime);
     
     /** Cleans up things, called even if initialisation failed. */
-    public abstract void end();
-    
+    void end();
 }

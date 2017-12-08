@@ -8,4 +8,6 @@ public interface PlayableEntity {
     void triggerVictory();
 
     boolean getDeathStatus();
+    boolean getVictoryStatus();
+    boolean getIfWasKilledByGravity();
 }

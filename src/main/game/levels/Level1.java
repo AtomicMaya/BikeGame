@@ -34,7 +34,7 @@ public class Level1 extends Level {
 		// Crate crate1 = new Crate(game, new Vector(6, 5), "res/images/crate.1.png",
 		// false, 1);
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
-		finishActor = new FinishActor(game, new Vector(0, 0), player, s);
+		finishActor = new FinishActor(game, new Vector(0, 0), new Polygon(0,0,1,0, 1, 1, 0, 1));
 
 		this.addActor(finishActor);
 		// this.addActor(crate1);

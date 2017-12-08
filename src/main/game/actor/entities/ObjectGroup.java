@@ -6,7 +6,8 @@ package main.game.actor.entities;
 public enum ObjectGroup {
     PLAYER (0),
     WHEEL (1),
-    TERRAIN (2);
+    TERRAIN (2),
+    FINISH (3);
 
     public final int group;
 

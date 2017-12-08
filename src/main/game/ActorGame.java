@@ -421,4 +421,6 @@ public class ActorGame implements Game {
 	public Transform getRelativeTransform() {
 		return this.window.getRelativeTransform();
 	}
+
+
 }

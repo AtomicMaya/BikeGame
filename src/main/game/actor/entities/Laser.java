@@ -77,13 +77,12 @@ public class Laser extends GameEntity {
         this.emitterGraphics = this.addGraphics( "./res/images/blaster." + (this.direction + 1) + ".png", 1, 1, new Vector(.5f, .5f), 1, 2);
     }
 
-    /*
     @Override
     public void reCreate(ActorGame game) {
 
         super.reCreate(game);
         create();
-    }*/
+    }
 
     public Laser(ActorGame game, Vector startPosition, float distance, int direction) {
         this(game, startPosition, distance, .5f, 2, 4, 3, 1, direction, "#00FFFF");
