@@ -6,7 +6,6 @@ package main.io;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.Saveable;
 
 import java.io.*;
 
@@ -41,24 +40,24 @@ public class Save {
 	 * @return the actor, null if something went wrong
 	 */
 	public static Actor readSavedActor(ActorGame game, File file) {
-		try {
-			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-			Object o = ois.readObject();
-			ois.close();
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+            Object o = ois.readObject();
+            ois.close();
 
-			// transform the object into an actor
-			try {
-				Saveable actor = (Saveable) o;
-				actor.reCreate(game);
-				return actor;
-			} catch (ClassCastException cce) {
-				cce.printStackTrace();
-			}
+            // transform the object into an actor
+            try {
+                Saveable actor = (Saveable) o;
+                actor.reCreate(game);
+                return (Actor) actor;
+            } catch (ClassCastException cce) {
+                cce.printStackTrace();
+            }
 
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 	public static void saveParameters(int actorCameraNumber, FileSystem fileSystem, File file) {

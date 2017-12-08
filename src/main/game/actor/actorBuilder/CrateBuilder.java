@@ -4,17 +4,16 @@
  */
 package main.game.actor.actorBuilder;
 
-import java.awt.event.KeyEvent;
-
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.Comment;
 import main.game.actor.NumberField;
-import main.game.actor.QuickMafs;
 import main.game.actor.crate.Crate;
 import main.game.actor.menu.LevelEditor;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.event.KeyEvent;
 
 public class CrateBuilder extends ActorBuilder {
 

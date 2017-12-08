@@ -7,7 +7,6 @@ package main.game.levels;
 import main.game.ActorGame;
 import main.game.actor.entities.Bike;
 import main.game.actor.entities.FinishActor;
-import main.game.actor.entities.GameEntity;
 import main.game.actor.entities.Ground;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -54,9 +53,7 @@ public class Level1 extends Level {
 
 	@Override
 	public boolean isFinished() {
-		if (finishActor == null)
-			return false;
-		return finishActor.isFinished();
-	}
+        return finishActor != null && finishActor.isFinished();
+    }
 
 }

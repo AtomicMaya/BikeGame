@@ -14,10 +14,9 @@ import main.game.actor.actorBuilder.GroundBuilder;
 import main.game.actor.entities.BetterTextGraphics;
 import main.game.actor.entities.GraphicalButton;
 import main.io.Save;
+import main.math.*;
 import main.math.Polygon;
 import main.math.Shape;
-import main.math.Transform;
-import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
@@ -181,7 +180,7 @@ public class LevelEditor implements Graphics {
 		}
 		ArrayList<Integer> number = new ArrayList<>();
 		for (int i = 1; i < savesNames.size(); i++) {
-			if (QuickMafs.isNumeric(savesNames.get(i)))
+			if (ExtendedMath.isNumeric(savesNames.get(i)))
 				number.add(Integer.parseInt(savesNames.get(i)));
 		}
 		String temp = "";

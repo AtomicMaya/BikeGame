@@ -1,8 +1,5 @@
 package main.math;
 
-import main.math.Vector;
-import main.window.Canvas;
-import main.window.Image;
 import java.util.ArrayList;
 import java.util.List;
 

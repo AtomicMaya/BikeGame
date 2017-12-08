@@ -4,9 +4,6 @@
  */
 package main.game.actor.menu;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.actorBuilder.BikeBuilder;
 import main.game.actor.actorBuilder.CrateBuilder;
@@ -19,6 +16,9 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class ActorMenu extends Menu {
 
@@ -106,7 +106,7 @@ public class ActorMenu extends Menu {
 			Vector mousePos = getMousePosition();
 
 			if (!ExtendedMath.isInRectangle(minPosition, minPosition.add(maxPosition), mousePos)) {
-				this.setStatut(false);
+				this.setStatus(false);
 			}
 
 		}
