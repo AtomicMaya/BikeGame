@@ -99,7 +99,6 @@ public class Bike extends GameEntity implements PlayableEntity {
         super.reCreate(game);
         this.game = game;
         create();
-
     }
 
     @Override

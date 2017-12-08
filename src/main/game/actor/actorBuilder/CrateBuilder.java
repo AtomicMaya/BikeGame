@@ -10,6 +10,7 @@ import main.game.actor.Comment;
 import main.game.actor.NumberField;
 import main.game.actor.crate.Crate;
 import main.game.actor.menu.LevelEditor;
+import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -77,7 +78,7 @@ public class CrateBuilder extends ActorBuilder {
 				crate.setSize(width.getNumber(), height.getNumber());
 			}
 		} else
-			hoover = QuickMafs.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
+			hoover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
 					getFlooredMousePosition());
 		if (hoover && isRightPressed())
 			isWriting = true;

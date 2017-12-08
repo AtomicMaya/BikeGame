@@ -46,10 +46,10 @@ public class Save {
             ois.close();
 
             // transform the object into an actor
-            try {
+            try {/*
                 Saveable actor = (Saveable) o;
                 actor.reCreate(game);
-                return (Actor) actor;
+                return (Actor) actor;*/
             } catch (ClassCastException cce) {
                 cce.printStackTrace();
             }
