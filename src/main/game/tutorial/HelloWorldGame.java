@@ -1,7 +1,7 @@
 package main.game.tutorial;
 
 import main.game.Game;
-import main.game.actor.ImageGraphics;
+import main.game.graphics.ImageGraphics;
 import main.io.FileSystem;
 import main.math.*;
 import main.window.Window;

@@ -79,7 +79,7 @@ public class ActorGame implements Game {
 
 	@Override
 	public void update(float deltaTime) {
-		System.out.println(actors.size() + " " + world.getEntities().size());
+		//System.out.println(actors.size() + " " + world.getEntities().size());
 		if (this.gameFrozen)
 			return;
 		this.world.update(deltaTime);

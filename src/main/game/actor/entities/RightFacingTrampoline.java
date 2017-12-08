@@ -2,6 +2,7 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.Linker;
 import main.math.Transform;
 import main.math.Vector;
 
@@ -54,5 +55,9 @@ public class RightFacingTrampoline implements Actor {
     @Override
     public Vector getVelocity() {
         return Vector.ZERO;
+    }
+    
+    public void setPosition(Vector newPosition) {
+    	this.position = newPosition;
     }
 }

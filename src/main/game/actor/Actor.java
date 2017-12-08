@@ -1,5 +1,6 @@
 package main.game.actor;
 
+import main.game.graphics.Graphics;
 import main.math.Positionable;
 import main.window.Canvas;
 

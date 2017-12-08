@@ -1,7 +1,8 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
-import main.game.actor.ShapeGraphics;
+import main.game.actor.ObjectGroup;
+import main.game.graphics.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
 import main.window.Canvas;

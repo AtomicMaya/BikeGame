@@ -1,9 +1,9 @@
 package main.game.actor.entities;
 
 import main.game.actor.Actor;
-import main.game.actor.Graphics;
-import main.game.actor.ImageGraphics;
-import main.game.actor.ShapeGraphics;
+import main.game.graphics.Graphics;
+import main.game.graphics.ImageGraphics;
+import main.game.graphics.ShapeGraphics;
 import main.math.Entity;
 import main.math.PartBuilder;
 import main.math.Transform;

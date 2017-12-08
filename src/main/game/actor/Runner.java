@@ -1,7 +1,5 @@
 package main.game.actor;
 
-import main.game.actor.entities.ParallelAction;
-
 /**
  * Created on 12/6/2017 at 2:10 PM.
  */

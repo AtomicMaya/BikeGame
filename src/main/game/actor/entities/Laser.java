@@ -1,9 +1,10 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
-import main.game.actor.Audio;
-import main.game.actor.ImageGraphics;
-import main.game.actor.ShapeGraphics;
+import main.game.actor.sensors.ProximitySensor;
+import main.game.audio.Audio;
+import main.game.graphics.ImageGraphics;
+import main.game.graphics.ShapeGraphics;
 import main.math.Polyline;
 import main.math.Shape;
 import main.math.Vector;

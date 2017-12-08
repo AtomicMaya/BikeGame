@@ -2,9 +2,9 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.ImageGraphics;
-import main.game.actor.Saveable;
-import main.game.actor.ShapeGraphics;
+import main.game.graphics.ImageGraphics;
+import main.game.graphics.ShapeGraphics;
+import main.io.Saveable;
 import main.math.*;
 import main.math.Shape;
 

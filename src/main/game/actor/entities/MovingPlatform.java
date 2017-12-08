@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.Linker;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Shape;

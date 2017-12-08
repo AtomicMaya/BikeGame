@@ -1,14 +1,19 @@
 package main.game;
 
 import main.game.actor.Actor;
-import main.game.actor.Audio;
 import main.game.actor.entities.*;
+import main.game.actor.entities.collectable.Coin;
+import main.game.actor.entities.switchers.SimpleLever;
+import main.game.actor.sensors.ProximitySensor;
+import main.game.audio.Audio;
 import main.game.graphicalStuff.EndGameGraphics;
 import main.game.graphicalStuff.Scenery;
+import main.game.graphics.BetterTextGraphics;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
+import main.math.Transform;
 import main.math.Vector;
 import main.window.Window;
 
@@ -28,7 +33,7 @@ public class TestGame extends ActorGame {
     private Window window;
     private Scenery scenery;
     private Bike player;
-    private Actor endGameGraphics;
+    private EndGameGraphics endGameGraphics;
     private boolean displayed;
 
 
@@ -151,7 +156,7 @@ public class TestGame extends ActorGame {
             this.endGameGraphics = new EndGameGraphics(this, secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
         else
             this.endGameGraphics = new EndGameGraphics(this, "./res/images/fatality.2.png");
-        this.addActor(endGameGraphics);
+        this.addActor(endGameGraphics);        
     }
 
     public void displayVictoryMessage() {

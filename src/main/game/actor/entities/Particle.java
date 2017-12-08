@@ -1,6 +1,6 @@
 package main.game.actor.entities;
 
-import main.game.actor.Graphics;
+import main.game.graphics.Graphics;
 import main.math.ExtendedMath;
 import main.math.Shape;
 import main.math.Transform;

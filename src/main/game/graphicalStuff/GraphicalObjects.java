@@ -1,6 +1,6 @@
 package main.game.graphicalStuff;
 
-import main.game.actor.Graphics;
+import main.game.graphics.Graphics;
 import main.math.Vector;
 import main.window.Canvas;
 

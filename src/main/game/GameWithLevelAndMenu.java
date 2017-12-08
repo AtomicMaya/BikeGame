@@ -4,8 +4,8 @@
  */
 package main.game;
 
-import main.game.actor.menu.InGameMenu;
-import main.game.actor.menu.MainMenu;
+import main.game.GUI.menu.InGameMenu;
+import main.game.GUI.menu.MainMenu;
 import main.io.FileSystem;
 import main.window.Window;
 
@@ -36,12 +36,12 @@ public abstract class GameWithLevelAndMenu extends GameWithLevels {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		mainMenu.update(deltaTime);
+		mainMenu.update(deltaTime, 1);
 		if (mainMenu.isOpen()) {
 			mainMenu.draw(window);
 			return;
 		}
-		ingameMenu.update(deltaTime);
+		ingameMenu.update(deltaTime, 1);
 		if (ingameMenu.isOpen())
 			ingameMenu.draw(window);
 

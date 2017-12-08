@@ -1,7 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
-import main.game.actor.ImageGraphics;
+import main.game.graphics.ImageGraphics;
 import main.math.Circle;
 import main.math.Vector;
 import main.window.Canvas;
