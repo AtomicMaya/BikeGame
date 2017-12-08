@@ -140,10 +140,10 @@ public class Bike extends GameEntity implements PlayableEntity {
         this.leftWheel.relax();
         this.rightWheel.relax();
 
-        if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
+        if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown() || this.wonTheGame) {
             this.leftWheel.power(0);
             this.rightWheel.power(0);
-        } else if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
+        } else if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown() && !this.wonTheGame) {
             if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
                 this.getEntity().applyAngularForce(10.0f);
             } else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
@@ -199,7 +199,19 @@ public class Bike extends GameEntity implements PlayableEntity {
 
     @Override
     public void triggerVictory() {
+
         this.wonTheGame = true;
+        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(-4, 5), null, 75, (float) Math.PI / 2,
+                (float) Math.PI, 1.5f, .1f, 1, .3f,
+                0xFFFFFF00, 0xFFFF0000, 2, 10));
+        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(3, 7), null, 75, (float) Math.PI / 2,
+                (float) Math.PI, 1.5f, .1f, 1, .3f,
+                0xFFADFF2F,  	0x00551A8B, 2, 10));
+    }
+
+    @Override
+    public void triggerCheckpoint() {
+
     }
 
     @Override

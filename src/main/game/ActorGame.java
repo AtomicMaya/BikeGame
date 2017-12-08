@@ -31,16 +31,16 @@ public class ActorGame implements Game {
 	private static final float VIEW_SCALE = 20.0f;
 	private static float VIEW_SCALE_MOD = 0.0f;
 	private static float VIEW_SCALE_CURRENT = VIEW_SCALE;
-	private static float VIEW_SCALE_PREVIOUS = VIEW_SCALE;
 	private static final float TRANSLATION_TIME = 3f;
     private EndGameGraphics endGameGraphics;
     private boolean displayed;
+    private int score;
 
 	// list of all actors in the game
 	private ArrayList<Actor> actors = new ArrayList<>();
 
 	// main character of the game
-	private Actor player;
+	private PlayableEntity player;
 
 	// our physical world
 	private World world;
@@ -84,6 +84,7 @@ public class ActorGame implements Game {
 
         this.endGameGraphics = null;
 		this.displayed = false;
+		this.score = 0;
         return true;
 	}
 
@@ -126,6 +127,7 @@ public class ActorGame implements Game {
 		if (!this.actorsToRemove.isEmpty()) {
 			// peut etre plus propre mais ca fait des
 			// ConcurrentModificationException
+
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
 			}
@@ -140,9 +142,6 @@ public class ActorGame implements Game {
 		for (Actor actor : this.actors) {
 			actor.draw(this.window);
 		}
-
-		VIEW_SCALE_PREVIOUS = VIEW_SCALE_CURRENT;
-
 	}
 
 	@Override
@@ -330,7 +329,7 @@ public class ActorGame implements Game {
 	 * Get the main {@linkplain Actor} of the game.
 	 * @return the main actor of the game.
 	 */
-	public Actor getPayload() {
+	public PlayableEntity getPayload() {
 		return this.player;
 	}
 
@@ -339,7 +338,7 @@ public class ActorGame implements Game {
 	 * @param player : The {@linkplain Actor} which will be the main
 	 * {@linkplain Actor} of the game.
 	 */
-	public void setPayload(Actor player) {
+	public void setPayload(PlayableEntity player) {
 		this.player = player;
 	}
 
@@ -436,7 +435,7 @@ public class ActorGame implements Game {
     public void displayDeathMessage() {
         this.displayed = true;
         boolean secretDiceRoll = new Random().nextFloat() < 2 * 4.2 / 404;
-        boolean killedByGravity = ((PlayableEntity) this.getPayload()).getIfWasKilledByGravity();
+        boolean killedByGravity = this.getPayload().getIfWasKilledByGravity();
         if (killedByGravity)
             this.endGameGraphics = new EndGameGraphics(this, secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
         else
@@ -459,5 +458,16 @@ public class ActorGame implements Game {
         this.endGameGraphics = null;
     }
 
+    private void resetScore() {
+	    this.score = 0;
+    }
+
+    public void addToScore(int newScore) {
+        this.score += newScore;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
 
 }

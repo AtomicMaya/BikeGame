@@ -6,8 +6,8 @@ package main.game.levels;
 
 import main.game.ActorGame;
 import main.game.actor.entities.Bike;
-import main.game.actor.entities.FinishActor;
 import main.game.actor.entities.Ground;
+import main.game.actor.sensors.FinishActor;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
@@ -34,7 +34,7 @@ public class Level1 extends Level {
 		// Crate crate1 = new Crate(game, new Vector(6, 5), "res/images/crate.1.png",
 		// false, 1);
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
-		finishActor = new FinishActor(game, new Vector(0, 0), new Polygon(0,0,1,0, 1, 1, 0, 1));
+		finishActor = new FinishActor(game, new Vector(-6, 0));
 
 		this.addActor(finishActor);
 		// this.addActor(crate1);
@@ -53,7 +53,7 @@ public class Level1 extends Level {
 
 	@Override
 	public boolean isFinished() {
-        return finishActor != null && finishActor.isFinished();
+        return true;//return finishActor != null && finishActor.isFinished();
     }
 
 }

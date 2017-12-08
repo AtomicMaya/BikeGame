@@ -3,6 +3,8 @@ package main.game;
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
+import main.game.actor.sensors.Checkpoint;
+import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.ProximitySensor;
 import main.game.audio.Audio;
 import main.game.graphicalStuff.Scenery;
@@ -87,7 +89,11 @@ public class TestGame extends ActorGame {
         this.setViewScale(15);
         //scenery = new Scenery(this);
 
-        Coin coin = new Coin(this, new Vector(2, 3));
+        Coin coin = new Coin(this, new Vector(2, 1));
+        Coin coin1 = new Coin(this, new Vector(3, 1));
+        Coin coin2 = new Coin(this, new Vector(4, 1));
+        Coin coin3 = new Coin(this, new Vector(5, 1));
+        Coin coin4 = new Coin(this, new Vector(6, 1));
 
         RightFacingTrampoline rightFacingTrampoline = new RightFacingTrampoline(this, new Vector(19.5f, 2),
                 -1, -1);
@@ -97,6 +103,9 @@ public class TestGame extends ActorGame {
         Laser laser3 = new Laser(this, new Vector(2, 6), 5, 3);
         Laser laser4 = new Laser(this, new Vector(3, 6), 5, 3);
         Laser laser5 = new Laser(this, new Vector(4, 6), 5, 3);
+
+        Checkpoint checkpoint = new Checkpoint(this, new Vector(35, -5));
+        FinishActor finishActor = new FinishActor(this, new Vector(40, -5));
 
 
 		/*
@@ -114,12 +123,18 @@ public class TestGame extends ActorGame {
 		//this.addActor(movingPlatform);
 		//this.addActor(button);
 		this.addActor(coin);
+		this.addActor(coin1);
+		this.addActor(coin2);
+		this.addActor(coin3);
+		this.addActor(coin4);
 		this.addActor(rightFacingTrampoline);
 		this.addActor(laser);
 		this.addActor(laser2);
 		this.addActor(laser3);
 		this.addActor(laser4);
 		this.addActor(laser5);
+		this.addActor(checkpoint);
+		this.addActor(finishActor);
 		//this.addActor(emitter);
 		//this.addActor(scenery);
 		return true;
@@ -129,8 +144,8 @@ public class TestGame extends ActorGame {
 	public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if (((PlayableEntity) this.getPayload()).getDeathStatus() && !this.isDisplayed()) this.displayDeathMessage();
-        if (((PlayableEntity) this.getPayload()).getVictoryStatus() && !this.isDisplayed()) this.displayVictoryMessage();
+        if (this.getPayload().getDeathStatus() && !this.isDisplayed()) this.displayDeathMessage();
+        if (this.getPayload().getVictoryStatus() && !this.isDisplayed()) this.displayVictoryMessage();
 	}
 
 	@Override
