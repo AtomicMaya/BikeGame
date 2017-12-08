@@ -7,6 +7,7 @@ package main.game.actor.actorBuilder;
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.entities.Bike;
+import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -35,7 +36,7 @@ public class BikeBuilder extends ActorBuilder {
 			bike.destroy();
 			bike = new Bike(game, position);
 		} else
-			hover = QuickMafs.isInRectangle(position.sub(2, .5f), position.add(2, 2), game.getMouse().getPosition());
+			hover = ExtendedMath.isInRectangle(position.sub(2, .5f), position.add(2, 2), game.getMouse().getPosition());
 
 		if (hover && isRightPressed())
 			isDone = false;

@@ -62,12 +62,12 @@ public class Crate extends GameEntity {
 		this.build(square);
 		graphic = this.addGraphics(this.imagePath, width, height);
 	}
-
+/*
 	@Override
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
 		create();
-	}
+	}*/
 
 	@Override
 	public void draw(Canvas canvas) {
