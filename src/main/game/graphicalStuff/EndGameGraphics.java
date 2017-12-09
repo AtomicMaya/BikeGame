@@ -23,7 +23,7 @@ public class EndGameGraphics extends Node implements Graphics, Actor {
 	@Override
 	public void draw(Canvas canvas) {
 		this.setRelativeTransform(
-				Transform.I.scaled(this.width, this.height).translated(this.game.getCameraPosition().sub(this.width / 2, this.height / 2)));
+				Transform.I.scaled(this.width, this.height).translated(this.game.getCanvas().getPosition().sub(this.width / 2, this.height / 2)));
 		canvas.drawImage(canvas.getImage(this.filename), getTransform(), 1, 1000);
 	}
 }

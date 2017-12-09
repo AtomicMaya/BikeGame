@@ -52,6 +52,9 @@ public class ActorGame implements Game {
 	 */
 	private static final String saveDirectory = "saves/";
 
+	// score counter
+	private int score;
+	
 	/** @return the {@linkplain #saveDirectory} : {@value #saveDirectory} */
 	public String getSaveDirectory() {
 		return saveDirectory;
