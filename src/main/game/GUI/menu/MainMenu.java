@@ -4,24 +4,22 @@
  */
 package main.game.GUI.menu;
 
-import java.awt.Color;
-import java.io.File;
-import java.util.ArrayList;
-
-import main.game.GameWithLevelAndMenu;
 import main.game.GUI.GraphicalButton;
+import main.game.GameWithLevelAndMenu;
 import main.game.graphics.ShapeGraphics;
 import main.game.graphics.TextGraphics;
 import main.io.Save;
-import main.math.Circle;
+import main.math.*;
 import main.math.Polygon;
 import main.math.Shape;
-import main.math.Transform;
-import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
-public class MainMenu extends Menu {
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+
+public class MainMenu extends FullScreenMenu {
 
 	// text main menu
 	private TextGraphics menuMainGraphics;
@@ -64,7 +62,7 @@ public class MainMenu extends Menu {
 	 * @param window : {@linkplain Window} Window context
 	 */
 	public MainMenu(GameWithLevelAndMenu game, Window window) {
-		super(game, window, true, Color.GRAY, true);
+		super(game, window, true, Color.GRAY);
 
 		// main menu text
 		float fontSize = 4f;
@@ -128,7 +126,7 @@ public class MainMenu extends Menu {
 
 		// play button
 		play = new GraphicalButton(game, new Vector(0, 0), "Play", 1f);
-		play.setPosition(new Vector(-play.getWidth() / 2f, 0));
+		play.setAnchor(new Vector(-play.getWidth() / 2f, 0));
 		play.addOnClickAction(() -> {
 			// start the first level
 			game.beginLevel(0);

@@ -1,13 +1,13 @@
 package main.game.graphics;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 import main.game.ActorGame;
 import main.math.Node;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class BetterTextGraphics extends Node implements Graphics {
 	private ArrayList<String> graphics;
@@ -15,10 +15,10 @@ public class BetterTextGraphics extends Node implements Graphics {
 	private ArrayList<float[]> charSizes = new ArrayList<>();
 
 	// text parameters
-	private String text;
+	private String text = "";
 	private float charSize = 1;
 	private float textLength;
-	private float alpha = 1, debth = -.01f;
+	private float alpha = 1, depth = 52-.01f;
 	private float letterRatio = 73f;
 	private float inBeetweenCharOffset = 0;
 
@@ -102,7 +102,8 @@ public class BetterTextGraphics extends Node implements Graphics {
 			Transform t = new Transform(this.charSizes.get(i)[0], 0, this.getPosition().x + this.offsets.get(i).x, 0,
 					this.charSizes.get(i)[1], this.getPosition().y + this.offsets.get(i).y);
 
-			canvas.drawImage(canvas.getImage(this.graphics.get(i)), t, this.alpha, this.debth);
+			canvas.drawImage(canvas.getImage(this.graphics.get(i)), t, this.alpha, this.depth);
+			
 
 		}
 	}
@@ -130,8 +131,8 @@ public class BetterTextGraphics extends Node implements Graphics {
 	 */
 	public void setText(String text, float fontSize) {
 		this.charSize = fontSize;
-		this.text = (text == null) ? "" : text;
-		this.graphics = getFileLocations(text.toUpperCase(Locale.ROOT));
+		this.text = (text == null) ? this.text : text;
+		this.graphics = getFileLocations(this.text.toUpperCase(Locale.ROOT));
 		this.offsets = new ArrayList<>();
 		this.charSizes = new ArrayList<>();
 		this.text = text;
@@ -168,7 +169,7 @@ public class BetterTextGraphics extends Node implements Graphics {
 	 * @param depth new depth for the text
 	 */
 	public void setDepth(float depth) {
-		this.debth = depth;
+		this.depth = depth;
 	}
 
 	/**

@@ -1,8 +1,9 @@
 package main.game.GUI;
 
 import main.game.ActorGame;
-import main.math.*;
+import main.math.ExtendedMath;
 import main.math.Polygon;
+import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
@@ -48,6 +49,8 @@ public class NumberField extends GUIComponent {
 	 * @param deltaTime elapsed time since last update, in seconds, non-negative
 	 */
 	public void update(float deltaTime, float zoom) {
+		super.update(deltaTime, zoom);
+		this.zoom = zoom;
 		clignote += deltaTime;
 		clignote = (clignote > timeClignotMax) ? 0 : clignote;
 
@@ -76,11 +79,7 @@ public class NumberField extends GUIComponent {
 			if (game.getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
 				focus = false;
 			}
-
 		}
-//		if (getParent() == null)
-//			setRelativeTransform(Transform.I.scaled(zoom).translated(game.getCanvas().getPosition()));
-		 //setRelativeTransform(Transform.I.translated(getPosition()).translated(game.getCanvas().getPosition()));
 	}
 
 	/** @return the number entered in the field */

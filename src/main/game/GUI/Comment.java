@@ -4,14 +4,13 @@
  */
 package main.game.GUI;
 
-import java.awt.Color;
-
 import main.game.ActorGame;
 import main.math.Polygon;
 import main.math.Positionable;
-import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
 
 /** Comment which can be attached to a {@linkplain Positionable} */
 public class Comment extends GUIComponent {
@@ -36,9 +35,8 @@ public class Comment extends GUIComponent {
 	 * @param zoom, 1 for default
 	 */
 	public void update(float deltaTime, float zoom) {
+		super.update(deltaTime, zoom);
 		this.zoom = zoom;
-		if (getParent() == null)
-			setRelativeTransform(Transform.I.scaled(zoom).translated(game.getCanvas().getPosition()));
 	}
 
 	@Override
