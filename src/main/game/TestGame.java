@@ -2,7 +2,6 @@ package main.game;
 
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
-import main.game.actor.entities.switchers.SimpleLever;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.ProximitySensor;
@@ -58,16 +57,15 @@ public class TestGame extends ActorGame {
 		Ground ground = new Ground(this, null, p);
 
 		player = new Bike(this, new Vector(4, 5));
-
         this.setPayload(player);
 		Polygon shape = new Polygon(.0f, .0f, 3.f, 3f, 9.f, 3.f, 6, 0);
 		sensor = new ProximitySensor(this, new Vector(12, 3), shape);
 
         //this.platform = new MovingPlatform(this, new Vector(25, 2), new Vector(1, 0),6,.1f, 3);
         //this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 6, 5, 2);
-		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
+//		SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
 		//lever.addAction(() -> this.platform.triggerAction(), 1);
-		lever.addAction(() -> this.setViewScaleModifier(30), 1);
+//		lever.addAction(() -> this.setViewScaleModifier(30), 1);
 
 		//this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 0.f);
 
@@ -87,28 +85,19 @@ public class TestGame extends ActorGame {
 */
        //sensor = new ProximitySensor(this, new Vector(0,0), shape);
         this.setViewScale(15);
-        //scenery = new Scenery(this);
-
         Coin coin = new Coin(this, new Vector(2, 1), true);
-        Coin coin1 = new Coin(this, new Vector(3, 1), true);
-        Coin coin2 = new Coin(this, new Vector(4, 1), true);
-        Coin coin3 = new Coin(this, new Vector(5, 1), true);
-        Coin coin4 = new Coin(this, new Vector(6, 1), true);
 
-        RightFacingTrampoline rightFacingTrampoline = new RightFacingTrampoline(this, new Vector(19.5f, 2),
+        Trampoline trampoline = new Trampoline(this, new Vector(19.5f, 2),
                 -1, -1);
 
         Laser laser = new Laser(this, new Vector(0, 6), 6, 3);
-        Laser laser2 = new Laser(this, new Vector(1, 6), 6, 3);
-        Laser laser3 = new Laser(this, new Vector(2, 6), 5, 3);
-        Laser laser4 = new Laser(this, new Vector(3, 6), 5, 3);
-        Laser laser5 = new Laser(this, new Vector(4, 6), 5, 3);
 
         Checkpoint checkpoint = new Checkpoint(this, new Vector(35, -5));
         FinishActor finishActor = new FinishActor(this, new Vector(40, -5));
 
+        BoomBarrel crate = new BoomBarrel(this, new Vector(10, 7), false);
 
-        GravityWell well = new GravityWell(this, new Vector(10,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
+        GravityWell well = new GravityWell(this, new Vector(15,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
 		/*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		a = new FinishActor(this, new Vector(7, 0), player, s);
@@ -119,22 +108,15 @@ public class TestGame extends ActorGame {
 		this.addActor(ground);
 		this.addActor(player);
 		this.addActor(sensor);
-		this.addActor(lever);
+//		this.addActor(lever);
 		this.addActor(well);
 		//this.addActor(platform);
 		//this.addActor(movingPlatform);
 		//this.addActor(button);
 		this.addActor(coin);
-		this.addActor(coin1);
-		this.addActor(coin2);
-		this.addActor(coin3);
-		this.addActor(coin4);
-		this.addActor(rightFacingTrampoline);
+		this.addActor(crate);
+		this.addActor(trampoline);
 		this.addActor(laser);
-		this.addActor(laser2);
-		this.addActor(laser3);
-		this.addActor(laser4);
-		this.addActor(laser5);
 		this.addActor(checkpoint);
 		this.addActor(finishActor);
 		//this.addActor(emitter);

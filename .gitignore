@@ -16,3 +16,4 @@ sh.exe.stackdump
 src/main/Program.java
 src/main/Program.java
 *.stackdump
+*.stackdump

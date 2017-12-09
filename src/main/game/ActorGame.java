@@ -116,17 +116,15 @@ public class ActorGame implements Game {
 		Transform viewTransform = Transform.I.scaled(VIEW_SCALE_CURRENT).translated(this.viewCenter);
 		this.window.setRelativeTransform(viewTransform);
 
-		for (Actor actor : this.actors) {
-			actor.update(deltaTime);
+		for (int i = this.actors.size() - 1; i >= 0; i--) {
+            this.actors.get(i).update(deltaTime);
 		}
 
-		if (getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
-			gameFrozen = !gameFrozen;
+		if (this.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
+			this.gameFrozen = !this.gameFrozen;
 		}
 
 		if (!this.actorsToRemove.isEmpty()) {
-			// peut etre plus propre mais ca fait des
-			// ConcurrentModificationException
 
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
@@ -380,13 +378,13 @@ public class ActorGame implements Game {
 			File[] files = save.listFiles();
 			for (File f : files) {
 				if (f.getPath().contains(".object")) {
-					Actor a = Save.readSavedActor(this, f);
-					if (a != null)
-						this.actorsToAdd.add(a);
+					Actor actor = Save.readSavedActor(this, f);
+					if (actor != null)
+						this.actorsToAdd.add(actor);
 				}
 
 			}
-			setViewCandidate(actors
+            this.setViewCandidate(this.actors
 					.get(Save.viewCandidateNumberInFile(this.fileSystem, new File(save.getPath() + "/params.param"))));
 			return true;
 		}
@@ -440,11 +438,11 @@ public class ActorGame implements Game {
             this.endGameGraphics = new EndGameGraphics(this, secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
         else
             this.endGameGraphics = new EndGameGraphics(this, "./res/images/fatality.2.png");
-        this.addActor(endGameGraphics);
+        this.addActor(this.endGameGraphics);
     }
 
     public boolean isDisplayed() {
-        return displayed;
+        return this.displayed;
     }
 
     public void displayVictoryMessage() {

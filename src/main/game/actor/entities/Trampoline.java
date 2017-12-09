@@ -6,13 +6,13 @@ import main.game.actor.Linker;
 import main.math.Transform;
 import main.math.Vector;
 
-public class RightFacingTrampoline implements Actor {
+public class Trampoline implements Actor {
     private TrampolinePlatform trampolinePlatform;
     private AnchorPoint anchor;
     private ActorGame game;
     private Vector position;
 
-    public RightFacingTrampoline(ActorGame game, Vector position, float width, float height) {
+    public Trampoline(ActorGame game, Vector position, float width, float height) {
         this.game = game;
         this.position = position;
 

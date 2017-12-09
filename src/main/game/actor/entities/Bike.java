@@ -149,8 +149,8 @@ public class Bike extends GameEntity implements PlayableEntity {
             } else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
                 this.getEntity().applyAngularForce(-10.f);
             }
-            float speed = ((this.lookRight ? this.leftWheel : this.rightWheel).getSpeed() / (deltaTime * 100)) % 360 * (lookRight ? 1 : -1);
-            this.angle -= (speed < 7f * this.character.getDirectionModifier() ? 7f * this.character.getDirectionModifier() : speed) * this.character.getDirectionModifier();
+
+            this.angle -= 5f;
             this.character.nextPedal(this.angle);
 
             if (this.lookRight && this.leftWheel.getSpeed() > -this.MAX_WHEEL_SPEED) {

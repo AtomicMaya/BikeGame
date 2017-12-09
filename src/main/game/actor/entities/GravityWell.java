@@ -8,6 +8,7 @@ import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * Created on 12/8/2017 at 7:27 PM.
@@ -29,7 +30,7 @@ public class GravityWell extends GameEntity {
         this.sensor = new ProximitySensor(game, position, shape);
         this.position = position;
 
-        this.particleEmissionTime = 1;
+        this.particleEmissionTime = 3;
         this.elapsedTime = 0;
         this.force = appliedForce;
         this.shape = shape;
@@ -43,15 +44,14 @@ public class GravityWell extends GameEntity {
         this.elapsedTime += deltaTime;
 
         if(this.elapsedTime > this.particleEmissionTime) {
-            System.out.println(this.shape.sample());
-            this.game.addActor(new ParticleEmitter(this.game, this.position.add(this.shape.sample()), null, 50,
-                    this.direction, .05f, 1, .1f, 1, 0, 0xff0000ff, 0x0000ffff, 2, 2));
+            this.game.addActor(new ParticleEmitter(this.game, this.position.add(this.shape.sample(new Random())), null, 75,
+                    this.direction, .05f, 1, .1f, 2, 0, 0xcc0000ff, 0x0000ffff, 2, 3));
             this.elapsedTime = 0;
         }
 
         this.sensor.update(deltaTime);
         if(this.sensor.getSensorDetectionStatus()) {
-            ((GameEntity) this.game.getPayload()).getEntity().setVelocity(force);
+            ((GameEntity) this.game.getPayload()).getEntity().setVelocity(this.force);
         }
     }
 
