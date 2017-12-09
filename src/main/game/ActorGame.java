@@ -16,6 +16,7 @@ import main.window.Window;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Random;
 
@@ -90,7 +91,11 @@ public class ActorGame implements Game {
 		camera.update(deltaTime);
 
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
-            this.actors.get(i).update(deltaTime);
+		    try {
+                this.actors.get(i).update(deltaTime);
+            } catch (ConcurrentModificationException ignored) {
+		        System.out.println("had a cme");
+            }
 		}
 
 		if (this.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
@@ -272,6 +277,9 @@ public class ActorGame implements Game {
 		return this.world.createWeldConstraintBuilder();
 	}
 
+	/** @return a new {@linkplain RopeConstraintBuilder} */
+	public RopeConstraintBuilder createRopeConstraintBuilder() { return this.world.createRopeConstraintBuilder(); }
+
 	/**
 	 * @return whether the game is frozen.
 	 */
@@ -355,7 +363,6 @@ public class ActorGame implements Game {
 		return false;
 	}
 
-	//////// Camera stuffs ////////
 	/**
 	 * Sets the game's view candidate, to be followed by the camera.
 	 * @param positionable : the {@linkplain GameEntity} / {@linkplain Actor} to

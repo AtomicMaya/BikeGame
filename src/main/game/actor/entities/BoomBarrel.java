@@ -22,10 +22,12 @@ public class BoomBarrel extends GameEntity {
     private float elapsedAnimationTime;
     private int graphicsCounter;
     private BasicContactListener contactListener;
-    private boolean triggered;
+    private boolean triggered, explosive;
 
     public BoomBarrel(ActorGame game, Vector position, boolean explosive) {
         super(game, false, position);
+
+        this.explosive = explosive;
 
         this.build(new Polygon(0, 0, 1, 0, 1, 1.5f, 0, 1.5f), 1, 1, false);
 
@@ -64,9 +66,12 @@ public class BoomBarrel extends GameEntity {
             this.elapsedAnimationTime += deltaTime;
 
         if(this.contactListener.getEntities().size() > 0)
-            for (Entity entity : this.contactListener.getEntities())
-                if(entity.getCollisionGroup() == ObjectGroup.PLAYER.group || entity.getCollisionGroup() == ObjectGroup.WHEEL.group)
-                    this.triggered = true;
+            for (Entity entity : this.contactListener.getEntities()) {
+            if (explosive)
+                entity.applyImpulse(new Vector(50, 50), Vector.ZERO);
+            if (entity.getCollisionGroup() == ObjectGroup.PLAYER.group || entity.getCollisionGroup() == ObjectGroup.WHEEL.group)
+                this.triggered = true;
+            }
 
 
         this.graphicsCounter = (int) Math.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());

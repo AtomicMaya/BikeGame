@@ -11,6 +11,10 @@ import java.util.ArrayList;
 
 import static main.math.ExtendedMath.*;
 
+/**
+ * Represents the character and it's animation, which we deemed to verbose to leave in the Bike class.
+ */
+
 public class CharacterBike extends GameEntity {
 	private Vector headPos, armJointPos, backPos;
 	private Vector lElbowPos, rElbowPos, lHandPos, rHandPos;
@@ -58,16 +62,13 @@ public class CharacterBike extends GameEntity {
         this.graphics.add(this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10));
         this.graphics.add(this.addGraphics(this.generateLimb(0), null, Color.BLACK, .15f, 1.f, 10));
         this.graphics.add(this.addGraphics(this.generateLimb(1), null, Color.BLACK, .15f, 1.f, 10));
-        this.graphics.add(this.addGraphics(this.generateLimb(2), null, Color.BLUE.brighter().brighter(), .15f, 1.f, 10));
-        this.graphics.add(this.addGraphics(this.generateLimb(3), null, Color.BLUE.brighter().brighter(), .15f, 1.f, 10));
-
-
+        this.graphics.add(this.addGraphics(this.generateLimb(2), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? .9f : 1.1f));
+        this.graphics.add(this.addGraphics(this.generateLimb(3), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? 1.1f : .9f));
     }
 
 	@Override
 	public void update(float deltaTime) {
 		if (this.isYaying) nextYay(deltaTime);
-
 		this.updateGraphics();
 	}
 

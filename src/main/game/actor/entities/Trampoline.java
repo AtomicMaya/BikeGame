@@ -5,6 +5,7 @@ import main.game.actor.Actor;
 import main.game.actor.Linker;
 import main.math.Transform;
 import main.math.Vector;
+import main.window.Canvas;
 
 public class Trampoline implements Actor {
     private TrampolinePlatform trampolinePlatform;
@@ -23,16 +24,15 @@ public class Trampoline implements Actor {
 
         this.trampolinePlatform = new TrampolinePlatform(game, position, width, height);
 
-        this.trampolinePlatform.setLeftConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.trampolinePlatform.getEntity(), new Vector(-1, 0),
+        this.trampolinePlatform.setConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.trampolinePlatform.getEntity(), new Vector(-1, 0),
                 0, 2.5f, 0));
 
-        game.addActor(this.anchor);
-        game.addActor(this.trampolinePlatform);
     }
 
     @Override
     public void update(float deltaTime) {
         this.trampolinePlatform.update(deltaTime);
+        this.anchor.update(deltaTime);
     }
 
     @Override
@@ -48,6 +48,12 @@ public class Trampoline implements Actor {
     }
 
     @Override
+    public void draw(Canvas canvas) {
+        this.trampolinePlatform.draw(canvas);
+        this.anchor.draw(canvas);
+    }
+
+    @Override
     public Vector getPosition() {
         return this.position;
     }
@@ -56,7 +62,7 @@ public class Trampoline implements Actor {
     public Vector getVelocity() {
         return Vector.ZERO;
     }
-    
+
     public void setPosition(Vector newPosition) {
     	this.position = newPosition;
     }

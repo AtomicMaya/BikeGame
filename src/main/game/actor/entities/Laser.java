@@ -72,7 +72,6 @@ public class Laser extends GameEntity {
         }
 
         this.sensor = new ProximitySensor(this.game, this.startPosition, this.shape);
-        this.game.addActor(this.sensor);
         this.graphics = this.addGraphics(this.shape, color, color.darker(), .3f, 0, 1);
 
         this.emitterGraphics = this.addGraphics( "./res/images/blaster." + (this.direction + 1) + ".png", 1, 1, new Vector(.5f, .5f), 1, 2);
@@ -91,6 +90,7 @@ public class Laser extends GameEntity {
 
     @Override
     public void update(float deltaTime) {
+        this.sensor.update(deltaTime);
         if(this.firesCount != this.maxFires) {
             this.elapsedTime += deltaTime;
             float randomValue = new Random().nextFloat();
