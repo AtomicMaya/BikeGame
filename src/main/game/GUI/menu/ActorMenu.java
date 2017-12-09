@@ -10,6 +10,7 @@ import main.game.GUI.actorBuilder.BikeBuilder;
 import main.game.GUI.actorBuilder.CrateBuilder;
 import main.game.GUI.actorBuilder.ParticleEmitterBuilder;
 import main.game.GUI.actorBuilder.PlatformBuilder;
+import main.game.GUI.actorBuilder.TrampolineBuilder;
 import main.math.ExtendedMath;
 import main.math.Polygon;
 import main.math.Vector;
@@ -40,7 +41,7 @@ public class ActorMenu extends Menu {
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
 		boutons.get(0).addOnClickAction(() -> {
-			levelEditor.addActor(new CrateBuilder(game, levelEditor));
+			levelEditor.addActor(new CrateBuilder(game));
 			changeStatus();
 		});
 
@@ -67,8 +68,15 @@ public class ActorMenu extends Menu {
 
 		// particle Emitter pos 2 -1
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(3).addOnClickAction(() -> {
+		boutons.get(4).addOnClickAction(() -> {
 			levelEditor.addActor(new ParticleEmitterBuilder(game));
+			changeStatus();
+		});
+
+		// particle Emitter pos 2 -1
+		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
+		boutons.get(5).addOnClickAction(() -> {
+			levelEditor.addActor(new TrampolineBuilder(game));
 			changeStatus();
 		});
 

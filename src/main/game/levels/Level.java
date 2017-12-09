@@ -7,6 +7,7 @@ package main.game.levels;
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.entities.PlayableEntity;
+import main.game.graphicalStuff.EndGameGraphics;
 import main.math.Node;
 import main.math.Positionable;
 
@@ -36,6 +37,7 @@ public abstract class Level extends Node implements Actor {
 	 */
 	public Level(ActorGame game) {
 		this.game = game;
+		this.actors.add(new EndGameGraphics(game, ""));
 	}
 
 	/**

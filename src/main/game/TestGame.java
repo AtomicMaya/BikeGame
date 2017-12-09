@@ -134,8 +134,6 @@ public class TestGame extends ActorGame {
 	public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if (this.getPayload().getDeathStatus() && !this.isDisplayed()) this.displayDeathMessage();
-        if (this.getPayload().getVictoryStatus() && !this.isDisplayed()) this.displayVictoryMessage();
 	}
 
 	@Override

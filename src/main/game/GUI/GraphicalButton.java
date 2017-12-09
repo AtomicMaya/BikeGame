@@ -68,7 +68,7 @@ public class GraphicalButton extends GUIComponent {
 		if (ExtendedMath.isInRectangle(getPosition(), getPosition().add(new Vector(width * zoom, height * zoom)),
 				getMousePosition())) {
 			this.hovered = true;
-			this.clicked = this.mouse.getLeftButton().isPressed();
+			this.clicked = this.mouse.getLeftButton().isReleased();
 		} else {
 			this.hovered = false;
 		}
@@ -108,11 +108,6 @@ public class GraphicalButton extends GUIComponent {
 		if (textGraphics != null) {
 			textGraphics.draw(canvas);
 		}
-	}
-
-	@Override
-	public void destroy() {
-		// TODO
 	}
 
 	/**
@@ -158,6 +153,7 @@ public class GraphicalButton extends GUIComponent {
 		this.buttonBusy = true;
 		this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
 		ParallelAction.generateWorker(runnable).execute();
+
 	}
 
 	/**
@@ -250,5 +246,11 @@ public class GraphicalButton extends GUIComponent {
 		this.depth = depth;
 		this.setNewGraphics(idleGraphics, hoverGraphics);
 		textGraphics.setDepth(depth + 0.01f);
+	}
+
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
 	}
 }

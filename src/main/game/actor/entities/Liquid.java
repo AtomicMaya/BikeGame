@@ -39,12 +39,11 @@ public class Liquid extends GameEntity {
                     this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.2.png" : "./res/images/acid.2.png", 1, 1, new Vector(-l, -h), 1, 2));
             }
         }
-
-        game.addActor(this.sensor);
     }
 
     @Override
     public void update(float deltaTime) {
+    	this.sensor.update(deltaTime);
         this.elapsedAnimationTime += deltaTime;
         if (this.elapsedAnimationTime > animationTime) {
             this.switched = !this.switched;

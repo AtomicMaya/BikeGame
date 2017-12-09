@@ -58,7 +58,7 @@ public class MainMenu extends FullScreenMenu {
 	 * Create a MainMenu for a {@linkplain GameWithLevelAndMenu }
 	 * 
 	 * @param game : {@linkplain GameWithLevelAndMenu} the game in which
-	 *            {@link this} MainMenu belong
+	 * {@link this} MainMenu belong
 	 * @param window : {@linkplain Window} Window context
 	 */
 	public MainMenu(GameWithLevelAndMenu game, Window window) {
@@ -95,10 +95,19 @@ public class MainMenu extends FullScreenMenu {
 				// load a saves
 				if (!busy && waitBeforeClick > .5f) {
 					game.destroyAllActors();
-					changeStatus();
+					
 					busy = true;
+					
+					
+					// problematic loading part
+					System.out.println("    - Going to load");
+					if (game.load(list[p].getName()))
+						System.out.println("    - loaded successfully");
+					else System.out.println("error");
+					
+					System.out.println("    - Finish loading");
 					game.setGameFreezeStatus(false);
-					game.load(list[p].getName());
+					this.setStatus(false);
 				}
 			});
 			buttons.get(i).forceShape(6, -1);
@@ -131,7 +140,7 @@ public class MainMenu extends FullScreenMenu {
 			// start the first level
 			game.beginLevel(0);
 			game.setGameFreezeStatus(false);
-			changeStatus();
+			setStatus(false);
 		});
 
 		// our level
@@ -144,7 +153,7 @@ public class MainMenu extends FullScreenMenu {
 			levelButtons.get(i).addOnClickAction(() -> {
 				game.beginLevel(temp);
 				game.setGameFreezeStatus(false);
-				changeStatus();
+				this.setStatus(false);
 			});
 		}
 	}
@@ -164,7 +173,7 @@ public class MainMenu extends FullScreenMenu {
 	@Override
 	public void update(float deltaTime, float zoom) {
 
-		// if in level editor, don't zpdate the rest
+		// if in level editor, don't update the rest
 		if (inLevelEditor) {
 			levelEditor.update(deltaTime);
 			return;

@@ -37,10 +37,10 @@ public class TestSave extends ActorGame {
 	
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		if (!saved) {
-			super.save("save1");
-			saved = true;
-		}
+//		if (!saved) {
+//			super.save("save1");
+//			saved = true;
+//		}
 		
 	}
 }

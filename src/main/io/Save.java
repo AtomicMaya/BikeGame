@@ -17,19 +17,33 @@ public class Save {
 	 * @param actor the actor to save
 	 * @param file where to save the actor
 	 */
-	public static void saveActor(Actor actor, File file) {
-		try {
-			if (!file.exists())
-				// create a file the file does not exist yet
+	public static boolean saveActor(Actor actor, File file) {
+		if (!file.exists())
+			try {
 				file.createNewFile();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		ObjectOutputStream oos = null;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream(file));
 			// write the actor in the file
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
 			oos.writeObject(actor);
-			oos.close();
 
+			oos.close();
+			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
+
+		} finally {
+			if (oos != null)
+				try {
+					oos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
+		return false;
 	}
 
 	/**
@@ -40,33 +54,36 @@ public class Save {
 	 * @return the actor, null if something went wrong
 	 */
 	public static Actor readSavedActor(ActorGame game, File file) {
-        try {
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-            Object o = ois.readObject();
-            ois.close();
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+			Object o = ois.readObject();
+			ois.close();
 
-            // transform the object into an actor
-            try {/*
-                Saveable actor = (Saveable) o;
-                actor.reCreate(game);
-                return (Actor) actor;*/
-            } catch (ClassCastException cce) {
-                cce.printStackTrace();
-            }
+			// transform the object into an actor
+			try {
+				Saveable actor = (Saveable) o;
+				actor.reCreate(game);
+				return (Actor) actor;
+			} catch (ClassCastException cce) {
+				cce.printStackTrace();
+				System.out.println("casting error");
+			}
 
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+			System.out.println("loading error");
+		}
+		return null;
 	}
 
-	public static void saveParameters(int actorCameraNumber, FileSystem fileSystem, File file) {
+	public static void saveParameters(int viewCandidateNumber, int playerNumber, FileSystem fileSystem, File file) {
 		try {
 			if (!file.exists())
 				file.createNewFile();
 			OutputStream oos = fileSystem.write(file.getPath());
-			String save = "viewCandidateNumber : <" + actorCameraNumber + ">";
-			System.out.println(file);
+			String save = "viewCandidateNumber : <" + viewCandidateNumber + ">\n";
+			save += "playerNumber : <" + playerNumber + ">";
+
 			oos.write(save.getBytes());
 			oos.flush();
 			oos.close();
@@ -75,7 +92,8 @@ public class Save {
 		}
 	}
 
-	public static int viewCandidateNumberInFile(FileSystem fileSystem, File file) {
+	public static int[] getParams(FileSystem fileSystem, File file) {
+		int[] r = new int[2];
 		try {
 			InputStream is = fileSystem.read(file.getPath());
 			byte[] b = new byte[is.available()];
@@ -83,13 +101,17 @@ public class Save {
 			is.close();
 
 			String s = new String(b);
-			int start = s.indexOf('<') + 1;
-			int stop = s.indexOf('>', start);
-			return Integer.parseInt(s.substring(start, stop));
+			int start1 = s.indexOf('<') + 1;
+			int stop1 = s.indexOf('>', start1);
+			r[0] = Integer.parseInt(s.substring(start1, stop1));
+
+			int start2 = s.indexOf('<') + 1;
+			int stop2 = s.indexOf('>', start1);
+			r[1] = Integer.parseInt(s.substring(start2, stop2));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return r;
 
 	}
 
@@ -103,5 +125,13 @@ public class Save {
 			return folder.listFiles();
 		}
 		return new File[] {};
+	}
+
+	public static void deleteDirectory(File directory) {
+		File[] toDelete = directory.listFiles();
+		for (File f : toDelete)
+			if (f.isDirectory()) {
+				deleteDirectory(f);
+			} else f.delete();
 	}
 }

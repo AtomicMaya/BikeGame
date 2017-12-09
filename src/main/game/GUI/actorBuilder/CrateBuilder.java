@@ -23,8 +23,8 @@ public class CrateBuilder extends ActorBuilder {
 
 	boolean placed = false;
 
-	private ActorGame game;
-	private LevelEditor lv;
+//	private ActorGame game;
+//	private LevelEditor lv;
 
 	// number field stuff
 	private NumberField height, width;
@@ -34,10 +34,10 @@ public class CrateBuilder extends ActorBuilder {
 	private boolean isWriting = true;
 	private boolean hoover = false;
 
-	public CrateBuilder(ActorGame game, LevelEditor lv) {
+	public CrateBuilder(ActorGame game) {
 		super(game);
-		this.game = game;
-		this.lv = lv;
+//		this.game = game;
+//		this.lv = lv;
 		crate = new Crate(game, getFlooredMousePosition(), null, false, 1);
 
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
@@ -64,13 +64,13 @@ public class CrateBuilder extends ActorBuilder {
 
 		}
 		if (!isDone()) {
-			height.update(deltaTime, lv.getZoom());
-			width.update(deltaTime, lv.getZoom());
+			height.update(deltaTime, zoom);
+			width.update(deltaTime, zoom);
 
-			heightComment.update(deltaTime, lv.getZoom());
-			widthComments.update(deltaTime, lv.getZoom());
+			heightComment.update(deltaTime, zoom);
+			widthComments.update(deltaTime, zoom);
 
-			if (game.getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
+			if (getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
 				isWriting = !(height.hasFocus() & width.hasFocus());
 				crate.setSize(width.getNumber(), height.getNumber());
 			}
@@ -107,7 +107,7 @@ public class CrateBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		crate.destroy();
-		crate = new Crate(game, position, null, false, width.getNumber(), height.getNumber());
+		crate = new Crate(getOwner(), position, null, false, width.getNumber(), height.getNumber());
 	}
 
 	@Override

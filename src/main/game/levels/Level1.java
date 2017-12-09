@@ -53,7 +53,7 @@ public class Level1 extends Level {
 
 	@Override
 	public boolean isFinished() {
-        return true;//return finishActor != null && finishActor.isFinished();
+        return getPayload() != null && getPayload().getVictoryStatus() | getPayload().getDeathStatus();
     }
 
 }

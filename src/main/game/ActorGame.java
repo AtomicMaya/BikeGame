@@ -1,7 +1,7 @@
 package main.game;
 
-import main.game.GUI.Camera;
 import main.game.actor.Actor;
+import main.game.actor.Camera;
 import main.game.actor.entities.GameEntity;
 import main.game.actor.entities.PlayableEntity;
 import main.game.graphicalStuff.EndGameGraphics;
@@ -24,9 +24,6 @@ public class ActorGame implements Game {
 
 	// Viewport properties
 	private Camera camera;
-
-	private EndGameGraphics endGameGraphics;
-	private boolean displayed;
 
 	// list of all actors in the game
 	private ArrayList<Actor> actors = new ArrayList<>();
@@ -54,11 +51,6 @@ public class ActorGame implements Game {
 
 	// score counter
 	private int score;
-	
-	/** @return the {@linkplain #saveDirectory} : {@value #saveDirectory} */
-	public String getSaveDirectory() {
-		return saveDirectory;
-	}
 
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -74,28 +66,30 @@ public class ActorGame implements Game {
 		this.window = window;
 		this.fileSystem = fileSystem;
 
-		this.endGameGraphics = null;
-		this.displayed = false;
 		this.score = 0;
-        return true;
+		return true;
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		// System.out.println(actors.size() + " " + world.getEntities().size());
-		if (this.gameFrozen)
+
+//		System.out.println(actors.size() + " " + world.getEntities().size());
+		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed()) {
+			this.gameFrozen = !this.gameFrozen;
+		}
+
+		if (this.gameFrozen) {
 			return;
+		}
+
 		this.world.update(deltaTime);
 
 		camera.update(deltaTime);
 
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
-            this.actors.get(i).update(deltaTime);
+			this.actors.get(i).update(deltaTime);
 		}
-
-		if (this.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
-			this.gameFrozen = !this.gameFrozen;
-		}
+		// for (Actor a:actors)a.update(deltaTime);
 
 		if (!this.actorsToRemove.isEmpty()) {
 
@@ -128,7 +122,7 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * @return the associated canvas.
+	 * @return the associated {@linkplain Canvas}.
 	 */
 	public Canvas getCanvas() {
 		return this.window;
@@ -146,6 +140,11 @@ public class ActorGame implements Game {
 	 */
 	public Vector getGravity() {
 		return this.world.getGravity();
+	}
+
+	/** @return the {@linkplain #saveDirectory} : {@value #saveDirectory} */
+	public String getSaveDirectory() {
+		return saveDirectory;
 	}
 
 	/**
@@ -288,7 +287,8 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * Get the main {@linkplain Actor} of the game.
+	 * Get the main {@linkplain Actor}, a {@linkplain PlayableEntity} of the
+	 * game.
 	 * @return the main actor of the game.
 	 */
 	public PlayableEntity getPayload() {
@@ -296,8 +296,8 @@ public class ActorGame implements Game {
 	}
 
 	/***
-	 * Set the main {@linkplain Actor} of the game.
-	 * @param player : The {@linkplain Actor} which will be the main
+	 * Set the {@linkplain PlayableEntity} of the game.
+	 * @param player : The {@linkplain PlayableEntity} which will be the main
 	 * {@linkplain Actor} of the game.
 	 */
 	public void setPayload(PlayableEntity player) {
@@ -308,27 +308,30 @@ public class ActorGame implements Game {
 	 * Save all {@linkplain Actor}s of the current game.
 	 * @param saveName : The path to the folder to save the game.
 	 */
-	public void save(String saveName) {
+	public void save(ArrayList<Actor> actorsToSave, PlayableEntity player, Positionable viewCandidate,
+			String saveName) {
 
 		// if the save folder does not exist, create it
 		File folder = new File(saveDirectory + saveName);
+		Save.deleteDirectory(folder);
 		folder.mkdirs();
 
-		for (int i = 0; i < this.actors.size(); i++) {
-			if (this.camera.getViewCandidate() == this.actors.get(i)) {
-				Save.saveParameters(i, this.fileSystem, new File(folder.getPath() + "/params.param"));
-				break;
-			}
-		}
-		int i = 0;
-		for (Actor a : this.actors) {
-			// for each actors, save it in a new files
-			File file = new File(folder.getPath() + "/actor" + i + ".object");
+		int n = 0;
 
-			Save.saveActor(a, file);
+		int playerNumber = -1;
+		int viewCandidateNumber = -1;
+		for (Actor a : actorsToSave) {
+			File file = new File(folder.getPath() + "/actor" + n + ".object");
+			if (Save.saveActor(a, file))
 
-			i++;
+				if (a == player)
+					playerNumber = n;
+			if (a == viewCandidate)
+				viewCandidateNumber = n;
+			n++;
 		}
+		Save.saveParameters(viewCandidateNumber, playerNumber, this.fileSystem,
+				new File(folder.getPath() + "/params.param"));
 	}
 
 	/**
@@ -336,22 +339,45 @@ public class ActorGame implements Game {
 	 * @param saveName : The name of the save to load.
 	 */
 	public boolean load(String saveName) {
+		ArrayList<Actor> toAdd = new ArrayList<>();
+		synchronized (toAdd) {
 
-		File save = new File(saveDirectory + saveName);
-		if (save.exists()) {
-			File[] files = save.listFiles();
-			for (File f : files) {
-				if (f.getPath().contains(".object")) {
-					Actor actor = Save.readSavedActor(this, f);
-					if (actor != null)
-						this.actorsToAdd.add(actor);
+			System.out.println("    - start loading");
+			File save = new File(saveDirectory + saveName);
+//			try {
+//				System.out.println("start wait");
+//				this.wait(1000);
+//				System.out.println("endwait");
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			if (save.exists()) {
+				File[] files = save.listFiles();
+				for (File f : files) {
+					if (f.getPath().contains(".object")) {
+						Actor actor = Save.readSavedActor(this, f);
+						if (actor != null)
+							toAdd.add(actor);
+					}
+
 				}
 
+				int[] params = Save.getParams(fileSystem, new File(save.getPath() + "/params.param"));
+
+				System.out.println("   - loading params");
+
+				this.setViewCandidate(toAdd.get(params[0]));
+				this.setPayload((PlayableEntity) toAdd.get(params[1]));
+
+				actorsToAdd.addAll(toAdd);
+				System.out.println(toAdd.size() + " actors loaded");
+				toAdd.clear();
+				return true;
 			}
-            this.setViewCandidate(this.actors
-					.get(Save.viewCandidateNumberInFile(this.fileSystem, new File(save.getPath() + "/params.param"))));
-			return true;
+			
 		}
+		System.out.println("Unexistant save");
 		return false;
 	}
 
@@ -364,7 +390,6 @@ public class ActorGame implements Game {
 	public void setViewCandidate(Positionable positionable) {
 		this.camera.setViewCandidate(positionable);
 	}
-
 
 	/**
 	 * Sets a modifier to the view scale for smooth transition.
@@ -389,14 +414,14 @@ public class ActorGame implements Game {
 		camera.setViewScale(newViewScale);
 	}
 
-//	/** @return the camera position */
-//	public Vector getCameraPosition() {
-//		return this.camera.getCameraPosition();
-//	}
+	// /** @return the camera position */
+	// public Vector getCameraPosition() {
+	// return this.camera.getCameraPosition();
+	// }
 
-//	public void setCameraPosition(Vector position) {
-//		this.camera.setCameraPosition(position);
-//	}
+	// public void setCameraPosition(Vector position) {
+	// this.camera.setCameraPosition(position);
+	// }
 
 	/**
 	 * @return the {@linkplain Window} relative transform
@@ -406,43 +431,16 @@ public class ActorGame implements Game {
 		return this.window.getRelativeTransform();
 	}
 
-
-    public void displayDeathMessage() {
-        this.displayed = true;
-        boolean secretDiceRoll = new Random().nextFloat() < 2 * 4.2 / 404;
-        boolean killedByGravity = this.getPayload().getIfWasKilledByGravity();
-        if (killedByGravity)
-            this.endGameGraphics = new EndGameGraphics(this, secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
-        else
-            this.endGameGraphics = new EndGameGraphics(this, "./res/images/fatality.2.png");
-        this.addActor(this.endGameGraphics);
-    }
-
-    public boolean isDisplayed() {
-        return this.displayed;
-    }
-
-	public void displayVictoryMessage() {
-		this.displayed = true;
-		this.endGameGraphics = new EndGameGraphics(this, "/res/images/victory.png");
-		this.addActor(endGameGraphics);
+	private void resetScore() {
+		this.score = 0;
 	}
 
-	public void resetGraphics() {
-		this.displayed = false;
-		this.endGameGraphics = null;
+	public void addToScore(int newScore) {
+		this.score += newScore;
 	}
 
-    private void resetScore() {
-	    this.score = 0;
-    }
-
-    public void addToScore(int newScore) {
-        this.score += newScore;
-    }
-
-    public int getScore() {
-        return this.score;
-    }
+	public int getScore() {
+		return this.score;
+	}
 
 }

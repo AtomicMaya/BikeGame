@@ -2,10 +2,9 @@
  *	Author: Clément Jeannet
  *	Date: 	8 déc. 2017
  */
-package main.game.GUI;
+package main.game.actor;
 
 import main.game.ActorGame;
-import main.game.actor.Actor;
 import main.game.actor.entities.GameEntity;
 import main.math.Node;
 import main.math.Positionable;
@@ -61,7 +60,6 @@ public class Camera extends Node implements Actor {
 		// Compute new viewport
 		Transform viewTransform = Transform.I.scaled(VIEW_SCALE_CURRENT).translated(this.viewCenter);
 		this.window.setRelativeTransform(viewTransform);
-
 		VIEW_SCALE_PREVIOUS = VIEW_SCALE_CURRENT;
 	}
 
@@ -106,6 +104,7 @@ public class Camera extends Node implements Actor {
 	 */
 	public void setViewCandidate(Positionable positionable) {
 		this.viewCandidate = positionable;
+		System.out.println("View candidate : "+viewCandidate);
 	}
 
 	public Positionable getViewCandidate() {

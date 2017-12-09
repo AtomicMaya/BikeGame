@@ -17,8 +17,6 @@ import java.awt.*;
 
 public abstract class FullScreenMenu extends Menu {
 
-	private boolean open;
-
 	private ShapeGraphics background;
 
 	private float scale = 30;
@@ -37,7 +35,6 @@ public abstract class FullScreenMenu extends Menu {
 	 */
 	public FullScreenMenu(ActorGame game, Window window, boolean isOpen, Color backgroundColor) {
 		super(game, Vector.ZERO, isOpen);
-		this.open = isOpen;
 		this.window = window;
 		this.backgroundColor = backgroundColor;
 
@@ -50,7 +47,7 @@ public abstract class FullScreenMenu extends Menu {
 	@Override
 	public void update(float deltaTime, float zoom) {
 		super.update(deltaTime, zoom);
-		if (open) {
+		if (isOpen()) {
 
 			window.setRelativeTransform(Transform.I.scaled(scale * zoom));
 			shape = new Polygon(-scale * 2 * zoom, -scale * 2 * zoom, -scale * 2 * zoom, scale * 2 * zoom,
@@ -62,7 +59,7 @@ public abstract class FullScreenMenu extends Menu {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (open)
+		if (isOpen())
 			if (background != null)
 				background.draw(canvas);
 	}

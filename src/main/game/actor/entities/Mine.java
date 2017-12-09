@@ -45,11 +45,11 @@ public class Mine extends GameEntity {
         this.triggered = false;
         this.sensor = new ProximitySensor(game, position.add(-.5f,1), new Polygon(0, 0, 1.5f, 0, 1.5f, 3, 0 ,3));
 
-        game.addActor(this.sensor);
     }
 
     @Override
     public void update(float deltaTime) {
+    	this.sensor.update(deltaTime);
         if (this.sensor.getSensorDetectionStatus())
             this.triggered = true;
 

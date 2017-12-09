@@ -22,15 +22,15 @@ public class Bike extends GameEntity implements PlayableEntity {
     // Game where the Bike evolves.
     private transient ActorGame game;
 
-    private final float MAX_WHEEL_SPEED = 20f;
+    private transient final float MAX_WHEEL_SPEED = 20f;
 
     // Whether or not the bike is looking towards the rightEmitter.
     private boolean lookRight = true;
-    private boolean wonTheGame, wasKilledByGravity;
-    private int jumpCount;
-    private float timeTillRejump, elapsedRejumpTime;
+    private transient boolean wonTheGame, wasKilledByGravity;
+    private transient int jumpCount;
+    private transient float timeTillRejump = 3, elapsedRejumpTime = 0;
 
-    private BasicContactListener contactListener;
+    private transient BasicContactListener contactListener;
 
     // Physical shape of the Bike.
     private transient Polygon hitbox;
@@ -43,9 +43,9 @@ public class Bike extends GameEntity implements PlayableEntity {
     // Entities associated to the Bike.
     private transient Wheel leftWheel, rightWheel;
     private transient CharacterBike character;
-    private float angle;
+    private transient float angle;
 
-    private boolean isDead, wasTriggered = false;
+    private transient boolean isDead = false, wasTriggered = false;
 
     /**
      * Create a Bike, the BikeGame's main actor.
@@ -55,8 +55,6 @@ public class Bike extends GameEntity implements PlayableEntity {
     public Bike(ActorGame game, Vector position) {
         super(game, false, position);
         this.game = game;
-        this.isDead = false;
-        this.timeTillRejump = 3;
 
         this.create();
     }

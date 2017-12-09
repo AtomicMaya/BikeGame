@@ -22,49 +22,29 @@ public class TrampolineBuilder extends ActorBuilder {
 
 	boolean placed = false;
 
-	private ActorGame game;
-	private LevelEditor lv;
-	
 	private Trampoline rfTrampoline;
 	private NumberField height, width;
-	private Vector heightNumberFieldPos, widthNumberFieldPos;
+	private Vector heightNumberFieldPos = new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
 	private Comment heightComment, widthComments;
-	
+
 	private boolean isWriting = true;
 	private boolean hoover = false;
-	
+
 	public TrampolineBuilder(ActorGame game) {
 		super(game);
 		rfTrampoline = new Trampoline(game, getFlooredMousePosition(), 5, 1);
-		
-		heightNumberFieldPos = new Vector(26, 6);
+
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
 
 		heightComment = new Comment(game, "Crate Height");
 		heightComment.setParent(height);
 		heightComment.setAnchor(new Vector(-6, 0));
 
-		widthNumberFieldPos = new Vector(26, 8);
 		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
 
 		widthComments = new Comment(game, "Crate Width");
 		widthComments.setParent(width);
 		widthComments.setAnchor(new Vector(-6, 0));
-	}
-
-	@Override
-	public void draw(Canvas canvas) {
-		rfTrampoline.draw(canvas);
-		if (!isDone()) {
-			height.draw(canvas);
-			if (height.isHovered())
-				heightComment.draw(canvas);
-			width.draw(canvas);
-			if (width.isHovered())
-				widthComments.draw(canvas);
-		}
-		
-		
 	}
 
 	@Override
@@ -79,21 +59,35 @@ public class TrampolineBuilder extends ActorBuilder {
 
 		}
 		if (!isDone()) {
-			height.update(deltaTime, lv.getZoom());
-			width.update(deltaTime, lv.getZoom());
+			height.update(deltaTime, zoom);
+			width.update(deltaTime, zoom);
 
-			heightComment.update(deltaTime, lv.getZoom());
-			widthComments.update(deltaTime, lv.getZoom());
+			heightComment.update(deltaTime, zoom);
+			widthComments.update(deltaTime, zoom);
 
-			if (game.getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
+			if (getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
 				isWriting = !(height.hasFocus() & width.hasFocus());
-			//	rfTrampoline.setSize(width.getNumber(), height.getNumber());
+				// rfTrampoline.setSize(width.getNumber(), height.getNumber());
 			}
 		} else
 			hoover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
 					getFlooredMousePosition());
 		if (hoover && isRightPressed())
 			isWriting = true;
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		rfTrampoline.draw(canvas);
+		if (!isDone()) {
+			height.draw(canvas);
+			if (height.isHovered())
+				heightComment.draw(canvas);
+			width.draw(canvas);
+			if (width.isHovered())
+				widthComments.draw(canvas);
+		}
+
 	}
 
 	@Override
