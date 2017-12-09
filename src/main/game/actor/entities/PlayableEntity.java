@@ -1,14 +1,19 @@
 package main.game.actor.entities;
 
-/**
- * Created on 12/7/2017 at 10:47 PM.
- */
-public interface PlayableEntity  {
-    void triggerDeath(boolean wasGravity);
-    void triggerVictory();
-    void triggerCheckpoint();
+import main.game.actor.Actor;
 
-    boolean getDeathStatus();
-    boolean getVictoryStatus();
-    boolean getIfWasKilledByGravity();
+/** Represent the {@linkplain GameEntity} playable by the player */
+public interface PlayableEntity extends Actor {
+	
+	void triggerDeath(boolean wasGravity);
+
+	void triggerVictory();
+
+	void triggerCheckpoint();
+
+	boolean getDeathStatus();
+
+	boolean getVictoryStatus();
+
+	boolean getIfWasKilledByGravity();
 }

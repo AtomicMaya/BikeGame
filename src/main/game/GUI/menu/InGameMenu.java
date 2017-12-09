@@ -33,7 +33,7 @@ public class InGameMenu extends FullScreenMenu {
 
 		close.addOnClickAction(() -> changeStatus(), .1f);
 
-		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), "Back to Menu", .5f);
+		backToMainMenu = new GraphicalButton(game, new Vector(-6, -3), "Back to Menu", 3f);
 		backToMainMenu.addOnClickAction(() -> {
 			game.destroyAllActors();
 			game.goToMainMenu();
@@ -43,6 +43,7 @@ public class InGameMenu extends FullScreenMenu {
 	@Override
 	public void update(float deltaTime, float zoom) {
 		super.update(deltaTime, zoom);
+		
 		if (game.getKeyboard().get(KeyEvent.VK_M).isPressed()
 				|| game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
 			changeStatus();

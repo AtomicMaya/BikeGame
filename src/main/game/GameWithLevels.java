@@ -4,23 +4,40 @@
  */
 package main.game;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import main.game.graphics.TextGraphics;
 import main.game.levels.Level;
 import main.io.FileSystem;
+import main.math.Transform;
+import main.math.Vector;
 import main.window.Window;
 
-/** Represent an {@linkplain ActorGame} with {@linkplain Level}s*/
+/** Represent an {@linkplain ActorGame} with {@linkplain Level}s */
 public abstract class GameWithLevels extends ActorGame {
 
 	private List<Level> levels;
 	private int currentLevel = 0;
 
+	private float timer1 = 0;
+
+	private final float timeBeforeMessage1 = 2f;
+	private final String messageNextLevelText = "Press N to go to the next level";
+	private final String messageRestartLevelText = "Press R to restart the level";
+	private TextGraphics message1;
+	private float fontSize = 1.5f;
+
+	private boolean display = false;
+
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
+		message1 = new TextGraphics(messageNextLevelText, fontSize, new Color(66, 241, 244), Color.RED.darker(), .02f,
+				false, false, Vector.ZERO, 1, 1337);
+		message1.setAnchor(new Vector(.5f, -2.5f));
 		levels = createLevelList();
 		return true;
 	}
@@ -32,7 +49,32 @@ public abstract class GameWithLevels extends ActorGame {
 			resetLevel();
 		}
 		if (levels != null && !levels.isEmpty() && levels.get(currentLevel).isFinished()) {
-			nextLevel();
+			timer1 += deltaTime;
+			if (timer1 > timeBeforeMessage1 & !display) {
+
+				Vector position = getCanvas().getPosition();// .add(new
+															// Vector(.5f, 0));
+				message1.setRelativeTransform(Transform.I.translated(position));
+
+				if (getPayload().getVictoryStatus()) {
+					message1.setText(messageNextLevelText);
+					message1.setFillColor(Color.BLUE);
+					message1.setOutlineColor(null);
+				} else if (getPayload().getDeathStatus()) {
+					message1.setFillColor(new Color(66, 241, 244));
+					message1.setOutlineColor(new Color(155, 18, 48));
+					message1.setText(messageRestartLevelText);
+				}
+				message1.draw(getCanvas());
+			}
+			if (getPayload().getVictoryStatus()) {
+				if (getKeyboard().get(KeyEvent.VK_N).isPressed())
+					nextLevel();
+			} else if (getPayload().getDeathStatus()) {
+				if (getKeyboard().get(KeyEvent.VK_N).isPressed())
+					resetLevel();
+			}
+
 		}
 	}
 

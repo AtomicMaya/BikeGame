@@ -4,6 +4,11 @@
  */
 package main.game.GUI.menu;
 
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.ArrayList;
+
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
@@ -17,16 +22,13 @@ import main.game.graphics.BetterTextGraphics;
 import main.game.graphics.Graphics;
 import main.game.graphics.ShapeGraphics;
 import main.io.Save;
-import main.math.*;
+import main.math.ExtendedMath;
 import main.math.Polygon;
 import main.math.Shape;
+import main.math.Transform;
+import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
-
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
@@ -156,7 +158,7 @@ public class LevelEditor implements Graphics {
 		// playButton, centered
 		playButton = new GraphicalButton(game, playButtonPosition, playButtonText, fontSize);
 		playButton.setDepth(butonDepth);
-		playButtonPosition = new Vector(-playButton.getWidth() / 2 , playButtonPosition.y);
+		playButtonPosition = new Vector(-playButton.getWidth() / 2, playButtonPosition.y);
 		playButton.setAnchor(playButtonPosition);
 		playButton.addOnClickAction(() -> {
 
@@ -180,29 +182,17 @@ public class LevelEditor implements Graphics {
 		ArrayList<String> savesNames = new ArrayList<>();
 
 		for (File f : saves) {
-			savesNames.add(f.getName().replaceAll("save", ""));
+			savesNames.add(f.getName());
 		}
 
-		ArrayList<Integer> number = new ArrayList<>();
-		for (int i = 1; i < savesNames.size(); i++) {
-			if (ExtendedMath.isNumeric(savesNames.get(i)))
-				number.add(Integer.parseInt(savesNames.get(i)));
-		}
-//		for (int s:number)System.out.println(s);
-		int z = 1;
-		Object w = z;
-System.out.println(number.contains(2));
 		String temp = "";
-		for (int i = 1; i < number.size() + 1; i++) {
-			if (number.get(i) != i) {
-				System.out.println(i);
+		for (int i = 1; i < saves.length + 2; i++) {
+			if (!savesNames.contains("save" + ((i < 10) ? "0" : "") + i)) {
 				temp = "save" + ((i < 10) ? "0" : "") + i;
 				break;
 			}
 		}
-
 		currentSaveName = (temp);
-		System.out.println(currentSaveName);
 
 		// create save button
 		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
@@ -222,9 +212,12 @@ System.out.println(number.contains(2));
 			if (this.gb == null && this.bb == null)
 				errorText = "Please create a bike and a ground";
 			if (errorText == null) {
+
 				// TODO save
-			} else
-				displayErrorText = true;
+				game.save(getActors(), bb.getBike(), bb.getActor(), currentSaveName);
+				errorText = "Actors saved sucessfully";
+			}
+			displayErrorText = true;
 
 		});
 		error = new Comment(game, "");
@@ -347,7 +340,7 @@ System.out.println(number.contains(2));
 	@Override
 	public void draw(Canvas canvas) {
 
-		//draw button play
+		// draw button play
 		playButton.draw(canvas);
 
 		// if we are playing, return

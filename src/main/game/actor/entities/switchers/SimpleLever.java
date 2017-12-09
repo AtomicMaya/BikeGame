@@ -44,8 +44,6 @@ public class SimpleLever extends GameEntity implements Switcher, Runner {
 		this.time = new ArrayList<>();
 		this.addAction(() -> this.activated = !this.activated, 1.f);
 		this.addAction(() -> new Audio("./res/audio/lever_activated.wav", 0, 10f), 1.f);
-
-		this.game.addActor(this.sensor);
 	}
 
 	@Override
