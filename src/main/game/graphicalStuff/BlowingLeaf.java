@@ -35,7 +35,7 @@ public class BlowingLeaf implements GraphicalObjects {
         this.position = this.position.add(this.speed.mul(deltaTime));
         this.elapsedAnimationTime += deltaTime;
         if (this.elapsedAnimationTime > this.animationTime) this.elapsedAnimationTime = 0;
-        this.graphicsCounter = ((int) (elapsedAnimationTime / this.animationTime * this.file.size()) + this.initialOffset) % this.file.size();
+        this.graphicsCounter = ((int) (this.elapsedAnimationTime / this.animationTime * this.file.size()) + this.initialOffset) % this.file.size();
     }
 
     @Override

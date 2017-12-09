@@ -3,6 +3,7 @@ package main.game.graphicalStuff;
 import main.game.ActorGame;
 import main.game.GameObjects.Rectangle;
 import main.game.actor.Actor;
+import main.game.actor.entities.GameEntity;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
@@ -38,7 +39,7 @@ public class Scenery implements Actor {
         AffineTransform windowTransform = this.game.getRelativeTransform().getAffineTransform();
         this.length = (float) (windowTransform.getScaleX() * 2.2f);
         this.height = (float) windowTransform.getScaleY() * 2f;
-        this.minimumCoords = new Vector(game.getPayload().getPosition().x - length * .2f, (float) (windowTransform.getTranslateY() - this.height * .1f));
+        this.minimumCoords = new Vector(((GameEntity) game.getPayload()).getPosition().x - length * .2f, (float) (windowTransform.getTranslateY() - this.height * .1f));
         this.maximumCoords = this.minimumCoords.add(this.length * 1.8f, this.height * .5f);
         this.minimumSpawn = this.minimumCoords.add(this.length * 1.6f, 0);
     }

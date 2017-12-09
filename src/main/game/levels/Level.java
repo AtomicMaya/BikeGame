@@ -4,12 +4,13 @@
  */
 package main.game.levels;
 
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.entities.PlayableEntity;
 import main.math.Node;
 import main.math.Positionable;
+
+import java.util.ArrayList;
 
 /**
  * Represent a {@linkplain Level} which can create some {@linkplain Actor}s to
@@ -27,7 +28,7 @@ public abstract class Level extends Node implements Actor {
 	private Positionable viewCandidate;
 
 	// player's actor
-	private Actor payload;
+	private PlayableEntity payload;
 
 	/**
 	 * Create a new {@linkplain Level}.
@@ -57,7 +58,7 @@ public abstract class Level extends Node implements Actor {
 	}
 
 	/** Main {@linkplain Actor} of the game */
-	public void setPayload(Actor payload) {
+	public void setPayload(PlayableEntity payload) {
 		this.payload = payload;
 	}
 
@@ -81,7 +82,7 @@ public abstract class Level extends Node implements Actor {
 	/**
 	 * @return the playable {@linkplain Actor}.
 	 */
-	public Actor getPayload() {
+	public PlayableEntity getPayload() {
 		return payload;
 	}
 

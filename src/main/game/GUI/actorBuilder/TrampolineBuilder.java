@@ -4,17 +4,17 @@
  */
 package main.game.GUI.actorBuilder;
 
-import java.awt.event.KeyEvent;
-
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.NumberField;
 import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
-import main.game.actor.entities.RightFacingTrampoline;
+import main.game.actor.entities.Trampoline;
 import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.event.KeyEvent;
 
 public class TrampolineBuilder extends ActorBuilder {
 
@@ -25,7 +25,7 @@ public class TrampolineBuilder extends ActorBuilder {
 	private ActorGame game;
 	private LevelEditor lv;
 	
-	private RightFacingTrampoline rfTrampoline;
+	private Trampoline rfTrampoline;
 	private NumberField height, width;
 	private Vector heightNumberFieldPos, widthNumberFieldPos;
 	private Comment heightComment, widthComments;
@@ -35,7 +35,7 @@ public class TrampolineBuilder extends ActorBuilder {
 	
 	public TrampolineBuilder(ActorGame game) {
 		super(game);
-		rfTrampoline = new RightFacingTrampoline(game, getFlooredMousePosition(), 5, 1);
+		rfTrampoline = new Trampoline(game, getFlooredMousePosition(), 5, 1);
 		
 		heightNumberFieldPos = new Vector(26, 6);
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
@@ -109,7 +109,7 @@ public class TrampolineBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		rfTrampoline.destroy();
-		rfTrampoline = new RightFacingTrampoline(getOwner(), position, width.getNumber(), height.getNumber());
+		rfTrampoline = new Trampoline(getOwner(), position, width.getNumber(), height.getNumber());
 	}
 
 	@Override

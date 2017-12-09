@@ -32,7 +32,7 @@ public class ActorGame implements Game {
 	private ArrayList<Actor> actors = new ArrayList<>();
 
 	// main character of the game
-	private Actor player;
+	private PlayableEntity player;
 
 	// our physical world
 	private World world;
@@ -73,7 +73,8 @@ public class ActorGame implements Game {
 
 		this.endGameGraphics = null;
 		this.displayed = false;
-		return true;
+		this.score = 0;
+        return true;
 	}
 
 	@Override
@@ -85,17 +86,16 @@ public class ActorGame implements Game {
 
 		camera.update(deltaTime);
 
-		for (Actor actor : this.actors) {
-			actor.update(deltaTime);
+		for (int i = this.actors.size() - 1; i >= 0; i--) {
+            this.actors.get(i).update(deltaTime);
 		}
 
-		if (getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
-			gameFrozen = !gameFrozen;
+		if (this.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
+			this.gameFrozen = !this.gameFrozen;
 		}
 
 		if (!this.actorsToRemove.isEmpty()) {
-			// peut etre plus propre mais ca fait des
-			// ConcurrentModificationException
+
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
 			}
@@ -288,7 +288,7 @@ public class ActorGame implements Game {
 	 * Get the main {@linkplain Actor} of the game.
 	 * @return the main actor of the game.
 	 */
-	public Actor getPayload() {
+	public PlayableEntity getPayload() {
 		return this.player;
 	}
 
@@ -297,7 +297,7 @@ public class ActorGame implements Game {
 	 * @param player : The {@linkplain Actor} which will be the main
 	 * {@linkplain Actor} of the game.
 	 */
-	public void setPayload(Actor player) {
+	public void setPayload(PlayableEntity player) {
 		this.player = player;
 	}
 
@@ -339,13 +339,13 @@ public class ActorGame implements Game {
 			File[] files = save.listFiles();
 			for (File f : files) {
 				if (f.getPath().contains(".object")) {
-					Actor a = Save.readSavedActor(this, f);
-					if (a != null)
-						this.actorsToAdd.add(a);
+					Actor actor = Save.readSavedActor(this, f);
+					if (actor != null)
+						this.actorsToAdd.add(actor);
 				}
 
 			}
-			setViewCandidate(actors
+            this.setViewCandidate(this.actors
 					.get(Save.viewCandidateNumberInFile(this.fileSystem, new File(save.getPath() + "/params.param"))));
 			return true;
 		}
@@ -361,7 +361,7 @@ public class ActorGame implements Game {
 	public void setViewCandidate(Positionable positionable) {
 		this.camera.setViewCandidate(positionable);
 	}
-	
+
 
 	/**
 	 * Sets a modifier to the view scale for smooth transition.
@@ -390,7 +390,7 @@ public class ActorGame implements Game {
 //	public Vector getCameraPosition() {
 //		return this.camera.getCameraPosition();
 //	}
-	
+
 //	public void setCameraPosition(Vector position) {
 //		this.camera.setCameraPosition(position);
 //	}
@@ -403,21 +403,21 @@ public class ActorGame implements Game {
 		return this.window.getRelativeTransform();
 	}
 
-	public void displayDeathMessage() {
-		this.displayed = true;
-		boolean secretDiceRoll = new Random().nextFloat() < 2 * 4.2 / 404;
-		boolean killedByGravity = ((PlayableEntity) this.getPayload()).getIfWasKilledByGravity();
-		if (killedByGravity)
-			this.endGameGraphics = new EndGameGraphics(this,
-					secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
-		else
-			this.endGameGraphics = new EndGameGraphics(this, "./res/images/fatality.2.png");
-		this.addActor(endGameGraphics);
-	}
 
-	public boolean isDisplayed() {
-		return displayed;
-	}
+    public void displayDeathMessage() {
+        this.displayed = true;
+        boolean secretDiceRoll = new Random().nextFloat() < 2 * 4.2 / 404;
+        boolean killedByGravity = this.getPayload().getIfWasKilledByGravity();
+        if (killedByGravity)
+            this.endGameGraphics = new EndGameGraphics(this, secretDiceRoll ? "./res/images/fatality.easter.egg.png" : "./res/images/fatality.1.png");
+        else
+            this.endGameGraphics = new EndGameGraphics(this, "./res/images/fatality.2.png");
+        this.addActor(this.endGameGraphics);
+    }
+
+    public boolean isDisplayed() {
+        return this.displayed;
+    }
 
 	public void displayVictoryMessage() {
 		this.displayed = true;
@@ -429,5 +429,17 @@ public class ActorGame implements Game {
 		this.displayed = false;
 		this.endGameGraphics = null;
 	}
+
+    private void resetScore() {
+	    this.score = 0;
+    }
+
+    public void addToScore(int newScore) {
+        this.score += newScore;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
 
 }
