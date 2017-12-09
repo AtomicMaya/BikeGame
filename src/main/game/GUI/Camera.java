@@ -6,6 +6,7 @@ package main.game.GUI;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.entities.GameEntity;
 import main.math.Node;
 import main.math.Positionable;
 import main.math.Transform;
@@ -34,6 +35,8 @@ public class Camera extends Node implements Actor {
 		this.game = game;
 		this.window = window;
 		this.setParent(window);
+		this.viewCenter = Vector.ZERO;
+		this.viewTarget = Vector.ZERO;
 	}
 
 	@Override
@@ -54,11 +57,59 @@ public class Camera extends Node implements Actor {
 		}
 		// Interpolate with previous location
 		float ratio = (float) Math.pow(VIEW_INTERPOLATION_RATIO_PER_SECOND, deltaTime);
-		this.viewCenter = this.viewCenter.mixed(this.viewTarget, 1.f - ratio);
+		this.viewCenter = this.viewCenter.mixed(this.viewTarget, 1f - ratio);
 		// Compute new viewport
 		Transform viewTransform = Transform.I.scaled(VIEW_SCALE_CURRENT).translated(this.viewCenter);
 		this.window.setRelativeTransform(viewTransform);
-		
+
 		VIEW_SCALE_PREVIOUS = VIEW_SCALE_CURRENT;
+	}
+
+	/**
+	 * Sets a modifier to the view scale for smooth transition.
+	 * @param newModifier : The modifier.
+	 */
+	public void setViewScaleModifier(float newModifier) {
+		VIEW_SCALE_MOD = newModifier;
+	}
+
+	/**
+	 * @return the current view scale.
+	 */
+	public float getViewScale() {
+		return VIEW_SCALE_CURRENT;
+	}
+
+	/**
+	 * Directly set a new view scale, with no transition.
+	 * @param newViewScale : the new value.
+	 */
+	public void setViewScale(float newViewScale) {
+		VIEW_SCALE_CURRENT = newViewScale;
+		VIEW_SCALE_MOD = (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD ? VIEW_SCALE_CURRENT - VIEW_SCALE
+				: VIEW_SCALE_CURRENT - VIEW_SCALE);
+	}
+
+	/** @return the camera position */
+	public Vector getCameraPosition() {
+		return this.viewCenter;
+	}
+
+	public void setCameraPosition(Vector position) {
+		this.viewCenter = position;
+	}
+
+	/**
+	 * Sets the game's view candidate, to be followed by the camera.
+	 * @param positionable : the {@linkplain GameEntity} / {@linkplain Actor} to
+	 * be followed.
+	 */
+	public void setViewCandidate(Positionable positionable) {
+		this.viewCandidate = positionable;
+	}
+
+	public Positionable getViewCandidate() {
+
+		return viewCandidate;
 	}
 }

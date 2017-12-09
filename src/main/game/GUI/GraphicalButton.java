@@ -2,13 +2,9 @@ package main.game.GUI;
 
 import main.game.ActorGame;
 import main.game.actor.ParallelAction;
-import main.game.actor.entities.GameEntity;
 import main.game.graphics.BetterTextGraphics;
-import main.game.graphics.Graphics;
-import main.game.graphics.ImageGraphics;
-import main.game.graphics.ShapeGraphics;
+import main.math.ExtendedMath;
 import main.math.Polygon;
-import main.math.Positionable;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
@@ -20,13 +16,11 @@ import java.util.ArrayList;
 public class GraphicalButton extends GUIComponent {
 	private Mouse mouse;
 
-	private ArrayList<Graphics> graphics = new ArrayList<>();
 	private String idleGraphics, hoverGraphics;
 	private ArrayList<Float> time = new ArrayList<>();
 	private ArrayList<Runnable> actions = new ArrayList<>();
 
 	private float alpha = .6f, depth = -.02f;
-	private float minX, minY, maxX, maxY;
 
 	private boolean hovered, clicked;
 	private boolean buttonBusy = false;
@@ -34,16 +28,19 @@ public class GraphicalButton extends GUIComponent {
 	private float timeToActionEnd = 0.f, elapsedActionTime = 0.f;
 	private BetterTextGraphics textGraphics;
 
-	private Vector maxPosition;
+	private float width = 1, height = 1;
 
 	private final Vector defaultTextOffset;
 	private Vector shiftText = Vector.ZERO;
 	private boolean forcedTextShift = false;
 
+	private Polygon shape;
+	private float fontSize;
+
 	public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
 		super(game, position);
 		this.mouse = game.getMouse();
-
+		this.fontSize = fontSize;
 		defaultTextOffset = new Vector(fontSize / 4f, fontSize / 4f);
 
 		shiftText = new Vector(defaultTextOffset.x, defaultTextOffset.y);
@@ -54,37 +51,22 @@ public class GraphicalButton extends GUIComponent {
 		super(game, position);
 		this.mouse = game.getMouse();
 		defaultTextOffset = new Vector(0, 0);// does not matter
+		this.width = width;
+		this.height = height;
 		forceShape(width, height);
-	}
-
-	private void changeStuff(Vector position, Polygon shape) {
-		this.graphics = new ArrayList<>();
-		if (this.idleGraphics == null) {
-			ShapeGraphics g1 = new ShapeGraphics(shape, Color.GREEN, Color.ORANGE,
-					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth);
-
-			this.graphics.add(g1);
-			g1.setParent(this);
-			ShapeGraphics g2 = new ShapeGraphics(shape, Color.RED, Color.ORANGE,
-					.1f * (textGraphics == null ? 1 : textGraphics.getCharSize()), alpha, depth);
-			this.graphics.add(g2);
-			g2.setParent(this);
-
-		} else
-			this.setNewGraphics(idleGraphics, hoverGraphics);
-
-		this.maxPosition = shape.getPoints().get((shape.getPoints().size()) / (2));
-		this.minX = position.x;
-		this.minY = position.y;
-		this.maxX = this.minX + maxPosition.x;
-		this.maxY = this.minY + maxPosition.y;
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-		Vector mousePosition = this.mouse.getPosition();
-		float mouseX = mousePosition.x, mouseY = mousePosition.y;
-		if (this.minX <= mouseX && mouseX <= this.maxX && this.minY < mouseY && mouseY < this.maxY) {
+		super.update(deltaTime, zoom);
+
+		if (textGraphics != null) {
+			textGraphics.setAnchor(shiftText.mul(zoom));
+			textGraphics.setText(textGraphics.getText(), fontSize * zoom);
+		}
+
+		if (ExtendedMath.isInRectangle(getPosition(), getPosition().add(new Vector(width * zoom, height * zoom)),
+				getMousePosition())) {
 			this.hovered = true;
 			this.clicked = this.mouse.getLeftButton().isPressed();
 		} else {
@@ -110,12 +92,20 @@ public class GraphicalButton extends GUIComponent {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (this.hovered)
-			this.graphics.get(1).draw(canvas);
-		else
-			this.graphics.get(0).draw(canvas);
+		Transform t = new Transform(width * getZoom(), getTransform().m01, getTransform().m02, getTransform().m10,
+				height * getZoom(), getTransform().m12);
+		if (this.hovered) {
+			if (hoverGraphics != null) {
+				canvas.drawImage(canvas.getImage(hoverGraphics), t, 1, depth);
+			} else
+				canvas.drawShape(shape, getTransform(), Color.RED, Color.ORANGE, .1f * getZoom(), alpha, depth);
+		} else {
+			if (idleGraphics != null) {
+				canvas.drawImage(canvas.getImage(idleGraphics), t, 1, depth);
+			} else
+				canvas.drawShape(shape, getTransform(), Color.GREEN, Color.ORANGE, .1f * getZoom(), alpha, depth);
+		}
 		if (textGraphics != null) {
-			textGraphics.setRelativeTransform(Transform.I.translated(shiftText));
 			textGraphics.draw(canvas);
 		}
 	}
@@ -134,15 +124,6 @@ public class GraphicalButton extends GUIComponent {
 	public void setNewGraphics(String idleGraphics, String hoverGraphics) {
 		this.idleGraphics = idleGraphics;
 		this.hoverGraphics = hoverGraphics;
-		this.graphics = new ArrayList<>();
-		ImageGraphics g1 = new ImageGraphics(idleGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO, 1,
-				depth);
-		g1.setParent(this);
-		this.graphics.add(g1);
-		ImageGraphics g2 = new ImageGraphics(hoverGraphics, this.maxX - this.minX, this.maxY - this.minY, Vector.ZERO,
-				1, depth);
-		g2.setParent(this);
-		this.graphics.add(g2);
 	}
 
 	/**
@@ -179,14 +160,6 @@ public class GraphicalButton extends GUIComponent {
 		ParallelAction.generateWorker(runnable).execute();
 	}
 
-	public void setPosition(Vector position) {
-		this.setRelativeTransform(Transform.I.translated(position));
-		this.minX = position.x;
-		this.minY = position.y;
-		this.maxX = this.minX + maxPosition.x;
-		this.maxY = this.minY + maxPosition.y;
-	}
-
 	/**
 	 * Change the text and the fontSize
 	 * 
@@ -195,10 +168,12 @@ public class GraphicalButton extends GUIComponent {
 	 */
 	public void setText(String text, float fontSize) {
 
-		textGraphics = new BetterTextGraphics(getOwner(), (text == null) ? textGraphics.getText() : text, fontSize, shiftText);
-		textGraphics.setDepth(depth + .1f);
-		textGraphics.setParent(this);
-
+		if (text != null) {
+			textGraphics = new BetterTextGraphics(getOwner(), (text == "") ? textGraphics.getText() : text, fontSize,
+					shiftText);
+			textGraphics.setDepth(depth + 0.6f);
+			textGraphics.setParent(this);
+		}
 		forceShape(-1, -1);
 	}
 
@@ -212,18 +187,18 @@ public class GraphicalButton extends GUIComponent {
 	public void forceShape(float width, float height) {
 		if (textGraphics != null) {
 
-			width = (width < 0) ? textGraphics.getTotalWidth() + shiftText.x * 2f : width;
-			height = (height < 0) ? textGraphics.getCharSize() + shiftText.y * 2f : height;
+			this.width = (width < 0) ? textGraphics.getTotalWidth() + shiftText.x * 2f : width;
+			this.height = (height < 0) ? textGraphics.getCharSize() + shiftText.y * 2f : height;
 
 			if (!forcedTextShift)
-				shiftText = new Vector((width - textGraphics.getTotalWidth()) / 2f, textGraphics.getCharSize() / 4f);
+				shiftText = new Vector((this.width - textGraphics.getTotalWidth()) / 2f,
+						textGraphics.getCharSize() / 4f);
 		} else {
-			width = (width < 0) ? maxX - minX : width;
-			height = (height < 0) ? maxY - minY : height;
+			this.width = (width < 0) ? this.width : width;
+			this.height = (height < 0) ? this.height : height;
 		}
-		Polygon shape = new Polygon(0, 0, width, 0, width, height, 0, height);
+		shape = new Polygon(0, 0, this.width, 0, this.width, this.height, 0, this.height);
 
-		changeStuff(getPosition(), shape);
 	}
 
 	/**
@@ -238,10 +213,11 @@ public class GraphicalButton extends GUIComponent {
 				shiftText = offset;
 			else
 				shiftText = new Vector(textGraphics.getCharSize() / 4f, textGraphics.getCharSize() / 4f);
-			float width = textGraphics.getTotalWidth();
-			float height = textGraphics.getCharSize();
+			width = textGraphics.getTotalWidth();
+			height = textGraphics.getCharSize();
 
 			forceShape(width, height);
+
 		}
 
 	}
@@ -266,11 +242,13 @@ public class GraphicalButton extends GUIComponent {
 	}
 
 	public float getWidth() {
-		return maxX - minX;
+		// return maxX - minX;
+		return width;
 	}
 
 	public void setDepth(float depth) {
 		this.depth = depth;
 		this.setNewGraphics(idleGraphics, hoverGraphics);
+		textGraphics.setDepth(depth + 0.01f);
 	}
 }

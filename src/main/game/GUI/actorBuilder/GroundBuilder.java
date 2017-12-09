@@ -80,6 +80,7 @@ public class GroundBuilder extends ActorBuilder {
 					fontSize * levelEditor.getZoom());
 			drawMode = (drawMode == 0) ? 1 : 0;
 		});
+		drawModeButton.setAnchor(drawModeButtonPosition);
 
 		finish = new GraphicalButton(game, finishPosition, finishText, fontSize);
 		finishPosition = new Vector(-finish.getWidth() / 2, finishPosition.y);
@@ -87,6 +88,7 @@ public class GroundBuilder extends ActorBuilder {
 			this.isDone = true;
 			groundLine = new Polyline(updateGround(null));
 		});
+		finish.setAnchor(finishPosition);
 		// ground = new Ground(game, Vector.ZERO, new
 		// Polyline(updateGround(null)));
 	}
@@ -123,11 +125,11 @@ public class GroundBuilder extends ActorBuilder {
 
 			// buttons update
 			drawModeButton.setText(null, fontSize * lv.getZoom());
-			drawModeButton.setPosition(drawModeButtonPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
+//			drawModeButton.setPosition(drawModeButtonPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
 			drawModeButton.update(deltaTime, zoom);
 
 			finish.setText(null, fontSize * lv.getZoom());
-			finish.setPosition(finishPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
+//			finish.setPosition(finishPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
 			finish.update(deltaTime, zoom);
 
 			// reset if escape is pressed

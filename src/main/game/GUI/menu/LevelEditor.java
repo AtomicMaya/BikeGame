@@ -4,11 +4,6 @@
  */
 package main.game.GUI.menu;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
@@ -27,6 +22,11 @@ import main.math.Polygon;
 import main.math.Shape;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
@@ -153,24 +153,26 @@ public class LevelEditor implements Graphics {
 			zoom = 1;
 		});
 
-		// playButton
+		// playButton, centered
 		playButton = new GraphicalButton(game, playButtonPosition, playButtonText, fontSize);
 		playButton.setDepth(butonDepth);
-		playButtonPosition = new Vector(-playButton.getWidth() / 2, playButtonPosition.y);
+		playButtonPosition = new Vector(-playButton.getWidth() / 2 , playButtonPosition.y);
+		playButton.setAnchor(playButtonPosition);
 		playButton.addOnClickAction(() -> {
 
 			game.setGameFreezeStatus(!game.isGameFrozen());
 			if (!game.isGameFrozen()) {
+				playButton.setText(playButtonEditText, fontSize);
 				game.addActor(getActors());
 				game.setViewCandidate(this.bb.getActor());
-			} else {
+			} else { // unplay
+				playButton.setText(playButtonText, fontSize);
 				game.destroyAllActors();
 				game.setViewCandidate(null);
 				for (ActorBuilder ab : actors) {
 					ab.reCreate();
 				}
 			}
-
 		});
 
 		// get available name for the save
@@ -180,20 +182,27 @@ public class LevelEditor implements Graphics {
 		for (File f : saves) {
 			savesNames.add(f.getName().replaceAll("save", ""));
 		}
+
 		ArrayList<Integer> number = new ArrayList<>();
 		for (int i = 1; i < savesNames.size(); i++) {
 			if (ExtendedMath.isNumeric(savesNames.get(i)))
 				number.add(Integer.parseInt(savesNames.get(i)));
 		}
+//		for (int s:number)System.out.println(s);
+		int z = 1;
+		Object w = z;
+System.out.println(number.contains(2));
 		String temp = "";
 		for (int i = 1; i < number.size() + 1; i++) {
-			if (!number.contains(i)) {
+			if (number.get(i) != i) {
+				System.out.println(i);
 				temp = "save" + ((i < 10) ? "0" : "") + i;
 				break;
 			}
 		}
 
 		currentSaveName = (temp);
+		System.out.println(currentSaveName);
 
 		// create save button
 		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
@@ -224,29 +233,6 @@ public class LevelEditor implements Graphics {
 	}
 
 	/**
-	 * Update all the buttons of this {@linkplain LevelEditor}
-	 * @param : deltaTime elapsed time since last update, in seconds,
-	 * non-negative
-	 */
-	private void updateButtons(float deltaTime) {
-		// camera reset button update
-		cameraResetPosition.setText(resetCameraButtonText, fontSize * zoom);
-		cameraResetPosition.setPosition((cameraResetButtonPosition).mul(zoom).add(cameraPosition));
-		cameraResetPosition.update(deltaTime, zoom);
-
-		// position button update
-		getPositionButton.setText(getPosButtonText, fontSize * zoom);
-		getPositionButton.setPosition((getPositionButtonPosition).mul(zoom).add(cameraPosition));
-		getPositionButton.update(deltaTime, zoom);
-
-		// play button update
-		// playButton.forceShape(playButonSizeX*zoom, -1);
-		playButton.setText(playButtonText, fontSize * zoom);
-		playButton.setPosition((playButtonPosition).mul(zoom).add(cameraPosition));
-		playButton.update(deltaTime, zoom);
-	}
-
-	/**
 	 * Simulates a single time step.
 	 * @param deltaTime elapsed time since last update, in seconds, non-negative
 	 */
@@ -255,9 +241,7 @@ public class LevelEditor implements Graphics {
 		if (!game.isGameFrozen()) {
 
 			float z = game.getViewScale() / windowZoom;
-			playButton.setText(playButtonEditText, fontSize * z);
-			playButton.setPosition((playButtonPosition).mul(z).add(game.getCameraPosition()));
-			playButton.update(deltaTime, zoom);
+			playButton.update(deltaTime, z);
 
 			return;
 		}
@@ -302,6 +286,7 @@ public class LevelEditor implements Graphics {
 
 		// finalement placement de la camera
 		window.setRelativeTransform(Transform.I.scaled(windowZoom * zoom).translated(cameraPosition));
+		// game.setCameraPosition(cameraPosition);
 
 		// ligne de placement
 		gridLine = grid();
@@ -326,8 +311,10 @@ public class LevelEditor implements Graphics {
 					.setText((int) Math.floor(redSquarePosition.x) + ", " + (int) Math.floor(redSquarePosition.y));
 		}
 
-		// static buttons update
-		updateButtons(deltaTime);
+		// buttons update
+		cameraResetPosition.update(deltaTime, zoom);
+		getPositionButton.update(deltaTime, zoom);
+		playButton.update(deltaTime, zoom);
 
 		// current actors update
 		ActorBuilder current = null;
@@ -360,6 +347,7 @@ public class LevelEditor implements Graphics {
 	@Override
 	public void draw(Canvas canvas) {
 
+		//draw button play
 		playButton.draw(canvas);
 
 		// if we are playing, return
@@ -390,6 +378,11 @@ public class LevelEditor implements Graphics {
 		}
 		getPositionButton.draw(canvas);
 		cameraResetPosition.draw(canvas);
+
+		// draw button save
+		saveButon.draw(canvas);
+		if (displayErrorText)
+			error.draw(canvas);
 
 	}
 
@@ -502,7 +495,7 @@ public class LevelEditor implements Graphics {
 				return true;
 			temp = actor.isDone() & !actor.isHovered() & temp;
 		}
-		return temp;
+		return false;
 	}
 
 }

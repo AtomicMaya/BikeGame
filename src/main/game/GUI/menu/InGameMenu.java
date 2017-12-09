@@ -5,8 +5,8 @@
 package main.game.GUI.menu;
 
 import main.game.ActorGame;
-import main.game.GameWithLevelAndMenu;
 import main.game.GUI.GraphicalButton;
+import main.game.GameWithLevelAndMenu;
 import main.game.graphics.BetterTextGraphics;
 import main.math.Vector;
 import main.window.Canvas;
@@ -15,7 +15,7 @@ import main.window.Window;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class InGameMenu extends Menu {
+public class InGameMenu extends FullScreenMenu {
 
 	private ActorGame game;
 
@@ -24,7 +24,7 @@ public class InGameMenu extends Menu {
 	private BetterTextGraphics menuText;
 
 	public InGameMenu(GameWithLevelAndMenu game, Window window) {
-		super(game, window, false, Color.GRAY, true);
+		super(game, window, false, Color.GRAY);
 		this.game = game;
 
 		close = new GraphicalButton(game, new Vector(6, -3), "Close", 1);

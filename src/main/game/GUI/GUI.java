@@ -8,13 +8,12 @@ import main.game.ActorGame;
 import main.game.graphics.Graphics;
 import main.math.Attachable;
 import main.math.ExtendedMath;
-import main.math.Positionable;
 import main.math.Vector;
 import main.window.Button;
 import main.window.Mouse;
 
 /** Regroup all methods used to interact with the user */
-public interface GUI extends Graphics, Positionable {
+public interface GUI extends Graphics, Attachable {
 
 	/** @return whether {@link this} is hovered by the {@linkplain Mouse} */
 	public boolean isHovered();

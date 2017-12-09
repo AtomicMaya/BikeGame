@@ -1,5 +1,6 @@
 package main.game;
 
+import main.game.GUI.Camera;
 import main.game.actor.Actor;
 import main.game.actor.entities.GameEntity;
 import main.game.actor.entities.PlayableEntity;
@@ -22,19 +23,10 @@ import java.util.Random;
 public class ActorGame implements Game {
 
 	// Viewport properties
-	private Vector viewCenter;
-	private Vector viewTarget;
-	private Positionable viewCandidate;
-	private static final float VIEW_TARGET_VELOCITY_COMPENSATION = 0.2f;
+	private Camera camera;
 
-	private static final float VIEW_INTERPOLATION_RATIO_PER_SECOND = 0.1f;
-	private static final float VIEW_SCALE = 20.0f;
-	private static float VIEW_SCALE_MOD = 0.0f;
-	private static float VIEW_SCALE_CURRENT = VIEW_SCALE;
-	private static final float TRANSLATION_TIME = 3f;
-    private EndGameGraphics endGameGraphics;
-    private boolean displayed;
-    private int score;
+	private EndGameGraphics endGameGraphics;
+	private boolean displayed;
 
 	// list of all actors in the game
 	private ArrayList<Actor> actors = new ArrayList<>();
@@ -55,13 +47,14 @@ public class ActorGame implements Game {
 	// list to add or remove actors
 	private ArrayList<Actor> actorsToRemove = new ArrayList<>(), actorsToAdd = new ArrayList<>();
 
-
-
 	/**
 	 * The Save directory path : {@value #saveDirectory}
 	 */
 	private static final String saveDirectory = "saves/";
 
+	// score counter
+	private int score;
+	
 	/** @return the {@linkplain #saveDirectory} : {@value #saveDirectory} */
 	public String getSaveDirectory() {
 		return saveDirectory;
@@ -74,15 +67,14 @@ public class ActorGame implements Game {
 		if (fileSystem == null)
 			throw new NullPointerException("FileSystem is null");
 
+		this.camera = new Camera(this, window);
 		this.world = new World();
 		this.world.setGravity(new Vector(0, -9.81f));
 
 		this.window = window;
 		this.fileSystem = fileSystem;
-		this.viewCenter = Vector.ZERO;
-		this.viewTarget = Vector.ZERO;
 
-        this.endGameGraphics = null;
+		this.endGameGraphics = null;
 		this.displayed = false;
 		this.score = 0;
         return true;
@@ -90,31 +82,12 @@ public class ActorGame implements Game {
 
 	@Override
 	public void update(float deltaTime) {
-		//System.out.println(actors.size() + " " + world.getEntities().size());
+		// System.out.println(actors.size() + " " + world.getEntities().size());
 		if (this.gameFrozen)
 			return;
 		this.world.update(deltaTime);
 
-		if (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD
-				&& !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT
-						&& VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f))
-			VIEW_SCALE_CURRENT -= VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
-		else if (VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD
-				&& !(VIEW_SCALE + VIEW_SCALE_MOD - 0.1f < VIEW_SCALE_CURRENT
-						&& VIEW_SCALE_CURRENT < VIEW_SCALE + VIEW_SCALE_MOD + 0.1f))
-			VIEW_SCALE_CURRENT += VIEW_SCALE_MOD * deltaTime / TRANSLATION_TIME;
-
-		// Update expected viewport center
-		if (this.viewCandidate != null) {
-			this.viewTarget = this.viewCandidate.getPosition()
-					.add(this.viewCandidate.getVelocity().mul(VIEW_TARGET_VELOCITY_COMPENSATION));
-		}
-		// Interpolate with previous location
-		float ratio = (float) Math.pow(VIEW_INTERPOLATION_RATIO_PER_SECOND, deltaTime);
-		this.viewCenter = this.viewCenter.mixed(this.viewTarget, 1.f - ratio);
-		// Compute new viewport
-		Transform viewTransform = Transform.I.scaled(VIEW_SCALE_CURRENT).translated(this.viewCenter);
-		this.window.setRelativeTransform(viewTransform);
+		camera.update(deltaTime);
 
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
             this.actors.get(i).update(deltaTime);
@@ -173,15 +146,6 @@ public class ActorGame implements Game {
 	 */
 	public Vector getGravity() {
 		return this.world.getGravity();
-	}
-
-	/**
-	 * Sets the game's view candidate, to be followed by the camera.
-	 * @param positionable : the {@linkplain GameEntity} / {@linkplain Actor} to
-	 * be followed.
-	 */
-	public void setViewCandidate(Positionable positionable) {
-		this.viewCandidate = positionable;
 	}
 
 	/**
@@ -351,7 +315,7 @@ public class ActorGame implements Game {
 		folder.mkdirs();
 
 		for (int i = 0; i < this.actors.size(); i++) {
-			if (this.viewCandidate == this.actors.get(i)) {
+			if (this.camera.getViewCandidate() == this.actors.get(i)) {
 				Save.saveParameters(i, this.fileSystem, new File(folder.getPath() + "/params.param"));
 				break;
 			}
@@ -391,19 +355,30 @@ public class ActorGame implements Game {
 		return false;
 	}
 
+	//////// Camera stuffs ////////
+	/**
+	 * Sets the game's view candidate, to be followed by the camera.
+	 * @param positionable : the {@linkplain GameEntity} / {@linkplain Actor} to
+	 * be followed.
+	 */
+	public void setViewCandidate(Positionable positionable) {
+		this.camera.setViewCandidate(positionable);
+	}
+
+
 	/**
 	 * Sets a modifier to the view scale for smooth transition.
 	 * @param newModifier : The modifier.
 	 */
 	public void setViewScaleModifier(float newModifier) {
-		VIEW_SCALE_MOD = newModifier;
+		this.camera.setViewScaleModifier(newModifier);
 	}
 
 	/**
 	 * @return the current view scale.
 	 */
 	public float getViewScale() {
-		return VIEW_SCALE_CURRENT;
+		return camera.getViewScale();
 	}
 
 	/**
@@ -411,15 +386,17 @@ public class ActorGame implements Game {
 	 * @param newViewScale : the new value.
 	 */
 	protected void setViewScale(float newViewScale) {
-		VIEW_SCALE_CURRENT = newViewScale;
-		VIEW_SCALE_MOD = (VIEW_SCALE_CURRENT > VIEW_SCALE + VIEW_SCALE_MOD ? VIEW_SCALE_CURRENT - VIEW_SCALE
-				: VIEW_SCALE_CURRENT - VIEW_SCALE);
+		camera.setViewScale(newViewScale);
 	}
 
-	/** @return the camera position */
-	public Vector getCameraPosition() {
-		return this.viewCenter;
-	}
+//	/** @return the camera position */
+//	public Vector getCameraPosition() {
+//		return this.camera.getCameraPosition();
+//	}
+
+//	public void setCameraPosition(Vector position) {
+//		this.camera.setCameraPosition(position);
+//	}
 
 	/**
 	 * @return the {@linkplain Window} relative transform
@@ -445,16 +422,16 @@ public class ActorGame implements Game {
         return this.displayed;
     }
 
-    public void displayVictoryMessage() {
-        this.displayed = true;
-        this.endGameGraphics = new EndGameGraphics(this, "/res/images/victory.png");
-        this.addActor(endGameGraphics);
-    }
+	public void displayVictoryMessage() {
+		this.displayed = true;
+		this.endGameGraphics = new EndGameGraphics(this, "/res/images/victory.png");
+		this.addActor(endGameGraphics);
+	}
 
-    public void resetGraphics() {
-        this.displayed = false;
-        this.endGameGraphics = null;
-    }
+	public void resetGraphics() {
+		this.displayed = false;
+		this.endGameGraphics = null;
+	}
 
     private void resetScore() {
 	    this.score = 0;
