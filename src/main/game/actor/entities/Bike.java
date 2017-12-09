@@ -140,7 +140,7 @@ public class Bike extends GameEntity implements PlayableEntity {
         this.leftWheel.relax();
         this.rightWheel.relax();
 
-        if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown() || this.wonTheGame) {
+        if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
             this.leftWheel.power(0);
             this.rightWheel.power(0);
         } else if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown() && !this.wonTheGame) {
@@ -160,6 +160,9 @@ public class Bike extends GameEntity implements PlayableEntity {
             }
 
         }
+
+        if (this.wonTheGame && this.lookRight) this.leftWheel.power(0);
+        else if (this.wonTheGame && !this.lookRight) this.rightWheel.power(0);
 
         this.leftWheel.update(deltaTime);
         this.rightWheel.update(deltaTime);

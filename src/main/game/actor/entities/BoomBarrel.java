@@ -51,7 +51,7 @@ public class BoomBarrel extends GameEntity {
                     "./res/images/explosion.acid.14.png", "./res/images/explosion.acid.15.png"));
         }
 
-        this.animationTime = .7f;
+        this.animationTime = .5f;
         this.elapsedAnimationTime = 0;
         this.contactListener = new BasicContactListener();
         this.addContactListener(this.contactListener);
@@ -69,10 +69,8 @@ public class BoomBarrel extends GameEntity {
                     this.triggered = true;
 
 
-        this.graphicsCounter = (int) Math.floor(this.elapsedAnimationTime / this.animationTime * (this.boomGraphics.size()));
-        if (this.graphicsCounter > this.boomGraphics.size() - 1) this.graphicsCounter = this.boomGraphics.size() - 1;
-        System.out.println(this.graphicsCounter);
-        if (this.graphicsCounter == this.boomGraphics.size() - 1) {
+        this.graphicsCounter = (int) Math.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
+        if (this.graphicsCounter > this.boomGraphics.size() - 1) {
             this.getOwner().getPayload().triggerDeath(false);
             this.destroy();
         }

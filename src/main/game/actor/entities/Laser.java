@@ -100,7 +100,7 @@ public class Laser extends GameEntity {
                 this.oscillationCount += 1;
                 if(!this.sensor.isOccupied())
                     this.sensor.runAction(() -> new Audio(randomValue < this.secretProbability ? "./res/audio/easter_egg_1.wav": "./res/audio/laser.wav",
-                            0, 10f), pulsateTime + laserTime);
+                            0, 20f), this.pulsateTime + this.laserTime);
 
                 // So that the laser will blink, so as to warn people that it is charging.
                 if (0 < this.oscillationCount && this.oscillationCount < this.maxOscillationCount) {
@@ -124,7 +124,7 @@ public class Laser extends GameEntity {
         }
 
         if(this.sensorActive && this.sensor.getSensorDetectionStatus()) {
-            ((PlayableEntity) this.game.getPayload()).triggerDeath(false);
+            this.game.getPayload().triggerDeath(false);
         }
 
 

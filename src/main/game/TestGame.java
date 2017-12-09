@@ -44,8 +44,8 @@ public class TestGame extends ActorGame {
 				8.0f, 1.0f,
 				15.0f, 3.0f,
 				20.0f, 3.0f,
-				20.0f, -6.0f,
-				25.0f, -6.0f,
+				20.0f, -7.0f,
+				25.0f, -7.0f,
 				25.0f, -5.0f,
 				35.0f, -5.0f,
 				50.0f, -5.0f,
@@ -87,18 +87,22 @@ public class TestGame extends ActorGame {
         this.setViewScale(15);
         Coin coin = new Coin(this, new Vector(2, 1), true);
 
-        Trampoline trampoline = new Trampoline(this, new Vector(19.5f, 2),
-                -1, -1);
+        //Trampoline trampoline = new Trampoline(this, new Vector(19.5f, 2),
+        //        -1, -1);
 
         Laser laser = new Laser(this, new Vector(0, 6), 6, 3);
 
         Checkpoint checkpoint = new Checkpoint(this, new Vector(35, -5));
         FinishActor finishActor = new FinishActor(this, new Vector(40, -5));
 
-        BoomBarrel crate = new BoomBarrel(this, new Vector(10, 7), false);
+        //BoomBarrel crate = new BoomBarrel(this, new Vector(10, 7), true);
 
-        GravityWell well = new GravityWell(this, new Vector(15,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
-		/*
+//        GravityWell well = new GravityWell(this, new Vector(15,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
+
+       // Mine mine = new Mine(this, new Vector(15, 2));
+
+        Liquid liquid = new Liquid(this, new Vector(20, -7), new Polygon(0, 0, 5, 0, 5, 2, 0, 2),  true);
+                /*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		a = new FinishActor(this, new Vector(7, 0), player, s);
 		*/
@@ -108,14 +112,16 @@ public class TestGame extends ActorGame {
 		this.addActor(ground);
 		this.addActor(player);
 		this.addActor(sensor);
+		//this.addActor(mine);
+		this.addActor(liquid);
 //		this.addActor(lever);
-		this.addActor(well);
+//		this.addActor(well);
 		//this.addActor(platform);
 		//this.addActor(movingPlatform);
 		//this.addActor(button);
 		this.addActor(coin);
-		this.addActor(crate);
-		this.addActor(trampoline);
+		//this.addActor(crate);
+		//this.addActor(trampoline);
 		this.addActor(laser);
 		this.addActor(checkpoint);
 		this.addActor(finishActor);
