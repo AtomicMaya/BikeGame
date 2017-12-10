@@ -20,19 +20,9 @@ public class Comment extends GUIComponent {
 
 	public Comment(ActorGame game, String text) {
 		super(game, new Vector(-8, 0)); // default position on the
-											// screen
-											// TODO better
+										// screen
+										// TODO better
 		this.text = text;
-	}
-
-	/**
-	 * Update this {@linkplain Comment}
-	 * 
-	 * @param zoom, 1 for default
-	 */
-	public void update(float deltaTime, float zoom) {
-		super.update(deltaTime, zoom);
-		// this.zoom = zoom;
 	}
 
 	@Override
@@ -43,9 +33,8 @@ public class Comment extends GUIComponent {
 		canvas.drawShape(new Polygon(0, 0, 0, 1, l, 1, l, 0), getTransform().translated(shift),
 				new Color(100, 100, 100), Color.BLACK, .02f, .5f, 1338);
 
-		Vector v = new Vector(-l + l / 2 + .13f, .1f).mul(getZoom());
-		canvas.drawText((text.length() == 0) ? "1" : text, fontSize, getTransform().translated(v), Color.BLACK, null, 0,
-				false, false, Vector.ZERO, 1, 1339);
+		canvas.drawText((text.length() == 0) ? "1" : text, fontSize, getTransform(), Color.BLACK, null, 0, false, false,
+				new Vector(.5f, 0), 1, 1339);
 	}
 
 	/**

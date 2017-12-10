@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.ObjectGroup;
 import main.game.graphics.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
@@ -51,7 +52,7 @@ public class CharacterBike extends GameEntity {
 
         this.updateGraphics();
 		Circle anchor = new Circle(0.1f);
-		this.build(anchor);
+		this.build(anchor, -1, -1, false, ObjectGroup.PLAYER.group);
 	}
 
 	private void updateGraphics() {

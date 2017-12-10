@@ -59,6 +59,7 @@ public class LevelTest extends Level {
 	public void update(float deltaTime) {
 		super.update(deltaTime);
 
+
 	}
 
 	@Override
