@@ -104,7 +104,7 @@ public class MainMenu extends FullScreenMenu {
 				"./res/images/arrows/left_arrow_light_green.png");
 
 		// level editor
-		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "PlayableLevel Editor", 1.4f);
+		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1.4f);
 		levelEditorButton.addOnClickAction(() -> {
 			levelEditor = new LevelEditor(game, window, this);
 			levelEditor.open();
@@ -124,7 +124,7 @@ public class MainMenu extends FullScreenMenu {
 		int n = game.numberOfLevel();
 		for (int i = 0; i < n; i++) {
 			Vector position = new Vector(topLeftLB.x + (i % 3) * (sizeX + shiftLB), topLeftLB.y - (i / 3) * sizeY);
-			levelButtons.add(new GraphicalButton(game, position, "PlayableLevel" + (i + 1), 1));
+			levelButtons.add(new GraphicalButton(game, position, "Level" + (i + 1), 1));
 			levelButtons.get(i).forceShape(sizeX, -1);
 			int temp = i;
 			levelButtons.get(i).addOnClickAction(() -> {

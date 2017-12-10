@@ -12,13 +12,13 @@ import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
 
-public class PlayableLevel1 extends PlayableLevel {
+public class Level1 extends Level {
 
 	private FinishActor finishActor;
 
 	private Bike player;
 
-	public PlayableLevel1(ActorGame game) {
+	public Level1(ActorGame game) {
 		super(game);
 	}
 

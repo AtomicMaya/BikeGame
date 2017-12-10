@@ -4,8 +4,8 @@
  */
 package main.game;
 
-import main.game.levels.PlayableLevel;
-import main.game.levels.PlayableLevel1;
+import main.game.levels.Level;
+import main.game.levels.Level1;
 import main.io.FileSystem;
 import main.window.Window;
 import main.window.swing.FontList;
@@ -30,8 +30,8 @@ public class TestGameLevelMenu extends GameWithLevelAndMenu {
 	}
 
 	@Override
-	protected List<PlayableLevel> createLevelList() {
-		return Arrays.asList(new PlayableLevel1(this), new PlayableLevel1(this));
+	protected List<Level> createLevelList() {
+		return Arrays.asList(new Level1(this), new Level1(this));
 	}
 
 }

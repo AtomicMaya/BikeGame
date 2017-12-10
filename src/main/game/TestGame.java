@@ -10,7 +10,7 @@ import main.game.audio.Audio;
 import main.game.graphicalStuff.EndGameGraphics;
 import main.game.graphicalStuff.Scenery;
 import main.game.graphics.BetterTextGraphics;
-import main.game.levels.PlayableLevel;
+import main.game.levels.Level;
 import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestGame extends ActorGame {
-    private List<PlayableLevel> playableLevels;
+    private List<Level> levels;
     private FinishActor a;
     private ProximitySensor sensor;
 
