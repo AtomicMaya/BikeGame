@@ -105,32 +105,10 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/**
-	 * Attaches this to an entity, at the anchor point.
-	 * @param vehicle : The entity on which this will be attached.
-	 * @param anchor : The point were this should be centered.
-	 */
-	protected void attach(Entity vehicle, Vector anchor) {
-		PrismaticConstraintBuilder builder = super.getOwner().createPrismaticConstraintBuilder();
-		builder.setFirstEntity(vehicle);
-		builder.setSecondEntity(this.getEntity());
-		builder.setFirstAnchor(anchor);
-		builder.setSecondAnchor(Vector.ZERO);
-		builder.setLimitEnabled(true);
-		builder.setMotorEnabled(true);
-		builder.setMotorSpeed(0);
-		builder.setMotorMaxTorque(10f);
-		builder.setLowerTranslationLimit(0);
-		builder.setUpperTranslationLimit(0);
-		builder.setAxis(Vector.Y);
-		builder.setInternalCollision(false);
-        this.constraint = builder.build();
-	}
-
-	/**
 	 * Removes the constraint.
 	 */
 	public void detach() {
-		if (constraint != null) constraint.destroy();
+		if (this.constraint != null) this.constraint.destroy();
 	}
 
 	/**
@@ -225,5 +203,9 @@ public class CharacterBike extends GameEntity {
 
     public float getDirectionModifier() {
         return this.directionModifier;
+    }
+
+    public void setConstraint(PrismaticConstraint constraint) {
+        this.constraint = constraint;
     }
 }

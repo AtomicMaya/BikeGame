@@ -4,7 +4,6 @@ import main.game.actor.Actor;
 import main.game.actor.Camera;
 import main.game.actor.entities.GameEntity;
 import main.game.actor.entities.PlayableEntity;
-import main.game.graphicalStuff.EndGameGraphics;
 import main.io.FileSystem;
 import main.io.Save;
 import main.math.*;
@@ -101,7 +100,6 @@ public class ActorGame implements Game {
 		camera.update(deltaTime);
 
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
-			this.actors.get(i).update(deltaTime);
 		    try {
                 this.actors.get(i).update(deltaTime);
             } catch (ConcurrentModificationException ignored) {

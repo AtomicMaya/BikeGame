@@ -4,6 +4,7 @@ import org.jbox2d.collision.shapes.EdgeShape;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.util.*;
 
@@ -110,6 +111,11 @@ public final class Polyline extends Shape {
     @Override
     public float getArea() {
         return 0.0f;
+    }
+
+    @Override
+    public Area getGeomArea() {
+        return new Area(this.toPath());
     }
 
     @Override

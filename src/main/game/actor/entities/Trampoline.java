@@ -9,12 +9,12 @@ import main.math.Vector;
 import main.window.Canvas;
 
 public class Trampoline implements Actor, Saveable {
+	private GenericPlatform genericPlatform;
+	private AnchorPoint anchor;
+	private ActorGame game;
 
 	private static final long serialVersionUID = 1927654389208717735L;
 
-	private transient TrampolinePlatform trampolinePlatform;
-	private transient AnchorPoint anchor;
-	private transient ActorGame game;
 	private Vector position;
 	private float width, height;
 
@@ -32,9 +32,9 @@ public class Trampoline implements Actor, Saveable {
 		this.height = this.height < 0 ? 1 : this.height;
 		this.anchor = new AnchorPoint(game, position);
 
-		this.trampolinePlatform = new TrampolinePlatform(game, position.add(1, 0), width, height);
+		this.genericPlatform = new GenericPlatform(game, position, width, height);
 
-        this.trampolinePlatform.setConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.trampolinePlatform.getEntity(), new Vector(-1, 0),
+        this.genericPlatform.setConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.genericPlatform.getEntity(), new Vector(-1, 0),
                 0, 2.5f, 0));
 
     }
@@ -48,19 +48,19 @@ public class Trampoline implements Actor, Saveable {
 	@Override
 	public void draw(Canvas canvas) {
 		this.anchor.draw(canvas);
-		this.trampolinePlatform.draw(canvas);
+		this.genericPlatform.draw(canvas);
 	}
 
-	@Override
-	public void update(float deltaTime) {
-		this.anchor.update(deltaTime);
-		this.trampolinePlatform.update(deltaTime);
-	}
+    @Override
+    public void update(float deltaTime) {
+        this.anchor.update(deltaTime);
+        this.genericPlatform.update(deltaTime);
+    }
 
 	@Override
 	public void destroy() {
 		this.anchor.destroy();
-		this.trampolinePlatform.destroy();
+		this.genericPlatform.destroy();
 		this.game.destroyActor(this);
 	}
 
@@ -68,6 +68,7 @@ public class Trampoline implements Actor, Saveable {
 	public Transform getTransform() {
 		return Transform.I.translated(this.position);
 	}
+
 
     @Override
     public Vector getPosition() {
@@ -83,14 +84,14 @@ public class Trampoline implements Actor, Saveable {
 	public void setPosition(Vector newPosition) {
 		this.position = newPosition;
 		this.anchor.setPosition(newPosition);
-		this.trampolinePlatform.setPosition(newPosition.add(1,0));
+		this.genericPlatform.setPosition(newPosition.add(1,0));
 	}
 
 	public void setSize(float width, float height) {
 		this.width = width;
 		this.height = height;
 
-		this.trampolinePlatform.setSize(width, height);
+		this.genericPlatform.setSize(width, height);
 	}
 
 }

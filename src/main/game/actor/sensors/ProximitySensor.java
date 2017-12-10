@@ -9,31 +9,43 @@ import main.math.Entity;
 import main.math.Shape;
 import main.math.Vector;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ProximitySensor extends GameEntity implements Sensor {
-	private Shape sensorArea;
+	public Shape sensorArea;
 
 	private boolean detectionStatus, previousDetectionStatus;
 	private BasicContactListener contactListener;
 	private boolean sensorOccupied = false;
+	private ArrayList<Integer> objectGroups;
 	private float timeToActionEnd = 0, elapsedActionTime = 0.f;
+	private Entity collidingEntity;
 
-	public ProximitySensor(ActorGame game, Vector position, Shape shape) {
-		super(game, true, position);
-		this.sensorArea = shape;
+	public ProximitySensor(ActorGame game, Vector position, Shape shape, ArrayList<Integer> objectGroups) {
+        super(game, true, position);
+        this.sensorArea = shape;
 
-		this.build(this.sensorArea, -1, -1, true, ObjectGroup.SENSOR.group);
+        this.build(this.sensorArea, -1, -1, true, ObjectGroup.SENSOR.group);
 
+        this.objectGroups = objectGroups;
         this.contactListener = new BasicContactListener();
-		this.addContactListener(this.contactListener);
-	}
+        this.addContactListener(this.contactListener);
+    }
+
+    public ProximitySensor(ActorGame game, Vector position, Shape shape) {
+	    this(game, position, shape, new ArrayList<>(Arrays.asList(ObjectGroup.PLAYER.group, ObjectGroup.WHEEL.group)));
+    }
 
 	@Override
 	public void update(float deltaTime) {
 	    this.detectionStatus = false;
 	    if(this.contactListener.getEntities().size() > 0) {
 	        for(Entity entity : this.contactListener.getEntities())
-	            if (entity.getCollisionGroup() == ObjectGroup.PLAYER.group || entity.getCollisionGroup() == ObjectGroup.WHEEL.group)
+	            if (this.objectGroups.contains(entity.getCollisionGroup())) {
 	                this.detectionStatus = true;
+	                this.collidingEntity = entity;
+	        }
         }
         this.previousDetectionStatus = this.detectionStatus;
 
@@ -69,4 +81,7 @@ public class ProximitySensor extends GameEntity implements Sensor {
 		return this.sensorOccupied;
 	}
 
+    public Entity getCollidingEntity() {
+        return this.collidingEntity;
+    }
 }

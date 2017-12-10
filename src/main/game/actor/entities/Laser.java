@@ -61,23 +61,23 @@ public class Laser extends GameEntity {
 		switch (this.direction) {
 			default:
 			case 0:
-				this.shape = new Polyline(0, 0, distance, 0);
+				this.shape = new Polyline(0, 0,  this.distance, 0);
 			break;
 			case 1:
-				this.shape = new Polyline(0, 0, 0, distance);
+				this.shape = new Polyline(0, 0, 0,  this.distance);
 			break;
 			case 2:
-				this.shape = new Polyline(0, 0, -distance, 0);
+				this.shape = new Polyline(0, 0, - this.distance, 0);
 			break;
 			case 3:
-				this.shape = new Polyline(0, 0, 0, -distance);
+				this.shape = new Polyline(0, 0, 0, - this.distance);
 			break;
 		}
 
-		if (sensor != null)
-			sensor.destroy();
-		this.sensor = new ProximitySensor(this.game, startPosition, this.shape);
-		this.graphics = this.addGraphics(this.shape, color, color.darker(), .3f, 0, 1);
+		if ( this.sensor != null)
+            this.sensor.destroy();
+		this.sensor = new ProximitySensor(this.game,  this.startPosition, this.shape);
+		this.graphics = this.addGraphics(this.shape,  this.color,  this.color.darker(), .3f, 0, 1);
 
 		this.emitterGraphics = this.addGraphics("./res/images/blaster." + (this.direction + 1) + ".png", 1, 1,
 				new Vector(.5f, .5f), 1, 2);
@@ -135,7 +135,6 @@ public class Laser extends GameEntity {
 		if (this.sensorActive && this.sensor.getSensorDetectionStatus()) {
 			this.game.getPayload().triggerDeath(false);
 		}
-
 	}
 
 	@Override

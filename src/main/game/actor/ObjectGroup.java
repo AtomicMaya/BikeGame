@@ -10,7 +10,8 @@ public enum ObjectGroup {
     OBSTACLE (3),
     SENSOR (4),
     FINISH (5),
-    CHECKPOINT (6);
+    CHECKPOINT (6),
+    ENEMY (7);
 
     public final int group;
 

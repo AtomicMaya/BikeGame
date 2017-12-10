@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ShapeGraphics;
 import main.math.*;
@@ -35,6 +36,7 @@ public class Bike extends GameEntity implements PlayableEntity {
     // Physical shape of the Bike.
     private transient Polygon hitbox;
     private transient Polyline bikeFrame;
+    private transient Weapon activeWeapon;
 
 
     // Graphics representing the Bike.
@@ -43,6 +45,7 @@ public class Bike extends GameEntity implements PlayableEntity {
     // Entities associated to the Bike.
     private transient Wheel leftWheel, rightWheel;
     private transient CharacterBike character;
+    private transient Shotgun shotgun;
     private transient float angle;
 
     private transient boolean isDead = false, wasTriggered = false;
@@ -64,8 +67,8 @@ public class Bike extends GameEntity implements PlayableEntity {
      * avoid duplication with the method reCreate
      */
     private void create() {
-        hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
-        this.build(hitbox, -1, 5, false, ObjectGroup.PLAYER.group);
+        this.hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
+        this.build(this.hitbox, -1, 5, false, ObjectGroup.PLAYER.group);
 
         this.contactListener = new BasicContactListener();
         this.addContactListener(this.contactListener);
@@ -86,10 +89,13 @@ public class Bike extends GameEntity implements PlayableEntity {
         this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
         this.rightWheel = new Wheel(this.game, this.getPosition().add(new Vector(1, 0)), .5f);
         this.character = new CharacterBike(this.game, this.getPosition());
+        this.shotgun = new Shotgun(this.game, this.getPosition().add(1, 1), 3);
+        this.activeWeapon = this.shotgun;
 
         this.leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
         this.rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
-        this.character.attach(this.getEntity(), new Vector(0.f, 0.5f));
+        this.character.setConstraint(Linker.attachPrismatically(this.game, this.getEntity(), this.character.getEntity(), new Vector(0.f, 0.5f)));
+        this.shotgun.setConstraint(Linker.attachPrismatically(this.game, this.getEntity(), this.shotgun.getEntity(), new Vector(0.5f, 0.5f)));
         this.angle = 0;
     }
 
@@ -125,7 +131,7 @@ public class Bike extends GameEntity implements PlayableEntity {
         }
 
         if (this.game.getKeyboard().get(KeyEvent.VK_Q).isPressed() && this.jumpCount < 2) {
-            this.getEntity().setVelocity(this.getVelocity().add(0, 10));
+            this.getEntity().setVelocity(this.getVelocity().add(0, 15));
             this.jumpCount += 1;
         }
         if (this.jumpCount == 2)
@@ -159,12 +165,19 @@ public class Bike extends GameEntity implements PlayableEntity {
 
         }
 
+        if (this.game.getKeyboard().get(KeyEvent.VK_F).isPressed()) {
+            this.activeWeapon.fireWeapon();
+        }
+
+
+
         if (this.wonTheGame && this.lookRight) this.leftWheel.power(0);
         else if (this.wonTheGame && !this.lookRight) this.rightWheel.power(0);
 
         this.leftWheel.update(deltaTime);
         this.rightWheel.update(deltaTime);
         this.character.update(deltaTime);
+        this.shotgun.update(deltaTime);
     }
 
 
@@ -174,6 +187,7 @@ public class Bike extends GameEntity implements PlayableEntity {
         this.leftWheel.draw(canvas);
         this.rightWheel.draw(canvas);
         this.character.draw(canvas);
+        this.shotgun.draw(canvas);
     }
 
     @Override
@@ -181,6 +195,7 @@ public class Bike extends GameEntity implements PlayableEntity {
         this.leftWheel.destroy();
         this.rightWheel.destroy();
         this.character.destroy();
+        this.shotgun.destroy();
         super.destroy();
         super.getOwner().destroyActor(this);
     }
@@ -193,7 +208,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 
         this.game.addActor(new ParticleEmitter(this.game, this.getPosition().sub(0, .25f), null, 100, (float) -Math.PI / 2f,
                 (float) Math.PI, 1.2f, .1f, 1, .3f,
-                0xFF830303,  	0x00830303, 1, 20));
+                0xFF830303,  	0x00830303, 2, 20));
         try { Thread.sleep(10); } catch (InterruptedException ignored) {}
         this.destroy();
     }
@@ -202,10 +217,10 @@ public class Bike extends GameEntity implements PlayableEntity {
     public void triggerVictory() {
 
         this.wonTheGame = true;
-        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(-4, 5), null, 75, (float) Math.PI / 2,
+        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(-4, 5), null, 100, (float) Math.PI / 2,
                 (float) Math.PI, 1.5f, .1f, 1, .3f,
                 0xFFFFFF00, 0xFFFF0000, 2, 10));
-        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(3, 7), null, 75, (float) Math.PI / 2,
+        this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(3, 7), null, 100, (float) Math.PI / 2,
                 (float) Math.PI, 1.5f, .1f, 1, .3f,
                 0xFFADFF2F,  	0x00551A8B, 2, 10));
     }

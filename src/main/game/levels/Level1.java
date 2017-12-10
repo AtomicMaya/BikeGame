@@ -27,7 +27,7 @@ public class Level1 extends Level {
 		Polyline p = new Polyline(-1000.0f, -1000.0f, -1000.0f, 0.0f, 0.0f, 0.0f, 3.0f, 1.0f, 8.0f, 1.0f, 15.0f, 3.0f,
 				16.0f, 3.0f, 25.0f, 0.0f, 35.0f, -5.0f, 50.0f, -5.0f, 55.0f, -4.0f, 65.0f, 0.0f, 6500.0f, -1000.0f);
 
-		Ground ground = new Ground(game, null, p);
+		Terrain terrain = new Terrain(game, null, p, 0);
 
 		player = new Bike(game, new Vector(4, 5));
 
@@ -39,6 +39,7 @@ public class Level1 extends Level {
 
 		this.addActor(finishActor);
 		// this.addActor(crate1);
+		this.addActor(terrain);
 		Trampoline t = new Trampoline(game, new Vector(5, 6), 5, 1);
 		Polygon p1 = new Polygon(0, 0, 0, 3f, 1.5f, 3f, 1.5f, 0);
 		Liquid l = new Liquid(game, new Vector(-9, 2), p1, true);
@@ -46,7 +47,7 @@ public class Level1 extends Level {
 		GravityWell gw = new GravityWell(game, new Vector(-5,0), new Vector(0,1), ExtendedMath.createRectangle(3, 7), (float) Math.PI);
 		addActor(gw);
 //		addActor(m);
-		this.addActor(ground);
+		this.addActor(terrain);
 		this.addActor(player);
 		this.addActor(t);
 		addActor(l);

@@ -13,7 +13,7 @@ import main.game.GUI.actorBuilder.GroundBuilder;
 import main.game.GameWithLevelAndMenu;
 import main.game.actor.Actor;
 import main.game.actor.entities.Bike;
-import main.game.actor.entities.Ground;
+import main.game.actor.entities.Terrain;
 import main.game.graphics.BetterTextGraphics;
 import main.game.graphics.Graphics;
 import main.game.graphics.ShapeGraphics;
@@ -405,8 +405,8 @@ public class LevelEditor implements Graphics {
 	}
 
 	/**
-	 * Make sure we have a unique {@linkplain Ground}
-	 * @param {@linkplain Ground} to add to the game
+	 * Make sure we have a unique {@linkplain Terrain}
+	 * @param {@linkplain Terrain} to add to the game
 	 */
 	public void addGround() {
 		if (this.gb != null) {

@@ -10,24 +10,27 @@ import main.window.Canvas;
 import java.awt.*;
 import java.util.List;
 
-public class Ground extends GameEntity {
+public class Terrain extends GameEntity {
 	private static final long serialVersionUID = 7454750386019416210L;
 
 	// keep reference to the graphics
 	private transient ShapeGraphics graphics;
+	private int type;
 
 	private List<Vector> points;
 
 	/**
-	 * Create a Ground
+	 * Create a Terrain
 	 * 
 	 * @param game : ActorGame where the ground exists
 	 * @param position : the position of the ground
 	 * @param shape : a polyline shape of the ground
+     * @param type : whether it's normal ground (0), ice (1), mud (2)
 	 */
-	public Ground(ActorGame game, Vector position, Polyline shape) {
+	public Terrain(ActorGame game, Vector position, Polyline shape, int type) {
 		super(game, true, (position == null) ? Vector.ZERO : position);
 		this.points = shape.getPoints();
+		this.type = type;
 		this.create();
 	}
 
@@ -36,9 +39,20 @@ public class Ground extends GameEntity {
 	 * to avoid duplication with the method reCreate
 	 */
 	private void create() {
-		Polyline p = new Polyline(points);
-		this.build(p, 2f, -1, false, ObjectGroup.TERRAIN.group);
-		graphics = this.addGraphics(p, Color.decode("#6D5D49"), Color.decode("#548540"), .2f, 1, 10);
+		Polyline points = new Polyline(this.points);
+		float friction;
+		if (this.type == 0) friction = 2;
+		else if (this.type == 1) friction = 0;
+		else if (this.type == 2) friction = 0.7f;
+		else friction = 2;
+
+		this.build(points, friction, -1, false, ObjectGroup.TERRAIN.group);
+		String color1, color2;
+        if (this.type == 0) { color1 =  "#6D5D49"; color2 = "#548542"; }
+        else if (this.type == 1) { color1 = "#a2d2df"; color2 = "#baf2ef"; }
+        else if (this.type == 2) { color1 = "#92817c"; color2 = "#a99790"; }
+        else { color1 =  "#6D5D49"; color2 = "#548542"; }
+        this.graphics = this.addGraphics(points, Color.decode(color1), Color.decode(color2), .2f, 1, 10);
 	}
 
 	@Override
@@ -49,7 +63,7 @@ public class Ground extends GameEntity {
 
 	@Override
 	public void draw(Canvas window) {
-		graphics.draw(window);
+		this.graphics.draw(window);
 	}
 
 	@Override

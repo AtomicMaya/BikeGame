@@ -63,7 +63,7 @@ public class FinishActor extends GameEntity {
 	    if (this.contactListener.getEntities().size() > 0) {
 	        for (Entity entity : this.contactListener.getEntities())
 	            if (entity.getCollisionGroup() == ObjectGroup.PLAYER.group)
-                    (this.game.getPayload()).triggerVictory();
+                    this.game.getPayload().triggerVictory();
         }
 	}
 
