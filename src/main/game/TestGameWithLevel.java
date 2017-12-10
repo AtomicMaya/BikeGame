@@ -22,6 +22,7 @@ public class TestGameWithLevel extends GameWithLevels {
 	protected List<Level> createLevelList() {
 
 		List<Level> levels = new ArrayList<>();
+        //levels.add(new CinematicLevel1(this));
 		levels.add(new Level1(this));
 		levels.add(new Level1(this));
 

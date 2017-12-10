@@ -1,6 +1,7 @@
 package main;
 
 import main.game.Game;
+import main.game.TestGame;
 import main.game.TestGameLevelMenu;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
@@ -43,8 +44,8 @@ public class Program {
 			// Game game = new PolyLineGame();
 			// Game game = new CrateGame();
 
-			//Game game = new TestGame();
-			Game game = new TestGameLevelMenu();
+			Game game = new TestGame();
+//			Game game = new TestGameLevelMenu();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression

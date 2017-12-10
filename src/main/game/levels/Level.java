@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	23 nov. 2017
- */
 package main.game.levels;
 
 import main.game.ActorGame;
@@ -46,10 +42,10 @@ public abstract class Level extends Node implements Actor {
 	public abstract void createAllActors();
 
 	/**
-	 * @param {@linkplain Actor} to ads in the {@linkplain Level}
+	 * @param actor  {@linkplain Actor} to ads in the {@linkplain Level}
 	 */
 	public void addActor(Actor actor) {
-		actors.add(actor);
+		this.actors.add(actor);
 	}
 
 	/**
@@ -68,10 +64,9 @@ public abstract class Level extends Node implements Actor {
 	 * @return the list of all the {@linkplain Actor}s in this {@linkplain Level}
 	 */
 	public ArrayList<Actor> getActors() {
-		ArrayList<Actor> temp = new ArrayList<>();
-		temp.addAll(actors);
-		actors.clear();
-		return temp;
+        ArrayList<Actor> temporary = new ArrayList<>(this.actors);
+		this.actors.clear();
+		return temporary;
 	}
 
 	/**
@@ -89,7 +84,7 @@ public abstract class Level extends Node implements Actor {
 	}
 
 	/**
-	 * @return weather this {@linkplain Level} is finished
+	 * @return whether this {@linkplain Level} is finished
 	 */
 	public abstract boolean isFinished();
 }

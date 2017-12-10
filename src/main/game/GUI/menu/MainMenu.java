@@ -25,7 +25,7 @@ public class MainMenu extends FullScreenMenu {
 	// text main menu
 	private TextGraphics menuMainGraphics;
 	private final String menuMainTest = "Menu";
-	private Color menuColor = Color.BLUE.LIGHT_GRAY.CYAN;
+	private Color menuColor = Color.CYAN;
 
 	// TODO remove this, for placing purpose #grid lines
 	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
