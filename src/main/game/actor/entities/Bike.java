@@ -245,10 +245,4 @@ public class Bike extends GameEntity implements PlayableEntity {
 	public boolean isLookingRight() {
 		return lookRight;
 	}
-
-	@Override
-	public void setLastCheckPoints(Checkpoint checkpoint) {
-		// TODO Auto-generated method stub
-		
-	}
 }
