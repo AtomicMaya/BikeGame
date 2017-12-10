@@ -4,10 +4,6 @@
  */
 package main.game;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.util.List;
-
 import main.game.graphics.TextGraphics;
 import main.game.levels.Level;
 import main.io.FileSystem;
@@ -15,13 +11,17 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Window;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.List;
+
 /** Represent an {@linkplain ActorGame} with {@linkplain Level}s */
 public abstract class GameWithLevels extends ActorGame {
 
 	private List<Level> levels;
 	private int currentLevel = 0;
 
-	private float timer1 = 0;
+	private float timerMessage = 0;
 
 	private final float timeBeforeMessage1 = 2f;
 	private final String messageNextLevelText = "Press N to go to the next level";
@@ -45,13 +45,20 @@ public abstract class GameWithLevels extends ActorGame {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		if (getKeyboard().get(KeyEvent.VK_R).isPressed()) {
-			resetLevel();
+
+		if (this.isGameFrozen()) {
+			message1.setText("");
+			display = false;
+			timerMessage = 0;
 		}
 		if (levels != null && !levels.isEmpty() && levels.get(currentLevel).isFinished()) {
-			timer1 += deltaTime;
-			if (timer1 > timeBeforeMessage1 & !display) {
+			if (getKeyboard().get(KeyEvent.VK_R).isPressed()) {
+				resetLevel();
+			}
 
+			timerMessage += deltaTime;
+			if (timerMessage > timeBeforeMessage1 & !display) {
+				display = true;
 				Vector position = getCanvas().getPosition();// .add(new
 															// Vector(.5f, 0));
 				message1.setRelativeTransform(Transform.I.translated(position));
@@ -65,8 +72,10 @@ public abstract class GameWithLevels extends ActorGame {
 					message1.setOutlineColor(new Color(155, 18, 48));
 					message1.setText(messageRestartLevelText);
 				}
-				message1.draw(getCanvas());
+
 			}
+			if (display)
+				message1.draw(getCanvas());
 			if (getPayload().getVictoryStatus()) {
 				if (getKeyboard().get(KeyEvent.VK_N).isPressed())
 					nextLevel();
@@ -92,6 +101,8 @@ public abstract class GameWithLevels extends ActorGame {
 	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
 	protected void clearCurrentLevel() {
 		super.destroyAllActors();
+		message1.setText("");
+		display = false;
 	}
 
 	/**

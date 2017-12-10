@@ -19,17 +19,20 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
+/** MainMenu of our game */
 public class MainMenu extends FullScreenMenu {
 
 	// text main menu
 	private TextGraphics menuMainGraphics;
 	private final String menuMainTest = "Menu";
+	private Color menuColor = Color.BLUE.LIGHT_GRAY.CYAN;
 
 	// TODO remove this, for placing purpose #grid lines
 	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
 
 	// buttons list
 	private ArrayList<GraphicalButton> buttons = new ArrayList<>();
+	private ArrayList<GraphicalButton> deleteButons = new ArrayList<>();
 
 	// our level buttons
 	private ArrayList<GraphicalButton> levelButtons = new ArrayList<>();
@@ -52,23 +55,22 @@ public class MainMenu extends FullScreenMenu {
 	// level editor
 	private GraphicalButton levelEditorButton;
 	private LevelEditor levelEditor;
-	private boolean inLevelEditor = false;
 
 	/**
 	 * Create a MainMenu for a {@linkplain GameWithLevelAndMenu }
 	 * 
-	 * @param game : {@linkplain GameWithLevelAndMenu} the game in which
-	 * {@link this} MainMenu belong
+	 * @param game : {@linkplain GameWithLevelAndMenu} the game in which this
+	 * {@linkplain MainMenu} belong
 	 * @param window : {@linkplain Window} Window context
 	 */
 	public MainMenu(GameWithLevelAndMenu game, Window window) {
 		super(game, window, true, Color.GRAY);
 
 		// main menu text
-		float fontSize = 4f;
+		float fontSize = 4.5f;
 		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
-		menuMainGraphics = new TextGraphics(menuMainTest, fontSize, Color.BLACK, Color.BLUE, .1f, false, false, anchor,
-				1, 1);
+		menuMainGraphics = new TextGraphics(menuMainTest, fontSize, menuColor, Color.BLACK.brighter(), .01f, false,
+				false, anchor, 1, 1);
 
 		// TODO remove this grid
 		float w = .01f;
@@ -85,33 +87,8 @@ public class MainMenu extends FullScreenMenu {
 			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
 		}
 
-		// get the saves and create buttons to load them
-		File[] list = Save.availableSaves(game);
-		for (int i = 0; i < list.length; i++) {
-			Vector position = new Vector(-28, -(i % maxNumberButtonsSave) * 2f + 8f);
-			buttons.add(new GraphicalButton(game, position, list[i].getName(), 1.4f));
-			int p = i;
-			buttons.get(i).addOnClickAction(() -> {
-				// load a saves
-				if (!busy && waitBeforeClick > .5f) {
-					game.destroyAllActors();
-					
-					busy = true;
-					
-					
-					// problematic loading part
-					System.out.println("    - Going to load");
-					if (game.load(list[p].getName()))
-						System.out.println("    - loaded successfully");
-					else System.out.println("error");
-					
-					System.out.println("    - Finish loading");
-					game.setGameFreezeStatus(false);
-					this.setStatus(false);
-				}
-			});
-			buttons.get(i).forceShape(6, -1);
-		}
+		// create the saves buttons
+		createSaveButtons();
 
 		// Arrow buttons to navigate in the save menu
 		right = new GraphicalButton(game, new Vector(-24, -11), 2, 2);
@@ -129,8 +106,8 @@ public class MainMenu extends FullScreenMenu {
 		// level editor
 		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1.4f);
 		levelEditorButton.addOnClickAction(() -> {
-			levelEditor = new LevelEditor(game, window);
-			inLevelEditor = true;
+			levelEditor = new LevelEditor(game, window, this);
+			levelEditor.open();
 		});
 
 		// play button
@@ -174,9 +151,13 @@ public class MainMenu extends FullScreenMenu {
 	public void update(float deltaTime, float zoom) {
 
 		// if in level editor, don't update the rest
-		if (inLevelEditor) {
+		if (levelEditor != null && levelEditor.isOpen()) {
 			levelEditor.update(deltaTime);
 			return;
+		}
+		if (levelEditor != null) {
+			levelEditor = null;
+			createSaveButtons();
 		}
 		super.update(deltaTime, zoom);
 
@@ -194,6 +175,9 @@ public class MainMenu extends FullScreenMenu {
 		for (GraphicalButton gb : levelButtons) {
 			gb.update(deltaTime, zoom);
 		}
+		for (GraphicalButton gb : deleteButons) {
+			gb.update(deltaTime, zoom);
+		}
 		levelEditorButton.update(deltaTime, zoom);
 		play.update(deltaTime, zoom);
 	}
@@ -201,7 +185,7 @@ public class MainMenu extends FullScreenMenu {
 	@Override
 	public void draw(Canvas canvas) {
 
-		if (inLevelEditor) {
+		if (levelEditor != null && levelEditor.isOpen()) {
 			levelEditor.draw(canvas);
 			return;
 		}
@@ -225,6 +209,9 @@ public class MainMenu extends FullScreenMenu {
 		for (GraphicalButton gb : levelButtons) {
 			gb.draw(canvas);
 		}
+		for (GraphicalButton gb : deleteButons) {
+			gb.draw(canvas);
+		}
 		levelEditorButton.draw(canvas);
 		play.draw(canvas);
 		canvas.drawShape(new Circle(.2f), Transform.I, Color.MAGENTA, Color.RED, .02f, 1, 10000);
@@ -244,8 +231,58 @@ public class MainMenu extends FullScreenMenu {
 			gb.destroy();
 		for (GraphicalButton gb : this.levelButtons)
 			gb.destroy();
+		for (GraphicalButton gb : this.deleteButons)
+			gb.destroy();
 		this.levelEditorButton.destroy();
 		this.play.destroy();
+	}
+
+	private void createSaveButtons() {
+		buttons.clear();
+		deleteButons.clear();
+		ArrayList<GraphicalButton> tempSaveButons = new ArrayList<>();
+		ArrayList<GraphicalButton> tempDeleteButons = new ArrayList<>();
+
+		// get the saves and create buttons to load them
+		File[] list = Save.availableSaves(getOwner());
+		for (int i = 0; i < list.length; i++) {
+			Vector position = new Vector(-28, -(i % maxNumberButtonsSave) * 2.4f + 8f);
+			tempSaveButons.add(new GraphicalButton(getOwner(), position, list[i].getName(), 1.4f));
+			int p = i;
+			tempSaveButons.get(i).addOnClickAction(() -> {
+				// load a saves
+				if (!busy && waitBeforeClick > .5f) {
+					getOwner().destroyAllActors();
+
+					busy = true;
+
+					// problematic loading part
+					System.out.println("    - Going to load");
+					if (getOwner().load(list[p].getName()))
+						System.out.println("    - loaded successfully");
+					else
+						System.out.println("error");
+
+					System.out.println("    - Finish loading");
+					getOwner().setGameFreezeStatus(false);
+					this.setStatus(false);
+				}
+			});
+			tempSaveButons.get(i).forceShape(6, -1);
+			tempDeleteButons.add(new GraphicalButton(getOwner(), position.add(-1, .6f), 1, 1));
+			tempDeleteButons.get(i).setNewGraphics("res/images/delete.png", "res/images/delete_hover.png");
+			tempDeleteButons.get(i).addOnClickAction(() -> {
+				Save.deleteDirectory(new File(list[p].getPath()));
+				createSaveButtons();
+//				tempSaveButons.get(p).destroy();
+//				tempSaveButons.remove(buttons.get(p));
+//				tempDeleteButons.get(p).destroy();
+//				tempDeleteButons.remove(buttons.get(p));
+			});
+			tempDeleteButons.get(i).setDepth(1337);
+		}
+		buttons.addAll(tempSaveButons);
+		deleteButons.addAll(tempDeleteButons);
 	}
 
 }

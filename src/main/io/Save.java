@@ -62,7 +62,9 @@ public class Save {
 			// transform the object into an actor
 			try {
 				Saveable actor = (Saveable) o;
+				System.out.println(o + " got");
 				actor.reCreate(game);
+				System.out.println(actor + " recreated");
 				return (Actor) actor;
 			} catch (ClassCastException cce) {
 				cce.printStackTrace();
@@ -94,23 +96,24 @@ public class Save {
 
 	public static int[] getParams(FileSystem fileSystem, File file) {
 		int[] r = new int[2];
-		try {
-			InputStream is = fileSystem.read(file.getPath());
-			byte[] b = new byte[is.available()];
-			is.read(b);
-			is.close();
+		if (file.exists())
+			try {
+				InputStream is = fileSystem.read(file.getPath());
+				byte[] b = new byte[is.available()];
+				is.read(b);
+				is.close();
 
-			String s = new String(b);
-			int start1 = s.indexOf('<') + 1;
-			int stop1 = s.indexOf('>', start1);
-			r[0] = Integer.parseInt(s.substring(start1, stop1));
+				String s = new String(b);
+				int start1 = s.indexOf('<') + 1;
+				int stop1 = s.indexOf('>', start1);
+				r[0] = Integer.parseInt(s.substring(start1, stop1));
 
-			int start2 = s.indexOf('<') + 1;
-			int stop2 = s.indexOf('>', start1);
-			r[1] = Integer.parseInt(s.substring(start2, stop2));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+				int start2 = s.indexOf('<') + 1;
+				int stop2 = s.indexOf('>', start1);
+				r[1] = Integer.parseInt(s.substring(start2, stop2));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		return r;
 
 	}
@@ -127,11 +130,18 @@ public class Save {
 		return new File[] {};
 	}
 
-	public static void deleteDirectory(File directory) {
+	/**
+	 * Delete a directory and its content
+	 * @param directory directory to delete
+	 * @return whether the specified directory and its content has been deleted
+	 */
+	public static boolean deleteDirectory(File directory) {
 		File[] toDelete = directory.listFiles();
-		for (File f : toDelete)
-			if (f.isDirectory()) {
+		if (toDelete != null) {
+			for (File f : toDelete) {
 				deleteDirectory(f);
-			} else f.delete();
+			}
+		}
+		return directory.delete();
 	}
 }

@@ -1,119 +1,77 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	8 déc. 2017
- */
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
-import main.game.GUI.Comment;
-import main.game.GUI.NumberField;
-import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.Trampoline;
 import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.event.KeyEvent;
-
 public class TrampolineBuilder extends ActorBuilder {
 
 	private Vector position;
 
-	boolean placed = false;
+	private Trampoline trampoline;
 
-	private Trampoline rfTrampoline;
-	private NumberField height, width;
-	private Vector heightNumberFieldPos = new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
-	private Comment heightComment, widthComments;
-
-	private boolean isWriting = true;
-	private boolean hoover = false;
+	private boolean isDone = false;
+	private boolean hover = false;
 
 	public TrampolineBuilder(ActorGame game) {
 		super(game);
-		rfTrampoline = new Trampoline(game, getFlooredMousePosition(), 5, 1);
-
-		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
-
-		heightComment = new Comment(game, "Crate Height");
-		heightComment.setParent(height);
-		heightComment.setAnchor(new Vector(-6, 0));
-
-		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
-
-		widthComments = new Comment(game, "Crate Width");
-		widthComments.setParent(width);
-		widthComments.setAnchor(new Vector(-6, 0));
+		trampoline = new Trampoline(getOwner(), getFlooredMousePosition(), 5, 1);
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
 
-		if (!placed) {
+		if (!isDone) {
 			position = getFlooredMousePosition();
 			if (isLeftPressed()) {
-				placed = true;
+				isDone = true;
 			}
-			rfTrampoline.setPosition(position);
-
-		}
-		if (!isDone()) {
-			height.update(deltaTime, zoom);
-			width.update(deltaTime, zoom);
-
-			heightComment.update(deltaTime, zoom);
-			widthComments.update(deltaTime, zoom);
-
-			if (getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
-				isWriting = !(height.hasFocus() & width.hasFocus());
-				// rfTrampoline.setSize(width.getNumber(), height.getNumber());
-			}
+			trampoline.setPosition(position);
 		} else
-			hoover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
-					getFlooredMousePosition());
-		if (hoover && isRightPressed())
-			isWriting = true;
+			hover = ExtendedMath.isInRectangle(position, position.add(5, 1), getMousePosition());
+		if (hover && isRightPressed())
+			isDone = false;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		rfTrampoline.draw(canvas);
-		if (!isDone()) {
-			height.draw(canvas);
-			if (height.isHovered())
-				heightComment.draw(canvas);
-			width.draw(canvas);
-			if (width.isHovered())
-				widthComments.draw(canvas);
-		}
+		if (trampoline != null)
+			trampoline.draw(canvas);
 
 	}
 
 	@Override
 	public Actor getActor() {
-		return rfTrampoline;
+		return trampoline;
 	}
 
 	@Override
 	public boolean isDone() {
-		return placed & !isWriting;
+		return isDone;
 	}
 
 	@Override
 	public void reCreate() {
-		rfTrampoline.destroy();
-		rfTrampoline = new Trampoline(getOwner(), position, width.getNumber(), height.getNumber());
+		trampoline.destroy();
+		trampoline = new Trampoline(getOwner(), position, 5, 1);
 	}
 
 	@Override
 	public boolean isHovered() {
-		return hoover;
+		return hover;
 	}
 
 	@Override
 	public void destroy() {
-		this.rfTrampoline.destroy();
+		this.trampoline.destroy();
+	}
+
+	@Override
+	public void edit() {
+		this.isDone = false;
 	}
 
 }

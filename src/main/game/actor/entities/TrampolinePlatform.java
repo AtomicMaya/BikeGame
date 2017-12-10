@@ -10,56 +10,67 @@ import main.math.WeldConstraint;
 import main.window.Canvas;
 
 public class TrampolinePlatform extends GameEntity {
-    private ImageGraphics graphics;
-    private float width, height;
-    private WeldConstraint leftConstraint, rightConstraint;
 
-    public TrampolinePlatform(ActorGame game, Vector anchorPosition, float width, float height) {
-        super(game, false, anchorPosition);
-        this.width = width;
-        this.height = height;
-        create();
-    }
+	private static final long serialVersionUID = 4001144688952819865L;
 
-    private void create() {
-        Shape shape = new Polygon(0, 0, this.width, 0, this.width, this.height, 0, this.height);
-        this.build(shape, 1.f, 1f, false, ObjectGroup.TERRAIN.group);
+	private transient ImageGraphics graphics;
+	private float width, height;
+	private transient WeldConstraint leftConstraint, rightConstraint;
 
-        this.graphics = this.addGraphics("/res/images/wood.3.png", this.width, this.height, Vector.ZERO, .9f, 1);
-    }
+	public TrampolinePlatform(ActorGame game, Vector anchorPosition, float width, float height) {
+		super(game, false, anchorPosition);
+		this.width = width;
+		this.height = height;
+		create();
+	}
 
-    @Override
-    public void reCreate(ActorGame game) {
-        super.reCreate(game);
-        create();
-    }
+	private void create() {
+		Shape shape = new Polygon(0, 0, this.width, 0, this.width, this.height, 0, this.height);
+		this.build(shape, 1.f, 1f, false, ObjectGroup.TERRAIN.group);
 
-    @Override
-    public void draw(Canvas canvas) {
-        this.graphics.draw(canvas);
-    }
+		this.graphics = this.addGraphics("/res/images/wood.3.png", this.width, this.height, Vector.ZERO, .9f, 1);
+	}
 
-    @Override
-    public void destroy() {
-        this.leftConstraint.destroy();
-        this.rightConstraint.destroy();
-        super.destroy();
-        super.getOwner().destroyActor(this);
-    }
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		create();
+	}
 
-    public void setLeftConstraint(WeldConstraint constraint) {
-        this.leftConstraint = constraint;
-    }
+	@Override
+	public void draw(Canvas canvas) {
+		this.graphics.draw(canvas);
+	}
 
-    public WeldConstraint getLeftConstraint() {
-        return this.leftConstraint;
-    }
+	@Override
+	public void destroy() {
+		if (leftConstraint != null)
+			this.leftConstraint.destroy();
+		if (rightConstraint != null)
+			this.rightConstraint.destroy();
+		super.destroy();
+		super.getOwner().destroyActor(this);
+	}
 
-    public void setRightConstraint(WeldConstraint constraint) {
-        this.rightConstraint = constraint;
-    }
+	public void setLeftConstraint(WeldConstraint constraint) {
+		this.leftConstraint = constraint;
+	}
 
-    public WeldConstraint getRightConstraint() {
-        return this.rightConstraint;
-    }
+	public WeldConstraint getLeftConstraint() {
+		return this.leftConstraint;
+	}
+
+	public void setRightConstraint(WeldConstraint constraint) {
+		this.rightConstraint = constraint;
+	}
+
+	public WeldConstraint getRightConstraint() {
+		return this.rightConstraint;
+	}
+
+	public void setSize(float width, float height) {
+		this.width = width;
+		this.height = height;
+		create();
+	}
 }

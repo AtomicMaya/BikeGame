@@ -21,9 +21,11 @@ public abstract class GameEntity implements Actor, Saveable {
 	private boolean fixed;
 
 	/**
-	 * Create a new {@linkplain GameEntity}, and its associated {@linkplain Entity}
+	 * Create a new {@linkplain GameEntity}, and its associated
+	 * {@linkplain Entity}
 	 * 
-	 * @param game : The {@linkplain ActorGame} where this {@linkplain Entity} inhabits.
+	 * @param game : The {@linkplain ActorGame} where this {@linkplain Entity}
+	 * inhabits.
 	 * @param fixed : Whether the {@linkplain Entity} is fixed.
 	 * @param position : The position of the {@linkplain Entity}.
 	 */
@@ -41,12 +43,13 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in the constructor
-	 * to avoid duplication with the method reCreate
+	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in
+	 * the constructor to avoid duplication with the method reCreate
 	 */
 	private void create() {
 		if (entity == null)
 			this.entity = this.actorGame.newEntity(this.position, this.fixed);
+		System.out.println(this + " " + position + " " + fixed);
 	}
 
 	@Override
@@ -55,11 +58,11 @@ public abstract class GameEntity implements Actor, Saveable {
 		create();
 	}
 
-
 	/**
 	 * Create a new {@linkplain GameEntity}, and its associated Entity
 	 * 
-	 * @param game : The {@linkplain ActorGame} where the {@linkplain GameEntity} evolves
+	 * @param game : The {@linkplain ActorGame} where the
+	 * {@linkplain GameEntity} evolves
 	 * @param fixed : Whether the {@linkplain Entity} is fixed
 	 */
 	public GameEntity(ActorGame game, boolean fixed) {
@@ -89,7 +92,8 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * Destroy the {@linkplain Entity} associated with this {@linkplain GameEntity}.
+	 * Destroy the {@linkplain Entity} associated with this
+	 * {@linkplain GameEntity}.
 	 */
 	public void destroy() {
 		this.entity.destroy();
@@ -111,7 +115,8 @@ public abstract class GameEntity implements Actor, Saveable {
 	 * @param imagePath : the path to the image to add
 	 * @param width : the width of the image
 	 * @param height : the height of the image
-	 * @return a new {@linkplain ImageGraphics} associated to this {@linkplain GameEntity}
+	 * @return a new {@linkplain ImageGraphics} associated to this
+	 * {@linkplain GameEntity}
 	 */
 	public ImageGraphics addGraphics(String imagePath, float width, float height) {
 		return addGraphics(imagePath, width, height, Vector.ZERO, 1, 0);
@@ -122,10 +127,12 @@ public abstract class GameEntity implements Actor, Saveable {
 	 * @param imagePath : the path to the image to add
 	 * @param width : the width of the image
 	 * @param height : the height of the image
-	 * @param anchor : a {@linkplain Vector} which give an anchor to the {@linkplain ImageGraphics}, relative to its parent
+	 * @param anchor : a {@linkplain Vector} which give an anchor to the
+	 * {@linkplain ImageGraphics}, relative to its parent
 	 * @param alpha : the transparency, between 0 (invisible) and 1 (opaque)
 	 * @param depth : the render priority, lower-values drawn first
-	 * @return a new {@linkplain ImageGraphics} associated to this {@linkplain GameEntity}
+	 * @return a new {@linkplain ImageGraphics} associated to this
+	 * {@linkplain GameEntity}
 	 */
 	public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor, float alpha,
 			float depth) {
@@ -139,8 +146,10 @@ public abstract class GameEntity implements Actor, Saveable {
 	 * @param imagePath : the path to the image to add
 	 * @param width : the width of the image
 	 * @param height : the height of the image
-	 * @param anchor : a {@linkplain Vector} which give an anchor to the {@linkplain ImageGraphics}, relative to its parent
-	 * @return a new {@linkplain ImageGraphics} associated to this {@linkplain GameEntity}
+	 * @param anchor : a {@linkplain Vector} which give an anchor to the
+	 * {@linkplain ImageGraphics}, relative to its parent
+	 * @return a new {@linkplain ImageGraphics} associated to this
+	 * {@linkplain GameEntity}
 	 */
 	public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor) {
 		return addGraphics(imagePath, width, height, anchor, 1, 0);
@@ -154,7 +163,8 @@ public abstract class GameEntity implements Actor, Saveable {
 	 * @param thickness : the outline thickness
 	 * @param alpha : the transparency, between 0 (invisible) and 1 (opaque)
 	 * @param depth : the render priority, lower-values drawn first
-	 * @return a new {@linkplain ShapeGraphics} associated to this {@linkplain GameEntity}
+	 * @return a new {@linkplain ShapeGraphics} associated to this
+	 * {@linkplain GameEntity}
 	 */
 	public ShapeGraphics addGraphics(Shape shape, Color fillColor, Color outlineColor, float thickness, float alpha,
 			float depth) {
@@ -168,27 +178,34 @@ public abstract class GameEntity implements Actor, Saveable {
 	 *
 	 * @param shape : a {@linkplain Shape}, may be null
 	 * @param color : a fill {@linkplain Color}, may be null
-	 * @return a new {@linkplain ShapeGraphics} associated to this {@linkplain GameEntity}
+	 * @return a new {@linkplain ShapeGraphics} associated to this
+	 * {@linkplain GameEntity}
 	 */
 	public ShapeGraphics addGraphics(Shape shape, Color color) {
 		return addGraphics(shape, color, color, 0.f, 0.f, 0.f);
 	}
 
 	/**
-	 * Build the {@linkplain Entity}, which gives it a physical representation in the engine
-	 * @param shape : the {@linkplain Shape} to be given to the {@linkplain Entity}
+	 * Build the {@linkplain Entity}, which gives it a physical representation
+	 * in the engine
+	 * @param shape : the {@linkplain Shape} to be given to the
+	 * {@linkplain Entity}
 	 */
 	public void build(Shape shape) {
 		build(shape, -1, -1, false);
 	}
 
 	/**
-	 * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
-	 * @param shape : The {@linkplain Shape} to be given to the {@linkplain Entity}.
-	 * @param friction : The friction to be given to the {@linkplain Entity}, defaults if
-	 *            negative.
-	 * @param density : The density of the {@linkplain Entity}, defaults if negative.
-	 * @param ghost : Whether this part is hidden and should act only as a sensor.
+	 * Builds the {@linkplain Entity}, which gives it a physical representation
+	 * in the engine.
+	 * @param shape : The {@linkplain Shape} to be given to the
+	 * {@linkplain Entity}.
+	 * @param friction : The friction to be given to the {@linkplain Entity},
+	 * defaults if negative.
+	 * @param density : The density of the {@linkplain Entity}, defaults if
+	 * negative.
+	 * @param ghost : Whether this part is hidden and should act only as a
+	 * sensor.
 	 */
 	public void build(Shape shape, float friction, float density, boolean ghost) {
 		PartBuilder partBuilder = this.entity.createPartBuilder();
@@ -202,12 +219,16 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
-	 * @param shape : The {@linkplain Shape} to be given to the {@linkplain Entity}.
-	 * @param friction : The friction to be given to the {@linkplain Entity}, defaults if
-	 *            negative.
-	 * @param density : The density of the {@linkplain Entity}, defaults if negative.
-	 * @param ghost : Whether this part is hidden and should act only as a sensor.
+	 * Builds the {@linkplain Entity}, which gives it a physical representation
+	 * in the engine.
+	 * @param shape : The {@linkplain Shape} to be given to the
+	 * {@linkplain Entity}.
+	 * @param friction : The friction to be given to the {@linkplain Entity},
+	 * defaults if negative.
+	 * @param density : The density of the {@linkplain Entity}, defaults if
+	 * negative.
+	 * @param ghost : Whether this part is hidden and should act only as a
+	 * sensor.
 	 * @param collisionGroup : This {@linkplain Entity}'s collision group.
 	 */
 	public void build(Shape shape, float friction, float density, boolean ghost, int collisionGroup) {
@@ -231,10 +252,12 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Gives a new position to this {@linkplain Entity}.
-	 * @param newPosition : A position {@linkplain Vector} (x-axis value, y-axis value).
+	 * @param newPosition : A position {@linkplain Vector} (x-axis value, y-axis
+	 * value).
 	 */
 	public void setPosition(Vector newPosition) {
 		entity.setPosition(newPosition);
+		this.position = newPosition;
 	}
 
 }

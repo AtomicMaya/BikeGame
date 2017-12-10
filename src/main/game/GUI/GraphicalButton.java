@@ -245,12 +245,13 @@ public class GraphicalButton extends GUIComponent {
 	public void setDepth(float depth) {
 		this.depth = depth;
 		this.setNewGraphics(idleGraphics, hoverGraphics);
-		textGraphics.setDepth(depth + 0.01f);
+		if (textGraphics != null)
+			textGraphics.setDepth(depth + 0.01f);
 	}
 
 	@Override
 	public void destroy() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

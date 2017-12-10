@@ -17,7 +17,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
 public class ActorGame implements Game {
@@ -72,12 +71,26 @@ public class ActorGame implements Game {
 
 	@Override
 	public void update(float deltaTime) {
-
-//		System.out.println(actors.size() + " " + world.getEntities().size());
+		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
+			System.out.println(actors.size() + " " + world.getEntities().size());
 		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed()) {
 			this.gameFrozen = !this.gameFrozen;
 		}
-
+		
+		
+		if (!this.actorsToRemove.isEmpty()) {
+			for (int i = 0; i < this.actorsToRemove.size(); i++) {
+				this.actorsToRemove.get(i).destroy();
+			}
+			this.actors.removeAll(this.actorsToRemove);
+			this.actorsToRemove.clear();
+		}
+		if (!this.actorsToAdd.isEmpty()) {
+			this.actors.addAll(this.actorsToAdd);
+			this.actorsToAdd.clear();
+		}
+		
+		
 		if (this.gameFrozen) {
 			return;
 		}
@@ -91,18 +104,7 @@ public class ActorGame implements Game {
 		}
 		// for (Actor a:actors)a.update(deltaTime);
 
-		if (!this.actorsToRemove.isEmpty()) {
-
-			for (int i = 0; i < this.actorsToRemove.size(); i++) {
-				this.actorsToRemove.get(i).destroy();
-			}
-			this.actors.removeAll(this.actorsToRemove);
-			this.actorsToRemove.clear();
-		}
-		if (!this.actorsToAdd.isEmpty()) {
-			this.actors.addAll(this.actorsToAdd);
-			this.actorsToAdd.clear();
-		}
+		
 
 		for (Actor actor : this.actors) {
 			actor.draw(this.window);
@@ -332,6 +334,8 @@ public class ActorGame implements Game {
 		}
 		Save.saveParameters(viewCandidateNumber, playerNumber, this.fileSystem,
 				new File(folder.getPath() + "/params.param"));
+
+		System.out.println("saved sucesfully " + (folder.listFiles().length - 1) + " actors");
 	}
 
 	/**
@@ -344,14 +348,14 @@ public class ActorGame implements Game {
 
 			System.out.println("    - start loading");
 			File save = new File(saveDirectory + saveName);
-//			try {
-//				System.out.println("start wait");
-//				this.wait(1000);
-//				System.out.println("endwait");
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			try {
+				System.out.println("start wait");
+				toAdd.wait(100);
+				System.out.println("endwait");
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (save.exists()) {
 				File[] files = save.listFiles();
 				for (File f : files) {
@@ -360,7 +364,6 @@ public class ActorGame implements Game {
 						if (actor != null)
 							toAdd.add(actor);
 					}
-
 				}
 
 				int[] params = Save.getParams(fileSystem, new File(save.getPath() + "/params.param"));
@@ -369,13 +372,13 @@ public class ActorGame implements Game {
 
 				this.setViewCandidate(toAdd.get(params[0]));
 				this.setPayload((PlayableEntity) toAdd.get(params[1]));
-
+				toAdd.add(new EndGameGraphics(this));
 				actorsToAdd.addAll(toAdd);
 				System.out.println(toAdd.size() + " actors loaded");
 				toAdd.clear();
 				return true;
 			}
-			
+
 		}
 		System.out.println("Unexistant save");
 		return false;

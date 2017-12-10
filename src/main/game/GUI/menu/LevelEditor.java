@@ -4,17 +4,13 @@
  */
 package main.game.GUI.menu;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
 import main.game.GUI.actorBuilder.ActorBuilder;
 import main.game.GUI.actorBuilder.BikeBuilder;
 import main.game.GUI.actorBuilder.GroundBuilder;
+import main.game.GameWithLevelAndMenu;
 import main.game.actor.Actor;
 import main.game.actor.entities.Bike;
 import main.game.actor.entities.Ground;
@@ -22,13 +18,16 @@ import main.game.graphics.BetterTextGraphics;
 import main.game.graphics.Graphics;
 import main.game.graphics.ShapeGraphics;
 import main.io.Save;
-import main.math.ExtendedMath;
+import main.math.*;
 import main.math.Polygon;
 import main.math.Shape;
-import main.math.Transform;
-import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
@@ -37,7 +36,7 @@ import main.window.Window;
 public class LevelEditor implements Graphics {
 
 	// actorBuilder stuff
-	private ArrayList<ActorBuilder> actors = new ArrayList<>();
+	private ArrayList<ActorBuilder> actorBuilders = new ArrayList<>();
 	private GroundBuilder gb;
 	private BikeBuilder bb;
 
@@ -45,6 +44,7 @@ public class LevelEditor implements Graphics {
 	private ActorGame game;
 	private ActorMenu actorMenu;
 	private Window window;
+	private boolean open = false;
 
 	// Camera stuff
 	private Vector cameraPosition = Vector.ZERO;
@@ -107,13 +107,20 @@ public class LevelEditor implements Graphics {
 	private final float maxErrorTimer = 2f;
 	private boolean displayErrorText = false;
 
+	// back to main menu button
+	private GraphicalButton backToMainMenu;
+	private String backText = "Back to menu";
+	private Vector backPos = new Vector(-8, 14);
+
 	/**
 	 * Create a new {@linkplain LevelEditor}
 	 * @param game {@linkplain ActorGame} where this {@linkplain LevelEditor}
 	 * belong
 	 * @param window {@linkplain Window} graphical context
+	 * @param mainMenu {@linkplain MainMenu} where this {@linkplain LevelEditor}
+	 * is created
 	 */
-	public LevelEditor(ActorGame game, Window window) {
+	public LevelEditor(GameWithLevelAndMenu game, Window window, MainMenu mainMenu) {
 		this.game = game;
 		this.window = window;
 		this.actorMenu = new ActorMenu(game, this, window, Color.LIGHT_GRAY);
@@ -163,28 +170,33 @@ public class LevelEditor implements Graphics {
 		playButton.addOnClickAction(() -> {
 
 			game.setGameFreezeStatus(!game.isGameFrozen());
-			if (!game.isGameFrozen()) {
+			if (!game.isGameFrozen()) {// play
 				playButton.setText(playButtonEditText, fontSize);
 				game.addActor(getActors());
+				game.setPayload(bb.getActor());
 				game.setViewCandidate(this.bb.getActor());
 			} else { // unplay
 				playButton.setText(playButtonText, fontSize);
 				game.destroyAllActors();
 				game.setViewCandidate(null);
-				for (ActorBuilder ab : actors) {
+				for (ActorBuilder ab : actorBuilders) {
 					ab.reCreate();
 				}
 			}
 		});
 
+		backToMainMenu = new GraphicalButton(game, backPos, backText, fontSize);
+		backToMainMenu.addOnClickAction(() -> {
+			game.destroyAllActors();
+			this.close();
+		});
+
 		// get available name for the save
 		File[] saves = Save.availableSaves(game);
 		ArrayList<String> savesNames = new ArrayList<>();
-
 		for (File f : saves) {
 			savesNames.add(f.getName());
 		}
-
 		String temp = "";
 		for (int i = 1; i < saves.length + 2; i++) {
 			if (!savesNames.contains("save" + ((i < 10) ? "0" : "") + i)) {
@@ -193,7 +205,8 @@ public class LevelEditor implements Graphics {
 			}
 		}
 		currentSaveName = (temp);
-
+		System.out.println(currentSaveName);
+		
 		// create save button
 		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
 		saveButon.setDepth(butonDepth);
@@ -212,8 +225,7 @@ public class LevelEditor implements Graphics {
 			if (this.gb == null && this.bb == null)
 				errorText = "Please create a bike and a ground";
 			if (errorText == null) {
-
-				// TODO save
+				System.out.println("start saving");
 				game.save(getActors(), bb.getBike(), bb.getActor(), currentSaveName);
 				errorText = "Actors saved sucessfully";
 			}
@@ -285,14 +297,9 @@ public class LevelEditor implements Graphics {
 		gridLine = grid();
 
 		// right click menu
-		boolean temp = true;
-		for (ActorBuilder actor : actors) {
-			// make sure no ActorBuilder is being created
-			temp = actor.isDone() & !actor.isHovered() & temp;
-		}
-		if (temp)
+		if (!isBusy())
 			actorMenu.update(deltaTime, zoom);
-		else if (game.getMouse().getLeftButton().isPressed() || game.getMouse().getRightButton().isPressed())
+		else
 			actorMenu.setStatus(false);
 
 		// positionneur stuff
@@ -308,19 +315,22 @@ public class LevelEditor implements Graphics {
 		cameraResetPosition.update(deltaTime, zoom);
 		getPositionButton.update(deltaTime, zoom);
 		playButton.update(deltaTime, zoom);
+		backToMainMenu.update(deltaTime, zoom);
 
 		// current actors update
 		ActorBuilder current = null;
-		for (ActorBuilder actor : actors) {
+		for (ActorBuilder actor : actorBuilders) {
 			actor.update(deltaTime, zoom);
 			if (!actor.isDone() && !actor.equals(gb))
 				current = actor;
+			if (actor.isHovered() && game.getMouse().getRightButton().isPressed())
+				actor.edit();
 		}
 
 		// destroy selected actor if delete is pressed
 		if (current != null && game.getKeyboard().get(KeyEvent.VK_DELETE).isPressed()) {
 			current.destroy();
-			actors.remove(current);
+			actorBuilders.remove(current);
 		}
 
 		// save button and stuff update
@@ -352,7 +362,7 @@ public class LevelEditor implements Graphics {
 		actorMenu.draw(canvas);
 
 		// draw current actors
-		for (ActorBuilder actor : actors) {
+		for (ActorBuilder actor : actorBuilders) {
 			actor.draw(canvas);
 		}
 
@@ -371,6 +381,7 @@ public class LevelEditor implements Graphics {
 		}
 		getPositionButton.draw(canvas);
 		cameraResetPosition.draw(canvas);
+		backToMainMenu.draw(canvas);
 
 		// draw button save
 		saveButon.draw(canvas);
@@ -382,15 +393,15 @@ public class LevelEditor implements Graphics {
 	/** @return the list of all {@linkplain Actor}s created */
 	public ArrayList<Actor> getActors() {
 		ArrayList<Actor> a = new ArrayList<>();
-		for (ActorBuilder ab : actors) {
+		for (ActorBuilder ab : actorBuilders) {
 			a.add(ab.getActor());
 		}
 		return a;
 	}
 
 	/** @param actor {@linkplain ActorBuilder} to add */
-	public void addActor(ActorBuilder actor) {
-		actors.add(actor);
+	public void addActorBuilder(ActorBuilder actor) {
+		actorBuilders.add(actor);
 	}
 
 	/**
@@ -401,8 +412,8 @@ public class LevelEditor implements Graphics {
 		if (this.gb != null) {
 			gb.continueBuilding();
 		} else {
-			gb = new GroundBuilder(game, this);
-			actors.add(gb);
+			gb = new GroundBuilder(game);
+			actorBuilders.add(gb);
 		}
 	}
 
@@ -413,11 +424,11 @@ public class LevelEditor implements Graphics {
 	public void addBike(BikeBuilder bike) {
 		if (this.bb != null) {
 			this.bb.getActor().destroy();
-			actors.remove(this.bb);
+			actorBuilders.remove(this.bb);
 		}
 
 		this.bb = bike;
-		actors.add(bike);
+		actorBuilders.add(bike);
 	}
 
 	/** @return an ArrayList containing an updated grid */
@@ -471,24 +482,41 @@ public class LevelEditor implements Graphics {
 	 */
 	public void destroy() {
 		this.actorMenu.destroy();
-		for (ActorBuilder a : actors)
+		for (ActorBuilder a : actorBuilders)
 			a.destroy();
 		this.cameraResetPosition.destroy();
 		this.playButton.destroy();
 		this.getPositionButton.destroy();
 		this.cameraResetPosition.destroy();
+		this.backToMainMenu.destroy();
 	}
 
 	/** @return whether an {@linkplain ActorBuilder} is being created/edited */
 	public boolean isBusy() {
-		boolean temp = true;
-		for (ActorBuilder actor : actors) {
+		// boolean temp = true;
+		for (ActorBuilder actor : actorBuilders) {
 			// make sure no ActorBuilder is being created
-			if (!actor.isDone())
+			if (!actor.isDone() || actor.isHovered())
 				return true;
-			temp = actor.isDone() & !actor.isHovered() & temp;
+			// temp = actor.isDone() & !actor.isHovered() & temp;
 		}
 		return false;
+	}
+
+	/** @return whether we are in this {@linkplain LevelEditor} */
+	public boolean isOpen() {
+		return open;
+	}
+
+	/** Set the status of this {@linkplain LevelEditor} to true */
+	public void open() {
+		this.open = true;
+	}
+
+	/** Set the status of this {@linkplain LevelEditor} to false */
+	public void close() {
+		this.open = false;
+		this.destroy();
 	}
 
 }

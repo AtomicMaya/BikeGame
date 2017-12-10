@@ -27,6 +27,8 @@ public class NumberField extends GUIComponent {
 	private float clignote = 0;
 	private final float timeClignotMax = .6f;
 
+	private int value;
+
 	/**
 	 * Create a new {@linkplain NumberField}
 	 * @param game : {@linkplain ActorGame} where this belong
@@ -41,6 +43,7 @@ public class NumberField extends GUIComponent {
 		this.width = width;
 		this.height = height;
 		this.text = "" + value;
+		this.value = value;
 	}
 
 	/**
@@ -84,7 +87,7 @@ public class NumberField extends GUIComponent {
 
 	/** @return the number entered in the field */
 	public float getNumber() {
-		return Float.parseFloat((text.isEmpty()) ? "1" : text);
+		return Float.parseFloat((text.isEmpty()) ? "" + value : text);
 	}
 
 	@Override

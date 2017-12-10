@@ -5,9 +5,9 @@
 package main.game.levels;
 
 import main.game.ActorGame;
-import main.game.actor.entities.Bike;
-import main.game.actor.entities.Ground;
+import main.game.actor.entities.*;
 import main.game.actor.sensors.FinishActor;
+import main.math.ExtendedMath;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
@@ -31,16 +31,25 @@ public class Level1 extends Level {
 
 		player = new Bike(game, new Vector(4, 5));
 
-		// Crate crate1 = new Crate(game, new Vector(6, 5), "res/images/crate.1.png",
+		// Crate crate1 = new Crate(game, new Vector(6, 5),
+		// "res/images/crate.1.png",
 		// false, 1);
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
-		finishActor = new FinishActor(game, new Vector(-6, 0));
+		finishActor = new FinishActor(game, new Vector(-8, 0));
 
 		this.addActor(finishActor);
 		// this.addActor(crate1);
+		Trampoline t = new Trampoline(game, new Vector(5, 6), 5, 1);
+		Polygon p1 = new Polygon(0, 0, 0, 3f, 1.5f, 3f, 1.5f, 0);
+		Liquid l = new Liquid(game, new Vector(-9, 2), p1, true);
+//		Mine m = new Mine(game, new Vector(-3, -1));
+		GravityWell gw = new GravityWell(game, new Vector(-5,0), new Vector(0,1), ExtendedMath.createRectangle(3, 7), (float) Math.PI);
+		addActor(gw);
+//		addActor(m);
 		this.addActor(ground);
 		this.addActor(player);
-
+		this.addActor(t);
+		addActor(l);
 		this.setViewCandidate(player);
 		this.setPayload(player);
 	}
@@ -53,7 +62,7 @@ public class Level1 extends Level {
 
 	@Override
 	public boolean isFinished() {
-        return getPayload() != null && getPayload().getVictoryStatus() | getPayload().getDeathStatus();
-    }
+		return getPayload() != null && getPayload().getVictoryStatus() | getPayload().getDeathStatus();
+	}
 
 }

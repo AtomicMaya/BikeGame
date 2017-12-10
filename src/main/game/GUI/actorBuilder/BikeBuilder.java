@@ -5,7 +5,6 @@
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
-import main.game.actor.Actor;
 import main.game.actor.entities.Bike;
 import main.game.actor.entities.PlayableEntity;
 import main.math.ExtendedMath;
@@ -49,7 +48,7 @@ public class BikeBuilder extends ActorBuilder {
 	}
 
 	@Override
-	public Actor getActor() {
+	public PlayableEntity getActor() {
 		return bike;
 	}
 
@@ -76,6 +75,11 @@ public class BikeBuilder extends ActorBuilder {
 	@Override
 	public void destroy() {
 		this.bike.destroy();
+	}
+	
+	@Override
+	public void edit() {
+		this.isDone = false;
 	}
 
 }

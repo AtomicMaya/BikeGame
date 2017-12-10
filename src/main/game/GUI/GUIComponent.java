@@ -22,7 +22,8 @@ public abstract class GUIComponent extends Node implements GUI {
 	public void update(float deltaTime, float zoom) {
 		this.zoom = zoom;
 		if (getParent() == null)
-			setRelativeTransform(Transform.I.translated(anchor).scaled(zoom).translated(getOwner().getCanvas().getPosition()));
+			setRelativeTransform(
+					Transform.I.translated(anchor).scaled(zoom).translated(getOwner().getCanvas().getPosition()));
 		else {
 			setRelativeTransform(Transform.I.translated(anchor));
 		}
@@ -47,6 +48,11 @@ public abstract class GUIComponent extends Node implements GUI {
 	 */
 	public final void setAnchor(Vector anchor) {
 		this.anchor = anchor;
+	}
+
+	/** @return the relative position */
+	public Vector getAnchor() {
+		return this.anchor;
 	}
 
 	/** @return the current zoom */

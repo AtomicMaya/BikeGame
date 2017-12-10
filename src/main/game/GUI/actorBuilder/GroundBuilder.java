@@ -44,10 +44,9 @@ public class GroundBuilder extends ActorBuilder {
 
 	// finish button
 	private GraphicalButton finish;
-	private Vector finishPosition = new Vector(0, 13);
+	private Vector finishPosition = new Vector(0, 11);
 	private final String finishText = "Finish";
 
-	private LevelEditor lv;
 
 	private boolean isDone = false;
 
@@ -59,10 +58,10 @@ public class GroundBuilder extends ActorBuilder {
 	 * @param game : {@linkplain ActorGeme} where this belong
 	 * @param levelEditor : {@linkplain LevelEditor} where this is created
 	 */
-	public GroundBuilder(ActorGame game, LevelEditor levelEditor) {
+	public GroundBuilder(ActorGame game) {
 		super(game);
 		this.game = game;
-		this.lv = levelEditor;
+//		this.lv = levelEditor;
 
 		fixStart.add(new Vector(-500, -500));
 		fixStart.add(new Vector(-500, 0));
@@ -74,10 +73,10 @@ public class GroundBuilder extends ActorBuilder {
 
 		// buttons
 		drawModeButton = new GraphicalButton(game, new Vector(18, 14), "Change draw mode to : Free",
-				fontSize * levelEditor.getZoom());
+				fontSize);
 		drawModeButton.addOnClickAction(() -> {
-			drawModeButton.setText((drawMode == 0) ? "Change draw mode to : Free" : "Change draw mode to : Normal",
-					fontSize * levelEditor.getZoom());
+			drawModeButton.setText((drawMode == 1) ? "Change draw mode to : Free" : "Change draw mode to : Normal",
+					fontSize);
 			drawMode = (drawMode == 0) ? 1 : 0;
 		});
 		drawModeButton.setAnchor(drawModeButtonPosition);
@@ -99,7 +98,7 @@ public class GroundBuilder extends ActorBuilder {
 			for (Vector v : points) {
 				canvas.drawShape(new Circle(.1f), Transform.I.translated(v), Color.ORANGE, null, 0, 1, 12);
 			}
-			canvas.drawShape(new Circle(.1f), Transform.I.translated(ExtendedMath.floor(game.getMouse().getPosition())),
+			canvas.drawShape(new Circle(.1f), Transform.I.translated(getFlooredMousePosition()),
 					new Color(22, 84, 44), null, 0, 1, 15);
 
 			drawModeButton.draw(canvas);
@@ -112,7 +111,6 @@ public class GroundBuilder extends ActorBuilder {
 	@Override
 	public void update(float deltaTime, float zoom) {
 
-
 		if (!isDone) {
 			currentPoint = getFlooredMousePosition();
 			if (isLeftPressed() && !drawModeButton.isHovered() && !finish.isHovered()) {
@@ -124,12 +122,12 @@ public class GroundBuilder extends ActorBuilder {
 			groundLine = new Polyline(updateGround(currentPoint));
 
 			// buttons update
-			drawModeButton.setText(null, fontSize * lv.getZoom());
-//			drawModeButton.setPosition(drawModeButtonPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
+//			drawModeButton.setText(null, fontSize *  zoom);
+			// drawModeButton.setPosition(drawModeButtonPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
 			drawModeButton.update(deltaTime, zoom);
 
-			finish.setText(null, fontSize * lv.getZoom());
-//			finish.setPosition(finishPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
+//			finish.setText(null, fontSize * lv.getZoom());
+			// finish.setPosition(finishPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
 			finish.update(deltaTime, zoom);
 
 			// reset if escape is pressed
@@ -137,6 +135,10 @@ public class GroundBuilder extends ActorBuilder {
 				points.clear();
 				points.add(start);
 				points.add(end);
+			}
+			if (game.getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
+				isDone = true;
+				groundLine = new Polyline(updateGround(null));
 			}
 		}
 	}
@@ -222,6 +224,11 @@ public class GroundBuilder extends ActorBuilder {
 	@Override
 	public void destroy() {
 		this.ground.destroy();
+	}
+
+	@Override
+	public void edit() {
+		this.isDone = false;
 	}
 
 }
