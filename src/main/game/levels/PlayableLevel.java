@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	23 nov. 2017
- */
 package main.game.levels;
 
 import main.game.ActorGame;
@@ -14,10 +10,10 @@ import main.math.Positionable;
 import java.util.ArrayList;
 
 /**
- * Represent a {@linkplain Level} which can create some {@linkplain Actor}s to
+ * Represent a {@linkplain PlayableLevel} which can create some {@linkplain Actor}s to
  * add to the game
  */
-public abstract class Level extends Node implements Actor {
+public abstract class PlayableLevel extends Node implements Actor {
 
 	// list of Actors in this level
 	private ArrayList<Actor> actors = new ArrayList<>();
@@ -32,28 +28,28 @@ public abstract class Level extends Node implements Actor {
 	private PlayableEntity payload;
 
 	/**
-	 * Create a new {@linkplain Level}.
+	 * Create a new {@linkplain PlayableLevel}.
 	 * @param game {@linkplain ActorGame} in which the {@linkplain Actor}s will evolve
 	 */
-	public Level(ActorGame game) {
+	public PlayableLevel(ActorGame game) {
 		this.game = game;
 		this.actors.add(new EndGameGraphics(game));
 	}
 
 	/**
-	 * Creation of all the {@linkplain Actor}s in the {@linkplain Level}
+	 * Creation of all the {@linkplain Actor}s in the {@linkplain PlayableLevel}
 	 */
 	public abstract void createAllActors();
 
 	/**
-	 * @param {@linkplain Actor} to ads in the {@linkplain Level}
+	 * @param actor  {@linkplain Actor} to ads in the {@linkplain PlayableLevel}
 	 */
 	public void addActor(Actor actor) {
-		actors.add(actor);
+		this.actors.add(actor);
 	}
 
 	/**
-	 * @param player {@linkplain Actor} to follow with the camera in the {@linkplain Level}
+	 * @param player {@linkplain Actor} to follow with the camera in the {@linkplain PlayableLevel}
 	 */
 	public void setViewCandidate(Actor player) {
 		this.viewCandidate = player;
@@ -65,17 +61,16 @@ public abstract class Level extends Node implements Actor {
 	}
 
 	/**
-	 * @return the list of all the {@linkplain Actor}s in this {@linkplain Level}
+	 * @return the list of all the {@linkplain Actor}s in this {@linkplain PlayableLevel}
 	 */
 	public ArrayList<Actor> getActors() {
-		ArrayList<Actor> temp = new ArrayList<>();
-		temp.addAll(actors);
-		actors.clear();
-		return temp;
+        ArrayList<Actor> temporary = new ArrayList<>(this.actors);
+		this.actors.clear();
+		return temporary;
 	}
 
 	/**
-	 * @return the {@linkplain Actor} to follow with he camera in the {@linkplain Level}
+	 * @return the {@linkplain Actor} to follow with he camera in the {@linkplain PlayableLevel}
 	 */
 	public Positionable getViewCandidate() {
 		return viewCandidate;
@@ -89,7 +84,7 @@ public abstract class Level extends Node implements Actor {
 	}
 
 	/**
-	 * @return weather this {@linkplain Level} is finished
+	 * @return whether this {@linkplain PlayableLevel} is finished
 	 */
 	public abstract boolean isFinished();
 }

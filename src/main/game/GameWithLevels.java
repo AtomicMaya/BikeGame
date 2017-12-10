@@ -5,7 +5,7 @@
 package main.game;
 
 import main.game.graphics.TextGraphics;
-import main.game.levels.Level;
+import main.game.levels.PlayableLevel;
 import main.io.FileSystem;
 import main.math.Transform;
 import main.math.Vector;
@@ -15,10 +15,10 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-/** Represent an {@linkplain ActorGame} with {@linkplain Level}s */
+/** Represent an {@linkplain ActorGame} with {@linkplain PlayableLevel}s */
 public abstract class GameWithLevels extends ActorGame {
 
-	private List<Level> levels;
+	private List<PlayableLevel> playableLevels;
 	private int currentLevel = 0;
 
 	private float timerMessage = 0;
@@ -38,7 +38,7 @@ public abstract class GameWithLevels extends ActorGame {
 		message1 = new TextGraphics(messageNextLevelText, fontSize, new Color(66, 241, 244), Color.RED.darker(), .02f,
 				false, false, Vector.ZERO, 1, 1337);
 		message1.setAnchor(new Vector(.5f, -2.5f));
-		levels = createLevelList();
+		playableLevels = createLevelList();
 		return true;
 	}
 
@@ -51,7 +51,7 @@ public abstract class GameWithLevels extends ActorGame {
 			display = false;
 			timerMessage = 0;
 		}
-		if (levels != null && !levels.isEmpty() && levels.get(currentLevel).isFinished()) {
+		if (playableLevels != null && !playableLevels.isEmpty() && playableLevels.get(currentLevel).isFinished()) {
 			if (getKeyboard().get(KeyEvent.VK_R).isPressed()) {
 				resetLevel();
 			}
@@ -87,18 +87,18 @@ public abstract class GameWithLevels extends ActorGame {
 		}
 	}
 
-	/** Go to the next {@linkplain Level} */
+	/** Go to the next {@linkplain PlayableLevel} */
 	protected void nextLevel() {
 		beginLevel(currentLevel + 1);
 	}
 
-	/** Reset the current {@linkplain Level} */
+	/** Reset the current {@linkplain PlayableLevel} */
 	protected void resetLevel() {
 		clearCurrentLevel();
 		beginLevel(currentLevel);
 	}
 
-	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
+	/** Clear all {@linkplain Actor} in the current {@linkplain PlayableLevel} */
 	protected void clearCurrentLevel() {
 		super.destroyAllActors();
 		message1.setText("");
@@ -106,32 +106,32 @@ public abstract class GameWithLevels extends ActorGame {
 	}
 
 	/**
-	 * Begin a {@linkplain Level}
-	 * @param i : Number in the {@linkplain List} of the {@linkplain Level} to
+	 * Begin a {@linkplain PlayableLevel}
+	 * @param i : Number in the {@linkplain List} of the {@linkplain PlayableLevel} to
 	 * start
 	 */
 	public void beginLevel(int i) {
 		clearCurrentLevel();
 		currentLevel = i;
-		if (currentLevel > levels.size() - 1)
+		if (currentLevel > playableLevels.size() - 1)
 			currentLevel = 0;
-		super.addActor(levels.get(currentLevel));
-		this.levels.get(currentLevel).createAllActors();
-		super.addActor(levels.get(currentLevel).getActors());
-		super.setViewCandidate(levels.get(currentLevel).getViewCandidate());
-		super.setPayload(levels.get(currentLevel).getPayload());
+		super.addActor(playableLevels.get(currentLevel));
+		this.playableLevels.get(currentLevel).createAllActors();
+		super.addActor(playableLevels.get(currentLevel).getActors());
+		super.setViewCandidate(playableLevels.get(currentLevel).getViewCandidate());
+		super.setPayload(playableLevels.get(currentLevel).getPayload());
 	}
 
 	/**
-	 * Create all the {@linkplain Level} for this {@linkplain GameWithLevels}
+	 * Create all the {@linkplain PlayableLevel} for this {@linkplain GameWithLevels}
 	 */
-	protected abstract List<Level> createLevelList();
+	protected abstract List<PlayableLevel> createLevelList();
 
 	/**
-	 * @return the number of {@linkplain Level} in this
+	 * @return the number of {@linkplain PlayableLevel} in this
 	 * {@linkplain GameWithLevels}
 	 */
 	public int numberOfLevel() {
-		return levels.size();
+		return playableLevels.size();
 	}
 }

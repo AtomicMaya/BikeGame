@@ -4,6 +4,7 @@ import main.game.actor.Actor;
 import main.game.actor.Camera;
 import main.game.actor.entities.GameEntity;
 import main.game.actor.entities.PlayableEntity;
+import main.game.graphicalStuff.EndGameGraphics;
 import main.io.FileSystem;
 import main.io.Save;
 import main.math.*;

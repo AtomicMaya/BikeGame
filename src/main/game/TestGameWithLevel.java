@@ -4,8 +4,8 @@
  */
 package main.game;
 
-import main.game.levels.Level;
-import main.game.levels.Level1;
+import main.game.levels.PlayableLevel;
+import main.game.levels.PlayableLevel1;
 import main.io.FileSystem;
 import main.window.Window;
 
@@ -19,13 +19,14 @@ public class TestGameWithLevel extends GameWithLevels {
 	}
 
 	@Override
-	protected List<Level> createLevelList() {
+	protected List<PlayableLevel> createLevelList() {
 
-		List<Level> levels = new ArrayList<>();
-		levels.add(new Level1(this));
-		levels.add(new Level1(this));
+		List<PlayableLevel> playableLevels = new ArrayList<>();
+        //playableLevels.add(new CinematicLevel1(this));
+		playableLevels.add(new PlayableLevel1(this));
+		playableLevels.add(new PlayableLevel1(this));
 
-		return levels;
+		return playableLevels;
 	}
 
 }

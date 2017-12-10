@@ -10,7 +10,7 @@ import main.game.audio.Audio;
 import main.game.graphicalStuff.EndGameGraphics;
 import main.game.graphicalStuff.Scenery;
 import main.game.graphics.BetterTextGraphics;
-import main.game.levels.Level;
+import main.game.levels.PlayableLevel;
 import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestGame extends ActorGame {
-    private List<Level> levels;
+    private List<PlayableLevel> playableLevels;
     private FinishActor a;
     private ProximitySensor sensor;
 
@@ -108,7 +108,7 @@ public class TestGame extends ActorGame {
 
         //Mine mine = new Mine(this, new Vector(15, 2));
 
-        this.graphics = new EndGameGraphics(this, "");
+        this.graphics = new EndGameGraphics(this);
         Liquid liquid = new Liquid(this, new Vector(20, -7), new Polygon(0, 0, 5, 0, 5, 2, 0, 2),  true);
         //Pendulum pendulum = new Pendulum(this, new Vector(5, 10), new Vector(0, 12), 4);
 
