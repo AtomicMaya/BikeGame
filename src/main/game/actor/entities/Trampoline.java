@@ -34,9 +34,10 @@ public class Trampoline implements Actor, Saveable {
 
 		this.trampolinePlatform = new TrampolinePlatform(game, position.add(1, 0), width, height);
 
-		this.trampolinePlatform.setLeftConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(),
-				this.trampolinePlatform.getEntity(), new Vector(-1, 0), 0, 2.5f, 0));
-	}
+        this.trampolinePlatform.setConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.trampolinePlatform.getEntity(), new Vector(-1, 0),
+                0, 2.5f, 0));
+
+    }
 
 	@Override
 	public void reCreate(ActorGame game) {
@@ -68,10 +69,11 @@ public class Trampoline implements Actor, Saveable {
 		return Transform.I.translated(this.position);
 	}
 
-	@Override
-	public Vector getPosition() {
-		return this.position;
-	}
+    @Override
+    public Vector getPosition() {
+        return this.position;
+    }
+
 
 	@Override
 	public Vector getVelocity() {

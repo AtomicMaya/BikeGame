@@ -94,24 +94,19 @@ public class Laser extends GameEntity {
 		this(game, startPosition, distance, .5f, 2, 4, 3, 1, direction, "#00FFFF");
 	}
 
-	@Override
-	public void update(float deltaTime) {
-		this.sensor.update(deltaTime);
-		if (this.firesCount != this.maxFires) {
-			this.elapsedTime += deltaTime;
-			float randomValue = new Random().nextFloat();
-			if (this.elapsedTime < this.waitTime) {
-				this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
-			} else if (this.waitTime < this.elapsedTime && this.elapsedTime < waitTime + pulsateTime) {
-				this.oscillationCount += 1;
-				if (!this.sensor.isOccupied())
-					this.sensor
-							.runAction(
-									() -> new Audio(
-											randomValue < this.secretProbability ? "./res/audio/easter_egg_1.wav"
-													: "./res/audio/laser.wav",
-											0, 20f),
-									this.pulsateTime + this.laserTime);
+    @Override
+    public void update(float deltaTime) {
+        this.sensor.update(deltaTime);
+        if(this.firesCount != this.maxFires) {
+            this.elapsedTime += deltaTime;
+            float randomValue = new Random().nextFloat();
+            if (this.elapsedTime < this.waitTime) {
+                this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
+            } else if (this.waitTime < this.elapsedTime && this.elapsedTime < waitTime + pulsateTime) {
+                this.oscillationCount += 1;
+                if(!this.sensor.isOccupied())
+                    this.sensor.runAction(() -> new Audio(randomValue < this.secretProbability ? "./res/audio/easter_egg_1.wav": "./res/audio/laser.wav",
+                            0, 20f), this.pulsateTime + this.laserTime);
 
 				// So that the laser will blink, so as to warn people that it is
 				// charging.

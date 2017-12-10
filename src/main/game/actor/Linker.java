@@ -44,4 +44,15 @@ public class Linker {
         builder.setInternalCollision(false);
         return builder.build();
     }
+
+    public static RopeConstraint attachRope(ActorGame game, Entity anchor, Entity attached, Vector anchorPoint, float length) {
+        RopeConstraintBuilder builder = game.createRopeConstraintBuilder();
+        builder.setFirstEntity(anchor);
+        builder.setSecondEntity(attached);
+        builder.setFirstAnchor(anchorPoint);
+        builder.setSecondAnchor(Vector.ZERO);
+        builder.setMaxLength(length);
+        builder.setInternalCollision(false);
+        return builder.build();
+    }
 }

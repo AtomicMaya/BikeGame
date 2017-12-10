@@ -95,13 +95,14 @@ public class TestGame extends ActorGame {
         Checkpoint checkpoint = new Checkpoint(this, new Vector(35, -5));
         FinishActor finishActor = new FinishActor(this, new Vector(40, -5));
 
-        //BoomBarrel crate = new BoomBarrel(this, new Vector(10, 7), true);
+        BoomBarrel crate = new BoomBarrel(this, new Vector(10, 7), true);
 
 //        GravityWell well = new GravityWell(this, new Vector(15,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
 
-       // Mine mine = new Mine(this, new Vector(15, 2));
+       Mine mine = new Mine(this, new Vector(15, 2));
 
         Liquid liquid = new Liquid(this, new Vector(20, -7), new Polygon(0, 0, 5, 0, 5, 2, 0, 2),  true);
+        //Pendulum pendulum = new Pendulum(this, new Vector(5, 10), new Vector(0, 12), 4);
                 /*
 		Polygon s = new Polygon(0, 100, 1, 100, 1, -100, 0, -100);
 		a = new FinishActor(this, new Vector(7, 0), player, s);
@@ -112,7 +113,8 @@ public class TestGame extends ActorGame {
 		this.addActor(ground);
 		this.addActor(player);
 		this.addActor(sensor);
-		//this.addActor(mine);
+		//this.addActor(pendulum);
+		this.addActor(mine);
 		this.addActor(liquid);
 //		this.addActor(lever);
 //		this.addActor(well);
