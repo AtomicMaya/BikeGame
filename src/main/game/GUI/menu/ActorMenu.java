@@ -104,7 +104,7 @@ public class ActorMenu extends Menu {
 			changeStatus();
 		});
 		description.add(new Comment(game, "Create a mine"));
-		
+
 		for (GraphicalButton gb : boutons) {
 			gb.forceShape(width - betweenButton, height - betweenButton);
 			gb.setDepth(1337);
@@ -131,10 +131,10 @@ public class ActorMenu extends Menu {
 		super.update(deltaTime, zoom);
 		if (getOwner().getKeyboard().get(KeyEvent.VK_M).isPressed())
 			changeStatus();
-		else if (isRightPressed() && !isHovered())
+		else if (isRightPressed() && (!isHovered() || !isOpen()))
 			this.setStatus(true);
 
-		else if ((isLeftPressed() & !isHovered()) || getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed())
+		else if ((isLeftPressed() && !isHovered()) || getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed())
 			this.setStatus(false);
 
 		if (isOpen()) {
@@ -170,7 +170,7 @@ public class ActorMenu extends Menu {
 
 	@Override
 	public boolean isHovered() {
-		return ExtendedMath.isInRectangle(getPosition().add(minPosition), getPosition().add(maxPosition),
+		return ExtendedMath.isInRectangle(getPosition().add(minPosition) , getPosition().add(maxPosition),
 				getMousePosition());
 	}
 

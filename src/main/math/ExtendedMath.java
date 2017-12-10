@@ -250,4 +250,9 @@ public class ExtendedMath {
 	public static Polygon createRectangle(float width, float height) {
 		return new Polygon(0, 0, 0, height, width, height, width, 0);
 	}
+	
+	/** Compute the unit direction vector */
+	public static Vector direction(Vector un, Vector deux) {
+		return new Vector(un.x - deux.x, un.y - deux.y).normalized();
+	}
 }

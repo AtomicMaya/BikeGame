@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.ObjectGroup;
 import main.game.actor.sensors.ProximitySensor;
 import main.game.graphics.ShapeGraphics;
 import main.math.Shape;
@@ -35,7 +36,7 @@ public class GravityWell extends GameEntity {
         this.force = appliedForce;
         this.shape = shape;
         this.direction = direction;
-        this.build(shape, -1, -1, true);
+        this.build(shape, -1, -1, true, ObjectGroup.SENSOR.group);
         this.graphics = addGraphics(shape, Color.CYAN, null, 0, .1f, 0);
     }
 

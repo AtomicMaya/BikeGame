@@ -5,8 +5,13 @@
 package main.game.levels;
 
 import main.game.ActorGame;
-import main.game.actor.entities.*;
+import main.game.actor.entities.Bike;
+import main.game.actor.entities.BoomBarrel;
+import main.game.actor.entities.GravityWell;
+import main.game.actor.entities.Terrain;
+import main.game.actor.entities.Trampoline;
 import main.game.actor.sensors.FinishActor;
+import main.game.graphics.BetterTextGraphics;
 import main.math.ExtendedMath;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -17,7 +22,7 @@ public class Level1 extends Level {
 	private FinishActor finishActor;
 
 	private Bike player;
-
+	BetterTextGraphics btg;
 	public Level1(ActorGame game) {
 		super(game);
 	}
@@ -53,6 +58,7 @@ public class Level1 extends Level {
 		BoomBarrel bb = new BoomBarrel(game, new Vector(-16,0), true);
 		addActor(bb);
 //		addActor(l);
+
 		this.setViewCandidate(player);
 		this.setPayload(player);
 	}
@@ -60,6 +66,7 @@ public class Level1 extends Level {
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
+		
 
 	}
 

@@ -1,8 +1,5 @@
 package main.game.actor;
 
-/**
- * Created on 12/6/2017 at 9:10 AM.
- */
 public enum ObjectGroup {
     PLAYER (0),
     WHEEL (1),
@@ -11,7 +8,8 @@ public enum ObjectGroup {
     SENSOR (4),
     FINISH (5),
     CHECKPOINT (6),
-    ENEMY (7);
+    ENEMY (7),
+	PROJECTIL (8);
 
     public final int group;
 

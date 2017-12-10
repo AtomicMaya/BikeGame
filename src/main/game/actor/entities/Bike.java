@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import main.game.ActorGame;
 import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
-import main.game.actor.entities.weapons.Shotgun;
-import main.game.actor.entities.weapons.Weapon;
+import main.game.actor.weapons.PortableWeapon;
+import main.game.actor.weapons.Rocket;
+import main.game.actor.weapons.Shotgun;
+import main.game.actor.weapons.Weapon;
 import main.game.graphics.ShapeGraphics;
 import main.math.BasicContactListener;
 import main.math.Entity;
@@ -57,6 +59,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 	// private transient Shotgun shotgun;
 	private transient ArrayList<Weapon> weapons = new ArrayList<>();
 	private int activeWeapon = 0;
+	private transient boolean isWeaponDeployed = false;
 
 	/**
 	 * Create a Bike, the BikeGame's main actor.
@@ -92,8 +95,11 @@ public class Bike extends GameEntity implements PlayableEntity {
 		this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
 		this.rightWheel = new Wheel(this.game, this.getPosition().add(new Vector(1, 0)), .5f);
 		this.character = new CharacterBike(this.game, this.getPosition());
+
 		this.weapons = new ArrayList<>();
 		this.weapons.add(new Shotgun(this.game, 3, this));
+		this.weapons.add(new Rocket(game,3, this));
+
 		this.activeWeapon = 0;
 
 		this.leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
@@ -171,8 +177,14 @@ public class Bike extends GameEntity implements PlayableEntity {
 
 		}
 
-		if (getOwner().getMouse().getMouseScrolledDown() || getOwner().getMouse().getMouseScrolledUp()) {
+		// weapon part
+		if (isWeaponDeployed
+				&& (getOwner().getMouse().getMouseScrolledDown() || getOwner().getMouse().getMouseScrolledUp())) {
 			this.swapWeapon();
+		}
+		if (getOwner().getKeyboard().get(KeyEvent.VK_F).isPressed()) {
+			isWeaponDeployed = !isWeaponDeployed;
+			this.weapons.get(activeWeapon).deploy(isWeaponDeployed);
 		}
 
 		if (this.wonTheGame && this.lookRight)
@@ -238,8 +250,10 @@ public class Bike extends GameEntity implements PlayableEntity {
 	}
 
 	public void swapWeapon() {
+		weapons.get(activeWeapon).deploy(false);
 		activeWeapon++;
 		activeWeapon = (activeWeapon > weapons.size() - 1) ? 0 : activeWeapon;
+		weapons.get(activeWeapon).deploy(isWeaponDeployed);
 	}
 
 	@Override
