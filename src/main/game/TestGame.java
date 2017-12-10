@@ -62,7 +62,7 @@ public class TestGame extends ActorGame {
 
         Terrain terrain = new Terrain(this, null, p, 2);
 
-        player = new Bike(this, new Vector(4, 5));
+        player = new Bike(this, new Vector(-12, 5));
         this.setPayload(player);
         Polygon shape = new Polygon(.0f, .0f, 3.f, 3f, 9.f, 3.f, 6, 0);
         sensor = new ProximitySensor(this, new Vector(12, 3), shape);
@@ -141,8 +141,8 @@ public class TestGame extends ActorGame {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (getPayload().getDeathStatus())
-            graphics.displayDeathMessage();
+//        if (getPayload().getDeathStatus())
+//            graphics.displayDeathMessage();
         ArrayList<Polyline> lines = LightningGen.getPolylines(5);
         for (Polyline line : lines) {
             window.drawShape(line, Transform.I, null, Color.CYAN, .1f, .1f, 10000);

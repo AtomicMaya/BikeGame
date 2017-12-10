@@ -77,8 +77,7 @@ public class ActorGame implements Game {
 		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed()) {
 			this.gameFrozen = !this.gameFrozen;
 		}
-		
-		
+
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
@@ -90,8 +89,7 @@ public class ActorGame implements Game {
 			this.actors.addAll(this.actorsToAdd);
 			this.actorsToAdd.clear();
 		}
-		
-		
+
 		if (this.gameFrozen) {
 			return;
 		}
@@ -101,15 +99,13 @@ public class ActorGame implements Game {
 		camera.update(deltaTime);
 
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
-		    try {
-                this.actors.get(i).update(deltaTime);
-            } catch (ConcurrentModificationException ignored) {
-		        System.out.println("had a cme");
-            }
+			try {
+				this.actors.get(i).update(deltaTime);
+			} catch (ConcurrentModificationException ignored) {
+				System.out.println("had a cme");
+			}
 		}
 		// for (Actor a:actors)a.update(deltaTime);
-
-		
 
 		for (Actor actor : this.actors) {
 			actor.draw(this.window);
@@ -279,7 +275,20 @@ public class ActorGame implements Game {
 	}
 
 	/** @return a new {@linkplain RopeConstraintBuilder} */
-	public RopeConstraintBuilder createRopeConstraintBuilder() { return this.world.createRopeConstraintBuilder(); }
+	public RopeConstraintBuilder createRopeConstraintBuilder() {
+		return this.world.createRopeConstraintBuilder();
+	}
+
+	/**
+	 * Computes a list of entities that intersect a segment.
+	 * @param start the origin of the segment
+	 * @param end the end point
+	 * @return start the origin of the segmentend the end point
+	 * @see {@linkplain World}
+	 */
+	public List<Impact> getImpacts(Vector start, Vector end) {
+		return world.trace(start, end);
+	}
 
 	/**
 	 * @return whether the game is frozen.

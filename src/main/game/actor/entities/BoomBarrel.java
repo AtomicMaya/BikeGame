@@ -78,6 +78,7 @@ public class BoomBarrel extends GameEntity {
         if (this.graphicsCounter > this.boomGraphics.size() - 1) {
             this.getOwner().getPayload().triggerDeath(false);
             this.destroy();
+            this.graphicsCounter = 0;
         }
     }
 

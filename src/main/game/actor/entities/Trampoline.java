@@ -9,9 +9,9 @@ import main.math.Vector;
 import main.window.Canvas;
 
 public class Trampoline implements Actor, Saveable {
-	private GenericPlatform genericPlatform;
-	private AnchorPoint anchor;
-	private ActorGame game;
+	private transient GenericPlatform genericPlatform;
+	private transient AnchorPoint anchor;
+	private transient ActorGame game;
 
 	private static final long serialVersionUID = 1927654389208717735L;
 

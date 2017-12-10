@@ -29,7 +29,7 @@ public class PlayableLevel1 extends PlayableLevel {
 
 		Terrain terrain = new Terrain(game, null, p, 0);
 
-		player = new Bike(game, new Vector(4, 5));
+		player = new Bike(game, new Vector(-12, 5));
 
 		// Crate crate1 = new Crate(game, new Vector(6, 5),
 		// "res/images/crate.1.png",
