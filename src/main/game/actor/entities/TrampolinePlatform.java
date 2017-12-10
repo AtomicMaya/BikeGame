@@ -55,4 +55,10 @@ public class TrampolinePlatform extends GameEntity {
     public WeldConstraint getConstraint() {
         return this.constraint;
     }
+
+	public void setSize(float width, float height) {
+		this.width = width;
+		this.height = height;
+		create();
+	}
 }
