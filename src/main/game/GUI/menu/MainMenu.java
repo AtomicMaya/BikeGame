@@ -149,37 +149,37 @@ public class MainMenu extends FullScreenMenu {
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-
-		// if in level editor, don't update the rest
-		if (levelEditor != null && levelEditor.isOpen()) {
-			levelEditor.update(deltaTime);
-			return;
+		if (isOpen()) {
+			// if in level editor, don't update the rest
+			if (levelEditor != null && levelEditor.isOpen()) {
+				levelEditor.update(deltaTime);
+				return;
+			}
+			if (levelEditor != null) {
+				levelEditor = null;
+				createSaveButtons();
+			}
+			super.update(deltaTime, zoom);
+			waitBeforeClick += deltaTime;
+			for (int i = 0; i < buttons.size(); i++) {
+				// update only the buttons on the current page
+				if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
+					buttons.get(i).update(deltaTime, zoom);
+			}
+			// update the left/right buttons only of their is too much saves
+			if (buttons.size() > maxNumberButtonsSave) {
+				left.update(deltaTime, zoom);
+				right.update(deltaTime, zoom);
+			}
+			for (GraphicalButton gb : levelButtons) {
+				gb.update(deltaTime, zoom);
+			}
+			for (GraphicalButton gb : deleteButons) {
+				gb.update(deltaTime, zoom);
+			}
+			levelEditorButton.update(deltaTime, zoom);
+			play.update(deltaTime, zoom);
 		}
-		if (levelEditor != null) {
-			levelEditor = null;
-			createSaveButtons();
-		}
-		super.update(deltaTime, zoom);
-
-		waitBeforeClick += deltaTime;
-		for (int i = 0; i < buttons.size(); i++) {
-			// update only the buttons on the current page
-			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
-				buttons.get(i).update(deltaTime, zoom);
-		}
-		// update the left/right buttons only of their is too much saves
-		if (buttons.size() > maxNumberButtonsSave) {
-			left.update(deltaTime, zoom);
-			right.update(deltaTime, zoom);
-		}
-		for (GraphicalButton gb : levelButtons) {
-			gb.update(deltaTime, zoom);
-		}
-		for (GraphicalButton gb : deleteButons) {
-			gb.update(deltaTime, zoom);
-		}
-		levelEditorButton.update(deltaTime, zoom);
-		play.update(deltaTime, zoom);
 	}
 
 	@Override
@@ -269,15 +269,11 @@ public class MainMenu extends FullScreenMenu {
 				}
 			});
 			tempSaveButons.get(i).forceShape(6, -1);
-			tempDeleteButons.add(new GraphicalButton(getOwner(), position.add(-1, .6f), 1, 1));
+			tempDeleteButons.add(new GraphicalButton(getOwner(), position.add(-1.5f, .6f), 1, 1));
 			tempDeleteButons.get(i).setNewGraphics("res/images/delete.png", "res/images/delete_hover.png");
 			tempDeleteButons.get(i).addOnClickAction(() -> {
 				Save.deleteDirectory(new File(list[p].getPath()));
 				createSaveButtons();
-//				tempSaveButons.get(p).destroy();
-//				tempSaveButons.remove(buttons.get(p));
-//				tempDeleteButons.get(p).destroy();
-//				tempDeleteButons.remove(buttons.get(p));
 			});
 			tempDeleteButons.get(i).setDepth(1337);
 		}

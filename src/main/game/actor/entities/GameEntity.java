@@ -49,7 +49,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	private void create() {
 		if (entity == null)
 			this.entity = this.actorGame.newEntity(this.position, this.fixed);
-//		System.out.println(this + " " + position + " " + fixed);
+		// System.out.println(this + " " + position + " " + fixed);
 	}
 
 	@Override
@@ -73,6 +73,12 @@ public abstract class GameEntity implements Actor, Saveable {
 		this.fixed = fixed;
 
 		this.entity = game.newEntity(fixed);
+	}
+
+	@Override
+	public void update(float deltaTime) {
+		if (!entity.isAlive())
+			this.destroy();
 	}
 
 	/**

@@ -1,31 +1,34 @@
 package main.game.actor.entities;
 
+import static main.math.ExtendedMath.invertXCoordinates;
+import static main.math.ExtendedMath.xInverted;
+
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
 import main.game.ActorGame;
 import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
 import main.game.actor.entities.weapons.Shotgun;
 import main.game.actor.entities.weapons.Weapon;
-import main.game.actor.sensors.Checkpoint;
 import main.game.graphics.ShapeGraphics;
-import main.math.*;
+import main.math.BasicContactListener;
+import main.math.Entity;
 import main.math.Polygon;
+import main.math.Polyline;
+import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-
-import static main.math.ExtendedMath.invertXCoordinates;
-import static main.math.ExtendedMath.xInverted;
-
+/** Main character of the game */
 public class Bike extends GameEntity implements PlayableEntity {
-	/**
-	 * Because its asked
-	 */
+
 	private static final long serialVersionUID = -5894386848192144642L;
 
 	// Game where the Bike evolves.
 	private transient ActorGame game;
 
+	// wheel max speed
 	private transient final float MAX_WHEEL_SPEED = 20f;
 
 	// Whether or not the bike is looking towards the rightEmitter.
@@ -39,7 +42,6 @@ public class Bike extends GameEntity implements PlayableEntity {
 	// Physical shape of the Bike.
 	private transient Polygon hitbox;
 	private transient Polyline bikeFrame;
-	private transient Weapon activeWeapon;
 
 	// Graphics representing the Bike.
 	private transient ShapeGraphics bikeFrameGraphic;
@@ -47,10 +49,14 @@ public class Bike extends GameEntity implements PlayableEntity {
 	// Entities associated to the Bike.
 	private transient Wheel leftWheel, rightWheel;
 	private transient CharacterBike character;
-	private transient Shotgun shotgun;
 	private transient float angle;
 
 	private transient boolean isDead = false, wasTriggered = false;
+
+	// weapons
+	// private transient Shotgun shotgun;
+	private transient ArrayList<Weapon> weapons = new ArrayList<>();
+	private int activeWeapon = 0;
 
 	/**
 	 * Create a Bike, the BikeGame's main actor.
@@ -86,15 +92,14 @@ public class Bike extends GameEntity implements PlayableEntity {
 		this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
 		this.rightWheel = new Wheel(this.game, this.getPosition().add(new Vector(1, 0)), .5f);
 		this.character = new CharacterBike(this.game, this.getPosition());
-		this.shotgun = new Shotgun(this.game, this.getPosition().add(1, 1), 3, this);
-		this.activeWeapon = this.shotgun;
+		this.weapons = new ArrayList<>();
+		this.weapons.add(new Shotgun(this.game, 3, this));
+		this.activeWeapon = 0;
 
 		this.leftWheel.attach(this.getEntity(), new Vector(-1.0f, 0.0f), new Vector(-0.5f, -1.0f));
 		this.rightWheel.attach(this.getEntity(), new Vector(1.0f, 0.0f), new Vector(0.5f, -1.0f));
 		this.character.setConstraint(Linker.attachPrismatically(this.game, this.getEntity(), this.character.getEntity(),
 				new Vector(0.f, 0.5f)));
-//		this.shotgun.setConstraint(Linker.attachPrismatically(this.game, this.getEntity(), this.shotgun.getEntity(),
-//				new Vector(0.5f, 0.5f)));
 		this.angle = 0;
 	}
 
@@ -107,6 +112,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 
 	@Override
 	public void update(float deltaTime) {
+		super.update(deltaTime);
 		if (this.contactListener.getEntities().size() > 0) {
 			for (Entity entity : this.contactListener.getEntities()) {
 				if (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group
@@ -165,8 +171,8 @@ public class Bike extends GameEntity implements PlayableEntity {
 
 		}
 
-		if (this.game.getKeyboard().get(KeyEvent.VK_F).isPressed()) {
-			this.activeWeapon.fireWeapon();
+		if (getOwner().getMouse().getMouseScrolledDown() || getOwner().getMouse().getMouseScrolledUp()) {
+			this.swapWeapon();
 		}
 
 		if (this.wonTheGame && this.lookRight)
@@ -177,7 +183,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 		this.leftWheel.update(deltaTime);
 		this.rightWheel.update(deltaTime);
 		this.character.update(deltaTime);
-		this.shotgun.update(deltaTime);
+		this.weapons.get(activeWeapon).update(deltaTime);
 	}
 
 	@Override
@@ -186,7 +192,8 @@ public class Bike extends GameEntity implements PlayableEntity {
 		this.leftWheel.draw(canvas);
 		this.rightWheel.draw(canvas);
 		this.character.draw(canvas);
-		this.shotgun.draw(canvas);
+
+		this.weapons.get(activeWeapon).draw(canvas);
 	}
 
 	@Override
@@ -194,7 +201,8 @@ public class Bike extends GameEntity implements PlayableEntity {
 		this.leftWheel.destroy();
 		this.rightWheel.destroy();
 		this.character.destroy();
-		this.shotgun.destroy();
+		for (Weapon w : weapons)
+			w.destroy();
 		super.destroy();
 		super.getOwner().destroyActor(this);
 	}
@@ -215,16 +223,23 @@ public class Bike extends GameEntity implements PlayableEntity {
 	@Override
 	public void triggerVictory() {
 
+		if (!wonTheGame) {
+			this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(-7, 6), null, 200,
+					(float) Math.PI / 2, (float) Math.PI, 1.5f, .1f, 1, .3f, 0xFFFFFF00, 0xFFFF0000, 2, 10));
+			this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(3, 8), null, 200,
+					(float) Math.PI / 2, (float) Math.PI, 1.5f, .1f, 1, .3f, 0xFFADFF2F, 0x00551A8B, 2, 10));
+		}
 		this.wonTheGame = true;
-		this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(-4, 5), null, 100, (float) Math.PI / 2,
-				(float) Math.PI, 1.5f, .1f, 1, .3f, 0xFFFFFF00, 0xFFFF0000, 2, 10));
-		this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(3, 7), null, 100, (float) Math.PI / 2,
-				(float) Math.PI, 1.5f, .1f, 1, .3f, 0xFFADFF2F, 0x00551A8B, 2, 10));
 	}
 
 	@Override
 	public void triggerCheckpoint() {
 
+	}
+
+	public void swapWeapon() {
+		activeWeapon++;
+		activeWeapon = (activeWeapon > weapons.size() - 1) ? 0 : activeWeapon;
 	}
 
 	@Override
@@ -242,6 +257,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 		return this.wasKilledByGravity;
 	}
 
+	@Override
 	public boolean isLookingRight() {
 		return lookRight;
 	}

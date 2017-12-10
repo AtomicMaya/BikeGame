@@ -59,9 +59,6 @@ public abstract class GameWithLevels extends ActorGame {
 			timerMessage += deltaTime;
 			if (timerMessage > timeBeforeMessage1 & !display) {
 				display = true;
-				Vector position = getCanvas().getPosition();// .add(new
-															// Vector(.5f, 0));
-				message1.setRelativeTransform(Transform.I.translated(position));
 
 				if (getPayload().getVictoryStatus()) {
 					message1.setText(messageNextLevelText);
@@ -74,8 +71,11 @@ public abstract class GameWithLevels extends ActorGame {
 				}
 
 			}
-			if (display)
+			if (display) {
+				Vector position = getCanvas().getPosition();
+				message1.setRelativeTransform(Transform.I.translated(position));
 				message1.draw(getCanvas());
+			}
 			if (getPayload().getVictoryStatus()) {
 				if (getKeyboard().get(KeyEvent.VK_N).isPressed())
 					nextLevel();

@@ -47,6 +47,7 @@ public abstract class FullScreenMenu extends Menu {
 	@Override
 	public void update(float deltaTime, float zoom) {
 		super.update(deltaTime, zoom);
+		
 		if (isOpen()) {
 
 			window.setRelativeTransform(Transform.I.scaled(scale * zoom));

@@ -2,7 +2,7 @@ package main.game.actor.entities.weapons;
 
 import main.game.ActorGame;
 import main.game.GUI.Comment;
-import main.game.actor.Actor;
+import main.game.actor.ObjectGroup;
 import main.game.actor.entities.PlayableEntity;
 import main.math.Impact;
 import main.math.Polyline;
@@ -10,93 +10,101 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-public class Shotgun implements Actor, Weapon {
+/** {@linkplain Weapon} of type shotgun */
+public class Shotgun implements Weapon {
 
-	// private ImageGraphics graphics;
-	// private KeyboardProximitySensor sensor;
 	private ActorGame game;
-	private int ammoCount;
-	private boolean shooting;
-	private float elapsedTime, shotgunOutTime;
-	private Vector position;
-//	private PrismaticConstraint constraint;
 
+	// shouting params
 	private boolean deployed = false;
+	private int ammoCount;
+	private boolean shooting = false;
+	private float elapsedTime = 0, shotgunOutTime = .5f;
+	private Vector position;
+
+	// direction of shout
 	private Vector direction;
+
+	// graphical parameters
 	private float laserDiatance = 16;
 	private String imagePath = "./res/images/shotgun.png";
 	private boolean lookRight = false;
-
-	private PlayableEntity player;
 	private float angle = 0;
 
+	// who own this weapon
+	private PlayableEntity player;
+
+	// GUI stuff
 	private Comment amoNumber;
 	private String amoText = " amos left";
+	private Vector amoNumberPos = new Vector(17, 8);
 
-	public Shotgun(ActorGame game, Vector position, int initialAmmoCount, PlayableEntity player) {
+	/** Create a new shotgun */
+	public Shotgun(ActorGame game, int initialAmmoCount, PlayableEntity player) {
 		// super(game, false, position);
-		this.position = position;
+		this.lookRight = player.isLookingRight();
+		this.position = player.getPosition().add(this.lookRight ? 1 : -1, 2);
 		this.game = game;
 		this.player = player;
-		// this.graphics = this.addGraphics("./res/images/shotgun.png", 2, .5f,
-		// Vector.ZERO, 1, 10.2f);
-		// this.sensor = new ProximitySensor(game, position.add(-2, 0), new
-		// Polygon(0, -0.25f, 2, -1.5f, 2, 1.5f, 0, 0.25f), new
-		// ArrayList<>(Arrays.asList(ObjectGroup.ENEMY.group)));
-		// this.sensor = new KeyboardProximitySensor(game, position.add(-2, 0),
-		// new Polygon(0, -0.25f, 2, -1.5f, 2, 1.5f, 0, 0.25f), VK_E);
 		this.ammoCount = initialAmmoCount;
-		this.shooting = false;
-		this.elapsedTime = 0;
-		this.shotgunOutTime = .5f;
-		// this.build(new Circle(.1f));
-		direction = direction(position, game.getMouse().getPosition());
-		amoNumber = new Comment(game, ammoCount + amoText);
-		amoNumber.setAnchor(new Vector(10, 6));
+
+		this.direction = direction(this.position, game.getMouse().getPosition());
+		this.amoNumber = new Comment(game, this.ammoCount + this.amoText);
+		this.amoNumber.setAnchor(this.amoNumberPos);
 	}
 
+	/** Compute the direction vector */
 	private Vector direction(Vector un, Vector deux) {
 		return new Vector(un.x - deux.x, un.y - deux.y).normalized();
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		if (deployed && game.getMouse().getLeftButton().isPressed()) {
+		if (this.deployed && this.game.getMouse().getLeftButton().isPressed()) {
 			fireWeapon();
 		}
-		if (game.getKeyboard().get(KeyEvent.VK_F).isPressed())
-			deployed = !deployed;
-		
+		if (this.game.getKeyboard().get(KeyEvent.VK_F).isPressed())
+			this.deployed = !this.deployed;
 
-		Vector playerPos = player.getPosition();
-		position = playerPos.add(lookRight ? 1 : -1, 2);
+		if (this.deployed) {
+			Vector playerPos = this.player.getPosition();
+			this.position = playerPos.add(this.lookRight ? 1 : -1, 2);
 
-		direction = direction(playerPos, game.getMouse().getPosition());
-		lookRight = direction.x <= 0;
+			this.direction = direction(playerPos, this.game.getMouse().getPosition());
+			this.lookRight = this.direction.x <= 0;
 
-		angle = direction.rotated(Math.PI).getAngle();
-//		System.out.println(angle);
-		if (angle > Math.PI / 4 && angle <= Math.PI / 2)
-			angle = (float) (Math.PI / 4);
-		else if (angle > Math.PI / 2 && angle < Math.PI * 3 / 4f)
-			angle = (float) Math.PI * 3 / 4f;
-		else if (angle < -Math.PI / 4 && angle >= -Math.PI / 2)
-			angle = (float) (-Math.PI / 4);
-		else if (angle < -Math.PI / 2 && angle > -Math.PI * 3 / 4f)
-			angle = (float) -Math.PI * 3 / 4f;
+			angle = direction.rotated(Math.PI).getAngle();
+			// System.out.println(angle);
+			if (angle > Math.PI / 4 && angle <= Math.PI / 2)
+				angle = (float) (Math.PI / 4);
+			else if (angle > Math.PI / 2 && angle < Math.PI * 3 / 4f)
+				angle = (float) Math.PI * 3 / 4f;
+			else if (angle < -Math.PI / 4 && angle >= -Math.PI / 2)
+				angle = (float) (-Math.PI / 4);
+			else if (angle < -Math.PI / 2 && angle > -Math.PI * 3 / 4f)
+				angle = (float) -Math.PI * 3 / 4f;
 
-		direction = new Vector((float) (Math.sin(-angle + Math.PI / 2)), (float) (Math.cos(-angle + Math.PI / 2)))
-				.mul(-1);
+			this.direction = new Vector((float) (Math.sin(-this.angle + Math.PI / 2)),
+					(float) (Math.cos(-this.angle + Math.PI / 2))).mul(-1);
 
-		if (this.shooting)
-			this.elapsedTime += deltaTime;
-		if (this.elapsedTime > this.shotgunOutTime) {
-			this.elapsedTime = 0;
-			this.shooting = false;
+			if (this.shooting)
+				this.elapsedTime += deltaTime;
+			if (this.elapsedTime > this.shotgunOutTime) {
+				this.elapsedTime = 0;
+				this.shooting = false;
+			}
+
+			this.amoNumber.update(deltaTime, this.game.getViewScale() / 20f);
+			if (shooting) {
+				List<Impact> impacts = this.game.getImpacts(this.position,
+						this.position.add(this.direction.mul(-this.laserDiatance)));
+				if (!impacts.isEmpty() && impacts.get(0).getPart().getCollisionGroup() == ObjectGroup.ENEMY.group)
+					impacts.get(0).getPart().getEntity().destroy();
+			}
 		}
 	}
 
@@ -113,7 +121,7 @@ public class Shotgun implements Actor, Weapon {
 			canvas.drawShape(
 					new Polyline(position.add(corection.mul(-2.1f)), position.add(direction.mul(-laserDiatance))),
 					Transform.I, Color.GREEN, Color.GREEN, .05f, 1, -12);
-			List<Impact> impacts = game.getImpacts(position, position.add(direction.mul(-laserDiatance)));
+
 			amoNumber.draw(canvas);
 		}
 	}
@@ -123,8 +131,7 @@ public class Shotgun implements Actor, Weapon {
 		if (this.ammoCount > 0) {
 			this.ammoCount -= 1;
 			this.shooting = true;
-			amoNumber.setText(ammoCount + amoText);
-			System.out.println("shout");
+			this.amoNumber.setText(this.ammoCount + this.amoText);
 		}
 
 	}
@@ -142,14 +149,8 @@ public class Shotgun implements Actor, Weapon {
 
 	@Override
 	public void destroy() {
-		// this.sensor.destroy();
-		// super.destroy();
 		this.game.destroyActor(this);
 	}
-	//
-	// public void setConstraint(PrismaticConstraint constraint) {
-	// this.constraint = constraint;
-	// }
 
 	@Override
 	public Transform getTransform() {
@@ -160,9 +161,4 @@ public class Shotgun implements Actor, Weapon {
 	public Vector getVelocity() {
 		return player.getVelocity();
 	}
-
-	// public void detach() {
-	// if (this.constraint != null)
-	// this.constraint.destroy();
-	// }
 }

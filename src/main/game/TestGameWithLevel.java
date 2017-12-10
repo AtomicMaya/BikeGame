@@ -15,14 +15,16 @@ import java.util.List;
 public class TestGameWithLevel extends GameWithLevels {
 
 	public boolean begin(Window window, FileSystem fileSystem) {
-		return super.begin(window, fileSystem);
+		super.begin(window, fileSystem);
+		this.beginLevel(0);
+		return true;
 	}
 
 	@Override
 	protected List<Level> createLevelList() {
 
 		List<Level> levels = new ArrayList<>();
-        //levels.add(new CinematicLevel1(this));
+		// levels.add(new CinematicLevel1(this));
 		levels.add(new Level1(this));
 		levels.add(new Level1(this));
 

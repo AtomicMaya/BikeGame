@@ -91,11 +91,12 @@ public class Laser extends GameEntity {
 	}
 
 	public Laser(ActorGame game, Vector startPosition, float distance, int direction) {
-		this(game, startPosition, distance, .5f, 2, 4, 3, 1, direction, "#00FFFF");
+		this(game, startPosition, distance, .5f, 2, 2, 3, 2, direction, "#00FFFF");
 	}
 
     @Override
     public void update(float deltaTime) {
+    	super.update(deltaTime);
         this.sensor.update(deltaTime);
         if(this.firesCount != this.maxFires) {
             this.elapsedTime += deltaTime;

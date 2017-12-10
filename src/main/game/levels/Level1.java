@@ -42,7 +42,7 @@ public class Level1 extends Level {
 		this.addActor(terrain);
 		Trampoline t = new Trampoline(game, new Vector(5, 6), 5, 1);
 		Polygon p1 = new Polygon(0, 0, 0, 3f, 1.5f, 3f, 1.5f, 0);
-		Liquid l = new Liquid(game, new Vector(-9, 2), p1, true);
+//		Liquid l = new Liquid(game, new Vector(-9, 2), p1, true);
 //		Mine m = new Mine(game, new Vector(-3, -1));
 		GravityWell gw = new GravityWell(game, new Vector(-5,0), new Vector(0,1), ExtendedMath.createRectangle(3, 7), (float) Math.PI);
 		addActor(gw);
@@ -50,7 +50,9 @@ public class Level1 extends Level {
 		this.addActor(terrain);
 		this.addActor(player);
 		this.addActor(t);
-		addActor(l);
+		BoomBarrel bb = new BoomBarrel(game, new Vector(-16,0), true);
+		addActor(bb);
+//		addActor(l);
 		this.setViewCandidate(player);
 		this.setPayload(player);
 	}
