@@ -75,6 +75,7 @@ public class Program {
 						deltaTime = MAX_DELTA_TIME;
 
 					}
+                    System.out.println(deltaTime);
 					// Let the game do its stuff
 					game.update(deltaTime);
 

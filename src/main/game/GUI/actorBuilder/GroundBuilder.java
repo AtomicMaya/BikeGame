@@ -8,7 +8,7 @@ import main.game.ActorGame;
 import main.game.GUI.GraphicalButton;
 import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
-import main.game.actor.entities.Ground;
+import main.game.actor.entities.Terrain;
 import main.math.*;
 import main.window.Canvas;
 
@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 /**
- * Used to create a {@linkplain Ground}
+ * Used to create a {@linkplain Terrain}
  * @see ActorBuilder
  */
 public class GroundBuilder extends ActorBuilder {
@@ -52,11 +52,11 @@ public class GroundBuilder extends ActorBuilder {
 	private boolean isDone = false;
 
 	// actor build
-	private Ground ground;
+	private Terrain terrain;
 
 	/**
 	 * Create a new {@linkplain GroundBuilder}
-	 * @param game : {@linkplain ActorGeme} where this belong
+	 * @param game : {@linkplain ActorGame} where this belong
 	 * @param levelEditor : {@linkplain LevelEditor} where this is created
 	 */
 	public GroundBuilder(ActorGame game, LevelEditor levelEditor) {
@@ -89,7 +89,7 @@ public class GroundBuilder extends ActorBuilder {
 			groundLine = new Polyline(updateGround(null));
 		});
 		finish.setAnchor(finishPosition);
-		// ground = new Ground(game, Vector.ZERO, new
+		// terrain = new Terrain(game, Vector.ZERO, new
 		// Polyline(updateGround(null)));
 	}
 
@@ -160,8 +160,8 @@ public class GroundBuilder extends ActorBuilder {
 	}
 
 	/**
-	 * Update the {@linkplain Ground} which will be created
-	 * @param mousePosition : {@linkplain Mouse} position
+	 * Update the {@linkplain Terrain} which will be created
+	 * @param mousePosition : {@linkplain main.window.Mouse} position
 	 * @return a list with the points updated
 	 */
 	private ArrayList<Vector> updateGround(Vector mousePosition) {
@@ -193,10 +193,10 @@ public class GroundBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
-		if (ground != null)
-			ground.destroy();
-		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
-		return ground;
+		if (terrain != null)
+			terrain.destroy();
+		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), 9);
+		return terrain;
 	}
 
 	@Override
@@ -206,8 +206,8 @@ public class GroundBuilder extends ActorBuilder {
 
 	@Override
 	public void reCreate() {
-		ground.destroy();
-		ground = new Ground(game, Vector.ZERO, new Polyline(updateGround(null)));
+		terrain.destroy();
+		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), 0);
 	}
 
 	@Override
@@ -221,7 +221,7 @@ public class GroundBuilder extends ActorBuilder {
 
 	@Override
 	public void destroy() {
-		this.ground.destroy();
+		this.terrain.destroy();
 	}
 
 }

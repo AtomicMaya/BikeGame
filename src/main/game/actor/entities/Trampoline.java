@@ -9,7 +9,7 @@ import main.math.Vector;
 import main.window.Canvas;
 
 public class Trampoline implements Actor, Saveable {
-	private TrampolinePlatform trampolinePlatform;
+	private GenericPlatform genericPlatform;
 	private AnchorPoint anchor;
 	private ActorGame game;
 	private Vector position;
@@ -25,9 +25,9 @@ public class Trampoline implements Actor, Saveable {
 
 		this.anchor = new AnchorPoint(game, position);
 
-		this.trampolinePlatform = new TrampolinePlatform(game, position, width, height);
+		this.genericPlatform = new GenericPlatform(game, position, width, height);
 
-        this.trampolinePlatform.setConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.trampolinePlatform.getEntity(), new Vector(-1, 0),
+        this.genericPlatform.setConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.genericPlatform.getEntity(), new Vector(-1, 0),
                 0, 2.5f, 0));
 
     }
@@ -37,8 +37,8 @@ public class Trampoline implements Actor, Saveable {
 
     @Override
     public void update(float deltaTime) {
-        this.trampolinePlatform.update(deltaTime);
         this.anchor.update(deltaTime);
+        this.genericPlatform.update(deltaTime);
     }
 	@Override
 	public void reCreate(ActorGame game) {
@@ -49,7 +49,7 @@ public class Trampoline implements Actor, Saveable {
 	@Override
 	public void destroy() {
 		this.anchor.destroy();
-		this.trampolinePlatform.destroy();
+		this.genericPlatform.destroy();
 		this.game.destroyActor(this);
 	}
 
@@ -60,8 +60,8 @@ public class Trampoline implements Actor, Saveable {
 
     @Override
     public void draw(Canvas canvas) {
-        this.trampolinePlatform.draw(canvas);
         this.anchor.draw(canvas);
+        this.genericPlatform.draw(canvas);
     }
 
     @Override

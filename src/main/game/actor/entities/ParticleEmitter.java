@@ -50,7 +50,6 @@ public class ParticleEmitter implements Actor {
         this.particles = new LinkedList<>();
 
         this.position = position;
-        this.game.addActor(this);
     }
 
     public ParticleEmitter(ActorGame game, Vector position, int particlesPerSecond, float angle, float speed, float particleLifeTime, int startColor, int endColor) {

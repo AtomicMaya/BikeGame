@@ -3,17 +3,17 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
+import main.math.Constraint;
 import main.math.Polygon;
 import main.math.Vector;
-import main.math.WeldConstraint;
 import main.window.Canvas;
 
-public class TrampolinePlatform extends GameEntity {
+public class GenericPlatform extends GameEntity {
     private ImageGraphics graphics;
     private float width, height;
-    private WeldConstraint constraint;
+    private Constraint constraint;
 
-    public TrampolinePlatform(ActorGame game, Vector anchorPosition, float width, float height) {
+    public GenericPlatform(ActorGame game, Vector anchorPosition, float width, float height) {
         super(game, false, anchorPosition);
         this.width = width;
         this.height = height;
@@ -45,11 +45,11 @@ public class TrampolinePlatform extends GameEntity {
         super.getOwner().destroyActor(this);
     }
 
-    public void setConstraint(WeldConstraint constraint) {
+    public void setConstraint(Constraint constraint) {
         this.constraint = constraint;
     }
 
-    public WeldConstraint getConstraint() {
+    public Constraint getConstraint() {
         return this.constraint;
     }
 }

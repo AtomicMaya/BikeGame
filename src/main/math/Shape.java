@@ -1,5 +1,6 @@
 package main.math;
 
+import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.util.Random;
 
@@ -13,6 +14,8 @@ public abstract class Shape {
     
     /** @return shape area */
     public abstract float getArea();
+
+    public abstract Area getGeomArea();
     
     /** @return shape perimeter */
     public abstract float getPerimeter();

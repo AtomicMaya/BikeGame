@@ -29,7 +29,7 @@ public class BoomBarrel extends GameEntity {
 
         this.explosive = explosive;
 
-        this.build(new Polygon(0, 0, 1, 0, 1, 1.5f, 0, 1.5f), 1, 1, false);
+        this.build(new Polygon(0, 0, 1, 0, 1, 1.5f, 0, 1.5f), 1, 1, false, ObjectGroup.ENEMY.group);
 
         this.graphics = addGraphics(explosive ? "./res/images/barrel.red.png" : "./res/images/barrel.green.png", 1, 1.5f);
         if (explosive) {
@@ -95,5 +95,9 @@ public class BoomBarrel extends GameEntity {
     public void destroy() {
         super.destroy();
         super.getOwner().destroyActor(this);
+    }
+
+    public void trigger() {
+        this.triggered = true;
     }
 }

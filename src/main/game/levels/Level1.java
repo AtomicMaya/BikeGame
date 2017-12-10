@@ -6,7 +6,7 @@ package main.game.levels;
 
 import main.game.ActorGame;
 import main.game.actor.entities.Bike;
-import main.game.actor.entities.Ground;
+import main.game.actor.entities.Terrain;
 import main.game.actor.sensors.FinishActor;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -27,7 +27,7 @@ public class Level1 extends Level {
 		Polyline p = new Polyline(-1000.0f, -1000.0f, -1000.0f, 0.0f, 0.0f, 0.0f, 3.0f, 1.0f, 8.0f, 1.0f, 15.0f, 3.0f,
 				16.0f, 3.0f, 25.0f, 0.0f, 35.0f, -5.0f, 50.0f, -5.0f, 55.0f, -4.0f, 65.0f, 0.0f, 6500.0f, -1000.0f);
 
-		Ground ground = new Ground(game, null, p);
+		Terrain terrain = new Terrain(game, null, p, 0);
 
 		player = new Bike(game, new Vector(4, 5));
 
@@ -38,7 +38,7 @@ public class Level1 extends Level {
 
 		this.addActor(finishActor);
 		// this.addActor(crate1);
-		this.addActor(ground);
+		this.addActor(terrain);
 		this.addActor(player);
 
 		this.setViewCandidate(player);

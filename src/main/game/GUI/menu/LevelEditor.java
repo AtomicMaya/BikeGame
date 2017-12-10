@@ -4,11 +4,6 @@
  */
 package main.game.GUI.menu;
 
-import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.io.File;
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
@@ -17,18 +12,21 @@ import main.game.GUI.actorBuilder.BikeBuilder;
 import main.game.GUI.actorBuilder.GroundBuilder;
 import main.game.actor.Actor;
 import main.game.actor.entities.Bike;
-import main.game.actor.entities.Ground;
+import main.game.actor.entities.Terrain;
 import main.game.graphics.BetterTextGraphics;
 import main.game.graphics.Graphics;
 import main.game.graphics.ShapeGraphics;
 import main.io.Save;
-import main.math.ExtendedMath;
+import main.math.*;
 import main.math.Polygon;
 import main.math.Shape;
-import main.math.Transform;
-import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
@@ -394,8 +392,8 @@ public class LevelEditor implements Graphics {
 	}
 
 	/**
-	 * Make sure we have a unique {@linkplain Ground}
-	 * @param {@linkplain Ground} to add to the game
+	 * Make sure we have a unique {@linkplain Terrain}
+	 * @param {@linkplain Terrain} to add to the game
 	 */
 	public void addGround() {
 		if (this.gb != null) {

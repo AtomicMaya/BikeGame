@@ -5,6 +5,7 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
+import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Path2D;
 import java.util.Arrays;
@@ -54,7 +55,12 @@ public final class Ellipse extends Shape {
 		return (float)Math.PI * this.shortRadius * this.longRadius;
 	}
 
-	@Override
+    @Override
+    public Area getGeomArea() {
+        return new Area(this.toPath());
+    }
+
+    @Override
 	public float getPerimeter() {
 		float ramanujanH = (float) (Math.pow(this.longRadius - shortRadius, 2) / Math.pow(this.longRadius + this.shortRadius, 2));
 		return (float) (Math.PI * (this.longRadius + this.shortRadius) * (1 + (3 * ramanujanH) / (10 + Math.sqrt(4 - 3 * ramanujanH))));
