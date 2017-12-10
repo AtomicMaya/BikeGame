@@ -2,6 +2,7 @@ package main;
 
 import main.game.Game;
 import main.game.TestGame;
+import main.game.TestGameLevelMenu;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;
@@ -43,8 +44,8 @@ public class Program {
 			// Game game = new PolyLineGame();
 			// Game game = new CrateGame();
 
-			//Game game = new TestGame();
 			Game game = new TestGame();
+//			Game game = new TestGameLevelMenu();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression
@@ -75,7 +76,7 @@ public class Program {
 						deltaTime = MAX_DELTA_TIME;
 
 					}
-                    System.out.println(deltaTime);
+//                    System.out.println(deltaTime);
 					// Let the game do its stuff
 					game.update(deltaTime);
 
