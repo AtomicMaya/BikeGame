@@ -37,7 +37,7 @@ public class InGameMenu extends FullScreenMenu {
 		backToMainMenu.addOnClickAction(() -> {
 			game.destroyAllActors();
 			game.goToMainMenu();
-		}, 0f);
+		});
 	}
 
 	@Override

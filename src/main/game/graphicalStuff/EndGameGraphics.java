@@ -1,12 +1,12 @@
 package main.game.graphicalStuff;
 
-import java.util.Random;
-
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.math.Node;
 import main.math.Transform;
 import main.window.Canvas;
+
+import java.util.Random;
 
 public class EndGameGraphics extends Node implements Actor {
 
@@ -18,8 +18,8 @@ public class EndGameGraphics extends Node implements Actor {
 	private float widthRatio = 0.85f;
 	private float heightRatio = 0.6f;
 
-	public EndGameGraphics(ActorGame game, String fileName) {
-		this.filename = fileName == null ? "" : fileName;
+	public EndGameGraphics(ActorGame game) {
+		this.filename = "";
 		this.game = game;
 		this.width = game.getViewScale() * widthRatio;
 		this.height = game.getViewScale() * heightRatio;

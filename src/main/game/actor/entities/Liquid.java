@@ -3,6 +3,8 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.sensors.ProximitySensor;
 import main.game.graphics.ImageGraphics;
+import main.io.Saveable;
+import main.math.ExtendedMath;
 import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
@@ -12,25 +14,32 @@ import java.util.ArrayList;
 /**
  * Created on 12/9/2017 at 1:06 PM.
  */
-public class Liquid extends GameEntity {
-    private ArrayList<ImageGraphics> graphics;
-    private ProximitySensor sensor;
+public class Liquid extends GameEntity implements Saveable {
+    private transient ArrayList<ImageGraphics> graphics;
+    private transient ProximitySensor sensor;
     private final float animationTime;
-    private float elapsedAnimationTime, length, height;
+    private float elapsedAnimationTime;
+    private float length, height;
+    
     private boolean isLava, switched;
-
+    
     public Liquid(ActorGame game, Vector position, Polygon shape, boolean isLava) {
         super(game, true, position);
         this.build(shape, -1, 1, true);
         this.isLava = isLava;
         this.switched = false;
-        this.sensor = new ProximitySensor(game, position, shape);
+       
         this.animationTime = .5f;
         this.elapsedAnimationTime = 0;
         this.length = shape.getPoints().get(2).x;
         this.height = shape.getPoints().get(2).y;
 
-        this.graphics = new ArrayList<>();
+       create();
+    }
+
+    private void create() {
+    	this.sensor = new ProximitySensor(getOwner(), getPosition(), ExtendedMath.createRectangle(length, height));
+    	this.graphics = new ArrayList<>();
         for (int l = 0; l < this.length; l++) {
             for (int h = 0; h < this.height; h++) {
                 if (h == this.height - 1 && !this.switched)
@@ -40,7 +49,11 @@ public class Liquid extends GameEntity {
             }
         }
     }
-
+    @Override
+    public void reCreate(ActorGame game) {
+    	super.reCreate(game);
+    	create();
+    }
     @Override
     public void update(float deltaTime) {
     	this.sensor.update(deltaTime);

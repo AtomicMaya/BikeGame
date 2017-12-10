@@ -37,7 +37,7 @@ public abstract class Level extends Node implements Actor {
 	 */
 	public Level(ActorGame game) {
 		this.game = game;
-		this.actors.add(new EndGameGraphics(game, ""));
+		this.actors.add(new EndGameGraphics(game));
 	}
 
 	/**

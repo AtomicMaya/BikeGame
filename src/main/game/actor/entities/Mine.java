@@ -13,26 +13,30 @@ import java.util.Arrays;
  * Created on 12/9/2017 at 10:53 AM.
  */
 public class Mine extends GameEntity {
-    private ArrayList<String> stateGraphics;
-    private ArrayList<String> boomGraphics;
-    private final float beepTime, boomAnimationTime;
-    private final int beeps;
-    private float elapsedTime, elapsedBoomTime;
-    private boolean triggered, blowingUp, state, previousState;
-    private int boomGraphicsCounter, currentBeep;
+	private transient  ArrayList<String> stateGraphics;
+	private transient ArrayList<String> boomGraphics;
+	private final float beepTime, boomAnimationTime;
+	private final int beeps;
+	private float elapsedTime, elapsedBoomTime;
+	private boolean triggered, blowingUp, state, previousState;
+	private int boomGraphicsCounter, currentBeep;
 
-    private ProximitySensor sensor;
+	private transient ProximitySensor sensor;
 
-    public Mine(ActorGame game, Vector position) {
-        super(game, true, position);
+	public Mine(ActorGame game, Vector position) {
+		super(game, true, position);
 
-        this.beepTime = 2f;
-        this.boomAnimationTime = .3f;
-        this.beeps = 3;
-        this.state = false;
-        this.previousState = false;
+		this.beepTime = 2f;
+		this.boomAnimationTime = .3f;
+		this.beeps = 3;
+		this.state = false;
+		this.previousState = false;
+		this.triggered = false;
+		create();
+	}
 
-        this.build(new Polygon(0, 0, .5f, 0, .5f, 1, 0, 1), -1, -1, false);
+	private void create() {
+		this.build(new Polygon(0, 0, .5f, 0, .5f, 1, 0, 1), -1, -1, false);
 
         this.stateGraphics = new ArrayList<>(Arrays.asList("./res/images/mine.0.png", "./res/images/mine.1.png"));
         this.boomGraphics = new ArrayList<>(Arrays.asList( "./res/images/mine.explosion.0.png", "./res/images/mine.explosion.1.png",
@@ -42,9 +46,15 @@ public class Mine extends GameEntity {
                 "./res/images/mine.explosion.11.png", "./res/images/mine.explosion.12.png", "./res/images/mine.explosion.13.png",
                 "./res/images/mine.explosion.14.png", "./res/images/mine.explosion.15.png"));
 
-        this.triggered = false;
-        this.sensor = new ProximitySensor(game, position.add(-.5f,1), new Polygon(0, 0, 1.5f, 0, 1.5f, 3, 0 ,3));
-    }
+		this.triggered = false;
+		this.sensor = new ProximitySensor(getOwner(), getPosition().add(-.5f, 1),
+				new Polygon(0, 0, 1.5f, 0, 1.5f, 3, 0, 3));
+	}
+
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		create();
+	}
 
     @Override
     public void update(float deltaTime) {
@@ -83,11 +93,17 @@ public class Mine extends GameEntity {
         this.getOwner().destroyActor(this);
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        if(this.blowingUp)
-            this.sensor.addGraphics(this.boomGraphics.get(boomGraphicsCounter), 1.5f, 3).draw(canvas);
-        if (this.triggered)
-            this.addGraphics(stateGraphics.get(this.state ? 1 : 0), .5f, 1, Vector.ZERO, 1, 100).draw(canvas);
-    }
+	@Override
+	public void draw(Canvas canvas) {
+		if (this.blowingUp)
+			this.sensor.addGraphics(this.boomGraphics.get(boomGraphicsCounter), 1.5f, 3).draw(canvas);
+		if (this.triggered)
+			this.addGraphics(stateGraphics.get(this.state ? 1 : 0), .5f, 1, Vector.ZERO, 1, 100).draw(canvas);
+	}
+
+	@Override
+	public void setPosition(Vector newPosition) {
+		super.setPosition(newPosition);
+		this.sensor.setPosition(newPosition);
+	}
 }

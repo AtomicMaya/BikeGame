@@ -17,34 +17,33 @@ public class ExtendedMath {
 		return (float) Math.sqrt(Math.pow(first.x - second.x, 2) + Math.pow(first.y - second.y, 2));
 	}
 
-    /**
-     * Gets the angle between two points and the center.
-     * @param first : The first point.
-     * @param second : The second point.
-     * @return the absolute angle between both points, relative to the center.
-     */
-    public static float getAngle(Vector first, Vector second) {
+	/**
+	 * Gets the angle between two points and the center.
+	 * @param first : The first point.
+	 * @param second : The second point.
+	 * @return the absolute angle between both points, relative to the center.
+	 */
+	public static float getAngle(Vector first, Vector second) {
 
-        float lengthFirst = first.getLength();
-        float lengthSecond = second.getLength();
+		float lengthFirst = first.getLength();
+		float lengthSecond = second.getLength();
 
-        float cosineValue = (first.x * second.x + first.y * second.y) / (lengthFirst * lengthSecond);
-        float sineValue = (first.x * second.y - first.y * second.x);
+		float cosineValue = (first.x * second.x + first.y * second.y) / (lengthFirst * lengthSecond);
+		float sineValue = (first.x * second.y - first.y * second.x);
 
-        return (float) (Math.signum(sineValue) * Math.acos(cosineValue));
-    }
-
-    /**
-     * Gets the angle between the two points / vectors and the x-axis.
-     * @param center : The center point.
-     * @param from : The first point.
-     * @param to : The second point.
-     * @return an angle in radians.
-     */
-    public static float getAngle(Vector center, Vector from, Vector to) {
-		return (float) Math.atan2((from.y - center.y) - (to.y - center.y), (from.x - center.x) - (to.x - center.x));
+		return (float) (Math.signum(sineValue) * Math.acos(cosineValue));
 	}
 
+	/**
+	 * Gets the angle between the two points / vectors and the x-axis.
+	 * @param center : The center point.
+	 * @param from : The first point.
+	 * @param to : The second point.
+	 * @return an angle in radians.
+	 */
+	public static float getAngle(Vector center, Vector from, Vector to) {
+		return (float) Math.atan2((from.y - center.y) - (to.y - center.y), (from.x - center.x) - (to.x - center.x));
+	}
 
 	public float getDotProduct(Vector first, Vector second) {
 		return first.x * second.x + first.y * second.y;
@@ -82,19 +81,19 @@ public class ExtendedMath {
 	public static Vector xyInverted = new Vector(-1.f, -1.f);
 
 	/**
-     * Returns red component from given packed color.
-     * @param rgb : A 32-bits ARGB color
-     * @return an integer between 0 and 255
-     */
+	 * Returns red component from given packed color.
+	 * @param rgb : A 32-bits ARGB color
+	 * @return an integer between 0 and 255
+	 */
 	public static int getRed(int rgb) {
 		return (rgb >> 16) & 0xFF;
 	}
 
-    /**
-     * Returns green component from given packed color.
-     * @param rgb : A 32-bits ARGB color
-     * @return an integer between 0 and 255
-     */
+	/**
+	 * Returns green component from given packed color.
+	 * @param rgb : A 32-bits ARGB color
+	 * @return an integer between 0 and 255
+	 */
 	public static int getGreen(int rgb) {
 		return (rgb >> 8) & 0xFF;
 	}
@@ -117,11 +116,12 @@ public class ExtendedMath {
 		return (argb >> 24) & 0xFF;
 	}
 
-    /**
-     * Checks whether a value is a 8-bit value, and corrects the value otherwise.
-     * @param someInt : The ?-bit value.
-     * @return a possible refactored value, if necessary.
-     */
+	/**
+	 * Checks whether a value is a 8-bit value, and corrects the value
+	 * otherwise.
+	 * @param someInt : The ?-bit value.
+	 * @return a possible refactored value, if necessary.
+	 */
 	public static int validate8bit(int someInt) {
 		if (someInt < 0)
 			someInt = 0;
@@ -144,7 +144,7 @@ public class ExtendedMath {
 	 * @param first : The first position.
 	 * @param second : The second position.
 	 * @param toTest : The position to test.
-     * @return whether the given vector is in the bounds.
+	 * @return whether the given vector is in the bounds.
 	 */
 	public static boolean isInRectangle(Vector first, Vector second, Vector toTest) {
 
@@ -153,8 +153,8 @@ public class ExtendedMath {
 		float minY = Math.min(first.y, second.y);
 		float maxY = Math.max(first.y, second.y);
 
-        return (minX < toTest.x) && (maxX > toTest.x) && (minY < toTest.y) && (maxY > toTest.y);
-    }
+		return (minX < toTest.x) && (maxX > toTest.x) && (minY < toTest.y) && (maxY > toTest.y);
+	}
 
 	/**
 	 * Sort Vectors by their x coordinate.
@@ -227,5 +227,27 @@ public class ExtendedMath {
 		// return false;
 		// }
 
+	}
+
+	/**
+	 * @return the rectangle between them
+	 * @param un start point
+	 * @param deux end point
+	 */
+	public static Polygon createRectangle(Vector un, Vector deux) {
+
+		float width = Math.abs(un.x - deux.x);
+		float height = Math.abs(un.y - deux.y);
+
+		return new Polygon(0, 0, 0, height, width, height, width, 0);
+	}
+
+	/**
+	 * @return the rectangle between them
+	 * @param width width of the rectangle
+	 * @param height height of the rectangle
+	 */
+	public static Polygon createRectangle(float width, float height) {
+		return new Polygon(0, 0, 0, height, width, height, width, 0);
 	}
 }

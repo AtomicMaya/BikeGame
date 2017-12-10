@@ -7,7 +7,6 @@ package main.game.GUI.actorBuilder;
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.NumberField;
-import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.crate.Crate;
 import main.math.ExtendedMath;
@@ -23,21 +22,17 @@ public class CrateBuilder extends ActorBuilder {
 
 	boolean placed = false;
 
-//	private ActorGame game;
-//	private LevelEditor lv;
-
 	// number field stuff
 	private NumberField height, width;
-	private Vector heightNumberFieldPos= new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
+	private Vector heightNumberFieldPos = new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
 	private Comment heightComment, widthComments;
 
-	private boolean isWriting = true;
+	private boolean isDone = false;
 	private boolean hoover = false;
 
 	public CrateBuilder(ActorGame game) {
 		super(game);
-//		this.game = game;
-//		this.lv = lv;
+
 		crate = new Crate(game, getFlooredMousePosition(), null, false, 1);
 
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
@@ -71,14 +66,14 @@ public class CrateBuilder extends ActorBuilder {
 			widthComments.update(deltaTime, zoom);
 
 			if (getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
-				isWriting = !(height.hasFocus() & width.hasFocus());
 				crate.setSize(width.getNumber(), height.getNumber());
+				isDone = true;
 			}
 		} else
 			hoover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
-					getFlooredMousePosition());
+					getMousePosition());
 		if (hoover && isRightPressed())
-			isWriting = true;
+			isDone = false;
 	}
 
 	@Override
@@ -101,7 +96,7 @@ public class CrateBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isDone() {
-		return placed & !isWriting;
+		return isDone;
 	}
 
 	@Override
@@ -118,6 +113,11 @@ public class CrateBuilder extends ActorBuilder {
 	@Override
 	public void destroy() {
 		this.crate.destroy();
+	}
+
+	@Override
+	public void edit() {
+		this.placed = false;
 	}
 
 }

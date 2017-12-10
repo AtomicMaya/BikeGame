@@ -29,4 +29,8 @@ public abstract class ActorBuilder extends GUIComponent {
 
 	/** Method called to recreate what's needed after we test the game */
 	public abstract void reCreate();
+	
+	/** Start editing this {@linkplain ActorBuilder}*/
+	public abstract void edit();
+	
 }

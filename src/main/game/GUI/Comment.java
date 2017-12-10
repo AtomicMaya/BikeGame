@@ -18,14 +18,10 @@ public class Comment extends GUIComponent {
 	private String text;
 	private float fontSize = 1f;
 
-	private float zoom = 1;
-	private ActorGame game;
-
 	public Comment(ActorGame game, String text) {
-		super(game, new Vector(-4, -12)); // default position on the
+		super(game, new Vector(-8, 0)); // default position on the
 											// screen
 											// TODO better
-		this.game = game;
 		this.text = text;
 	}
 
@@ -36,20 +32,20 @@ public class Comment extends GUIComponent {
 	 */
 	public void update(float deltaTime, float zoom) {
 		super.update(deltaTime, zoom);
-		this.zoom = zoom;
+		// this.zoom = zoom;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		float l = (text.length() + .4f) / 2;
 
-		Vector shift = new Vector(-l + l / 2, 0).mul(zoom);
+		Vector shift = new Vector(-l + l / 2, 0).mul(getZoom());
 		canvas.drawShape(new Polygon(0, 0, 0, 1, l, 1, l, 0), getTransform().translated(shift),
-				new Color(100, 100, 100), Color.BLACK, .02f, .5f, 1000);
+				new Color(100, 100, 100), Color.BLACK, .02f, .5f, 1338);
 
-		Vector v = new Vector(-l + l / 2 + .13f, .1f).mul(zoom);
+		Vector v = new Vector(-l + l / 2 + .13f, .1f).mul(getZoom());
 		canvas.drawText((text.length() == 0) ? "1" : text, fontSize, getTransform().translated(v), Color.BLACK, null, 0,
-				false, false, Vector.ZERO, 1, 1001);
+				false, false, Vector.ZERO, 1, 1339);
 	}
 
 	/**

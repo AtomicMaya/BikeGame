@@ -9,9 +9,11 @@ import main.math.Vector;
 import main.window.Canvas;
 
 public class GenericPlatform extends GameEntity {
-    private ImageGraphics graphics;
+    private static final long serialVersionUID = 4001144688952819865L;
+
+    private transient ImageGraphics graphics;
     private float width, height;
-    private Constraint constraint;
+    private transient Constraint constraint;
 
     public GenericPlatform(ActorGame game, Vector anchorPosition, float width, float height) {
         super(game, false, anchorPosition);
@@ -33,14 +35,15 @@ public class GenericPlatform extends GameEntity {
         create();
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-        this.graphics.draw(canvas);
-    }
+	@Override
+	public void draw(Canvas canvas) {
+		this.graphics.draw(canvas);
+	}
 
     @Override
     public void destroy() {
-        this.constraint.destroy();
+        if (this.constraint != null)
+            this.constraint.destroy();
         super.destroy();
         super.getOwner().destroyActor(this);
     }
