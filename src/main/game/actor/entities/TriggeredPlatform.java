@@ -18,7 +18,7 @@ public class TriggeredPlatform extends GameEntity {
     private int maxLoops, currentLoopCount;
     private float delay;
 
-    public TriggeredPlatform(ActorGame game, Vector position, Vector evolution, float distance, float advancementTime, float pauseTime, float delay, int loops) {
+    public TriggeredPlatform(ActorGame game, Vector position, Vector evolution, float distance, float advancementTime, float pauseTime, float delay, int loops, Shape shape, float width, float height) {
         super(game, false, position);
         this.loopTime = advancementTime;
         this.pauseTime = pauseTime;
@@ -28,11 +28,16 @@ public class TriggeredPlatform extends GameEntity {
         this.maxLoops = loops;
         this.currentLoopCount = 0;
 
-        Shape platformShape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 1.f, .0f, 1.f);
-        this.platform = new Platform(game, position, platformShape);
+        this.platform = new Platform(game, position, shape, width, height);
 
-        this.build(new Circle(0.1f), -1f, -1, false);
+        this.build(new Circle(0.1f), 10f, -1, false);
         this.platform.setConstraint(Linker.attachPrismatically(game, this.getEntity(), this.platform.getEntity(), Vector.ZERO));
+
+    }
+
+    public TriggeredPlatform(ActorGame game, Vector position, Vector evolution, float distance, float advancementTime, float pauseTime, float delay, int loops) {
+        this(game, position, evolution, distance, advancementTime, pauseTime, delay,
+                loops, new Polygon(.0f, .0f, 5.f, .0f, 5.f, 1.f, .0f, 1.f), 5, 1);
     }
 
     @Override
@@ -70,6 +75,10 @@ public class TriggeredPlatform extends GameEntity {
 
     public void triggerAction() {
         this.triggered = true;
+    }
+
+    public void setSize(float width, float height) {
+
     }
 
 }

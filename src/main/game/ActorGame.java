@@ -96,7 +96,7 @@ public class ActorGame implements Game {
 
 		this.world.update(deltaTime);
 
-		camera.update(deltaTime);
+		this.camera.update(deltaTime);
 
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
 			try {

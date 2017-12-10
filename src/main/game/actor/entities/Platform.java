@@ -8,13 +8,19 @@ import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
-/**
- * A platform, can move.
- */
+/** A platform that can move. */
 public class Platform extends GameEntity {
     private Shape shape;
     private PrismaticConstraint constraint;
     private ImageGraphics graphics;
+
+    public Platform(ActorGame game, Vector position, Shape shape, float width, float height) {
+        super(game, true, position);
+        this.shape = shape;
+
+        this.build(shape, 100.f, 1.f, false, ObjectGroup.TERRAIN.group);
+        this.graphics = addGraphics("./res/images/stone.3.png", width, height);
+    }
 
     /**
      * Creates a new Platform
@@ -22,12 +28,9 @@ public class Platform extends GameEntity {
      * @param position : The position at which the platform is instantiated
      * @param shape : The shape of the platform
      */
-    public Platform(ActorGame game, Vector position, Shape shape) {
-        super(game, true, position);
-        this.shape = shape;
 
-        this.build(shape, 100.f, 1.f, false, ObjectGroup.TERRAIN.group);
-        this.graphics = addGraphics("./res/images/stone.3.png", 5.f, 1.f);
+    public Platform(ActorGame game, Vector position, Shape shape) {
+        this(game, position, shape, 5, 1);
     }
 
     /**

@@ -3,6 +3,7 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ShapeGraphics;
+import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
 import main.window.Canvas;
@@ -34,6 +35,13 @@ public class Terrain extends GameEntity {
 		this.create();
 	}
 
+	public Terrain(ActorGame game, Vector position, Polygon shape, int type) {
+        super(game, true, (position == null) ? Vector.ZERO : position);
+        this.points = shape.getPoints();
+        this.type = type;
+        this.create();
+    }
+
 	/**
 	 * Actual creation of the parameters of the GameEntity, not in the constructor
 	 * to avoid duplication with the method reCreate
@@ -43,7 +51,7 @@ public class Terrain extends GameEntity {
 		float friction;
 		if (this.type == 0) friction = 2;
 		else if (this.type == 1) friction = 0;
-		else if (this.type == 2) friction = 0.7f;
+		else if (this.type == 2) friction = 0.4f;
 		else friction = 2;
 
 		this.build(points, friction, -1, false, ObjectGroup.TERRAIN.group);

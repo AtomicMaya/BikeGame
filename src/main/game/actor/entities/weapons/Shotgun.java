@@ -10,7 +10,7 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
@@ -19,31 +19,31 @@ public class Shotgun implements Weapon {
 
 	private ActorGame game;
 
-	// shouting params
+	// Shooting related parameters
 	private boolean deployed = false;
 	private int ammoCount;
 	private boolean shooting = false;
 	private float elapsedTime = 0, shotgunOutTime = .5f;
 	private Vector position;
 
-	// direction of shout
+	// Direction of shot
 	private Vector direction;
 
-	// graphical parameters
-	private float laserDiatance = 16;
+	// Graphical parameters
+	private float laserDistance = 10;
 	private String imagePath = "./res/images/shotgun.png";
-	private boolean lookRight = false;
+	private boolean lookRight;
 	private float angle = 0;
 
-	// who own this weapon
+	// The Owner
 	private PlayableEntity player;
 
-	// GUI stuff
-	private Comment amoNumber;
-	private String amoText = " amos left";
-	private Vector amoNumberPos = new Vector(17, 8);
+	// GUI elements
+	private Comment display;
+	private String ammoText = " Shots";
+	private Vector displayPosition = new Vector(17, 9);
 
-	/** Create a new shotgun */
+	/** Creates a new shotgun */
 	public Shotgun(ActorGame game, int initialAmmoCount, PlayableEntity player) {
 		// super(game, false, position);
 		this.lookRight = player.isLookingRight();
@@ -53,8 +53,8 @@ public class Shotgun implements Weapon {
 		this.ammoCount = initialAmmoCount;
 
 		this.direction = direction(this.position, game.getMouse().getPosition());
-		this.amoNumber = new Comment(game, this.ammoCount + this.amoText);
-		this.amoNumber.setAnchor(this.amoNumberPos);
+		this.display = new Comment(game, this.ammoCount + this.ammoText);
+		this.display.setAnchor(this.displayPosition);
 	}
 
 	/** Compute the direction vector */
@@ -98,10 +98,10 @@ public class Shotgun implements Weapon {
 				this.shooting = false;
 			}
 
-			this.amoNumber.update(deltaTime, this.game.getViewScale() / 20f);
+			this.display.update(deltaTime, this.game.getViewScale() / 20f);
 			if (shooting) {
 				List<Impact> impacts = this.game.getImpacts(this.position,
-						this.position.add(this.direction.mul(-this.laserDiatance)));
+						this.position.add(this.direction.mul(-this.laserDistance)));
 				if (!impacts.isEmpty() && impacts.get(0).getPart().getCollisionGroup() == ObjectGroup.ENEMY.group)
 					impacts.get(0).getPart().getEntity().destroy();
 			}
@@ -110,19 +110,19 @@ public class Shotgun implements Weapon {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (deployed) {
+		if (this.deployed) {
 			canvas.drawImage(canvas.getImage(imagePath),
 					Transform.I.scaled(2, .5f * ((lookRight) ? 1 : -1)).translated(position).rotated(angle, position),
 					1, 5);
 
-			Vector corection = new Vector(
+			Vector correction = new Vector(
 					(float) (Math.sin(-angle + Math.PI / 2 + Math.PI / 14 * (lookRight ? -1 : 1))),
 					(float) (Math.cos(-angle + Math.PI / 2 + Math.PI / 14 * (lookRight ? -1 : 1)))).mul(-1);
 			canvas.drawShape(
-					new Polyline(position.add(corection.mul(-2.1f)), position.add(direction.mul(-laserDiatance))),
-					Transform.I, Color.GREEN, Color.GREEN, .05f, 1, -12);
+					new Polyline(position.add(correction.mul(-2.1f)), position.add(direction.mul(-laserDistance))),
+					Transform.I, Color.GREEN, Color.GREEN, .05f, .3f, -12);
 
-			amoNumber.draw(canvas);
+			this.display.draw(canvas);
 		}
 	}
 
@@ -131,7 +131,7 @@ public class Shotgun implements Weapon {
 		if (this.ammoCount > 0) {
 			this.ammoCount -= 1;
 			this.shooting = true;
-			this.amoNumber.setText(this.ammoCount + this.amoText);
+			this.display.setText(this.ammoCount + this.ammoText);
 		}
 
 	}
@@ -139,7 +139,7 @@ public class Shotgun implements Weapon {
 	@Override
 	public void addAmmo(int quantity) {
 		this.ammoCount += quantity;
-		amoNumber.setText(ammoCount + amoText);
+		this.display.setText(this.ammoCount + this.ammoText);
 	}
 
 	@Override
