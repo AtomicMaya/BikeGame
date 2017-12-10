@@ -18,4 +18,5 @@ public interface PlayableEntity extends Actor {
 	boolean getIfWasKilledByGravity();
 	
 	public boolean isLookingRight();
+	
 }

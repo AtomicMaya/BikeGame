@@ -13,10 +13,10 @@ import main.window.Canvas;
  */
 public class Checkpoint extends GameEntity {
     private transient ActorGame game;
-    private BasicContactListener contactListener;
+    private transient BasicContactListener contactListener;
 
-    private ImageGraphics graphics;
-    private Shape shape;
+    private transient ImageGraphics graphics;
+    private transient Shape shape;
 
     public Checkpoint(ActorGame game, Vector position) {
         super(game, true, position);

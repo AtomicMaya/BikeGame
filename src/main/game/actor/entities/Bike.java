@@ -5,6 +5,7 @@ import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
 import main.game.actor.entities.weapons.Shotgun;
 import main.game.actor.entities.weapons.Weapon;
+import main.game.actor.sensors.Checkpoint;
 import main.game.graphics.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
@@ -243,5 +244,11 @@ public class Bike extends GameEntity implements PlayableEntity {
 
 	public boolean isLookingRight() {
 		return lookRight;
+	}
+
+	@Override
+	public void setLastCheckPoints(Checkpoint checkpoint) {
+		// TODO Auto-generated method stub
+		
 	}
 }
