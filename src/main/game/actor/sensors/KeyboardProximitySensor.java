@@ -3,31 +3,44 @@ package main.game.actor.sensors;
 import main.game.ActorGame;
 import main.game.actor.ParallelAction;
 import main.game.actor.entities.GameEntity;
-import main.game.graphics.ShapeGraphics;
 import main.math.BasicContactListener;
 import main.math.Shape;
 import main.math.Vector;
-import main.window.Canvas;
 import main.window.Keyboard;
 
-import java.awt.*;
-
-// TODO remove drawable component -> visual aid
-
+/** A special type of {@linkplain Sensor} that requires {@linkplain Keyboard} interaction. */
 public class KeyboardProximitySensor extends GameEntity implements Sensor {
+    /** Reference the {@linkplain Keyboard}. */
 	private Keyboard keyboard;
+
+	/** Reference the {@linkplain java.awt.event.KeyEvent} that is required for activation. */
 	private int key;
 
+	/** The {@linkplain Shape} of the sensor's trigger area. */
 	private Shape sensorArea;
-	private ShapeGraphics graphics;
 
+	/** The {@linkplain BasicContactListener} associated to this entity. */
 	private BasicContactListener contactListener;
 
+	/** The detection status of this {@linkplain Sensor}. */
 	private boolean detectionStatus, previousDetectionStatus = false;
+
+	/** Whether the required key has been pressed. */
 	private boolean keyPressedStatus;
+
+	/** Whether this {@linkplain Sensor} is running any actions. */
 	private boolean sensorOccupied = false;
+
+	/** The time until this {@linkplain Sensor} is inactive again. */
 	private float timeToActionEnd, elapsedActionTime = 0.f;
 
+    /**
+     * Creates a new {@linkplain KeyboardProximitySensor}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param shape The {@linkplain Shape} that this {@linkplain Sensor} takes.
+     * @param key The key that has to be pressed.
+     */
 	public KeyboardProximitySensor(ActorGame game, Vector position, Shape shape, int key) {
 		super(game, true, position);
 		this.keyboard = game.getKeyboard();
@@ -35,7 +48,6 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 
 		this.sensorArea = shape;
 		this.build(this.sensorArea, -1, -1, true);
-		this.graphics = this.addGraphics(this.sensorArea, Color.GREEN, Color.GREEN, .1f, 0.25f, 0);
 
 		this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);
@@ -46,13 +58,6 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 		this.detectionStatus = this.contactListener.getEntities().size() > 0;
 		this.keyPressedStatus = this.keyboard.get(this.key).isDown();
 
-		if (this.detectionStatus && this.keyPressedStatus)
-			this.graphics = addGraphics(this.sensorArea,
-					this.detectionStatus ? Color.RED : Color.GREEN,
-					this.detectionStatus ? Color.RED : Color.GREEN, .1f, 0.25f, 0);
-		if (this.previousDetectionStatus != this.detectionStatus) {
-			this.graphics = addGraphics(this.sensorArea, Color.GREEN,  Color.GREEN, .1f, 0.25f, 0);
-		}
 		this.previousDetectionStatus = this.detectionStatus;
 
 		if (this.sensorOccupied) {
@@ -62,11 +67,6 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 				this.elapsedActionTime = 0.f;
 			}
 		}
-	}
-
-	@Override
-	public void draw(Canvas canvas) {
-		this.graphics.draw(canvas);
 	}
 
 	@Override

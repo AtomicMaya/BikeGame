@@ -6,18 +6,26 @@ import main.game.graphics.ImageGraphics;
 import main.math.*;
 import main.window.Canvas;
 
+/** Wheels to be attached to our bike. */
 public class Wheel extends GameEntity {
-	// keep references
+
+    /** The local {@linkplain WheelConstraint} that this {@linkplain Wheel} should use. */
 	private WheelConstraint constraint = null;
+
+	/** The associated {@linkplain ImageGraphics}. */
 	private ImageGraphics graphics;
+
+	/** A {@linkplain BasicContactListener} so the */
 	private BasicContactListener listener;
 
+	/** The radius of this {@linkplain Wheel}. */
 	private float radius;
+
 	/**
-	 * Creates a wheel, can be associated to an other Entity.
-	 * @param game : The actorGame where the wheel evolves.
-	 * @param position : The initial position of the wheel.
-	 * @param radius : The radius of the wheel, non-negative.
+	 * Creates a {@linkplain Wheel}, can be associated to any other {@linkplain Entity}.
+	 * @param game The master {@linkplain ActorGame}.
+	 * @param position The initial position {@linkplain Vector}.
+	 * @param radius The radius of this {@linkplain Wheel}, non-negative.
 	 */
 	public Wheel(ActorGame game, Vector position, float radius) {
 		super(game, false, position);
@@ -26,8 +34,8 @@ public class Wheel extends GameEntity {
 	}
 
 	/**
-	 * Actual creation of the parameters of the GameEntity, not in the constructor to
-	 * avoid duplication with the method reCreate
+	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in the constructor to
+	 * avoid duplication with the method {@linkplain #reCreate(ActorGame)}.
 	 */
 	private void create() {
 		Circle circle = new Circle(radius - .05f);
@@ -36,19 +44,12 @@ public class Wheel extends GameEntity {
 		this.listener = new BasicContactListener();
 		this.addContactListener(this.listener);
 	}
-	
-//	@Override
-//	public void reCreate(ActorGame game) {
-//		super.reCreate(game);
-//		create();
-//	}
 
 	/**
 	 * Attach this wheel to an entity
-	 * @param vehicle : The entity to which this object will be attached.
-	 * @param anchor : Where to attach the wheel to the vehicle, in the vehicle's
-	 *            coordinate system.
-	 * @param axis : The axes around which the wheel can move.
+	 * @param vehicle The {@linkplain Entity} to which this {@linkplain Wheel} will be attached.
+	 * @param anchor Where to attach the {@linkplain Wheel} to the vehicle, in the vehicle's coordinate system.
+	 * @param axis The axes around which the {@linkplain Wheel} can move.
 	 */
 	public void attach(Entity vehicle, Vector anchor, Vector axis) {
 		WheelConstraintBuilder constraintBuilder = super.getOwner().createWheelConstraintBuilder();
@@ -66,9 +67,8 @@ public class Wheel extends GameEntity {
 	}
 
 	/**
-	 * Accelerate the wheel.
-	 * @param velocity : the angular velocity to be given to the wheel, in radians
-	 *            per second.
+	 * Accelerate the {@linkplain Wheel}.
+	 * @param velocity the angular velocity to be given to the wheel, in radians / second.
 	 */
 	public void power(float velocity) {
 		if (this.constraint != null) {
@@ -77,9 +77,7 @@ public class Wheel extends GameEntity {
 		}
 	}
 
-	/**
-	 * Stop the wheel's forced rotation,
-	 */
+	/** Stop the {@linkplain Wheel}'s forced rotation. */
 	public void relax() {
 		if (this.constraint != null) {
             this.constraint.setMotorEnabled(false);
@@ -87,17 +85,13 @@ public class Wheel extends GameEntity {
 		}
 	}
 
-	/**
-	 * Detach the wheel from it's vehicle.
-	 */
+	/** Detach this {@linkplain Wheel} from its vehicle. */
 	public void detach() {
 		if (this.constraint != null)
             this.constraint.destroy();
 	}
 
-	/**
-	 * @return The relative rotation speed, in radians per second
-	 */
+	/** @return The relative rotation speed, in radians / second. */
 	public float getSpeed() {
 		if (this.constraint != null) {
 			return this.constraint.getMotorSpeed();
@@ -116,6 +110,7 @@ public class Wheel extends GameEntity {
 		super.getOwner().destroyActor(this);
 	}
 
+	/** @return whether or not this {@linkplain Wheel} is colliding with the {@linkplain Terrain}. */
 	public boolean isCollidingWithTerrain() {
 	    if (this.listener.getEntities().size() > 0)
 	        for(Entity entity : this.listener.getEntities())

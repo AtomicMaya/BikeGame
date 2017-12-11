@@ -192,11 +192,16 @@ public class Bike extends GameEntity implements PlayableEntity {
             }
         }
 
+        if (rightWheel.isCollidingWithTerrain() && leftWheel.isCollidingWithTerrain()) {
+            this.elapsedRejumpTime = this.timeTillRejump + .1f;
+        }
+
         // Handle Weapons
         if (this.isWeaponDeployed
                 && (getOwner().getMouse().getMouseScrolledDown() || getOwner().getMouse().getMouseScrolledUp())) {
             this.swapWeapon();
         }
+
         if (getOwner().getKeyboard().get(KeyEvent.VK_F).isPressed()) {
             this.isWeaponDeployed = !this.isWeaponDeployed;
             this.weapons.get(this.activeWeapon).deploy(this.isWeaponDeployed);

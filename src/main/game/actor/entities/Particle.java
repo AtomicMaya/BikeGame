@@ -79,6 +79,8 @@ public class Particle implements Graphics {
     /** @see #update(float) of {@linkplain main.game.actor.Actor} */
     public void update(float deltaTime) {
         this.elapsedLifeTime += deltaTime;
+
+        // The remaining life of the particle, in %, used to calculate the evolution of the color gradient.
         float lifePercent = this.elapsedLifeTime / this.lifeTime;
 
         if (this.elapsedLifeTime > this.lifeTime) {

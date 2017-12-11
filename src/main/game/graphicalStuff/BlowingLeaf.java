@@ -1,6 +1,6 @@
 package main.game.graphicalStuff;
 
-import main.game.GameObjects.Rectangle;
+import main.math.Rectangle;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;

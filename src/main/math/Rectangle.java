@@ -1,6 +1,4 @@
-package main.game.GameObjects;
-
-import main.math.Polygon;
+package main.math;
 
 public class Rectangle {
     private Polygon shape;
