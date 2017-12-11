@@ -13,34 +13,47 @@ import main.window.Image;
 
 import java.util.ArrayList;
 
+/** A Rocket to be fired by the {@linkplain PlayableEntity}. */
 public class Rocket extends Weapon {
+    /** The reference to how long ago the weapon was fired. */
+    private float elapsedTime = 0;
 
-    private float targetTimer = 0;
-    private float maxTimeClignote = 1f;
+    /** How long the missile will blink. */
+    private float maxTimeBlink = 1f;
+
+    /** The size of the target. */
     private float targetSize = .75f;
 
+    /** The target's position {@linkplain Vector}. */
     private Vector targetPos;
 
-    private ArrayList<Missile> missils = new ArrayList<>();
+    /** An {@linkplain ArrayList} containing {@linkplain Missile}s to be fired. */
+    private ArrayList<Missile> missiles = new ArrayList<>();
 
-    public Rocket(ActorGame game, int rocketNumber, PlayableEntity player) {
-        super(game, player, rocketNumber, 1);
+    /**
+     * Creates a new {@linkplain Rocket}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param rocketAmmo The number of shots one can fire.
+     * @param player The {@linkplain PlayableEntity}.
+     */
+    public Rocket(ActorGame game, int rocketAmmo, PlayableEntity player) {
+        super(game, player, rocketAmmo, 1);
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        targetTimer += deltaTime;
-        if (targetTimer > maxTimeClignote)
-            targetTimer = 0;
+        this.elapsedTime += deltaTime;
+        if (this.elapsedTime >this.maxTimeBlink)
+            this.elapsedTime = 0;
         if (hasShot()) {
-            targetPos = getOwner().getMouse().getPosition();
+            this.targetPos = getOwner().getMouse().getPosition();
         }
-        for (int i = 0; i < missils.size(); i++) {
-            missils.get(i).update(deltaTime);
-            if (!missils.get(i).isAlive())
-                missils.remove(missils.get(i));
+        for (int i = 0; i < this.missiles.size(); i++) {
+            this. missiles.get(i).update(deltaTime);
+            if (!this.missiles.get(i).isAlive())
+                this.missiles.remove(this.missiles.get(i));
         }
     }
 
@@ -49,19 +62,19 @@ public class Rocket extends Weapon {
         super.draw(canvas);
         if (isDeployed()) {
             Image target = canvas.getImage(
-                    (targetTimer > maxTimeClignote / 2) ? "res/images/target.1.png" : "res/images/target.2.png");
-            canvas.drawImage(target, Transform.I.scaled(targetSize).translated(-targetSize / 2, -targetSize / 2)
+                    (this.elapsedTime > this.maxTimeBlink / 2) ? "res/images/target.1.png" : "res/images/target.2.png");
+            canvas.drawImage(target, Transform.I.scaled(this.targetSize).translated(-this.targetSize / 2, -this.targetSize / 2)
                     .translated(getOwner().getMouse().getPosition()), 1, 7331);
         }
-        for (Missile m : missils)
-            m.draw(canvas);
+        for (Missile missile : this.missiles)
+            missile.draw(canvas);
     }
 
     @Override
-    public void shout() {
+    public void shoot() {
         Vector spawn = new Vector((float) (Math.random() * getOwner().getViewScale() * 2 - getOwner().getViewScale()),
                 getOwner().getViewScale() + 3).add(getPlayer().getPosition());
-        missils.add(new Missile(getOwner(), /*new Vector(0, 7).add(getPlayer().getPosition())*/spawn,
+        this.missiles.add(new Missile(getOwner(), spawn,
                 getOwner().getMouse().getPosition()));
     }
 

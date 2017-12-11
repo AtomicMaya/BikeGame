@@ -191,10 +191,11 @@ public class Bike extends GameEntity implements PlayableEntity {
                 this.rightWheel.power(this.MAX_WHEEL_SPEED);
             }
         }
-
-        if (rightWheel.isCollidingWithTerrain() && leftWheel.isCollidingWithTerrain()) {
-            this.elapsedRejumpTime = this.timeTillRejump + .1f;
-        }
+/*
+        if (this.rightWheel.isCollidingWithTerrain() && this.leftWheel.isCollidingWithTerrain()) {
+            System.out.println("called");
+            this.elapsedRejumpTime = this.timeTillRejump - .1f;
+        }*/
 
         // Handle Weapons
         if (this.isWeaponDeployed

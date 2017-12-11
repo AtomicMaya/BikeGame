@@ -30,13 +30,13 @@ public class Shotgun extends PortableWeapon {
 		super.draw(canvas);
 		if (isDeployed()) {
 			canvas.drawImage(canvas.getImage(imagePath),
-					Transform.I.scaled(2, .5f * ((isShoutingOnTheRight()) ? 1 : -1)).translated(getPosition())
+					Transform.I.scaled(2, .5f * ((isShootingToTheRight()) ? 1 : -1)).translated(getPosition())
 							.rotated(getAngle(), getPosition()),
 					1, 5);
 
 			Vector corection = new Vector(
-					(float) (Math.sin(-getAngle() + Math.PI / 2 + Math.PI / 14 * (isShoutingOnTheRight() ? -1 : 1))),
-					(float) (Math.cos(-getAngle() + Math.PI / 2 + Math.PI / 14 * (isShoutingOnTheRight() ? -1 : 1))))
+					(float) (Math.sin(-getAngle() + Math.PI / 2 + Math.PI / 14 * (isShootingToTheRight() ? -1 : 1))),
+					(float) (Math.cos(-getAngle() + Math.PI / 2 + Math.PI / 14 * (isShootingToTheRight() ? -1 : 1))))
 							.mul(-1);
 			canvas.drawShape(
 					new Polyline(getPosition().add(corection.mul(-2.1f)),
@@ -46,7 +46,7 @@ public class Shotgun extends PortableWeapon {
 	}
 
 	@Override
-	public void shout() {
+	public void shoot() {
 		List<Impact> impacts = getOwner().getImpacts(this.getPosition(),
 				this.getPosition().add(this.getDirection().mul(-this.laserDistance)));
 

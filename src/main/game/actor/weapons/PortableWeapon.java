@@ -7,24 +7,24 @@ import main.math.Vector;
 
 /** Represent a weapon usable by a {@link PlayableEntity} */
 public abstract class PortableWeapon extends Weapon {
-
-	
-
-	// direction of shout
+    /** The given direction {@linkplain Vector}. */
 	private Vector direction;
-	// shouting params
+
+	/** The position {@linkplain Vector} of the {@linkplain Weapon}. */
 	private Vector position;
-	private boolean lookRight = false;
+
+	/** Whether the {@linkplain PlayableEntity} is looking right. */
+	private boolean lookRight;
+
+	/** The firing angle. */
 	private float angle = 0;
 
-
-
 	/**
-	 * Create a new weapon
-	 * @param game ActorGame where this weapon belong
-	 * @param player player who is going to use this weapon
-	 * @param initialAmmoNumber initial number of ammos
-	 * @param betweenShotTime time to wait between two shot
+	 * Create a new {@linkplain Weapon}.
+	 * @param game The master {@linkplain ActorGame}.
+	 * @param player The {@linkplain PlayableEntity} that can use this {@linkplain Weapon}.
+	 * @param initialAmmoNumber The initial amount of ammunition.
+	 * @param betweenShotTime The delay till one can shoot again.
 	 */
 	public PortableWeapon(ActorGame game, PlayableEntity player, int initialAmmoNumber, float betweenShotTime) {
 		super(game, player, initialAmmoNumber, betweenShotTime);
@@ -44,37 +44,40 @@ public abstract class PortableWeapon extends Weapon {
 			this.direction = ExtendedMath.direction(playerPos, getOwner().getMouse().getPosition());
 			this.lookRight = this.direction.x <= 0;
 
-			angle = direction.rotated(Math.PI).getAngle();
+			this.angle = this.direction.rotated(Math.PI).getAngle();
 			// System.out.println(angle);
-			if (angle > Math.PI / 4 && angle <= Math.PI / 2)
-				angle = (float) (Math.PI / 4);
-			else if (angle > Math.PI / 2 && angle < Math.PI * 3 / 4f)
-				angle = (float) Math.PI * 3 / 4f;
-			else if (angle < -Math.PI / 4 && angle >= -Math.PI / 2)
-				angle = (float) (-Math.PI / 4);
-			else if (angle < -Math.PI / 2 && angle > -Math.PI * 3 / 4f)
-				angle = (float) -Math.PI * 3 / 4f;
+			if (this.angle > Math.PI / 4 && this.angle <= Math.PI / 2)
+                this.angle = (float) (Math.PI / 4);
+			else if (this.angle > Math.PI / 2 && this.angle < Math.PI * 3 / 4f)
+                this.angle = (float) Math.PI * 3 / 4f;
+			else if (this.angle < -Math.PI / 4 && this.angle >= -Math.PI / 2)
+                this.angle = (float) (-Math.PI / 4);
+			else if (this.angle < -Math.PI / 2 && this.angle > -Math.PI * 3 / 4f)
+                this.angle = (float) -Math.PI * 3 / 4f;
 
 			this.direction = new Vector((float) (Math.sin(-this.angle + Math.PI / 2)),
 					(float) (Math.cos(-this.angle + Math.PI / 2))).mul(-1);			
 		}
 	}
 
-
+    /** @return the direction {@linkplain Vector} of this {@linkplain Weapon}. */
 	protected Vector getDirection() {
-		return direction;
+		return this.direction;
 	}
 
+	/** @return the position {@linkplain Vector} of this {@linkplain Weapon}. */
 	public Vector getPosition() {
-		return position;
+		return this.position;
 	}
 
+	/** @return the angle at which the {@linkplain Weapon} is pointed. */
 	protected float getAngle() {
-		return angle;
+		return this.angle;
 	}
 
-	protected boolean isShoutingOnTheRight() {
-		return lookRight;
+	/** @return whether the {@linkplain PlayableEntity} is shooting to the right. */
+	protected boolean isShootingToTheRight() {
+		return this.lookRight;
 	}
 
 

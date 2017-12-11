@@ -89,7 +89,7 @@ public abstract class Weapon implements Actor {
 			this.ammoCount -= 1;
 			this.hasShot = true;
 			this.amoNumber.setText(this.ammoCount + this.amoText);
-			this.shout();
+			this.shoot();
 			return true;
 		} else
 			return false;
@@ -127,8 +127,8 @@ public abstract class Weapon implements Actor {
 		return this.hasShot;
 	}
 
-	/** What happen when this weapon shout */
-	public abstract void shout();
+	/** What happen when this weapon shoot */
+	public abstract void shoot();
 
 	/**
 	 * Add ammo

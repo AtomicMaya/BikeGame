@@ -41,7 +41,7 @@ public class LevelTest extends Level {
 		this.addActor(finishActor);
 		// this.addActor(crate1);
 		this.addActor(terrain);
-		Trampoline t = new Trampoline(game, new Vector(5, 6), 5, 1);
+		Trampoline t = new Trampoline(game, new Vector(-5, 6), 5, 1);
 		Polygon p1 = new Polygon(0, 0, 0, 3f, 1.5f, 3f, 1.5f, 0);
 //		Liquid l = new Liquid(game, new Vector(-9, 2), p1, true);
 //		Mine m = new Mine(game, new Vector(-3, -1));

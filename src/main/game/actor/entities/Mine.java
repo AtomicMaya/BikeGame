@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.ObjectGroup;
 import main.game.actor.sensors.ProximitySensor;
 import main.math.Polygon;
 import main.math.Vector;
@@ -58,7 +59,7 @@ public class Mine extends GameEntity {
      * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
      */
 	private void create() {
-		this.build(new Polygon(0, 0, .5f, 0, .5f, 1, 0, 1), -1, -1, false);
+		this.build(new Polygon(0, 0, .5f, 0, .5f, 1, 0, 1), -1, -1, false, ObjectGroup.ENEMY.group);
 
 		this.stateGraphics = new ArrayList<>(Arrays.asList("./res/images/mine.0.png", "./res/images/mine.1.png"));
 		this.boomGraphics = new ArrayList<>(

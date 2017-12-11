@@ -1,8 +1,6 @@
 package main.game.actor;
 
-/**
- * Created on 12/6/2017 at 2:10 PM.
- */
+/** Can run actions. */
 public interface Runner {
     /**
      * Runs a runnable action in parallel to this thread.

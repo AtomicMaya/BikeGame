@@ -173,12 +173,12 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/** Trigger the Victory animation */
-	public void triggerYayAnimation() {
+	public void triggerHappiness() {
 		this.isHappy = true;
 	}
 
 	/** @return whether the Victory animation is active. */
-	public boolean getIsYaying() {
+	public boolean getHappiness() {
 		return this.isHappy;
 	}
 

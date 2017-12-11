@@ -8,11 +8,12 @@ import main.math.*;
  */
 public class Linker {
     /**
-     * Attaches this platform to a moving entity
-     * @param game :
-     * @param anchor : The moving entity
-     *               @param attached :
-     * @param anchorPoint : Where on the moving entity this platform should be anchored
+     * Attaches an {@linkplain Entity} to another using a {@linkplain PrismaticConstraint}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param anchor The fixture {@linkplain Entity}.
+     * @param attached The moving {@linkplain Entity}.
+     * @param anchorPoint Where on the moving entity this {@linkplain PrismaticConstraint} should be anchored.
+     * @return a new {@linkplain PrismaticConstraint}.
      */
     public static PrismaticConstraint attachPrismatically(ActorGame game, Entity anchor, Entity attached, Vector anchorPoint) {
         PrismaticConstraintBuilder builder = game.createPrismaticConstraintBuilder();
@@ -31,8 +32,19 @@ public class Linker {
         return builder.build();
     }
 
-    public static WeldConstraint attachWeldilly(ActorGame game, Entity anchor, Entity attached, Vector anchorPoint,
-                                                float referenceAngle, float frequency, float damping) {
+    /**
+     * Attaches an {@linkplain Entity} to another using a {@linkplain WeldConstraint}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param anchor The fixture {@linkplain Entity}.
+     * @param attached The moving {@linkplain Entity}.
+     * @param anchorPoint Where on the moving entity this {@linkplain WeldConstraint} should be anchored.
+     * @param referenceAngle The reference angle.
+     * @param frequency The {@linkplain WeldConstraint} frequency.
+     * @param damping The {@linkplain WeldConstraint} damping.
+     * @return a new {@linkplain WeldConstraint}.
+     * */
+    public static WeldConstraint attachWeldConstraint(ActorGame game, Entity anchor, Entity attached, Vector anchorPoint,
+                                                      float referenceAngle, float frequency, float damping) {
         WeldConstraintBuilder builder = game.createWeldConstraintBuilder();
         builder.setFirstEntity(anchor);
         builder.setSecondEntity(attached);
@@ -45,6 +57,15 @@ public class Linker {
         return builder.build();
     }
 
+    /**
+     * Attaches an {@linkplain Entity} to another using a {@linkplain RopeConstraint}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param anchor The fixture {@linkplain Entity}.
+     * @param attached The moving {@linkplain Entity}.
+     * @param anchorPoint Where on the moving entity this {@linkplain RopeConstraint} should be anchored.
+     * @param length The length of the rope.
+     * @return a new {@linkplain RopeConstraint}.
+     */
     public static RopeConstraint attachRope(ActorGame game, Entity anchor, Entity attached, Vector anchorPoint, float length) {
     	length = Math.abs(length);
         RopeConstraintBuilder builder = game.createRopeConstraintBuilder();
