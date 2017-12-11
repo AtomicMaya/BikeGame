@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class ParticleEmitter implements Actor {
+    /** The master {@linkplain ActorGame}. */
     private ActorGame game;
 
     private LinkedList<Particle> particles;
