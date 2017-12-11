@@ -5,7 +5,7 @@ import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
 import main.game.actor.sensors.FinishActor;
-import main.game.actor.sensors.StartCheckpoint;
+import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.audio.Audio;
 import main.game.graphicalStuff.Preset;
 import main.game.graphicalStuff.Scenery;
@@ -28,6 +28,7 @@ public class Level0 extends Level {
 
     @Override
     public void createAllActors() {
+    	System.out.println("init level");
         Polyline groundBody = new Polyline(-3, -1000,
                 0.f, 0.f,
                 20.f, 0.f,
@@ -95,7 +96,8 @@ public class Level0 extends Level {
 
     @Override
     public void dispose() {
-        if (this.backgroundAudio != null) this.backgroundAudio.destroy();
+        if (this.backgroundAudio != null) { this.backgroundAudio.destroy();System.out.println("destroy audio");}
+        System.out.println("dispose");
     }
 
     @Override
@@ -125,7 +127,7 @@ public class Level0 extends Level {
     }
 
 	@Override
-	public StartCheckpoint getSpawnCheckpoint() {
-		return new StartCheckpoint(game, new Vector(1, 2), player);
+	public SpawnCheckpoint getSpawnCheckpoint() {
+		return new SpawnCheckpoint(game, new Vector(1, 2), player);
 	}
 }

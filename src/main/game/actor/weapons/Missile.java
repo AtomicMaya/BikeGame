@@ -72,7 +72,7 @@ public class Missile extends GameEntity {
 						&& e.getCollisionGroup() != ObjectGroup.CHECKPOINT.group
 						&& e.getCollisionGroup() != ObjectGroup.FINISH.group)
 					this.triggered = true;
-				System.out.println(e.getCollisionGroup());
+//				System.out.println(e.getCollisionGroup());
 			}
 		}
 		if (this.triggered)

@@ -29,7 +29,7 @@ public class Scenery implements Actor {
     public Vector newSample() {
         float minX = this.game.getCanvas().getPosition().x - 1.3f * this.game.getViewScale(), minY = this.game.getCanvas().getPosition().y - .8f * this.game.getViewScale(),
                 maxX = this.game.getCanvas().getPosition().x + 1.5f * this.game.getViewScale(), maxY = this.game.getCanvas().getPosition().y + 1.6f * this.game.getViewScale();
-        System.out.println(new Polygon(minX, minY, maxX, minY, maxX, maxY, minX, maxY).getPoints());
+//        System.out.println(new Polygon(minX, minY, maxX, minY, maxX, maxY, minX, maxY).getPoints());
         return new Polygon(minX, minY, maxX, minY, maxX, maxY, minX, maxY).sample(new Random());
     }
 

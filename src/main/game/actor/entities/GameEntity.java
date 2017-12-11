@@ -12,6 +12,7 @@ import java.awt.*;
 
 /** Represent an {@linkplain Actor} in its physical sense. */
 public abstract class GameEntity implements Actor, Saveable {
+	
     /** Used for save purposes. */
 	private static final long serialVersionUID = 8519429675636563656L;
 

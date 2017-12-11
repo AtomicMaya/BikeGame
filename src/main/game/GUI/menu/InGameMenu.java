@@ -1,6 +1,5 @@
 /**
- *	Author: Clément Jeannet
- *	Date: 	3 déc. 2017
+ * Author: Clément Jeannet Date: 3 déc. 2017
  */
 package main.game.GUI.menu;
 
@@ -43,8 +42,8 @@ public class InGameMenu extends FullScreenMenu {
 	public void update(float deltaTime, float zoom) {
 		super.update(deltaTime, zoom);
 
-		if (game.getKeyboard().get(KeyEvent.VK_M).isPressed()
-				|| game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
+		if (game.getKeyboard().get(KeyEvent.VK_M).isPressed() || game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()
+				|| game.getKeyboard().get(KeyEvent.VK_P).isPressed()) {
 			changeStatus();
 		}
 		if (isOpen()) {

@@ -4,7 +4,7 @@ import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.entities.PlayableEntity;
 import main.game.actor.sensors.Checkpoint;
-import main.game.actor.sensors.StartCheckpoint;
+import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.graphicalStuff.EndGameGraphics;
 import main.math.Node;
 import main.math.Positionable;
@@ -63,7 +63,7 @@ public abstract class Level extends Node implements Actor {
 	/**
 	 * @return the {@linkplain Actor} to follow with he camera in the
 	 * {@linkplain Level}, if null the viewCandidate will be set to the bike
-	 * spawned by the {@linkplain StartCheckpoint}
+	 * spawned by the {@linkplain SpawnCheckpoint}
 	 * @see #getSpawnCheckpoint()
 	 */
 	public Positionable getViewCandidate() {
@@ -72,7 +72,7 @@ public abstract class Level extends Node implements Actor {
 
 	/**
 	 * @return the playable {@linkplain Actor}, if null the payload will be set
-	 * to the bike spawned by the {@linkplain StartCheckpoint}
+	 * to the bike spawned by the {@linkplain SpawnCheckpoint}
 	 * @see #getSpawnCheckpoint()
 	 */
 	public PlayableEntity getPayload() {
@@ -89,9 +89,9 @@ public abstract class Level extends Node implements Actor {
 	 * with attribute player equals null, has to be defined if getPayload is not
 	 * defined
 	 * @see #getPayload
-	 * @see StartCheckpoint#StartCheckpoint
+	 * @see SpawnCheckpoint#StartCheckpoint
 	 */
-	public abstract StartCheckpoint getSpawnCheckpoint();
+	public abstract SpawnCheckpoint getSpawnCheckpoint();
 
 	/** Allows the game to dispose of unrepresented {@linkplain Actor}s, such as the {@linkplain main.game.audio.Audio}*/
     public abstract void dispose();

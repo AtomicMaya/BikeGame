@@ -5,18 +5,18 @@ import main.game.actor.entities.PlayableEntity;
 import main.math.Vector;
 
 /** Start checkpoint where the {@linkplain PlayableEntity} will spawn */
-public class StartCheckpoint extends Checkpoint {
+public class SpawnCheckpoint extends Checkpoint {
 
 	// for save purpose
 	private static final long serialVersionUID = -3732240693706393283L;
 
 	private transient PlayableEntity player = null;
 	/**
-	 * Create a new {@linkplain StartCheckpoint}
+	 * Create a new {@linkplain SpawnCheckpoint}
 	 * @param player {@linkplain PlayableEntity} of this game, if null will
-	 * spawn a bike at this {@linkplain StartCheckpoint} position
+	 * spawn a bike at this {@linkplain SpawnCheckpoint} position
 	 */
-	public StartCheckpoint(ActorGame game, Vector position, PlayableEntity player) {
+	public SpawnCheckpoint(ActorGame game, Vector position, PlayableEntity player) {
 		super(game, position, "./res/images/flag.blue.png", "./res/images/flag.blue.png");
 		this.player = player;
 		create();
@@ -36,7 +36,7 @@ public class StartCheckpoint extends Checkpoint {
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
 		create();
-		System.out.println(isTriggered());
+		System.out.println("Spawn triggered? : "+isTriggered());
 	}
 
 }

@@ -35,38 +35,58 @@ import java.util.ArrayList;
 public class LevelEditor implements Graphics {
 
 	// actorBuilder stuff
-	/***/
+	/** {@linkplain ArrayList} of all the {@linkplain ActorBuilder} created by the user */
 	private ArrayList<ActorBuilder> actorBuilders = new ArrayList<>();
-	/***/
+	
+	/** Unique {@linkplain GroundBuilder}, has to be created to save/test the game */
 	private GroundBuilder gb; // is unique
-	/***/
+	
+	/** Unique {@linkplain SpawnBuilder}, has to be created to save/test the game */
 	private SpawnBuilder spawn; // is unique
-	/***/
+	
+	/** Unique {@linkplain FinishBuilder}, has to be created to save/test the game */
 	private FinishBuilder finish; // is unique
 
-	/***/
+	
+	/** The master {@linkplain ActorGame}. */
 	private ActorGame game;
-	/***/
+	
+	/** {@linkplain ActorMenu} */
 	private ActorMenu actorMenu;
-	/***/
+	
+	/** @see Window */
 	private Window window;
+	
+	/** Whether this {@linkplain LevelEditor} is open */
 	private boolean open = false;
+	
+	
 	/** Initial camera position */
 	private Vector cameraPosition = Vector.ZERO;
+	
+	/** Default zoom of the {@linkplain Window} : {@value}*/
 	private static final float windowZoom = 30f;
+	
+	/** Default speed of the camera in (x or y) direction */
 	private static final float cameraSpeed = 20f;
-	/** Curent zoom, between {@value #minZoom} and {@value #maxZoom} */
+	
+	/** Current zoom, between {@value #minZoom} and {@value #maxZoom} */
 	private float zoom = 1f;
+	
 	/** Maximum zoom value : {@value #maxZoom} */
 	private static final float maxZoom = 2f;
+	
 	/** Maximum zoom value : {@value #minZoom} */
 	private static final float minZoom = 0.4f;
+	
+	/** Maximum camera position */
 	private float maxPosX = 120;
 	private float maxPosY = 30;
 	private float cameraAcceleration = .4f;
 	private float xPP = 1;// camera acceleration
 	private final float maxCameraXPP = 3;
 
+	
 	// Grid parameters
 	private ArrayList<ShapeGraphics> gridLine = new ArrayList<>();
 	private ShapeGraphics axeX, axeY;
@@ -220,7 +240,7 @@ public class LevelEditor implements Graphics {
 			}
 		}
 		this.currentSaveName = (temp);
-		System.out.println(currentSaveName);
+		System.out.println("current save name: " + currentSaveName);
 
 		// create save button
 		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
@@ -243,7 +263,7 @@ public class LevelEditor implements Graphics {
 				this.errorText = "Please create a ground, Spawn and a finish point";
 			if (this.errorText == null) {
 				// TODO
-				System.out.println("start saving");
+				System.out.println("    - start saving");
 				game.save(getActors(), currentSaveName);
 				this.errorText = "Actors saved sucessfully";
 			}

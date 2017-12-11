@@ -49,7 +49,7 @@ public class FinishActor extends Checkpoint {
 	@Override
 	void trigger() {
 		getOwner().getPayload().triggerVictory();
-		System.out.println(getOwner().getPayload());
+		System.out.println("triggered :"+ getOwner().getPayload());
 	}
 
 	@Override

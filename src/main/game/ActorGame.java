@@ -82,7 +82,7 @@ public class ActorGame implements Game {
 	public void update(float deltaTime) {
 		gameManager.update(deltaTime);
 		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
-			System.out.println(actors.size() + " " + world.getEntities().size());
+			System.out.println("actors size : "+actors.size() + " world entities : " + world.getEntities().size());
 
 		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed())
 		    this.gameFrozen = !this.gameFrozen;
@@ -91,7 +91,7 @@ public class ActorGame implements Game {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
 				if (actorsToRemove.get(i).getClass() != ParticleEmitter.class)
-					System.out.println(actorsToRemove.get(i));
+					System.out.println("removed : " +actorsToRemove.get(i));
 			}
 			this.actors.removeAll(this.actorsToRemove);
 			this.actorsToRemove.clear();
@@ -114,7 +114,7 @@ public class ActorGame implements Game {
 				this.actors.get(i).update(deltaTime);
 			} catch (ConcurrentModificationException e) { e.printStackTrace(); }
 		}
-		gameManager.draw(window);
+		this.gameManager.draw(this.window);
 		for (Actor actor : this.actors)
 			actor.draw(this.window);
 	}
@@ -173,16 +173,16 @@ public class ActorGame implements Game {
 	 * @param actor An {@linkplain Actor} to be removed from the game.
 	 */
 	public void destroyActor(Actor actor) {
-		if (!this.actorsToRemove.contains(actor))
+		if (!this.actorsToRemove.contains(actor) && this.actors.contains(actor))
 			this.actorsToRemove.add(actor);
 	}
 
 	/**
 	 * @param actors A list of {@linkplain Actor}s to be removed from the game.
 	 */
-	public void destroyActor(ArrayList<Actor> actors) {
+	public void destroyActor(List<Actor> actors) {
 		for (Actor a : actors) {
-			if (!this.actorsToRemove.contains(a))
+			if (!this.actorsToRemove.contains(a) && this.actors.contains(a))
 				this.actorsToRemove.add(a);
 		}
 	}
@@ -192,10 +192,10 @@ public class ActorGame implements Game {
 	 */
 	public void destroyAllActors() {
 		// destroy all entities in the world!!! na!
-		// TODO remove attomatic de actors
+		// TODO remove attomatic de actors		
 		while (world.getEntities().size() > 0)
 			world.getEntities().get(0).destroy();
-		this.actorsToRemove.addAll(this.actors);
+		this.destroyActor(actors);
 	}
 
 	/**
@@ -209,17 +209,17 @@ public class ActorGame implements Game {
 			}
 		}
 	}
-
-	/**
-	 * @param actorsToKeep A list of {@linkplain Actor}s to keep in the game.
-	 */
-	public void destroyAllActorsExcept(ArrayList<Actor> actorsToKeep) {
-		for (Actor actor : this.actors) {
-			if (!actorsToKeep.contains(actor)) {
-				this.actorsToRemove.add(actor);
-			}
-		}
-	}
+//
+//	/**
+//	 * @param actorsToKeep A list of {@linkplain Actor}s to keep in the game.
+//	 */
+//	public void destroyAllActorsExcept(ArrayList<Actor> actorsToKeep) {
+//		for (Actor actor : this.actors) {
+//			if (!actorsToKeep.contains(actor)) {
+//				this.actorsToRemove.add(actor);
+//			}
+//		}
+//	}
 
 	/**
 	 * Create a new {@linkplain Entity} in the world.

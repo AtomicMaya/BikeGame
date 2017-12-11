@@ -9,7 +9,7 @@ import main.game.ComplexBikeGame;
 import main.game.GUI.menu.LevelEditor;
 import main.game.actor.entities.Bike;
 import main.game.actor.sensors.Checkpoint;
-import main.game.actor.sensors.StartCheckpoint;
+import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.graphics.BetterTextGraphics;
 import main.math.ExtendedMath;
 import main.math.Transform;
@@ -45,7 +45,7 @@ public class GameManager {
 	// respawn mechanics
 	private Vector position;
 	private Checkpoint lastCheckpoint;
-	private StartCheckpoint startCheckpoint;
+	private SpawnCheckpoint startCheckpoint;
 	private final float timeToRespawn = 3f;
 	private float respawnTimer = 0;
 
@@ -63,7 +63,7 @@ public class GameManager {
 
 	public void update(float deltaTime) {
 		if (game.getPayload() != null && game.getKeyboard().get(KeyEvent.VK_9).isPressed())
-			System.out.println(game.getPayload().getDeathStatus() + " " + game.getPayload().getVictoryStatus());
+			System.out.println("player start : death: "+ game.getPayload().getDeathStatus() + " win : " + game.getPayload().getVictoryStatus());
 		// spawn a bike if payload is not defind, which happend at the start of
 		// a game or after a reset
 		if (game.getPayload() == null && (startCheckpoint != null)) {
@@ -157,7 +157,7 @@ public class GameManager {
 		lastCheckpoint = checkpoint;
 	}
 
-	public void setStartCheckpoint(StartCheckpoint checkpoint) {
+	public void setStartCheckpoint(SpawnCheckpoint checkpoint) {
 		startCheckpoint = checkpoint;
 	}
 

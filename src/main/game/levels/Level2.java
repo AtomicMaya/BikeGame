@@ -9,7 +9,7 @@ import main.game.actor.entities.Terrain;
 import main.game.actor.entities.TerrainType;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
-import main.game.actor.sensors.StartCheckpoint;
+import main.game.actor.sensors.SpawnCheckpoint;
 import main.math.Polyline;
 import main.math.Vector;
 
@@ -36,8 +36,8 @@ public class Level2 extends Level {
 	}
 
 	@Override
-	public StartCheckpoint getSpawnCheckpoint() {
-		return new StartCheckpoint(game, new Vector(4, 3), null);
+	public SpawnCheckpoint getSpawnCheckpoint() {
+		return new SpawnCheckpoint(game, new Vector(4, 3), null);
 	}
 
 	@Override

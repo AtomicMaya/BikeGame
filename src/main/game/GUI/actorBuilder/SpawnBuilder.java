@@ -6,14 +6,14 @@ package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
-import main.game.actor.sensors.StartCheckpoint;
+import main.game.actor.sensors.SpawnCheckpoint;
 import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
 public class SpawnBuilder extends ActorBuilder {
 
-	private StartCheckpoint spawn;
+	private SpawnCheckpoint spawn;
 	private Vector position;
 	private ActorGame game;
 
@@ -23,7 +23,7 @@ public class SpawnBuilder extends ActorBuilder {
 	public SpawnBuilder(ActorGame game) {
 		super(game);
 		this.game = game;
-		this.spawn = new StartCheckpoint(game, getFlooredMousePosition(), null);
+		this.spawn = new SpawnCheckpoint(game, getFlooredMousePosition(), null);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class SpawnBuilder extends ActorBuilder {
 		return spawn;
 	}
 
-	public StartCheckpoint getSpawn() {
+	public SpawnCheckpoint getSpawn() {
 		return spawn;
 	}
 
@@ -63,7 +63,7 @@ public class SpawnBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		spawn.destroy();
-		spawn = new StartCheckpoint(game, position, null);
+		spawn = new SpawnCheckpoint(game, position, null);
 	}
 
 	@Override

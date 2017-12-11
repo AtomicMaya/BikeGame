@@ -4,7 +4,7 @@ import main.game.ActorGame;
 import main.game.actor.entities.*;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
-import main.game.actor.sensors.StartCheckpoint;
+import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.graphics.BetterTextGraphics;
 import main.math.ExtendedMath;
 import main.math.Polygon;
@@ -17,7 +17,7 @@ public class LevelTest extends Level {
 
 //	private Bike player;
 	BetterTextGraphics btg;
-	StartCheckpoint sc;
+	SpawnCheckpoint sc;
 
 	public LevelTest(ActorGame game) {
 		super(game);
@@ -49,7 +49,7 @@ public class LevelTest extends Level {
 		addActor(gw);
 //		addActor(pp);
 		addActor(new Checkpoint(game, new Vector(-26, 0)));
-		 sc = new StartCheckpoint(game, new Vector(-30, 0), null);
+		 sc = new SpawnCheckpoint(game, new Vector(-30, 0), null);
 		// addActor(m);
 		this.addActor(terrain);
 //		this.addActor(player);
@@ -79,7 +79,7 @@ public class LevelTest extends Level {
 
 
 	@Override
-	public StartCheckpoint getSpawnCheckpoint() {
+	public SpawnCheckpoint getSpawnCheckpoint() {
 		return sc;
 	}
 

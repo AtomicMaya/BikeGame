@@ -15,6 +15,9 @@ import java.util.Arrays;
 /** A collectible coin, that, when collected, gets added to the score. */
 public class Coin extends GameEntity implements Collectable {
    
+	/** Used for save purposes. */
+	private static final long serialVersionUID = -5512548763495437053L;
+
 	/** The master {@linkplain ActorGame}. */
 	private transient ActorGame game;
 

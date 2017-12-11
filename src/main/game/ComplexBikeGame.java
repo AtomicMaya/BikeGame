@@ -3,7 +3,7 @@ package main.game;
 import main.game.GUI.menu.InGameMenu;
 import main.game.GUI.menu.MainMenu;
 import main.game.actor.Actor;
-import main.game.actor.sensors.StartCheckpoint;
+import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.window.Window;
@@ -38,6 +38,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 
 	@Override
 	public void update(float deltaTime) {
+//		System.out.println(this.levels.get(currentLevel));
 		super.update(deltaTime);
 		mainMenu.update(deltaTime, 1);
 		if (mainMenu.isOpen()) {
@@ -73,9 +74,11 @@ public abstract class ComplexBikeGame extends ActorGame {
 	}
 
 	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
-	public void clearCurrentLevel() {
+	private void clearCurrentLevel() {
+
 		this.levels.get(currentLevel).dispose();
 		super.destroyAllActors();
+
 	}
 
 	/**
@@ -90,11 +93,12 @@ public abstract class ComplexBikeGame extends ActorGame {
 		if (this.currentLevel > this.levels.size() - 1)
 			this.currentLevel = 0;
 
+		System.out.println("loading level");
 		this.levels.get(currentLevel).createAllActors();
 		super.addActor(levels.get(currentLevel).getActors());
 		super.addActor(levels.get(currentLevel));
-		
-		StartCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
+
+		SpawnCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
 		if (!wasPlayed) {
 			// if first time level is loaded,
 			if (sc == null && (levels.get(currentLevel).getViewCandidate() == null)
