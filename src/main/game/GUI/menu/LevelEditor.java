@@ -1,6 +1,5 @@
 /**
- *	Author: Clément Jeannet
- *	Date: 	4 déc. 2017
+ * Author: Clément Jeannet Date: 4 déc. 2017
  */
 package main.game.GUI.menu;
 
@@ -36,18 +35,23 @@ import java.util.ArrayList;
 public class LevelEditor implements Graphics {
 
 	// actorBuilder stuff
+	/***/
 	private ArrayList<ActorBuilder> actorBuilders = new ArrayList<>();
+	/***/
 	private GroundBuilder gb; // is unique
+	/***/
 	private SpawnBuilder spawn; // is unique
+	/***/
 	private FinishBuilder finish; // is unique
 
-	// stuffs
+	/***/
 	private ActorGame game;
+	/***/
 	private ActorMenu actorMenu;
+	/***/
 	private Window window;
 	private boolean open = false;
-
-	// Camera stuff
+	/** Initial camera position */
 	private Vector cameraPosition = Vector.ZERO;
 	private static final float windowZoom = 30f;
 	private static final float cameraSpeed = 20f;
@@ -215,7 +219,7 @@ public class LevelEditor implements Graphics {
 				break;
 			}
 		}
-		currentSaveName = (temp);
+		this.currentSaveName = (temp);
 		System.out.println(currentSaveName);
 
 		// create save button
@@ -232,22 +236,23 @@ public class LevelEditor implements Graphics {
 				return;
 			}
 			if (this.gb == null)
-				errorText = "Please create a ground";
-			if (this.spawn == null)
-				errorText = "Please create a SpownPoint";
-			if (this.gb == null && this.spawn == null)
-				errorText = "Please create a ground and a spawn";
-			if (errorText == null) {
+				this.errorText = "Please create a ground";
+			if (this.spawn == null || this.finish == null)
+				this.errorText = "Please create a Spawn and a finish point";
+			if (this.gb == null && (this.spawn == null || this.finish == null))
+				this.errorText = "Please create a ground, Spawn and a finish point";
+			if (this.errorText == null) {
+				// TODO
 				System.out.println("start saving");
 				game.save(getActors(), currentSaveName);
-				errorText = "Actors saved sucessfully";
+				this.errorText = "Actors saved sucessfully";
 			}
-			displayErrorText = true;
+			this.displayErrorText = true;
 
 		});
-		error = new Comment(game, "");
-		error.setParent(saveButon);
-		error.setAnchor(new Vector(saveButon.getWidth() / 2, -4));
+		this.error = new Comment(game, "");
+		this.error.setParent(this.saveButon);
+		this.error.setAnchor(new Vector(this.saveButon.getWidth() / 2, -4));
 	}
 
 	/**
@@ -256,79 +261,80 @@ public class LevelEditor implements Graphics {
 	 */
 	public void update(float deltaTime) {
 
-		if (!game.isGameFrozen()) {
+		if (!this.game.isGameFrozen()) {
 
-			float z = game.getViewScale() / windowZoom;
-			playButton.update(deltaTime, z);
+			float z = this.game.getViewScale() / windowZoom;
+			this.playButton.update(deltaTime, z);
 
 			return;
 		}
-		// camera accelaration
-		if (game.getKeyboard().get(KeyEvent.VK_CONTROL).isDown()) {
-			xPP += cameraAcceleration * deltaTime;
-			xPP = (xPP >= maxCameraXPP) ? maxCameraXPP : xPP;
+		// camera acceleration
+		if (this.game.getKeyboard().get(KeyEvent.VK_CONTROL).isDown()) {
+			this.xPP += this.cameraAcceleration * deltaTime;
+			this.xPP = (this.xPP >= this.maxCameraXPP) ? this.maxCameraXPP : this.xPP;
 		}
-		if (game.getKeyboard().get(KeyEvent.VK_CONTROL).isReleased())
-			xPP = 1;
+		if (this.game.getKeyboard().get(KeyEvent.VK_CONTROL).isReleased())
+			this.xPP = 1;
 
 		// camera controls
-		float posX = cameraPosition.x;
-		float posY = cameraPosition.y;
-		if (game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
-			posY += deltaTime * cameraSpeed * xPP;
+		float posX = this.cameraPosition.x;
+		float posY = this.cameraPosition.y;
+		if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
+			posY += deltaTime * cameraSpeed * this.xPP;
 		}
-		if (game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
-			posY += -deltaTime * cameraSpeed * xPP;
+		if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
+			posY -= deltaTime * cameraSpeed * this.xPP;
 		}
-		if (game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-			posX += -deltaTime * cameraSpeed * xPP;
+		if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
+			posX -= deltaTime * cameraSpeed * this.xPP;
 		}
-		if (game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-			posX += deltaTime * cameraSpeed * xPP;
+		if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
+			posX += deltaTime * cameraSpeed * this.xPP;
 		}
 
-		posX = (posX >= maxPosX) ? maxPosX : posX;
-		posY = (posY >= maxPosY) ? maxPosY : posY;
-		posX = (posX <= -maxPosX) ? -maxPosX : posX;
-		posY = (posY <= -maxPosY) ? -maxPosY : posY;
+		posX = (posX >= this.maxPosX) ? this.maxPosX : posX;
+		posY = (posY >= this.maxPosY) ? this.maxPosY : posY;
+		posX = (posX <= -this.maxPosX) ? -this.maxPosX : posX;
+		posY = (posY <= -this.maxPosY) ? -this.maxPosY : posY;
 		cameraPosition = new Vector(posX, posY);
 
 		// zoom control
 		if (game.getMouse().getMouseScrolledUp()) {
-			zoom -= .1f;
-			zoom = (zoom < minZoom) ? minZoom : zoom;
+			this.zoom -= .1f;
+			this.zoom = (this.zoom < minZoom) ? minZoom : this.zoom;
 		} else if (game.getMouse().getMouseScrolledDown()) {
-			zoom += .1f;
-			zoom = (zoom > maxZoom) ? maxZoom : zoom;
+			this.zoom += .1f;
+			this.zoom = (this.zoom > maxZoom) ? maxZoom : this.zoom;
 		}
 
 		// finalement placement de la camera
-		window.setRelativeTransform(Transform.I.scaled(windowZoom * zoom).translated(cameraPosition));
+		this.window.setRelativeTransform(Transform.I.scaled(windowZoom * this.zoom).translated(this.cameraPosition));
 		// game.setCameraPosition(cameraPosition);
 
 		// ligne de placement
-		gridLine = grid();
+		this.gridLine = grid();
 
 		// right click menu
 		if (!isBusy())
-			actorMenu.update(deltaTime, zoom);
+			this.actorMenu.update(deltaTime, this.zoom);
 		else
-			actorMenu.setStatus(false);
+			this.actorMenu.setStatus(false);
 
 		// positionneur stuff
-		if (showRedSquare && game.getMouse().getLeftButton().isPressed()) {
-			hasClicked = true;
-			redSquarePosition = game.getMouse().getPosition();
-			redSquareGraphics.setRelativeTransform(Transform.I.translated(ExtendedMath.floor(redSquarePosition)));
-			redSquarePosText
-					.setText((int) Math.floor(redSquarePosition.x) + ", " + (int) Math.floor(redSquarePosition.y));
+		if (this.showRedSquare && this.game.getMouse().getLeftButton().isPressed()) {
+			this.hasClicked = true;
+			this.redSquarePosition = this.game.getMouse().getPosition();
+			this.redSquareGraphics
+					.setRelativeTransform(Transform.I.translated(ExtendedMath.floor(this.redSquarePosition)));
+			this.redSquarePosText.setText(
+					(int) Math.floor(this.redSquarePosition.x) + ", " + (int) Math.floor(this.redSquarePosition.y));
 		}
 
 		// buttons update
-		cameraResetPosition.update(deltaTime, zoom);
-		getPositionButton.update(deltaTime, zoom);
-		playButton.update(deltaTime, zoom);
-		backToMainMenu.update(deltaTime, zoom);
+		this.cameraResetPosition.update(deltaTime, this.zoom);
+		this.getPositionButton.update(deltaTime, this.zoom);
+		this.playButton.update(deltaTime, this.zoom);
+		this.backToMainMenu.update(deltaTime, this.zoom);
 
 		// current actors update
 		ActorBuilder current = null;
@@ -524,7 +530,6 @@ public class LevelEditor implements Graphics {
 			// make sure no ActorBuilder is being created
 			if (!actor.isDone() || actor.isHovered())
 				return true;
-			// temp = actor.isDone() & !actor.isHovered() & temp;
 		}
 		return false;
 	}
@@ -544,5 +549,4 @@ public class LevelEditor implements Graphics {
 		this.open = false;
 		this.destroy();
 	}
-
 }
