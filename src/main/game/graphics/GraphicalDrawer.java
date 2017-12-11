@@ -1,7 +1,6 @@
-package main.game;
+package main.game.graphics;
 
 import main.game.actor.Actor;
-import main.game.graphics.Graphics;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;

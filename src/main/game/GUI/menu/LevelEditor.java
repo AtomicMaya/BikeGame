@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 /**
  * {@linkplain LevelEditor} used to create, edit and add {@linkplain Actor}s to
- * the game
+ * the game.
  */
 public class LevelEditor implements Graphics {
 
@@ -51,123 +51,161 @@ public class LevelEditor implements Graphics {
 	/** The master {@linkplain ActorGame}. */
 	private ActorGame game;
 	
-	/** {@linkplain ActorMenu} */
+	/** {@linkplain ActorMenu}. */
 	private ActorMenu actorMenu;
 	
-	/** @see Window */
+	/** @see Window. */
 	private Window window;
 	
-	/** Whether this {@linkplain LevelEditor} is open */
+	/** Whether this {@linkplain LevelEditor} is open. */
 	private boolean open = false;
 	
 	
-	/** Initial position of the camera, represent the center of the screen  */
+	/** Initial position of the camera, represent the center of the screen. */
 	private Vector cameraPosition = Vector.ZERO;
 	
-	/** Default zoom of the {@linkplain Window} : {@value}*/
+	/** Default zoom of the {@linkplain Window} : {@value}. */
 	private static final float windowZoom = 30f;
 	
-	/** Default speed of the camera in (x or y) direction */
+	/** Default speed of the camera in (x or y) direction. */
 	private static final float cameraSpeed = 20f;
 	
-	/** Current zoom, between {@value #minZoom} and {@value #maxZoom} */
+	/** Current zoom, between {@value #minZoom} and {@value #maxZoom}. */
 	private float zoom = 1f;
 	
-	/** Maximum zoom value : {@value #maxZoom} */
+	/** Maximum zoom value : {@value #maxZoom}. */
 	private static final float maxZoom = 2f;
 	
-	/** Maximum zoom value : {@value #minZoom} */
+	/** Maximum zoom value : {@value #minZoom}. */
 	private static final float minZoom = 0.4f;
 	
 	/** 
-	 * Maximum camera position 
+	 * Maximum camera position. 
 	 * @see #cameraPosition 
 	 * */
 	private float maxPosX = 120;
 	
 	/** 
-	 * Minimun camera position 	
+	 * Minimun camera position. 	
 	 * @see #cameraPosition 
 	 * */
 	private float maxPosY = 30;
 	
-	/** Camera acceleration, when CTRL is pressed */
+	/** Camera acceleration, when CTRL is pressed. */
 	private float cameraAcceleration = .4f;
 	
-	/** Current camera acceleration, default value : 1*/
+	/** Current camera acceleration, default value : 1. */
 	private float currentCameraAcceleration = 1;
 	
-	/** Maximum camera acceleration */
+	/** Maximum camera acceleration. */
 	private final float maxCameraXPP = 3;
  
 	
 	// Grid parameters
-	/** {@linkplain ArrayList} containing the {@linkplain Graphics} of a grid */
+	/** {@linkplain ArrayList} containing the {@linkplain Graphics} of a grid. */
 	private ArrayList<ShapeGraphics> gridLine = new ArrayList<>();
 	
-	/** Axe of the grid, in x = 0 and y = 0 */
+	/** Axe of the grid, in x = 0 and y = 0. */
 	private ShapeGraphics axeX, axeY;
 	
-	/** Number of lines on the screen */
+	/** Number of lines on the screen. */
 	private final int lineNumberX = 120, lineNumberY = 66;
 	
-	/** Thickness of the lines of the grid */
+	/** Thickness of the lines of the grid. */
 	private float lineThickness = .01f;
 
 	// button font size
-	/** Font size of the different {@linkplain GraphicalButton} */
+	/** Font size of the different {@linkplain GraphicalButton}. */
 	private float fontSize = .63f;
 	
-	/** Depth of the {@linkplain GraphicalButton}*/
+	/** Depth of the {@linkplain GraphicalButton}. */
 	private float butonDepth = 51;
 
 	// position showing
-	/** Initial position of the {@link #redSquareGraphics}*/
+	/** Initial position of the {@link #redSquareGraphics}. */
 	private Vector redSquarePosition = Vector.ZERO;
 	
-	/** Red square displayed if the {@link #showRedSquare} {@linkplain GraphicalButton} is clicked */
+	/** Red square displayed if the {@link #showRedSquare} {@linkplain GraphicalButton} is clicked. */
 	private ShapeGraphics redSquareGraphics;
 	
-	/** Whether the {@link #redSquareGraphics} is displayed */
+	/** Whether the {@link #redSquareGraphics} is displayed. */
 	private boolean showRedSquare = false; 
 	
-	/** Whether a place has been clicked on screen */
+	/** Whether a place has been clicked on screen. */
 	private boolean hasClicked = false; 
 									
-	/** Display the coordinates of the {@link #redSquareGraphics} */
+	/** Display the coordinates of the {@link #redSquareGraphics}. */
 	private BetterTextGraphics redSquarePosText;
 
 	// activate/desactivate position pointer
-	/** */
+	/** {@linkplain GraphicalButton} which show/unshow the {@link #redSquareGraphics}. */
 	private GraphicalButton getPositionButton;
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #getPositionButton}. */
 	private Vector getPositionButtonPosition = new Vector(-29, 14);
+	
+	/** Text of the {@linkplain GraphicalButton} {@link #getPositionButton}. */
 	private final String getPosButtonText = "Positionneur";
 
 	// reset camera button + position (absolue sur l'ecran)
+	/** {@linkplain GraphicalButton} which reset the camera position to (0, 0). */
 	private GraphicalButton cameraResetPosition;
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #cameraResetPosition}. */
 	private Vector cameraResetButtonPosition = new Vector(-21, 14);
+	
+	/** Text of the {@linkplain GraphicalButton} {@link #cameraResetPosition}. */
 	private final String resetCameraButtonText = "Reset camera";
 
 	// test play button
+	/** {@linkplain GraphicalButton} to test the game, or continue editing the game */
 	private GraphicalButton playButton;
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #playButton}. */
 	private Vector playButtonPosition = new Vector(0, 14);
+	
+	/** Text of the {@linkplain GraphicalButton} {@link #playButton}. */
 	private final String playButtonText = "Play";
+	
+	/** Text of the {@linkplain GraphicalButton} {@link #playButton}. */
 	private final String playButtonEditText = "Edit";
 
 	// save button
+	/** {@linkplain GraphicalButton} used to save the current {@linkplain Actor}s placed. */
 	private GraphicalButton saveButon;
+	
+	/** Text of the {@linkplain GraphicalButton} {@link #saveButon}. */
 	private final String saveButonText = "Save";
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #saveButon}. */
 	private Vector saveButonPos = new Vector(4, 14);
+	
+	/** Name of the first free save name. */
 	private final String currentSaveName;
+	
+	/** {@linkplain Comment} to display some error messages. */
 	private Comment error;
+	
+	/** Actual text displayed by {@link #error}. */
 	private String errorText;
+	
+	/** Timer to stop displaying the {@link #error} {@linkplain Comment}. */
 	private float errorTimer = 0;
+	
+	/** Time the {@link #error} {@linkplain Comment} stay displayed. */
 	private final float maxErrorTimer = 2f;
+	
+	/** Whether the {@link #error} {@linkplain Comment} is displayed. */
 	private boolean displayErrorText = false;
 
 	// back to main menu button
+	/** {@linkplain GraphicalButton} to go back to the {@linkplain MainMenu}. */
 	private GraphicalButton backToMainMenu;
+	
+	/** Text of the {@linkplain GraphicalButton} {@link #backToMainMenu}. */
 	private String backText = "Back to menu";
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #backToMainMenu}. */
 	private Vector backPos = new Vector(-8, 14);
 
 	/**
@@ -249,7 +287,6 @@ public class LevelEditor implements Graphics {
 					ab.reCreate();
 				}
 				game.setViewCandidate(null);
-
 			}
 		});
 
@@ -259,7 +296,7 @@ public class LevelEditor implements Graphics {
 			this.close();
 		});
 
-		// get available name for the save
+		// get an available name for the save
 		File[] saves = Save.availableSaves(game);
 		ArrayList<String> savesNames = new ArrayList<>();
 		for (File f : saves) {
@@ -314,17 +351,18 @@ public class LevelEditor implements Graphics {
 	 */
 	public void update(float deltaTime) {
 
+		// case we are testing the game
 		if (!this.game.isGameFrozen()) {
-
 			float z = this.game.getViewScale() / windowZoom;
 			this.playButton.update(deltaTime, z);
-
 			return;
 		}
+		
 		// camera acceleration
 		if (this.game.getKeyboard().get(KeyEvent.VK_CONTROL).isDown()) {
 			this.currentCameraAcceleration += this.cameraAcceleration * deltaTime;
-			this.currentCameraAcceleration = (this.currentCameraAcceleration >= this.maxCameraXPP) ? this.maxCameraXPP : this.currentCameraAcceleration;
+			this.currentCameraAcceleration = (this.currentCameraAcceleration >= this.maxCameraXPP) ? this.maxCameraXPP
+					: this.currentCameraAcceleration;
 		}
 		if (this.game.getKeyboard().get(KeyEvent.VK_CONTROL).isReleased())
 			this.currentCameraAcceleration = 1;
@@ -362,7 +400,6 @@ public class LevelEditor implements Graphics {
 
 		// finalement placement de la camera
 		this.window.setRelativeTransform(Transform.I.scaled(windowZoom * this.zoom).translated(this.cameraPosition));
-		// game.setCameraPosition(cameraPosition);
 
 		// ligne de placement
 		this.gridLine = grid();
@@ -461,7 +498,7 @@ public class LevelEditor implements Graphics {
 
 	}
 
-	/** @return the list of all {@linkplain Actor}s created */
+	/** @return the list of all {@linkplain Actor}s created. */
 	public ArrayList<Actor> getActors() {
 		ArrayList<Actor> a = new ArrayList<>();
 		for (ActorBuilder ab : actorBuilders) {
@@ -497,7 +534,6 @@ public class LevelEditor implements Graphics {
 			this.spawn.getActor().destroy();
 			actorBuilders.remove(this.spawn);
 		}
-
 		this.spawn = spawn;
 		this.actorBuilders.add(spawn);
 	}
@@ -511,7 +547,6 @@ public class LevelEditor implements Graphics {
 			this.finish.getActor().destroy();
 			actorBuilders.remove(this.finish);
 		}
-
 		this.finish = finish;
 		this.actorBuilders.add(finish);
 	}
@@ -520,7 +555,7 @@ public class LevelEditor implements Graphics {
 	private ArrayList<ShapeGraphics> grid() {
 		ArrayList<ShapeGraphics> lines = new ArrayList<>();
 
-		// lignes en |
+		// lignes verticales
 		Shape t = new Polygon(-lineThickness, -lineNumberY / 2, -lineThickness, lineNumberY / 2, lineThickness,
 				lineNumberY / 2, lineThickness, -lineNumberY / 2);
 
@@ -531,7 +566,7 @@ public class LevelEditor implements Graphics {
 					Transform.I.translated(new Vector(1f * i - lineNumberX / 2, 0)).translated(c2));
 		}
 
-		// lignes en --
+		// lignes horizontales
 		Shape t2 = new Polygon(-lineNumberX / 2, -lineThickness, lineNumberX / 2, -lineThickness, lineNumberX / 2,
 				lineThickness, -lineNumberX / 2, lineThickness);
 		for (int i = 0; i < lineNumberX; i++) {
@@ -540,11 +575,6 @@ public class LevelEditor implements Graphics {
 					Transform.I.translated(new Vector(0, 1f * i - lineNumberX / 2)).translated(c2));
 		}
 		return lines;
-
-	}
-
-	public float getZoom() {
-		return this.zoom;
 	}
 
 	/**
@@ -578,7 +608,6 @@ public class LevelEditor implements Graphics {
 
 	/** @return whether an {@linkplain ActorBuilder} is being created/edited */
 	public boolean isBusy() {
-		// boolean temp = true;
 		for (ActorBuilder actor : actorBuilders) {
 			// make sure no ActorBuilder is being created
 			if (!actor.isDone() || actor.isHovered())
