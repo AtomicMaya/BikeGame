@@ -9,7 +9,7 @@ public enum ObjectGroup {
     FINISH (5),
     CHECKPOINT (6),
     ENEMY (7),
-	PROJECTIL (8);
+	PROJECTILE(8);
 
     public final int group;
 

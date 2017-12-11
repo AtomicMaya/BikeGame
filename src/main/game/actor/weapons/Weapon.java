@@ -4,8 +4,6 @@
  */
 package main.game.actor.weapons;
 
-import java.awt.Color;
-
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.actor.Actor;
@@ -15,6 +13,8 @@ import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
 
 public abstract class Weapon implements Actor {
 
@@ -30,7 +30,7 @@ public abstract class Weapon implements Actor {
 
 	// GUI stuff
 	private Comment amoNumber;
-	private String amoText = " ammos left";
+	private String amoText = " shots left";
 	private Vector amoNumberPos = new Vector(17, 8);
 
 	float loadWidth = 5, loadHeight = .2f, loadSizeDif = .05f;

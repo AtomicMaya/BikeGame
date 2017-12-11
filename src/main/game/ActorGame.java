@@ -24,38 +24,38 @@ import java.util.List;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
 public class ActorGame implements Game {
-
-	// Viewport properties
+    /** The Viewport properties. */
 	private Camera camera;
 
-	// list of all actors in the game
-	private LinkedList<Actor> actors = new LinkedList<Actor>();
+	 /** A {@linkplain ArrayList<Actor>} containing all {@linkplain Actor}.*/
+     private LinkedList<Actor> actors = new LinkedList<Actor>();
 
-	// main character of the game
+    // main character of the game
+    /** The main {@linkplain Actor} of this {@linkplain Game} */
 	private PlayableEntity player;
 
-	// our physical world
+	/** The {@linkplain World} created with the game */
 	private World world;
 
-	// the parameters of the game
+	/** The {@linkplain Window} where to draw the {@linkplain main.game.graphics.Graphics}. */
 	private Window window;
+
+	/** The global {@linkplain FileSystem}.*/
 	private FileSystem fileSystem;
 
-	// Weather the game is frozen
+    /** Whether the game is frozen. */
 	private boolean gameFrozen = false;
 
-	// list to add or remove actors
+	/** {@linkplain ArrayList<Actor>} containing {@linkplain Actor}s to add and to remove from the {@linkplain Game}.*/
 	private ArrayList<Actor> actorsToRemove = new ArrayList<>(), actorsToAdd = new ArrayList<>();
 
 	// actor to manage checkpoint, reload, ...
 	private GameManager gameManager;
 
-	/**
-	 * The Save directory path : {@value #saveDirectory}
-	 */
+	/** The given save directory : {@value}*/
 	private static final String saveDirectory = "saves/";
 
-	// score counter
+	/** The player's score. */
 	private int score;
 
 	@Override
@@ -83,9 +83,9 @@ public class ActorGame implements Game {
 		gameManager.update(deltaTime);
 		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
 			System.out.println(actors.size() + " " + world.getEntities().size());
-		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed()) {
-			this.gameFrozen = !this.gameFrozen;
-		}
+
+		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed())
+		    this.gameFrozen = !this.gameFrozen;
 
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
@@ -96,6 +96,7 @@ public class ActorGame implements Game {
 			this.actors.removeAll(this.actorsToRemove);
 			this.actorsToRemove.clear();
 		}
+
 		if (!this.actorsToAdd.isEmpty()) {
 			this.actors.addAll(this.actorsToAdd);
 			this.actorsToAdd.clear();
@@ -106,21 +107,16 @@ public class ActorGame implements Game {
 		}
 
 		this.world.update(deltaTime);
-
 		this.camera.update(deltaTime);
 
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
 			try {
 				this.actors.get(i).update(deltaTime);
-			} catch (ConcurrentModificationException ignored) {
-				System.out.println("had a cme");
-			}
+			} catch (ConcurrentModificationException e) { e.printStackTrace(); }
 		}
-		// for (Actor a:actors)a.update(deltaTime);
 		gameManager.draw(window);
-		for (Actor actor : this.actors) {
+		for (Actor actor : this.actors)
 			actor.draw(this.window);
-		}
 	}
 
 	@Override
@@ -128,30 +124,22 @@ public class ActorGame implements Game {
 		this.actors.clear();
 	}
 
-	/**
-	 * @return the associated {@linkplain Keyboard} controller.
-	 */
+	/** @return the associated {@linkplain Keyboard} controller. */
 	public Keyboard getKeyboard() {
 		return this.window.getKeyboard();
 	}
 
-	/**
-	 * @return the associated {@linkplain Canvas}.
-	 */
+	/** @return the associated {@linkplain Canvas}. */
 	public Canvas getCanvas() {
 		return this.window;
 	}
 
-	/**
-	 * @return the associated {@linkplain Mouse} controller.
-	 */
+	/** @return the associated {@linkplain Mouse} controller. */
 	public Mouse getMouse() {
 		return this.window.getMouse();
 	}
 
-	/**
-	 * @return the game's main gravity value.
-	 */
+	/** @return the game's main gravity value. */
 	public Vector getGravity() {
 		return this.world.getGravity();
 	}
@@ -162,7 +150,8 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * @param actor : An {@linkplain Actor} to be added in the game.
+     * Adds an {@linkplain Actor} to the game.
+	 * @param actor An {@linkplain Actor} to be added in the game.
 	 */
 	public void addActor(Actor actor) {
 		if (actor != null && !this.actors.contains(actor) && !this.actorsToAdd.contains(actor))
@@ -170,7 +159,8 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * @param actors : A list of {@linkplain Actor}s to be added to the game.
+     * Adds several {@linkplain Actor}s to the game.
+	 * @param actors A list of {@linkplain Actor}s to be added to the game.
 	 */
 	public void addActor(List<Actor> actors) {
 		for (Actor a : actors) {
@@ -180,7 +170,7 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * @param actor : An {@linkplain Actor} to be removed from the game.
+	 * @param actor An {@linkplain Actor} to be removed from the game.
 	 */
 	public void destroyActor(Actor actor) {
 		if (!this.actorsToRemove.contains(actor))
@@ -188,8 +178,7 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * @param actors : A list of {@linkplain Actor}s to be removed from the
-	 * game.
+	 * @param actors A list of {@linkplain Actor}s to be removed from the game.
 	 */
 	public void destroyActor(ArrayList<Actor> actors) {
 		for (Actor a : actors) {
@@ -207,11 +196,10 @@ public class ActorGame implements Game {
 		while (world.getEntities().size() > 0)
 			world.getEntities().get(0).destroy();
 		this.actorsToRemove.addAll(this.actors);
-
 	}
 
 	/**
-	 * @param actorToKeep : An {@linkplain Actor} to keep in the game.
+	 * @param actorToKeep An {@linkplain Actor} to keep in the game.
 	 */
 	public void destroyAllActorsExcept(Actor actorToKeep) {
 		for (Actor actor : this.actors) {
@@ -223,7 +211,7 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * @param actorsToKeep : A list of {@linkplain Actor}s to keep in the game.
+	 * @param actorsToKeep A list of {@linkplain Actor}s to keep in the game.
 	 */
 	public void destroyAllActorsExcept(ArrayList<Actor> actorsToKeep) {
 		for (Actor actor : this.actors) {
@@ -235,8 +223,8 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new {@linkplain Entity} in the world.
-	 * @param position : position given to the {@linkplain Entity}.
-	 * @param fixed : whether the {@linkplain Entity} can move or not.
+	 * @param position A position {@linkplain Vector} given to the {@linkplain Entity}.
+	 * @param fixed Whether the {@linkplain Entity} can move or not.
 	 * @return a new {@linkplain Entity}.
 	 */
 	public Entity newEntity(Vector position, boolean fixed) {
@@ -248,7 +236,7 @@ public class ActorGame implements Game {
 
 	/**
 	 * Create a new {@linkplain Entity} in the world.
-	 * @param fixed : whether the {@linkplain Entity} can move or not.
+	 * @param fixed Whether the {@linkplain Entity} can move or not.
 	 * @return a new {@linkplain Entity}.
 	 */
 	public Entity newEntity(boolean fixed) {
@@ -285,7 +273,7 @@ public class ActorGame implements Game {
 		return this.world.createPointConstraintBuilder();
 	}
 
-	/** @return a new {@linkplain WeldConstraintBuilder} */
+	/** @return a new {@linkplain WeldConstraintBuilder}.*/
 	public WeldConstraintBuilder createWeldConstraintBuilder() {
 		return this.world.createWeldConstraintBuilder();
 	}
@@ -368,7 +356,7 @@ public class ActorGame implements Game {
 	 * @param saveName : The name of the save to load.
 	 */
 	public boolean load(String saveName) {
-		
+
 		ArrayList<Actor> toAdd = new ArrayList<>();
 		synchronized (toAdd) {
 
@@ -441,15 +429,6 @@ public class ActorGame implements Game {
 	protected void setViewScale(float newViewScale) {
 		camera.setViewScale(newViewScale);
 	}
-
-	// /** @return the camera position */
-	// public Vector getCameraPosition() {
-	// return this.camera.getCameraPosition();
-	// }
-
-	// public void setCameraPosition(Vector position) {
-	// this.camera.setCameraPosition(position);
-	// }
 
 	/**
 	 * @return the {@linkplain Window} relative transform

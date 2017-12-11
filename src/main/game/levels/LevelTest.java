@@ -1,10 +1,7 @@
 package main.game.levels;
 
 import main.game.ActorGame;
-import main.game.actor.entities.BoomBarrel;
-import main.game.actor.entities.GravityWell;
-import main.game.actor.entities.Terrain;
-import main.game.actor.entities.Trampoline;
+import main.game.actor.entities.*;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.StartCheckpoint;
@@ -31,7 +28,7 @@ public class LevelTest extends Level {
 		Polyline p = new Polyline(-1000, -1000.0f, -1000.0f, 0.0f, 0.0f, 0.0f, 3.0f, 1.0f, 8.0f, 1.0f, 15.0f, 3.0f,
 				16.0f, 3.0f, 25.0f, 0.0f, 35.0f, -5.0f, 50.0f, -5.0f, 55.0f, -4.0f, 65.0f, 0.0f, 6500.0f, -1000.0f);
 
-		Terrain terrain = new Terrain(game, null, p, 0);
+		Terrain terrain = new Terrain(game, null, p, TerrainType.NORMAL);
 
 //		player = new Bike(game, new Vector(-12, 5));
 

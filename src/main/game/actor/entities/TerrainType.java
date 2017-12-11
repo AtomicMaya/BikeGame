@@ -1,7 +1,25 @@
 package main.game.actor.entities;
 
-/**
- * Created on 12/11/2017 at 10:48 AM.
- */
-public interface TerrainType {
+/** Enumerates the different types of {@linkplain Terrain}. */
+public enum TerrainType {
+    NORMAL (2, "#6D5D49", "#548542"),
+    MUD (.3f, "#92817c", "#a99790"),
+    ICE (0, "#6D5D49", "#548542");
+
+    /** The friction given to this {@linkplain TerrainType}. */
+    public float friction;
+    /** The color strings given to this {@linkplain TerrainType}. */
+    public String fillColor, outlineColor;
+
+    /**
+     * Creates a new {@linkplain TerrainType}.
+     * @param friction A friction parameter.
+     * @param fillColor The wished-for fill color.
+     * @param outlineColor The wished-for outline color.
+     */
+    TerrainType(float friction, String fillColor, String outlineColor) {
+        this.friction = friction;
+        this.fillColor = fillColor;
+        this.outlineColor = outlineColor;
+    }
 }
