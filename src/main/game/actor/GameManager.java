@@ -11,6 +11,7 @@ import main.game.actor.entities.Bike;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.StartCheckpoint;
 import main.game.graphics.BetterTextGraphics;
+import main.math.ExtendedMath;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
@@ -26,10 +27,12 @@ public class GameManager {
 
 	private ActorGame game;
 	private ComplexBikeGame gameLevel;
-	
+
 	// score management
 	private int score = 0;
 	private BetterTextGraphics scoreDisapplay;
+	private final String scoreText = "Your score is :";
+	private Vector scorePos = new Vector(-19, -9.5f);
 
 	// level management
 	private final String messageNextLevelText = "Press N to go to the next level";
@@ -52,6 +55,9 @@ public class GameManager {
 
 	public GameManager(ActorGame game) {
 		this.game = game;
+		scoreDisapplay = new BetterTextGraphics(game, scoreText + score, 1f, scorePos);
+		scoreDisapplay.setParent(game.getCanvas());
+		scoreDisapplay.setDepth(42042);
 	}
 
 	public void update(float deltaTime) {
@@ -129,7 +135,11 @@ public class GameManager {
 					Transform.I.translated(canvas.getPosition()), new Color(66, 241, 244), new Color(155, 18, 48), .02f,
 					false, false, new Vector(.5f, -2.5f * game.getViewScale() / 20f), 1, 42000);
 		if (!game.isGameFrozen()) {
-			
+			scoreDisapplay.setText(scoreText + score);
+			scoreDisapplay.draw(canvas);
+			canvas.drawShape(ExtendedMath.createRectangle(scoreDisapplay.getTotalWidth(), scoreDisapplay.getCharSize()),
+					Transform.I.translated(scorePos).translated(game.getCanvas().getPosition()),
+					new Color(220, 220, 220), new Color(200, 200, 200), .2f, .8f, 42000);
 		}
 	}
 
@@ -179,7 +189,7 @@ public class GameManager {
 		score = 0;
 	}
 
-	public void addScore(int score) {
+	public void addToScore(int score) {
 		this.score += score;
 	}
 

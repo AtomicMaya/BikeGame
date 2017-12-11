@@ -65,7 +65,7 @@ public class ActorGame implements Game {
 		if (fileSystem == null)
 			throw new NullPointerException("FileSystem is null");
 
-		this.camera = new Camera(this, window);
+		
 		this.world = new World();
 		this.world.setGravity(new Vector(0, -9.81f));
 
@@ -73,7 +73,7 @@ public class ActorGame implements Game {
 		this.fileSystem = fileSystem;
 
 		this.score = 0;
-
+		this.camera = new Camera(this, window);
 		this.gameManager = new GameManager(this);
 		return true;
 	}
@@ -457,18 +457,6 @@ public class ActorGame implements Game {
 	 */
 	public Transform getRelativeTransform() {
 		return this.window.getRelativeTransform();
-	}
-
-	private void resetScore() {
-		this.score = 0;
-	}
-
-	public void addToScore(int newScore) {
-		this.score += newScore;
-	}
-
-	public int getScore() {
-		return this.score;
 	}
 
 	public GameManager getGameManager() {

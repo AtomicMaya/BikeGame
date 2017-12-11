@@ -68,7 +68,7 @@ public class Coin extends GameEntity implements Switcher {
         this.sensor.update(deltaTime);
 
         if (this.sensor.getSensorDetectionStatus()) {
-            this.game.addToScore(isBigCoin ? 200 : 20);
+            this.game.getGameManager().addToScore(isBigCoin ? 200 : 20);
             this.destroy();
         }
 

@@ -92,6 +92,8 @@ public abstract class ComplexBikeGame extends ActorGame {
 
 		this.levels.get(currentLevel).createAllActors();
 		super.addActor(levels.get(currentLevel).getActors());
+		super.addActor(levels.get(currentLevel));
+		
 		StartCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
 		if (!wasPlayed) {
 			// if first time level is loaded,
