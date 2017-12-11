@@ -1,9 +1,9 @@
 package main.game.graphicalStuff;
 
 import main.game.ActorGame;
-import main.game.GameObjects.Rectangle;
 import main.game.actor.Actor;
 import main.math.Polygon;
+import main.math.Rectangle;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;

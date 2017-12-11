@@ -1,45 +1,69 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
-import main.game.actor.sensors.ProximitySensor;
+import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
 import main.io.Saveable;
-import main.math.ExtendedMath;
+import main.math.BasicContactListener;
+import main.math.Entity;
 import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
 import java.util.ArrayList;
 
-/**
- * Created on 12/9/2017 at 1:06 PM.
- */
+/** Random Liquids such as Lava and Acid */
 public class Liquid extends GameEntity implements Saveable {
+    /** An {@linkplain ArrayList} of {@linkplain ImageGraphics} containing the graphical components of this liquid. */
     private transient ArrayList<ImageGraphics> graphics;
-    private transient ProximitySensor sensor;
+
+    /** The {@linkplain Liquid}'s associated {@linkplain BasicContactListener}. */
+    private BasicContactListener listener;
+
+    /** The animation time. */
     private final float animationTime;
+
+    /** The elapsed animation time. */
     private float elapsedAnimationTime;
+
+    /** Dimensions of the {@linkplain Liquid}. */
     private float length, height;
-    
-    private boolean isLava, switched;
-    
+
+    /** Whether the {@linkplain Liquid} is lava. */
+    private boolean isLava;
+
+    /** Whether or not the displayed {@linkplain ImageGraphics} should be replaced by it's inverted. */
+    private boolean switched;
+
+    /**
+     * Creates a new {@linkplain Liquid}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param shape The initial {@linkplain main.math.Shape}
+     * @param isLava Whether the {@linkplain Liquid} is lava.
+     */
     public Liquid(ActorGame game, Vector position, Polygon shape, boolean isLava) {
         super(game, true, position);
         this.build(shape, -1, 1, true);
         this.isLava = isLava;
         this.switched = false;
-       
-        this.animationTime = .5f;
+
+        this.animationTime = .25f;
         this.elapsedAnimationTime = 0;
         this.length = shape.getPoints().get(2).x;
         this.height = shape.getPoints().get(2).y;
 
-       create();
+        this.listener = new BasicContactListener();
+        this.addContactListener(this.listener);
+        this.create();
     }
 
+    /**
+     * Actual creation of the parameters of the {@linkplain GameEntity}, not in the
+     * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
+     */
     private void create() {
-    	this.sensor = new ProximitySensor(getOwner(), getPosition(), ExtendedMath.createRectangle(length, height));
-    	this.graphics = new ArrayList<>();
+        this.graphics = new ArrayList<>();
         for (int l = 0; l < this.length; l++) {
             for (int h = 0; h < this.height; h++) {
                 if (h == this.height - 1 && !this.switched)
@@ -49,15 +73,17 @@ public class Liquid extends GameEntity implements Saveable {
             }
         }
     }
+
     @Override
     public void reCreate(ActorGame game) {
-    	super.reCreate(game);
-    	create();
+        super.reCreate(game);
+        this.create();
     }
+
     @Override
     public void update(float deltaTime) {
-    	super.update(deltaTime);
-    	this.sensor.update(deltaTime);
+        super.update(deltaTime);
+
         this.elapsedAnimationTime += deltaTime;
         if (this.elapsedAnimationTime > animationTime) {
             this.switched = !this.switched;
@@ -76,14 +102,19 @@ public class Liquid extends GameEntity implements Saveable {
             }
             this.elapsedAnimationTime = 0;
         }
-        if(this.sensor.getSensorDetectionStatus()) {
-            this.getOwner().getPayload().triggerDeath(false);
+
+        if(this.listener.getEntities().size() > 0) {
+            for (Entity entity : this.listener.getEntities()) {
+                if(entity.getCollisionGroup() == ObjectGroup.PLAYER.group || entity.getCollisionGroup() == ObjectGroup.WHEEL.group)
+                    this.getOwner().getPayload().triggerDeath(false);
+                else
+                    entity.destroy();
+            }
         }
     }
 
     @Override
     public void destroy() {
-        this.sensor.destroy();
         super.destroy();
         this.getOwner().destroyActor(this);
     }

@@ -9,16 +9,36 @@ import main.window.Canvas;
 
 import java.awt.*;
 
+/** Generates a graphical {@linkplain Particle}. */
 public class Particle implements Graphics {
+    /** {@linkplain java.util.Arrays} of {@linkplain Integer}s containing a 32-bit representation of an ARGB {@linkplain Color}. */
     private int[] currentColor, startColor, endColor;
+
+    /** The {@linkplain Shape} of the {@linkplain Particle}. */
     private Shape shape;
 
+    /** Variables concerning the life time of the particle. */
     private float lifeTime, elapsedLifeTime;
+
+    /** Whether this {@linkplain Particle} will be destroyed the next time it updates. */
     private boolean flaggedForDestruction;
+
+    /** {@linkplain Vector}s representing semi-physical properties. */
     private Vector position, speed, gravity;
+
+    /** Color evolution modifiers. */
     private float modA, modR, modG, modB;
 
-
+    /**
+     * Creates a new {@linkplain Particle}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param shape The {@linkplain Shape} of the {@linkplain Particle}.
+     * @param startColor The start color of the gradient affecting the {@linkplain Particle}.
+     * @param endColor The end color of the gradient affecting the {@linkplain Particle}.
+     * @param lifeTime The time that the {@linkplain Particle} will remain alive.
+     * @param speed The speed {@linkplain Vector} that helps propel this {@linkplain Particle}.
+     * @param gravity In what sense this {@linkplain Particle} will be affected by real world gravity, often reduced to a fraction.
+     */
     public Particle(Vector position, Shape shape, int startColor, int endColor, float lifeTime,
                     Vector speed, Vector gravity) {
         this.lifeTime = lifeTime;
@@ -32,6 +52,7 @@ public class Particle implements Graphics {
         this.endColor = new int[]{ExtendedMath.getAlpha(endColor), ExtendedMath.getRed(endColor), ExtendedMath.getGreen(endColor), ExtendedMath.getBlue(endColor)};
         this.currentColor = this.startColor.clone();
 
+        // Checks that the start color element is bigger that the end color element, and modulates accordingly.
         this.modA = this.startColor[0] >= this.endColor[0] ? -1 : 1;
         this.modR = this.startColor[1] >= this.endColor[1] ? -1 : 1;
         this.modG = this.startColor[2] >= this.endColor[2] ? -1 : 1;
@@ -40,21 +61,26 @@ public class Particle implements Graphics {
         this.shape = shape;
     }
 
+    /** @return a hex-{@linkplain String} representation of a 32-bit color. */
     private String getColor(int[] color) {
         return String.format("#%02x%02x%02x", ExtendedMath.validate8bit(color[1]),  ExtendedMath.validate8bit(color[2]),  ExtendedMath.validate8bit(color[3]));
     }
 
-
+    /** @return the alpha percentage of the given ARGB 32-bit color. */
     private float getAlpha(int[] color) {
         return color[0] / 255f;
     }
 
+    /** @return whether this particle should be destroyed on the next update. */
     public boolean isFlaggedForDestruction() {
         return this.flaggedForDestruction;
     }
 
+    /** @see #update(float) of {@linkplain main.game.actor.Actor} */
     public void update(float deltaTime) {
         this.elapsedLifeTime += deltaTime;
+
+        // The remaining life of the particle, in %, used to calculate the evolution of the color gradient.
         float lifePercent = this.elapsedLifeTime / this.lifeTime;
 
         if (this.elapsedLifeTime > this.lifeTime) {

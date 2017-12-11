@@ -8,33 +8,54 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
+/** A trampoline that can give a Jump boost. */
 public class Trampoline implements Actor, Saveable {
+    /** The {@linkplain GenericPlatform} that is the jumpable part of the {@linkplain Trampoline}. */
 	private transient GenericPlatform genericPlatform;
+
+	/** The physical link, the {@linkplain AnchorPoint}. */
 	private transient AnchorPoint anchor;
+
+	/** The master {@linkplain ActorGame}. */
 	private transient ActorGame game;
 
-	private static final long serialVersionUID = 1927654389208717735L;
+    /** Used for save purposes. */
+    private static final long serialVersionUID = 1927654389208717735L;
 
+    /** The initial position {@linkplain Vector}. */
 	private Vector position;
+
+	/** The width and the height of the {@linkplain GenericPlatform}. */
 	private float width, height;
 
+    /**
+     * Creates a new {@linkplain Trampoline}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param width The width of the {@linkplain GenericPlatform}.
+     * @param height The height of the {@linkplain GenericPlatform}.
+     */
 	public Trampoline(ActorGame game, Vector position, float width, float height) {
 		this.game = game;
 		this.position = position;
 		this.width = width;
 		this.height = height;
 
-		create();
+		this.create();
 	}
 
+    /**
+     * Actual creation of the parameters of the {@linkplain GameEntity}, not in the constructor to avoid duplication
+     * with the method {@linkplain #reCreate(ActorGame)}.
+     */
 	private void create() {
 		this.width = this.width < 0 ? 5 : this.width;
 		this.height = this.height < 0 ? 1 : this.height;
-		this.anchor = new AnchorPoint(game, position);
+		this.anchor = new AnchorPoint(this.game, this.position);
 
-		this.genericPlatform = new GenericPlatform(game, position, width, height);
+		this.genericPlatform = new GenericPlatform(this.game, this.position, this.width, this.height);
 
-        this.genericPlatform.setConstraint(Linker.attachWeldilly(game, this.anchor.getEntity(), this.genericPlatform.getEntity(), new Vector(-1, 0),
+        this.genericPlatform.setConstraint(Linker.attachWeldilly(this.game, this.anchor.getEntity(), this.genericPlatform.getEntity(), new Vector(-1, 0),
                 0, 2.5f, 0));
 
     }

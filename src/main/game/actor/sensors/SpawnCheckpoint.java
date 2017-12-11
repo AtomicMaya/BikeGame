@@ -4,39 +4,37 @@ import main.game.ActorGame;
 import main.game.actor.entities.PlayableEntity;
 import main.math.Vector;
 
-/** Start checkpoint where the {@linkplain PlayableEntity} will spawn */
+/** Start {@linkplain Checkpoint} where the {@linkplain PlayableEntity} will spawn. */
 public class SpawnCheckpoint extends Checkpoint {
-
-	// for save purpose
+    /** Used for save purposes. */
 	private static final long serialVersionUID = -3732240693706393283L;
 
+	/** The player {@linkplain PlayableEntity}. */
 	private transient PlayableEntity player = null;
+
 	/**
-	 * Create a new {@linkplain SpawnCheckpoint}
-	 * @param player {@linkplain PlayableEntity} of this game, if null will
-	 * spawn a bike at this {@linkplain SpawnCheckpoint} position
+	 * Create a new {@linkplain SpawnCheckpoint}.
+	 * @param player The {@linkplain PlayableEntity} of the game, if null will default to a {@linkplain main.game.actor.entities.Bike}.
 	 */
 	public SpawnCheckpoint(ActorGame game, Vector position, PlayableEntity player) {
 		super(game, position, "./res/images/flag.blue.png", "./res/images/flag.blue.png");
 		this.player = player;
-		create();
+		this.create();
 	}
 
 	private void create() {
 		this.setTriggerStatus(true);
-		getOwner().getGameManager().setStartCheckpoint(this);
+		this.getOwner().getGameManager().setStartCheckpoint(this);
 		if (player != null) {
-			getOwner().addActor(player);
-			getOwner().setPayload(player);
-			getOwner().setViewCandidate(player);
+			this.getOwner().addActor(player);
+			this.getOwner().setPayload(player);
+			this.getOwner().setViewCandidate(player);
 		}
 	}
 
 	@Override
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
-		create();
-		System.out.println("Spawn triggered? : "+isTriggered());
+	    this.create();
 	}
-
 }

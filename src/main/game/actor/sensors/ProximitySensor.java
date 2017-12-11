@@ -13,15 +13,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ProximitySensor extends GameEntity implements Sensor {
+    /** The {@linkplain Shape} of the sensor's trigger area. */
 	public Shape sensorArea;
 
+    /** The detection status of this {@linkplain Sensor}. */
 	private boolean detectionStatus, previousDetectionStatus;
+
+    /** The {@linkplain BasicContactListener} associated to this entity. */
 	private BasicContactListener contactListener;
+
+    /** Whether this {@linkplain Sensor} is running any actions. */
 	private boolean sensorOccupied = false;
+
+	/** The {@linkplain ObjectGroup}s that this {@linkplain ProximitySensor} can interact with. */
 	private ArrayList<Integer> objectGroups;
+
+    /** The time until this {@linkplain Sensor} is inactive again. */
 	private float timeToActionEnd = 0, elapsedActionTime = 0.f;
+
+	/** Get the {@linkplain Entity} that collided with this {@linkplain ProximitySensor}. */
 	private Entity collidingEntity;
 
+    /**
+     * Create a new {@linkplain ProximitySensor}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param shape The {@linkplain Shape} of this {@linkplain ProximitySensor}.
+     * @param objectGroups The given {@linkplain ObjectGroup}s.
+     */
 	public ProximitySensor(ActorGame game, Vector position, Shape shape, ArrayList<Integer> objectGroups) {
         super(game, true, position);
         this.sensorArea = shape;
@@ -33,6 +52,13 @@ public class ProximitySensor extends GameEntity implements Sensor {
         this.addContactListener(this.contactListener);
     }
 
+    /**
+     *
+     * Create a new {@linkplain ProximitySensor}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param shape The {@linkplain Shape} of this {@linkplain ProximitySensor}.
+     */
     public ProximitySensor(ActorGame game, Vector position, Shape shape) {
 	    this(game, position, shape, new ArrayList<>(Arrays.asList(ObjectGroup.PLAYER.group, ObjectGroup.WHEEL.group)));
     }
