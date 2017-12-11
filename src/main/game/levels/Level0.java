@@ -1,10 +1,7 @@
 package main.game.levels;
 
 import main.game.ActorGame;
-import main.game.actor.entities.Bike;
-import main.game.actor.entities.Liquid;
-import main.game.actor.entities.Terrain;
-import main.game.actor.entities.TriggeredPlatform;
+import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
 import main.game.actor.sensors.FinishActor;
@@ -48,11 +45,11 @@ public class Level0 extends Level {
                 200.f, 11.f,
                 200, -1000);
 
-        Terrain terrain = new Terrain(this.game, null, groundBody, 0);
+        Terrain terrain = new Terrain(this.game, null, groundBody, TerrainType.NORMAL);
         TriggeredPlatform platform = new TriggeredPlatform(this.game, new Vector(62, 3), new Vector(0, 0),
                 0, 0, 0, 0, 0, new Polygon(.0f, .0f, 6.f, .0f, 6.f, 1.f, .0f, 1.f), 6, 1);
 
-        Terrain muddyTerrain = new Terrain(this.game, new Vector(130, 7), new Polygon(0, 0, 20, 4, 20, 0), 2);
+        Terrain muddyTerrain = new Terrain(this.game, new Vector(130, 7), new Polygon(0, 0, 20, 4, 20, 0), TerrainType.MUD);
         this.player = new Bike(this.game, new Vector(1, 2));
         SimpleLever lever = new SimpleLever(this.game, new Vector(94, 6));
 

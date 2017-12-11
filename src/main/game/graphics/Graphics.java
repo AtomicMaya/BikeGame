@@ -8,7 +8,7 @@ import main.window.Canvas;
 public interface Graphics {
 	/**
 	 * Renders itself on specified canvas.
-	 * @param canvas target, not null
+	 * @param canvas The target, not null.
 	 */
 	void draw(Canvas canvas);
 

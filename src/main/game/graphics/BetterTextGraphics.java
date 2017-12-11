@@ -17,11 +17,11 @@ public class BetterTextGraphics extends Node implements Graphics {
 	private ArrayList<Vector> offsets;
 	private ArrayList<float[]> charSizes = new ArrayList<>();
 
-	// text parameters
+	// Text parameters
 	private String text = "";
 	private float charSize = 1;
 	private float textLength;
-	private float alpha = 1f, depth = 52-.01f;
+	private float alpha = 1f, depth = -42+.01f;
 	private float letterRatio = 73f;
 	private float inBetweenCharOffset = 0;
 
@@ -114,36 +114,29 @@ public class BetterTextGraphics extends Node implements Graphics {
 	@Override
 	public void draw(Canvas canvas) {
 		for (int i = 0; i < this.graphics.size(); i++) {
-
 			Transform t = new Transform(this.charSizes.get(i)[0], 0, this.getPosition().x + this.offsets.get(i).x, 0,
 					this.charSizes.get(i)[1], this.getPosition().y + this.offsets.get(i).y);
-
-			canvas.drawImage(canvas.getImage(this.graphics.get(i)), t, this.alpha, this.depth);
-			
-
-		}
+			canvas.drawImage(canvas.getImage(this.graphics.get(i)), t, this.alpha, this.depth);		}
 	}
 
 	/**
-	 * @return the text of this better text graphics
+	 * @return the text of this better text graphics.
 	 */
 	public String getText() {
 		return this.text;
 	}
 
 	/**
-	 * @return the charSize of this better text graphics
+	 * @return the charSize of this better text graphics.
 	 */
 	public float getCharSize() {
 		return this.charSize;
 	}
 
 	/**
-	 * Change the text of this better text graphics
-	 * 
-	 * @param text : The new text
-	 * @param fontSize : The new font size, negative value will flip the text through
-	 * f(x) = -x;
+	 * Change the text of this better text graphics.
+	 * @param text : The new text.
+	 * @param fontSize : The new font size, a negative value will be inverted.
 	 */
 	public void setText(String text, float fontSize) {
 		this.charSize = fontSize;
@@ -155,20 +148,17 @@ public class BetterTextGraphics extends Node implements Graphics {
 
 		float offset = 0;
 		for (int i = 0; i < this.graphics.size(); i++) {
-			float letterWidth = canvas.getImage(graphics.get(i)).getWidth() / letterRatio;
+			float letterWidth = this.canvas.getImage(this.graphics.get(i)).getWidth() / this.letterRatio;
 			this.offsets.add(new Vector(offset, 0));
 			this.charSizes.add(new float[] { letterWidth * this.charSize, this.charSize });
-			offset += letterWidth * this.charSize + inBetweenCharOffset;
-
+			offset += letterWidth * this.charSize + this.inBetweenCharOffset;
 		}
-		this.textLength = offset - this.inBetweenCharOffset; // - inBetweenCharOffset pour
-												// corigé, il y en a un en trop
+		this.textLength = offset - this.inBetweenCharOffset;
 	}
 
 	/**
-	 * Change the text of this better text graphics
-	 * 
-	 * @param text new text
+	 * Change the text of this better text graphics.
+     * @param text : The new text.
 	 */
 	public void setText(String text) {
 		this.setText(text, this.charSize);
@@ -182,22 +172,24 @@ public class BetterTextGraphics extends Node implements Graphics {
 	}
 
 	/**
-	 * @param depth new depth for the text
+     *
+	 * @param depth : new depth for the {@param text}.
 	 */
 	public void setDepth(float depth) {
 		this.depth = depth;
 	}
 
 	/**
-	 * @return the total text length of this better text graphics
+     * Gets the length of the text.
+	 * @return the total text length of this {@linkplain BetterTextGraphics}.
 	 */
 	public float getTotalWidth() {
 		return this.textLength;
 	}
 
 	/**
-	 * Add a space between each char in the text
-	 * @param value space value
+	 * Add a space between each char in the text.
+	 * @param value : The space value.
 	 */
 	public void setInBetweenCharTextOffset(float value) {
 		this.inBetweenCharOffset = value;
@@ -206,7 +198,7 @@ public class BetterTextGraphics extends Node implements Graphics {
 
 	/**
 	 * Sets text anchor, i.e. how to orient it.
-	 * @param anchor text anchor
+	 * @param anchor : The text anchor
 	 */
 	public void setAnchor(Vector anchor) {
 		this.setRelativeTransform(Transform.I.translated(anchor));

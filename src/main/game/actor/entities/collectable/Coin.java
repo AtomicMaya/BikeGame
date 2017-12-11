@@ -2,7 +2,6 @@ package main.game.actor.entities.collectable;
 
 import main.game.ActorGame;
 import main.game.actor.entities.GameEntity;
-import main.game.actor.entities.switchers.Switcher;
 import main.game.actor.sensors.ProximitySensor;
 import main.game.graphics.ImageGraphics;
 import main.math.Polygon;
@@ -12,17 +11,38 @@ import main.window.Canvas;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Coin extends GameEntity implements Switcher {
+/** A collectible coin, that, when collected, gets added to the score. */
+public class Coin extends GameEntity implements Collectable {
+    /** The master {@linkplain ActorGame}.*/
     private ActorGame game;
 
+    /** Contains the graphics. */
     private ArrayList<ImageGraphics> graphics;
+
+    /** The affected {@linkplain ProximitySensor}. */
     private ProximitySensor sensor;
+
+    /** The {@linkplain Polygon}, the geometric representation of thix {@linkplain Coin}. */
     private Polygon shape;
+
+    /** The time that has already passed for the {@linkplain Coin}'s animation. */
     private float elapsedAnimationTime;
-    private final float animationTime;
+
+    /** The total animation time. */
+    private final float animationTime = 1.5f;
+
+    /** The current index for the {@linkplain ArrayList graphics} iteration. */
     private int graphicsCounter;
+
+    /** If this {@linkplain Coin} is a special type of coin that gives a higher score bonus. */
     private boolean isBigCoin;
 
+    /**
+     * Creates a coin.
+     * @param game The {@linkplain ActorGame} where this {@linkplain Coin} exists.
+     * @param position This {@linkplain Coin}'s position {@linkplain Vector}.
+     * @param isBigCoin Whether this {@linkplain Coin} is a special coin.
+     */
     public Coin(ActorGame game, Vector position, boolean isBigCoin) {
         super(game, true, position);
         this.game = game;
@@ -58,7 +78,6 @@ public class Coin extends GameEntity implements Switcher {
         }
 
         this.sensor = new ProximitySensor(game, position, this.shape);
-        this.animationTime = 1.5f;
         this.graphicsCounter = 0;
         this.elapsedAnimationTime = 0;
     }
@@ -68,7 +87,7 @@ public class Coin extends GameEntity implements Switcher {
         this.sensor.update(deltaTime);
 
         if (this.sensor.getSensorDetectionStatus()) {
-            this.game.getGameManager().addToScore(isBigCoin ? 200 : 20);
+            this.game.getGameManager().addToScore(this.isBigCoin ? 200 : 20);
             this.destroy();
         }
 
@@ -82,7 +101,6 @@ public class Coin extends GameEntity implements Switcher {
     public void reCreate(ActorGame game) {
        super.reCreate(game);
     }
-
 
     @Override
     public void draw(Canvas canvas) {

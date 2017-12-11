@@ -5,6 +5,7 @@ import main.game.actor.ObjectGroup;
 import main.game.graphics.ShapeGraphics;
 import main.math.Polygon;
 import main.math.Polyline;
+import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -13,55 +14,55 @@ import java.util.List;
 
 
 public class Terrain extends GameEntity {
+    /** Used for save purposes. */
 	private static final long serialVersionUID = 7454750386019416210L;
 
-	// keep reference to the graphics
+    /** Creates a new {@linkplain ShapeGraphics} associated to this {@linkplain Terrain}. */
 	private transient ShapeGraphics graphics;
-	private int type;
 
+    /** This {@linkplain TerrainType} of this {@linkplain Terrain}. */
+	private TerrainType type;
+
+	/** Whether this {@linkplain Terrain} can be represented by a {@linkplain Polyline}*/
+	private boolean isPolyline;
+
+	/** A {@linkplain List} of {@linkplain Vector}'s used to draw the {@linkplain Shape}. */
 	private List<Vector> points;
 
 	/**
-	 * Create a Terrain
-	 * 
-	 * @param game : ActorGame where the ground exists
-	 * @param position : the position of the ground
-	 * @param shape : a polyline shape of the ground
-     * @param type : whether it's normal ground (0), ice (1), mud (2)
+	 * Create a {@linkplain Terrain}.
+	 * @param game The {@linkplain ActorGame} where the {@linkplain Terrain} exists.
+	 * @param position The position {@linkplain Vector} of the {@linkplain Terrain}.
+	 * @param shape : The {@linkplain Shape} of the {@linkplain Terrain}.
+     * @param type : The {@linkplain TerrainType} of {@linkplain Terrain}.
 	 */
-	public Terrain(ActorGame game, Vector position, Polyline shape, int type) {
+	public Terrain(ActorGame game, Vector position, Polyline shape, TerrainType type) {
 		super(game, true, (position == null) ? Vector.ZERO : position);
 		this.points = shape.getPoints();
-		this.type = type;
+        this.type = type;
+        this.isPolyline = true;
 		this.create();
 	}
 
-	public Terrain(ActorGame game, Vector position, Polygon shape, int type) {
+	/** @see #Terrain(ActorGame, Vector, Polyline, TerrainType) */
+	public Terrain(ActorGame game, Vector position, Polygon shape, TerrainType type) {
         super(game, true, (position == null) ? Vector.ZERO : position);
         this.points = shape.getPoints();
+        this.isPolyline = false;
         this.type = type;
         this.create();
     }
 
 	/**
-	 * Actual creation of the parameters of the GameEntity, not in the constructor
-	 * to avoid duplication with the method reCreate
+	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in the constructor to avoid duplication
+     * with the method {@linkplain #reCreate(ActorGame)}.
 	 */
 	private void create() {
-		Polyline points = new Polyline(this.points);
-		float friction;
-		if (this.type == 0) friction = 2;
-		else if (this.type == 1) friction = 0;
-		else if (this.type == 2) friction = 0.4f;
-		else friction = 2;
-
-		this.build(points, friction, -1, false, ObjectGroup.TERRAIN.group);
-		String color1, color2;
-        if (this.type == 0) { color1 =  "#6D5D49"; color2 = "#548542"; }
-        else if (this.type == 1) { color1 = "#a2d2df"; color2 = "#baf2ef"; }
-        else if (this.type == 2) { color1 = "#92817c"; color2 = "#a99790"; }
-        else { color1 =  "#6D5D49"; color2 = "#548542"; }
-        this.graphics = this.addGraphics(points, Color.decode(color1), Color.decode(color2), .2f, 1, 10);
+        Shape shape = this.isPolyline ? new Polyline(this.points) : new Polygon(this.points);
+        float friction = this.type.friction;
+		this.build(shape, friction, -1, false, ObjectGroup.TERRAIN.group);
+        this.graphics = this.addGraphics(shape, Color.decode(this.type.fillColor), Color.decode(this.type.outlineColor),
+                .2f, 1, 10);
 	}
 
 	@Override

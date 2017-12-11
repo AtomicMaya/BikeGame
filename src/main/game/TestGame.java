@@ -61,7 +61,7 @@ public class TestGame extends ActorGame {
                 6500.0f, -1000.0f
         );
 
-        Terrain terrain = new Terrain(this, null, p, 2);
+        Terrain terrain = new Terrain(this, null, p, TerrainType.NORMAL);
 
         player = new Bike(this, new Vector(-12, 5));
         this.setPayload(player);

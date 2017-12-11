@@ -13,21 +13,23 @@ import java.util.ArrayList;
 import static main.math.ExtendedMath.*;
 
 /**
- * Represents the character and it's animation, which we deemed to verbose to leave in the Bike class.
- */
+ * Represents the character and its animation, which we deemed too verbose to leave in the {@linkplain Bike} class. */
 
 public class CharacterBike extends GameEntity {
-	private Vector headPos, armJointPos, backPos;
-	private Vector lElbowPos, rElbowPos, lHandPos, rHandPos;
-	private Vector lKneePos, rKneePos, lFootPos, rFootPos;
+    /** {@linkplain Vector}s representing the position of the head, the arm joint, the back, both arms,
+     * both hands, both legs and both feet. */
+	private Vector headPos, armJointPos, backPos, lElbowPos, rElbowPos, lHandPos, rHandPos, lKneePos, rKneePos, lFootPos, rFootPos;
 
+	/** A {@linkplain Float} containing the direction modifier. */
 	private float directionModifier;
+
+	/***/
 	private ArrayList<ShapeGraphics> graphics;
 	private PrismaticConstraint constraint;
 
-	private boolean isYaying;
-	private final float timeTillYayEnd = 1.5f;
-	private float elapsedYayTime;
+	private boolean isHappy;
+	private final float timeTillHappinessEnd = 1.5f;
+	private float elapsedHappinessTime;
 
 	// Insurance Vectors, so as to reset the various moving limbs to default positions
 	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f);
@@ -69,7 +71,7 @@ public class CharacterBike extends GameEntity {
 
 	@Override
 	public void update(float deltaTime) {
-		if (this.isYaying) nextYay(deltaTime);
+		if (this.isHappy) nextYay(deltaTime);
 		this.updateGraphics();
 	}
 
@@ -134,7 +136,7 @@ public class CharacterBike extends GameEntity {
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
 		float radius = ExtendedMath.getDistance(anchor, initial);
 		float angle = ExtendedMath.getAngle(anchor, initial, goal);
-		angle += angle * this.directionModifier * this.elapsedYayTime / (this.timeTillYayEnd / 2.f);
+		angle += angle * this.directionModifier * this.elapsedHappinessTime / (this.timeTillHappinessEnd / 2.f);
 		return new Vector((float) (anchor.x - radius * Math.cos(angle)), (float) (anchor.y - radius * Math.sin(angle)));
 	}
 
@@ -143,22 +145,22 @@ public class CharacterBike extends GameEntity {
 	 * @param deltaTime : the current deltaTime, so that we can use time as a parameter of the animation
 	 */
 	private void nextYay(float deltaTime) {
-		this.elapsedYayTime += deltaTime;
-		if (this.elapsedYayTime < this.timeTillYayEnd / 2.f) {
+		this.elapsedHappinessTime += deltaTime;
+		if (this.elapsedHappinessTime < this.timeTillHappinessEnd / 2.f) {
 			this.lElbowPos = getNewPosition(this.armJointPos, this.initLElbowPos, this.lElbowRaisedPos);
 			this.lHandPos = getNewPosition(this.armJointPos, this.initLHandPos, this.lHandRaisedPos);
 			this.rElbowPos = getNewPosition(this.armJointPos, this.initRElbowPos, this.rElbowRaisedPos);
 			this.rHandPos = getNewPosition(this.armJointPos, this.initRHandPos, this.rHandRaisedPos);
-		} else if (this.elapsedYayTime < this.timeTillYayEnd) {
+		} else if (this.elapsedHappinessTime < this.timeTillHappinessEnd) {
             this.lElbowPos = getNewPosition(this.armJointPos, this.lElbowRaisedPos, this.initLElbowPos);
             this.lHandPos = getNewPosition(this.armJointPos, this.lHandRaisedPos, this.initLHandPos);
             this.rElbowPos = getNewPosition(this.armJointPos, this.rElbowRaisedPos, this.initRElbowPos);
             this.rHandPos = getNewPosition(this.armJointPos, this.rHandRaisedPos, this.initRHandPos);
 		}
 
-		if (this.elapsedYayTime > this.timeTillYayEnd) {
-			this.isYaying = false;
-			this.elapsedYayTime = 0.f;
+		if (this.elapsedHappinessTime > this.timeTillHappinessEnd) {
+			this.isHappy = false;
+			this.elapsedHappinessTime = 0.f;
 
 			// Insurance for bad math...
 			this.lElbowPos = this.initLElbowPos; this.lHandPos = this.initLHandPos;
@@ -170,14 +172,14 @@ public class CharacterBike extends GameEntity {
 	 * Trigger the Victory animation
 	 */
 	public void triggerYayAnimation() {
-		this.isYaying = true;
+		this.isHappy = true;
 	}
 
 	/**
 	 * @return if the Victory animation is active
 	 */
 	public boolean getIsYaying() {
-		return this.isYaying;
+		return this.isHappy;
 	}
 
 	/**

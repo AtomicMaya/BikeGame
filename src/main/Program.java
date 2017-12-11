@@ -20,7 +20,7 @@ public class Program {
 
 	/**
 	 * Main entry point.
-	 * @param args : Ignored
+	 * @param args Ignored
 	 */
 	public static void main(String[] args) {
 

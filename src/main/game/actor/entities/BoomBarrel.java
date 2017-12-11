@@ -13,35 +13,59 @@ import main.window.Canvas;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created on 12/8/2017 at 11:25 PM.
- */
+/** Creates an Exploding/Acid barrel */
 public class BoomBarrel extends GameEntity implements Saveable {
-
+    /** Used for save purposes. */
 	private static final long serialVersionUID = -1395668954465139357L;
-	
-	private transient ImageGraphics graphics;
-	private transient ArrayList<String> boomGraphics;
-	private final float animationTime = .5f;
-	private float elapsedAnimationTime = 0;
-	private int graphicsCounter;
-	private transient BasicContactListener contactListener;
-	private boolean triggered = false, explosive;
 
+    /** Reference the {@linkplain ImageGraphics}'s graphical representation. */
+	private transient ImageGraphics graphics;
+
+    /** An {@linkplain ArrayList} of {@linkplain String} containing the file paths to the resource files. */
+	private transient ArrayList<String> boomGraphics;
+
+	/** The full explosion time. Default : {@value} */
+	private final float animationTime = .5f;
+
+	/** The elapsed animation time. */
+	private float elapsedAnimationTime = 0;
+
+	/** The reference of which animation stage is currently active. */
+	private int graphicsCounter;
+
+	/** The {@linkplain BasicContactListener} associated with this {@linkplain BoomBarrel}. */
+	private transient BasicContactListener contactListener;
+
+	/** Whether this {@linkplain BoomBarrel} was triggered. Default {@value} */
+	private boolean triggered = false;
+
+	/** Whether this {@linkplain BoomBarrel} is explosive. */
+	private boolean explosive;
+
+	/** Whether the {@linkplain PlayableEntity} triggered this {@linkplain BoomBarrel}, or if it was a projectile. */ // TODO call class Projectile.
 	private boolean wasPlayer = false;
 
+    /**
+     * Creates a new {@linkplain BoomBarrel}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param explosive A {@linkplain boolean} whether this {@linkplain BoomBarrel} is explosive (true) or acid (false).
+     */
 	public BoomBarrel(ActorGame game, Vector position, boolean explosive) {
 		super(game, false, position);
 		this.explosive = explosive;
-		create();
+		this.create();
 	}
 
+    /**
+     *
+     */
 	private void create() {
 		this.build(new Polygon(0, 0, 1, 0, 1, 1.5f, 0, 1.5f), 100, 1, false, ObjectGroup.ENEMY.group);
 
-		this.graphics = addGraphics(explosive ? "./res/images/barrel.red.png" : "./res/images/barrel.green.png", 1,
+		this.graphics = addGraphics(this.explosive ? "./res/images/barrel.red.png" : "./res/images/barrel.green.png", 1,
 				1.5f);
-		if (explosive) {
+		if (this.explosive) {
 			this.boomGraphics = new ArrayList<>(
 					Arrays.asList("./res/images/explosion.bomb.0.png", "./res/images/explosion.bomb.1.png",
 							"./res/images/explosion.bomb.2.png", "./res/images/explosion.bomb.3.png",
@@ -88,13 +112,13 @@ public class BoomBarrel extends GameEntity implements Saveable {
 
 		if (this.contactListener.getEntities().size() > 0)
 			for (Entity entity : this.contactListener.getEntities()) {
-				if (explosive && entity.getCollisionGroup() != ObjectGroup.PROJECTIL.group)
+				if (this.explosive && entity.getCollisionGroup() != ObjectGroup.PROJECTILE.group)
 					entity.applyImpulse(new Vector(50, 50), Vector.ZERO);
 				if (entity.getCollisionGroup() == ObjectGroup.PLAYER.group
 						|| entity.getCollisionGroup() == ObjectGroup.WHEEL.group) {
 					this.triggered = true;
 					this.wasPlayer = true;
-				} else if (entity.getCollisionGroup() == ObjectGroup.PROJECTIL.group)
+				} else if (entity.getCollisionGroup() == ObjectGroup.PROJECTILE.group)
 					this.triggered = true;
 			}
 

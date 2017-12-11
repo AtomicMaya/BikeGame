@@ -2,20 +2,17 @@
  *	Author: Clément Jeannet
  *	Date: 	10 déc. 2017
  */
-package main.game.actor.entities;
+package main.game.actor.weapons;
+
+import main.game.ActorGame;
+import main.game.actor.ObjectGroup;
+import main.game.actor.entities.GameEntity;
+import main.math.*;
+import main.window.Canvas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Set;
-
-import main.game.ActorGame;
-import main.game.actor.ObjectGroup;
-import main.math.BasicContactListener;
-import main.math.Entity;
-import main.math.ExtendedMath;
-import main.math.Transform;
-import main.math.Vector;
-import main.window.Canvas;
 
 public class Missile extends GameEntity {
 
@@ -38,7 +35,7 @@ public class Missile extends GameEntity {
 		this.direction = ExtendedMath.direction(position, targetPos).mul(-1);
 		listener = new BasicContactListener();
 		getEntity().addContactListener(listener);
-		this.build(ExtendedMath.createRectangle(1, 24 / 96f), 100, -1, false, ObjectGroup.PROJECTIL.group);
+		this.build(ExtendedMath.createRectangle(1, 24 / 96f), 100, -1, false, ObjectGroup.PROJECTILE.group);
 
 		boomGraphics = new ArrayList<>(
 				Arrays.asList("./res/images/explosion.bomb.0.png", "./res/images/explosion.bomb.1.png",

@@ -3,16 +3,16 @@ package main.game.actor.entities.collectable;
 import main.game.actor.Actor;
 import main.window.Canvas;
 
+/** Contains all the collectible objects, such as {@linkplain Coin}'s. */
 public interface Collectable extends Actor {
-	default void update(float deltaTime) {
-	}
+    /**
+     * Simulates a single time step.
+     * @param deltaTime elapsed time since last update, in seconds, non-negative
+     */
+    default void update(float deltaTime) { }
 
-	default void destroy() {
-	}
+    default void destroy() { }
 
-	@Override
-	default void draw(Canvas canvas) {
-	}
-
-	void setCollected(boolean collected);
+    @Override
+    default void draw(Canvas canvas) { }
 }

@@ -15,10 +15,10 @@ public interface Actor extends Positionable, Graphics {
 	}
 
 	/**
-	 * Default destroy, don't do anything
+	 * Default destroy, doesn't do anything
 	 */
 	default void destroy() {
-		// By default , actors have nothing to destroy
+		// By default, actors have nothing to destroy
 	}
 
 	@Override

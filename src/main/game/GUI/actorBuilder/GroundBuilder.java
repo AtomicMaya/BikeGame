@@ -6,9 +6,9 @@ package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.GUI.GraphicalButton;
-import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.Terrain;
+import main.game.actor.entities.TerrainType;
 import main.math.*;
 import main.window.Canvas;
 
@@ -56,7 +56,6 @@ public class GroundBuilder extends ActorBuilder {
 	/**
 	 * Create a new {@linkplain GroundBuilder}
 	 * @param game : {@linkplain ActorGame} where this belong
-	 * @param levelEditor : {@linkplain LevelEditor} where this is created
 	 */
 	public GroundBuilder(ActorGame game) {
 		super(game);
@@ -197,7 +196,7 @@ public class GroundBuilder extends ActorBuilder {
 	public Actor getActor() {
 		if (terrain != null)
 			terrain.destroy();
-		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), 9);
+		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), TerrainType.NORMAL);
 		return terrain;
 	}
 
@@ -209,7 +208,7 @@ public class GroundBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		terrain.destroy();
-		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), 0);
+		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), TerrainType.NORMAL);
 	}
 
 	@Override

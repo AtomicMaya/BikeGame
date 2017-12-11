@@ -15,18 +15,39 @@ import main.window.Canvas;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class SimpleLever extends GameEntity implements Switcher, Runner {
-	private boolean activated;
+public class SimpleLever extends GameEntity implements Runner {
+    /** The master {@linkplain ActorGame}.*/
 	private ActorGame game;
+
+    /** The linked {@linkplain KeyboardProximitySensor}.*/
 	private KeyboardProximitySensor sensor;
 
+    /** The {@linkplain Shape} of this {@linkplain SimpleLever}.*/
 	private Shape shape;
+
+    /** The {@linkplain ArrayList} containing all {@linkplain ImageGraphics} of this {@linkplain SimpleLever}.*/
 	private ArrayList<ImageGraphics> graphics;
+
+    /** The {@linkplain ArrayList} containing all {@linkplain Runnable}'s of this {@linkplain SimpleLever}.*/
 	private ArrayList<Runnable> actions;
+
+    /** The {@linkplain ArrayList} containing all {@linkplain Float} representing time of this {@linkplain SimpleLever}.*/
 	private ArrayList<Float> time;
+
+    /** Whether this {@linkplain SimpleLever} is activated or not. Default {@value}. */
+    private boolean activated;
+
+    /** Whether this {@linkplain Runner} is occupied or not. Default {@value}. */
 	boolean isOccupied;
+
+	/** Animation parameters. */
 	private float timeToActionEnd, elapsedActionTime = 0.f;
 
+    /**
+     * Creates a new {@linkplain SimpleLever}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The position {@linkplain Vector} associated to this {@linkplain SimpleLever}.
+     */
 	public SimpleLever(ActorGame game, Vector position) {
 		super(game, true, position);
 		this.game = game;
@@ -65,13 +86,13 @@ public class SimpleLever extends GameEntity implements Switcher, Runner {
 
 	@Override
 	public void destroy() {
-		this.game.destroyActor(sensor);
+		this.game.destroyActor(this.sensor);
 		this.game.destroyActor(this);
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		(activated ? graphics.get(1) : graphics.get(0)).draw(canvas);
+		(this.activated ? this.graphics.get(1) : this.graphics.get(0)).draw(canvas);
 	}
 
 	@Override
@@ -79,7 +100,6 @@ public class SimpleLever extends GameEntity implements Switcher, Runner {
 		this.actions.add(action);
 		this.time.add(expirationTime);
 	}
-
 
     @Override
 	public void runAction(Runnable action, float expirationTime) {

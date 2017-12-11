@@ -11,83 +11,83 @@ import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
-/**
- * Part 4.5, Test de l'architecture: Crate:
- * <p>
- * Simple Crate added to an {@linkplain ActorGame}
- * </p>
- */
+/** Represents a simple {@linkplain Crate} */
 public class Crate extends GameEntity {
+    /** Used for save purposes. */
+    private static final long serialVersionUID = -677571549932797093L;
 
-	private static final long serialVersionUID = -677571549932797093L;
+    /** Reference the {@linkplain Crate}'s graphical representation. */
+    private transient ImageGraphics graphic;
 
-	// keep reference to our images
-	private transient ImageGraphics graphic;
+    /** Reference used by the saving process. */
+    private String imagePath;
 
-	// keep the argument in case of save
-	private String imagePath;
-	private float width, height;
+    /** The size of this {@linkplain Crate}. */
+    private float width, height;
 
-	/**
-	 * Create a new Crate
-	 * 
-	 * @param game {@linkplain ActorGame} where the {@linkplain Crate} evolve.
-	 * @param position initial position of the {@linkplain Crate}.
-	 * @param imagePath path to the image to give to the {@linkplain Crate}, if null, default image.
-	 * @param fixed : Whether the {@linkplain Crate} is fixed.
-	 * @param width of the {@linkplain Crate}.
-	 * @param height of the {@linkplain Crate}.
-	 */
+    /**
+     * Create a new {@linkplain Crate}.
+     * @param game {@linkplain ActorGame} where the {@linkplain Crate} evolve.
+     * @param position initial position {@linkplain Vector} of the {@linkplain Crate}.
+     * @param imagePath path to the image to give to the {@linkplain Crate}, if null, set the image.
+     * @param fixed Whether the {@linkplain Crate} is fixed.
+     * @param width of the {@linkplain Crate}.
+     * @param height of the {@linkplain Crate}.
+     */
     public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float width, float height) {
         super(game, fixed, position);
         this.imagePath = (imagePath == null || imagePath.equals("")) ? "res/images/crate.1.png" : imagePath;
         this.width = width;
         this.height = height;
-
-        create();
+        this.create();
     }
 
     /**
      * @see #Crate(ActorGame, Vector, String, boolean, float, float)
      * Size replaced by width and height.
      */
-	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
-		this(game, position, imagePath, fixed, size, size);
-	}
+    public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
+        this(game, position, imagePath, fixed, size, size);
+    }
 
-	/**
-	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in the
-	 * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
-	 */
-	private void create() {
-		this.imagePath = (this.imagePath == null || !this.imagePath.equals("")) ? "res/images/crate.1.png" : this.imagePath;
-
-		Polygon square = new Polygon(0, 0, 0, this.height, this.width, this.height, this.width, 0);
-		this.build(square);
+    /**
+     * Actual creation of the parameters of the {@linkplain GameEntity}, not in the
+     * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
+     */
+    private void create() {
+        this.imagePath = (this.imagePath == null || !this.imagePath.equals("")) ? "res/images/crate.1.png" : this.imagePath;
+        this.build(new Polygon(0, 0, 0, this.height, this.width, this.height, this.width, 0));
         this.graphic = this.addGraphics(this.imagePath, this.width, this.height);
-	}
+    }
 
-	@Override
-	public void reCreate(ActorGame game) {
-		super.reCreate(game);
-		create();
-	}
+    /**
+     * Override this {@linkplain Crate}'s size properties.
+     * @param width of the {@linkplain Crate}.
+     * @param height if the {@linkplain Crate}.
+     */
+    public void setSize(float width, float height) {
+        this.width = width;
+        this.height = height;
+        this.create();
+    }
 
-	@Override
-	public void draw(Canvas canvas) {
+    @Override
+    public void reCreate(ActorGame game) {
+        super.reCreate(game);
+        this.create();
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
         this.graphic.draw(canvas);
-	}
+    }
 
-	public void setSize(float width, float height) {
-		this.width = width;
-		this.height = height;
-		create();
-	}
 
-	@Override
-	public void destroy() {
-		super.destroy();
-		super.getOwner().destroyActor(this);
-	}
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        super.getOwner().destroyActor(this);
+    }
 
 }
