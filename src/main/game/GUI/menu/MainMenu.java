@@ -4,8 +4,8 @@
  */
 package main.game.GUI.menu;
 
+import main.game.ComplexBikeGame;
 import main.game.GUI.GraphicalButton;
-import main.game.GameWithLevelAndMenu;
 import main.game.graphics.ShapeGraphics;
 import main.game.graphics.TextGraphics;
 import main.io.Save;
@@ -22,6 +22,7 @@ import java.util.ArrayList;
 /** MainMenu of our game */
 public class MainMenu extends FullScreenMenu {
 
+	private ComplexBikeGame game;
 	// text main menu
 	private TextGraphics menuMainGraphics;
 	private final String menuMainTest = "Menu";
@@ -57,14 +58,16 @@ public class MainMenu extends FullScreenMenu {
 	private LevelEditor levelEditor;
 
 	/**
-	 * Create a MainMenu for a {@linkplain GameWithLevelAndMenu }
+	 * Create a MainMenu for a {@linkplain ComplexBikeGame }
 	 * 
-	 * @param game : {@linkplain GameWithLevelAndMenu} the game in which this
+	 * @param game : {@linkplain ComplexBikeGame} the game in which this
 	 * {@linkplain MainMenu} belong
 	 * @param window : {@linkplain Window} Window context
 	 */
-	public MainMenu(GameWithLevelAndMenu game, Window window) {
+	public MainMenu(ComplexBikeGame game, Window window) {
 		super(game, window, true, Color.GRAY);
+
+		this.game = game;
 
 		// main menu text
 		float fontSize = 4.5f;
@@ -258,9 +261,10 @@ public class MainMenu extends FullScreenMenu {
 
 					// problematic loading part
 					System.out.println("    - Going to load");
-					if (getOwner().load(list[p].getName()))
+					if (getOwner().load(list[p].getName())) {
+						getOwner().getGameManager().setGameState(game, list[p].getName());
 						System.out.println("    - loaded successfully");
-					else
+					} else
 						System.out.println("error");
 
 					System.out.println("    - Finish loading");

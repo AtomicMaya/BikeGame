@@ -15,7 +15,7 @@ import java.util.List;
  * 
  * @see ActorGame
  */
-public abstract class GameWithLevelAndMenu extends ActorGame {
+public abstract class ComplexBikeGame extends ActorGame {
 
 	private List<Level> levels;
 	private int currentLevel = 0;
@@ -69,11 +69,12 @@ public abstract class GameWithLevelAndMenu extends ActorGame {
 	 */
 	public void resetLevel() {
 		this.wasPlayed = true;
-		beginLevel(currentLevel);
+		this.beginLevel(currentLevel);
 	}
 
 	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
 	public void clearCurrentLevel() {
+		this.levels.get(currentLevel).dispose();
 		super.destroyAllActors();
 	}
 
@@ -83,11 +84,11 @@ public abstract class GameWithLevelAndMenu extends ActorGame {
 	 * start
 	 */
 	public void beginLevel(int i) {
-		this.getGameManager().inLevel(this);
-		clearCurrentLevel();
-		currentLevel = i;
-		if (currentLevel > levels.size() - 1)
-			currentLevel = 0;
+		this.getGameManager().setGameState(this);
+		this.clearCurrentLevel();
+		this.currentLevel = i;
+		if (this.currentLevel > this.levels.size() - 1)
+			this.currentLevel = 0;
 
 		this.levels.get(currentLevel).createAllActors();
 		super.addActor(levels.get(currentLevel).getActors());

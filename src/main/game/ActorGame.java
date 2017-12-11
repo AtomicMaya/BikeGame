@@ -19,6 +19,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.LinkedList;
 import java.util.List;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
@@ -28,7 +29,7 @@ public class ActorGame implements Game {
 	private Camera camera;
 
 	// list of all actors in the game
-	private ArrayList<Actor> actors = new ArrayList<>();
+	private LinkedList<Actor> actors = new LinkedList<Actor>();
 
 	// main character of the game
 	private PlayableEntity player;
@@ -73,7 +74,7 @@ public class ActorGame implements Game {
 
 		this.score = 0;
 
-		this.gameManager = new GameManager(this, actors);
+		this.gameManager = new GameManager(this);
 		return true;
 	}
 
@@ -343,8 +344,7 @@ public class ActorGame implements Game {
 	 * Save all {@linkplain Actor}s of the current game.
 	 * @param saveName : The path to the folder to save the game.
 	 */
-	public void save(ArrayList<Actor> actorsToSave, PlayableEntity player, Positionable viewCandidate,
-			String saveName) {
+	public void save(ArrayList<Actor> actorsToSave, String saveName) {
 
 		// if the save folder does not exist, create it
 		File folder = new File(saveDirectory + saveName);
@@ -352,21 +352,13 @@ public class ActorGame implements Game {
 		folder.mkdirs();
 
 		int n = 0;
-
-		int playerNumber = -1;
-		int viewCandidateNumber = -1;
 		for (Actor a : actorsToSave) {
 			File file = new File(folder.getPath() + "/actor" + n + ".object");
 			if (Save.saveActor(a, file))
-
-				if (a == player)
-					playerNumber = n;
-			if (a == viewCandidate)
-				viewCandidateNumber = n;
 			n++;
 		}
-		Save.saveParameters(viewCandidateNumber, playerNumber, this.fileSystem,
-				new File(folder.getPath() + "/params.param"));
+//		Save.saveParameters(viewCandidateNumber, playerNumber, this.fileSystem,
+//				new File(folder.getPath() + "/params.param"));
 
 		System.out.println("saved sucesfully " + (folder.listFiles().length - 1) + " actors");
 	}
@@ -376,20 +368,20 @@ public class ActorGame implements Game {
 	 * @param saveName : The name of the save to load.
 	 */
 	public boolean load(String saveName) {
-		this.getGameManager().inLevel(saveName);
+		
 		ArrayList<Actor> toAdd = new ArrayList<>();
 		synchronized (toAdd) {
 
 			System.out.println("    - start loading");
 			File save = new File(saveDirectory + saveName);
-			try {
-				System.out.println("start wait");
-				toAdd.wait(100);
-				System.out.println("endwait");
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				System.out.println("start wait");
+//				toAdd.wait(100);
+//				System.out.println("endwait");
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			if (save.exists()) {
 				File[] files = save.listFiles();
 				for (File f : files) {
@@ -400,14 +392,14 @@ public class ActorGame implements Game {
 					}
 				}
 
-				int[] params = Save.getParams(fileSystem, new File(save.getPath() + "/params.param"));
+//				int[] params = Save.getParams(fileSystem, new File(save.getPath() + "/params.param"));
 
-				System.out.println("   - loading params");
+//				System.out.println("   - loading params");
 
-				this.setViewCandidate(toAdd.get(params[0]));
-				this.setPayload((PlayableEntity) toAdd.get(params[1]));
+//				this.setViewCandidate(toAdd.get(params[0]));
+//				this.setPayload((PlayableEntity) toAdd.get(params[1]));
 				toAdd.add(new EndGameGraphics(this));
-				actorsToAdd.addAll(toAdd);
+				this.actorsToAdd.addAll(toAdd);
 				System.out.println(toAdd.size() + " actors loaded");
 				toAdd.clear();
 				return true;

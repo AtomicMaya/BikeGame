@@ -39,4 +39,10 @@ public class Level2 extends Level {
 		return new StartCheckpoint(game, new Vector(4, 3), null);
 	}
 
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

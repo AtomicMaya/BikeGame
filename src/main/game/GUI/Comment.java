@@ -29,12 +29,12 @@ public class Comment extends GUIComponent {
 	public void draw(Canvas canvas) {
 		float l = (text.length() + .4f) / 2;
 
-		Vector shift = new Vector(-l + l / 2, 0).mul(getZoom());
-		canvas.drawShape(new Polygon(0, 0, 0, 1, l, 1, l, 0), getTransform().translated(shift),
+		Vector shift = new Vector(-l + l / 2, 0);
+		canvas.drawShape(new Polygon(0, 0, 0, 1, l, 1, l, 0), getTransform(),
 				new Color(100, 100, 100), Color.BLACK, .02f, .5f, 1338);
 
 		canvas.drawText((text.length() == 0) ? "1" : text, fontSize, getTransform(), Color.BLACK, null, 0, false, false,
-				new Vector(.5f, 0), 1, 1339);
+				new Vector(0f, 0), 1, 1339);
 	}
 
 	/**

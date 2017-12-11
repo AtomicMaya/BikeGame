@@ -5,14 +5,14 @@
 package main.game.GUI.menu;
 
 import main.game.ActorGame;
+import main.game.ComplexBikeGame;
 import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
 import main.game.GUI.actorBuilder.ActorBuilder;
-import main.game.GUI.actorBuilder.BikeBuilder;
+import main.game.GUI.actorBuilder.FinishBuilder;
 import main.game.GUI.actorBuilder.GroundBuilder;
-import main.game.GameWithLevelAndMenu;
+import main.game.GUI.actorBuilder.SpawnBuilder;
 import main.game.actor.Actor;
-import main.game.actor.entities.Bike;
 import main.game.actor.entities.Terrain;
 import main.game.graphics.BetterTextGraphics;
 import main.game.graphics.Graphics;
@@ -37,8 +37,9 @@ public class LevelEditor implements Graphics {
 
 	// actorBuilder stuff
 	private ArrayList<ActorBuilder> actorBuilders = new ArrayList<>();
-	private GroundBuilder gb;
-	private BikeBuilder bb;
+	private GroundBuilder gb; // is unique
+	private SpawnBuilder spawn; // is unique
+	private FinishBuilder finish; // is unique
 
 	// stuffs
 	private ActorGame game;
@@ -120,7 +121,7 @@ public class LevelEditor implements Graphics {
 	 * @param mainMenu {@linkplain MainMenu} where this {@linkplain LevelEditor}
 	 * is created
 	 */
-	public LevelEditor(GameWithLevelAndMenu game, Window window, MainMenu mainMenu) {
+	public LevelEditor(ComplexBikeGame game, Window window, MainMenu mainMenu) {
 		this.game = game;
 		this.window = window;
 		this.actorMenu = new ActorMenu(game, this, window, Color.LIGHT_GRAY);
@@ -178,18 +179,20 @@ public class LevelEditor implements Graphics {
 			}
 			game.setGameFreezeStatus(!game.isGameFrozen());
 			if (!game.isGameFrozen()) {// play
-				playButton.setText(playButtonEditText, fontSize);
+				this.playButton.setText(playButtonEditText, fontSize);
 				game.addActor(getActors());
-				game.setPayload(bb.getActor());
-				game.setViewCandidate(this.bb.getActor());
+
+				game.getGameManager().setStartCheckpoint(this.spawn.getSpawn());
+				game.getGameManager().setGameState(this);
+				game.setPayload(null);
 			} else { // edit
 				playButton.setText(playButtonText, fontSize);
-				
+				game.destroyAllActors();
 				for (ActorBuilder ab : actorBuilders) {
 					ab.reCreate();
 				}
 				game.setViewCandidate(null);
-				
+
 			}
 		});
 
@@ -230,13 +233,13 @@ public class LevelEditor implements Graphics {
 			}
 			if (this.gb == null)
 				errorText = "Please create a ground";
-			if (this.bb == null)
-				errorText = "Please create a bike";
-			if (this.gb == null && this.bb == null)
-				errorText = "Please create a bike and a ground";
+			if (this.spawn == null)
+				errorText = "Please create a SpownPoint";
+			if (this.gb == null && this.spawn == null)
+				errorText = "Please create a ground and a spawn";
 			if (errorText == null) {
 				System.out.println("start saving");
-				game.save(getActors(), bb.getBike(), bb.getActor(), currentSaveName);
+				game.save(getActors(), currentSaveName);
 				errorText = "Actors saved sucessfully";
 			}
 			displayErrorText = true;
@@ -354,7 +357,6 @@ public class LevelEditor implements Graphics {
 			error.setText(errorText);
 			errorTimer += deltaTime;
 		}
-
 	}
 
 	@Override
@@ -428,17 +430,31 @@ public class LevelEditor implements Graphics {
 	}
 
 	/**
-	 * Make sure we have a unique {@linkplain Bike}
-	 * @param bike {@linkplain Bike} to add to the game
+	 * Make sure we have a unique {@linkplain SpawnBuilder}
+	 * @param spawn {@linkplain SpawnBuilder}
 	 */
-	public void addBike(BikeBuilder bike) {
-		if (this.bb != null) {
-			this.bb.getActor().destroy();
-			actorBuilders.remove(this.bb);
+	public void addSpawn(SpawnBuilder spawn) {
+		if (this.spawn != null) {
+			this.spawn.getActor().destroy();
+			actorBuilders.remove(this.spawn);
 		}
 
-		this.bb = bike;
-		actorBuilders.add(bike);
+		this.spawn = spawn;
+		this.actorBuilders.add(spawn);
+	}
+
+	/**
+	 * Make sure we have a unique {@linkplain FinishBuilder} in the game
+	 * @param finish the {@linkplain FinishBuilder}
+	 */
+	public void addFinish(FinishBuilder finish) {
+		if (this.finish != null) {
+			this.finish.getActor().destroy();
+			actorBuilders.remove(this.finish);
+		}
+
+		this.finish = finish;
+		this.actorBuilders.add(finish);
 	}
 
 	/** @return an ArrayList containing an updated grid */

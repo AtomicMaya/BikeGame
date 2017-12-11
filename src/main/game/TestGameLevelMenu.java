@@ -15,7 +15,7 @@ import main.window.swing.MyFont;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestGameLevelMenu extends GameWithLevelAndMenu {
+public class TestGameLevelMenu extends ComplexBikeGame {
 
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {

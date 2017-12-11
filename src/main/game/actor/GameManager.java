@@ -5,7 +5,8 @@
 package main.game.actor;
 
 import main.game.ActorGame;
-import main.game.GameWithLevelAndMenu;
+import main.game.ComplexBikeGame;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.entities.Bike;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.StartCheckpoint;
@@ -15,12 +16,15 @@ import main.window.Canvas;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 public class GameManager {
 
+	private static final int levelState = 0;
+	private static final int saveState = 1;
+	private static final int levelEditorState = 2;
+
 	private ActorGame game;
-	private GameWithLevelAndMenu gameLevel;
+	private ComplexBikeGame gameLevel;
 	private int score = 0;
 
 	// level management
@@ -41,8 +45,9 @@ public class GameManager {
 	private String saveLoaded;
 
 	private boolean isInLevel = true;
+	private int gameState = -1;
 
-	public GameManager(ActorGame game, ArrayList<Actor> actors) {
+	public GameManager(ActorGame game) {
 		this.game = game;
 
 	}
@@ -58,40 +63,56 @@ public class GameManager {
 			// respawn one if needed
 		} else if (game.getPayload() != null)
 			// victory stronger that death
-			if (game.getPayload().getVictoryStatus()) {
-				this.respawnTimer += deltaTime;
-				if (this.respawnTimer > this.timeToRespawn) {
-					if (isInLevel) {
-						if (game.getKeyboard().get(KeyEvent.VK_N).isPressed()) {
-							restart();
-							gameLevel.nextLevel();
-							respawnTimer = 0;
-							messageDisplayed = "";
-						}
-						messageDisplayed = messageNextLevelText;
-					} else {
-						if (game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
-							// TODO
-							restart();
-							gameLevel.goToMainMenu();
-							respawnTimer = 0;
-							messageDisplayed = "";
-						}
-						messageDisplayed = backToMenu;
-					}
 
+			if (game.getPayload().getVictoryStatus()) {
+
+				this.respawnTimer += deltaTime;
+
+				if (this.respawnTimer > this.timeToRespawn) {
+					messageDisplayed = messageNextLevelText;
+					switch (gameState) {
+						case levelState: {
+							if (game.getKeyboard().get(KeyEvent.VK_N).isPressed()) {
+								restart();
+								gameLevel.nextLevel();
+								respawnTimer = 0;
+								messageDisplayed = "";
+							}
+							break;
+						}
+						case saveState: {
+
+							if (game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
+								// TODO
+								restart();
+								gameLevel.goToMainMenu();
+								respawnTimer = 0;
+								messageDisplayed = "";
+							}
+							messageDisplayed = backToMenu;
+							break;
+						}
+						case levelEditorState: {
+							break;
+						}
+					}
 				}
 			} else if (game.getPayload().getDeathStatus()) {
 				this.respawnTimer += deltaTime;
 				messageDisplayed = respawnText;
 				if (this.respawnTimer > this.timeToRespawn && game.getKeyboard().get(KeyEvent.VK_R).isPressed()) {
-					reset();
-					if (isInLevel) {
 
-						gameLevel.resetLevel();
-					} else {
-						game.load(saveLoaded);
-						game.getPayload().destroy();
+					reset();
+					switch (gameState) {
+						case levelState:
+							gameLevel.resetLevel();
+						break;
+						case saveState:
+							game.load(saveLoaded);
+
+						break;
+						case levelEditorState:
+						break;
 					}
 					messageDisplayed = "";
 					respawnTimer = 0;
@@ -131,6 +152,7 @@ public class GameManager {
 
 	/** Called at the reset of a level */
 	private void reset() {
+		game.destroyAllActors();
 		game.getPayload().destroy();
 		game.setPayload(null);
 		game.setViewCandidate(null);
@@ -139,7 +161,8 @@ public class GameManager {
 	}
 
 	private void spawnBike() {
-		Bike nextPlayer = new Bike(game, (lastCheckpoint == null ? startCheckpoint : lastCheckpoint).getPosition());
+		Bike nextPlayer = new Bike(game,
+				(lastCheckpoint == null ? startCheckpoint : lastCheckpoint).getPosition().add(0, 2));
 		game.addActor(nextPlayer);
 		game.setPayload(nextPlayer);
 		game.setViewCandidate(nextPlayer);
@@ -159,14 +182,18 @@ public class GameManager {
 		return score;
 	}
 
-	public void inLevel(GameWithLevelAndMenu gameLevel) {
-		this.isInLevel = true;
+	public void setGameState(ComplexBikeGame gameLevel) {
+		this.gameState = levelState;
 		this.gameLevel = gameLevel;
 	}
 
-	public void inLevel(String saveName) {
-		this.isInLevel = false;
+	public void setGameState(ComplexBikeGame gameLevel, String saveName) {
+		this.gameState = saveState;
 		this.saveLoaded = saveName;
+		this.gameLevel = gameLevel;
 	}
 
+	public void setGameState(LevelEditor levelEditor) {
+		this.gameState = levelEditorState;
+	}
 }

@@ -5,8 +5,8 @@
 package main.game.GUI.menu;
 
 import main.game.ActorGame;
+import main.game.ComplexBikeGame;
 import main.game.GUI.GraphicalButton;
-import main.game.GameWithLevelAndMenu;
 import main.game.graphics.BetterTextGraphics;
 import main.math.Vector;
 import main.window.Canvas;
@@ -23,7 +23,7 @@ public class InGameMenu extends FullScreenMenu {
 
 	private BetterTextGraphics menuText;
 
-	public InGameMenu(GameWithLevelAndMenu game, Window window) {
+	public InGameMenu(ComplexBikeGame game, Window window) {
 		super(game, window, false, Color.GRAY);
 		this.game = game;
 

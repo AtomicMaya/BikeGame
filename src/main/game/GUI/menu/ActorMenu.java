@@ -42,8 +42,8 @@ public class ActorMenu extends Menu {
 
 		// crate pos 0,0
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(0).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
-		boutons.get(0).addOnClickAction(() -> {
+		boutons.get(boutons.size() - 1).setNewGraphics("res/images/box.4.png", "res/images/box.4.png");
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new CrateBuilder(game));
 			changeStatus();
 		});
@@ -51,7 +51,7 @@ public class ActorMenu extends Menu {
 
 		// ground pos 1, 0
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(1).addOnClickAction(() -> {
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addGround();
 			changeStatus();
 		});
@@ -59,15 +59,31 @@ public class ActorMenu extends Menu {
 
 		// bike pos 3, 0
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(2).addOnClickAction(() -> {
-			levelEditor.addBike(new BikeBuilder(game));
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
+			levelEditor.addSpawn(new SpawnBuilder(game));
 			changeStatus();
 		});
-		description.add(new Comment(game, "Add or edit the bike"));
+		description.add(new Comment(game, "Add or edit the spawnpoint"));
 
+		// bike pos 3, 0
+		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
+			levelEditor.addActorBuilder(new CheckpointBuilder(game));
+			changeStatus();
+		});
+		description.add(new Comment(game, "Add a checkpoint"));
+		
+		// bike pos 3, 0
+		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
+			levelEditor.addFinish(new FinishBuilder(game));
+			changeStatus();
+		});
+		description.add(new Comment(game, "Add or edit the finish point"));
+		
 		// mouving platform pos 1, -1
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(3).addOnClickAction(() -> {
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new PlatformBuilder(game));
 			changeStatus();
 		});
@@ -75,7 +91,7 @@ public class ActorMenu extends Menu {
 
 		// trampoline builder pos 2 -1
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(4).addOnClickAction(() -> {
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new TrampolineBuilder(game));
 			changeStatus();
 		});
@@ -83,7 +99,7 @@ public class ActorMenu extends Menu {
 
 		// fluid
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(5).addOnClickAction(() -> {
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new LiquidBuilder(game));
 			changeStatus();
 		});
@@ -91,7 +107,7 @@ public class ActorMenu extends Menu {
 
 		// laser
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
-		boutons.get(6).addOnClickAction(() -> {
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new LaserBuilder(game));
 			changeStatus();
 		});

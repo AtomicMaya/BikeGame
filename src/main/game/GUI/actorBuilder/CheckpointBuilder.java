@@ -4,20 +4,24 @@ import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.NumberField;
 import main.game.actor.Actor;
-import main.game.actor.entities.crate.Crate;
+import main.game.actor.sensors.Checkpoint;
+import main.game.actor.sensors.StartCheckpoint;
 import main.math.ExtendedMath;
+import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class CrateBuilder extends ActorBuilder {
+public class CheckpointBuilder extends ActorBuilder {
 
-	private Crate crate;
+	private Checkpoint checkpoint;
 	private Vector position;
+	private ActorGame game;
 
 	// number field stuff
-	private NumberField height, width;
+	protected NumberField height, width;
 	private Vector heightNumberFieldPos = new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
 	private Comment heightComment, widthComments;
 
@@ -25,20 +29,20 @@ public class CrateBuilder extends ActorBuilder {
 	private boolean hover = false;
 	private boolean placed = false;
 
-	public CrateBuilder(ActorGame game) {
+	public CheckpointBuilder(ActorGame game) {
 		super(game);
+		this.game = game;
+		this.checkpoint = new Checkpoint(game, getFlooredMousePosition());
 
-		crate = new Crate(game, getFlooredMousePosition(), null, false, 1);
+		height = new NumberField(game, heightNumberFieldPos, 3, 1, 10);
 
-		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
-
-		heightComment = new Comment(game, "Crate Height");
+		heightComment = new Comment(game, "Area of trigger height");
 		heightComment.setParent(height);
 		heightComment.setAnchor(new Vector(-6, 0));
 
 		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
 
-		widthComments = new Comment(game, "Crate Width");
+		widthComments = new Comment(game, "Area of trigger width");
 		widthComments.setParent(width);
 		widthComments.setAnchor(new Vector(-6, 0));
 
@@ -52,11 +56,12 @@ public class CrateBuilder extends ActorBuilder {
 			if (isLeftPressed()) {
 				placed = true;
 			}
-			crate.setPosition(position);
+			checkpoint.setPosition(position);
 
 		} else if (hover && isRightPressed())
 			placed = false;
-		if (!isDone()) {
+		if (!isDone) {
+
 			height.update(deltaTime, zoom);
 			width.update(deltaTime, zoom);
 
@@ -64,20 +69,20 @@ public class CrateBuilder extends ActorBuilder {
 			widthComments.update(deltaTime, zoom);
 
 			if (getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
-				crate.setSize(width.getNumber(), height.getNumber());
+				checkpoint.setSize(width.getNumber(), height.getNumber());
 				isDone = true;
 			}
 		}
+		hover = ExtendedMath.isInRectangle(position, position.add(1, 1), game.getMouse().getPosition());
 
-		hover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
-				getMousePosition());
 		if (hover && isRightPressed())
 			isDone = false;
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		crate.draw(canvas);
+		checkpoint.draw(canvas);
+
 		if (!isDone()) {
 			height.draw(canvas);
 			if (height.isHovered())
@@ -85,12 +90,14 @@ public class CrateBuilder extends ActorBuilder {
 			width.draw(canvas);
 			if (width.isHovered())
 				widthComments.draw(canvas);
+			canvas.drawShape(ExtendedMath.createRectangle(width.getNumber(), height.getNumber()),
+					Transform.I.translated(position), new Color(0, 255, 255), Color.BLACK, .02f, .6f, 1337);
 		}
 	}
 
 	@Override
 	public Actor getActor() {
-		return crate;
+		return checkpoint;
 	}
 
 	@Override
@@ -100,8 +107,9 @@ public class CrateBuilder extends ActorBuilder {
 
 	@Override
 	public void reCreate() {
-		crate.destroy();
-		crate = new Crate(getOwner(), position, null, false, width.getNumber(), height.getNumber());
+		checkpoint.destroy();
+		checkpoint = new StartCheckpoint(game, position, null);
+		checkpoint.setSize(width.getNumber(), height.getNumber());
 	}
 
 	@Override
@@ -111,12 +119,11 @@ public class CrateBuilder extends ActorBuilder {
 
 	@Override
 	public void destroy() {
-		this.crate.destroy();
+		this.checkpoint.destroy();
 	}
 
 	@Override
 	public void edit() {
-		this.placed = false;
+		this.isDone = false;
 	}
-
 }

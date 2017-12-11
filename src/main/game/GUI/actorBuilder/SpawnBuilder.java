@@ -5,25 +5,25 @@
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
-import main.game.actor.entities.Bike;
-import main.game.actor.entities.PlayableEntity;
+import main.game.actor.Actor;
+import main.game.actor.sensors.StartCheckpoint;
 import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
-public class BikeBuilder extends ActorBuilder {
+public class SpawnBuilder extends ActorBuilder {
 
-	private Bike bike;
+	private StartCheckpoint spawn;
 	private Vector position;
 	private ActorGame game;
 
 	private boolean isDone = false;
 	private boolean hover = false;
 
-	public BikeBuilder(ActorGame game) {
+	public SpawnBuilder(ActorGame game) {
 		super(game);
 		this.game = game;
-		bike = new Bike(game, getFlooredMousePosition());
+		this.spawn = new StartCheckpoint(game, getFlooredMousePosition(), null);
 	}
 
 	@Override
@@ -32,11 +32,10 @@ public class BikeBuilder extends ActorBuilder {
 			isDone = true;
 		}
 		if (!isDone) {
-			position = game.getMouse().getPosition();
-			bike.destroy();
-			bike = new Bike(game, position);
+			position = getFlooredMousePosition();
+			spawn.setPosition(position);
 		} else
-			hover = ExtendedMath.isInRectangle(position.sub(2, .5f), position.add(2, 2), game.getMouse().getPosition());
+			hover = ExtendedMath.isInRectangle(position, position.add(1, 1), game.getMouse().getPosition());
 
 		if (hover && isRightPressed())
 			isDone = false;
@@ -44,16 +43,16 @@ public class BikeBuilder extends ActorBuilder {
 
 	@Override
 	public void draw(Canvas canvas) {
-		bike.draw(canvas);
+		spawn.draw(canvas);
 	}
 
 	@Override
-	public PlayableEntity getActor() {
-		return bike;
+	public Actor getActor() {
+		return spawn;
 	}
 
-	public PlayableEntity getBike() {
-		return bike;
+	public StartCheckpoint getSpawn() {
+		return spawn;
 	}
 
 	@Override
@@ -63,8 +62,8 @@ public class BikeBuilder extends ActorBuilder {
 
 	@Override
 	public void reCreate() {
-		bike.destroy();
-		bike = new Bike(game, position);
+		spawn.destroy();
+		spawn = new StartCheckpoint(game, position, null);
 	}
 
 	@Override
@@ -74,9 +73,9 @@ public class BikeBuilder extends ActorBuilder {
 
 	@Override
 	public void destroy() {
-		this.bike.destroy();
+		this.spawn.destroy();
 	}
-	
+
 	@Override
 	public void edit() {
 		this.isDone = false;
