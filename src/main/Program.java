@@ -12,7 +12,6 @@ import main.window.swing.SwingWindow;
 /**
  * Main entry point.
  */
-@SuppressWarnings("unused")
 public class Program {
 
 	/** Maximal time step allowed for a single frame. */
