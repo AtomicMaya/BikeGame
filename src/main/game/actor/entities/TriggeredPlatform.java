@@ -19,11 +19,7 @@ public class TriggeredPlatform extends GameEntity {
 
     /** The speed to be given to the {@linkplain GenericPlatform}. */
     private float speed;
-
-    /** The physical {@linkplain GenericPlatform} component of this logical {@linkplain TriggeredPlatform} class. */
-    private GenericPlatform platform;
-
-    /** The evolution {@linkplain Vector}. */
+    private Platform platform;
     private Vector evolution;
 
     /** Whether this {@linkplain TriggeredPlatform} has been triggered. */
@@ -59,7 +55,7 @@ public class TriggeredPlatform extends GameEntity {
         this.maxLoops = loops;
         this.currentLoopCount = 0;
 
-        this.platform = new GenericPlatform(game, position, width, height);
+        this.platform = new Platform(game, position, shape, width, height);
 
         this.build(new Circle(0.1f), 10f, -1, false);
         this.platform.setConstraint(Linker.attachPrismatically(game, this.getEntity(), this.platform.getEntity(), Vector.ZERO));
@@ -118,4 +114,9 @@ public class TriggeredPlatform extends GameEntity {
     public void triggerAction() {
         this.triggered = true;
     }
+
+    public void setSize(float width, float height) {
+
+    }
+
 }

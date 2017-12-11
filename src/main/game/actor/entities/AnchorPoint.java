@@ -20,7 +20,7 @@ public class AnchorPoint extends GameEntity {
         super(game, true, position);
         this.build(new Circle(.1f), -1, -1, true);
         this.graphics = this.addGraphics("./res/images/stone.broken.11.png", 1, 1,
-                new Vector(.5f, .5f), 1, 0);
+                new Vector(0, 0), 1, 0);
     }
 
     @Override

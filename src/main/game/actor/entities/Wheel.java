@@ -114,10 +114,11 @@ public class Wheel extends GameEntity {
 
 	/** @return whether or not this {@linkplain Wheel} is colliding with the {@linkplain Terrain}. */
 	public boolean isCollidingWithTerrain() {
+	    boolean isColliding = false;
 	    if (this.listener.getEntities().size() > 0)
 	        for(Entity entity : this.listener.getEntities())
-	            return (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group);
+	            if (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group) isColliding = true;
 
-        return false;
+        return isColliding;
     }
 }

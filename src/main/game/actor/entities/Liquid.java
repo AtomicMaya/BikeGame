@@ -44,7 +44,7 @@ public class Liquid extends GameEntity implements Saveable {
      */
     public Liquid(ActorGame game, Vector position, Polygon shape, boolean isLava) {
         super(game, true, position);
-        this.build(shape, -1, 1, true);
+        this.build(shape, -1, 1, true, ObjectGroup.OBSTACLE.group);
         this.isLava = isLava;
         this.switched = false;
 
@@ -107,8 +107,9 @@ public class Liquid extends GameEntity implements Saveable {
             for (Entity entity : this.listener.getEntities()) {
                 if(entity.getCollisionGroup() == ObjectGroup.PLAYER.group || entity.getCollisionGroup() == ObjectGroup.WHEEL.group)
                     this.getOwner().getPayload().triggerDeath(false);
-                else
-                    entity.destroy();
+                //todo see if this works.
+//                else
+//                    entity.destroy();
             }
         }
     }

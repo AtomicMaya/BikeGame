@@ -1,7 +1,8 @@
 package main.game.actor;
 
+/** Allows for verbose referencing of ok {@linkplain main.math.Entity}'s collision groups. */
 public enum ObjectGroup {
-    PLAYER (0),
+    PLAYER (42),
     WHEEL (1),
     TERRAIN (2),
     OBSTACLE (3),

@@ -3,6 +3,8 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.Linker;
 import main.math.Circle;
+import main.math.Polygon;
+import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -18,7 +20,7 @@ public class MovingPlatform extends GameEntity {
     private float speed;
 
     /** The associated {@linkplain GenericPlatform}. */
-    private transient GenericPlatform platform;
+    private transient Platform platform;
 
     /** The unitary evolution {@linkplain Vector}. */
     private Vector evolution;
@@ -48,7 +50,8 @@ public class MovingPlatform extends GameEntity {
      * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
      */
     private void create() {
-        this.platform = new GenericPlatform(getOwner(), getPosition(), 5, 1);
+        Shape platformShape = new Polygon(.0f, .0f, 5.f, .0f, 5.f, 1.f, .0f, 1.f);
+        this.platform = new Platform(getOwner(), getPosition(), platformShape);
 
         this.build(new Circle(0.1f), -1f, -1, false);
         this.platform.setConstraint(

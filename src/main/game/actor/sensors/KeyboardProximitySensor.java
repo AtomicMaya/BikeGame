@@ -1,6 +1,7 @@
 package main.game.actor.sensors;
 
 import main.game.ActorGame;
+import main.game.actor.ObjectGroup;
 import main.game.actor.ParallelAction;
 import main.game.actor.entities.GameEntity;
 import main.math.BasicContactListener;
@@ -47,7 +48,7 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 		this.key = key;
 
 		this.sensorArea = shape;
-		this.build(this.sensorArea, -1, -1, true);
+		this.build(this.sensorArea, -1, -1, true, ObjectGroup.SENSOR.group);
 
 		this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);
