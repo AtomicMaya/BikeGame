@@ -12,12 +12,25 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/** A class handling the drawing of background graphics. */
 public class Scenery implements Actor {
+    /** The chosen {@linkplain Preset}. */
     private Preset preset;
+
+    /** A {@linkplain ArrayList} of {@linkplain GraphicalObjects}, for easy updating. */
     private ArrayList<GraphicalObjects> graphics;
+
+    /** A new {@linkplain Random} generator. */
     private Random random;
+
+    /** The master {@linkplain ActorGame}. */
     private ActorGame game;
 
+    /**
+     * Creates a new {@linkplain Scenery}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param preset Tbe chosen {@linkplain Preset}.
+     */
     public Scenery(ActorGame game, Preset preset) {
         this.game = game;
         this.preset = preset;
@@ -26,13 +39,23 @@ public class Scenery implements Actor {
         this.instantiate();
     }
 
+    /**
+     * Gets a new {@linkplain Vector} from the canvas.
+     * @return a new {@linkplain Vector}.
+     */
     public Vector newSample() {
-        float minX = this.game.getCanvas().getPosition().x - 1.3f * this.game.getViewScale(), minY = this.game.getCanvas().getPosition().y - .8f * this.game.getViewScale(),
-                maxX = this.game.getCanvas().getPosition().x + 1.5f * this.game.getViewScale(), maxY = this.game.getCanvas().getPosition().y + 1.6f * this.game.getViewScale();
-//        System.out.println(new Polygon(minX, minY, maxX, minY, maxX, maxY, minX, maxY).getPoints());
+        float minX = this.game.getCanvas().getPosition().x - 1.2f * this.game.getViewScale(), minY = this.game.getCanvas().getPosition().y - .8f * this.game.getViewScale(),
+                maxX = this.game.getCanvas().getPosition().x + 1.8f * this.game.getViewScale(), maxY = this.game.getCanvas().getPosition().y + 1.f * this.game.getViewScale();
         return new Polygon(minX, minY, maxX, minY, maxX, maxY, minX, maxY).sample(new Random());
     }
 
+    /**
+     * Creates new {@linkplain GraphicalObjects}.
+     * Explanation 1 : Magic...
+     * Explanation 2 : Class.forName({@linkplain String}) gets the associated class,
+     *                  .getConstructor(params) gets the classes constructor,
+     *                  .newInstance(params) creates a new {@linkplain GraphicalObjects} of this type.
+     */
     private void instantiate() {
         ArrayList<String> classPaths = this.preset.getObjectNames();
         float ratio = game.getRelativeTransform().m00;

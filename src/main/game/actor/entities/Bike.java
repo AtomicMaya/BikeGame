@@ -39,7 +39,7 @@ public class Bike extends GameEntity implements PlayableEntity {
     private transient int jumpCount;
 
     /** Represents the quantity of time till the player can double jump again. */
-    private transient float timeTillRejump = 8f, elapsedRejumpTime = 0;
+    private transient float timeTillRejump = 20f, elapsedRejumpTime = 0;
 
     /** A {@linkplain BasicContactListener} associated to this {@linkplain Bike}. */
     private transient BasicContactListener contactListener;
@@ -192,11 +192,9 @@ public class Bike extends GameEntity implements PlayableEntity {
                 this.rightWheel.power(this.MAX_WHEEL_SPEED);
             }
         }
-/*
         if (this.rightWheel.isCollidingWithTerrain() && this.leftWheel.isCollidingWithTerrain()) {
-            System.out.println("called");
             this.elapsedRejumpTime = this.timeTillRejump - .1f;
-        }*/
+        }
 
         // Handle Weapons
         if (this.isWeaponDeployed

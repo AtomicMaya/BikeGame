@@ -9,14 +9,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/** A blowing leaf, sakura style, with wind animation. */
 public class BlowingLeaf implements GraphicalObjects {
-    private ArrayList<String> file;
-    private int graphicsCounter, initialOffset;
-    private Vector position, speed;
-    private float length, height, elapsedAnimationTime;
-    private final float animationTime;
-    private float timeTillDeath, elapedTime;
 
+    /** An {@linkplain ArrayList} containing the file paths as references for animation.*/
+    private ArrayList<String> file;
+
+    /** The animation counter. */
+    private int graphicsCounter;
+
+    /** The animation offset, so that all {@linkplain BlowingLeaf} don't fall with the same animation at the same moment. */
+    private int initialOffset;
+
+    /** {@linkplain Vector}s describing semi-physical attributes. */
+    private Vector position, speed;
+
+    /** The dimensions of the image. */
+    private float length, height;
+
+    /** How long the animation has been taking place. */
+    private float elapsedAnimationTime;
+
+    /** The time that the animation will take to complete and reset. */
+    private final float animationTime;
+
+    /** The time till this {@linkplain BlowingLeaf} resets */
+    private float timeTillDeath, elapsedTime;
+
+    /**
+     * Creates a new {@linkplain BlowingLeaf}.
+     * @param position The position {@linkplain Vector}.
+     * @param shape The {@linkplain Rectangle} shape of the {@linkplain BlowingLeaf}.
+     * @param speed The speed {@linkplain Vector} of this {@linkplain BlowingLeaf}.
+     */
     public BlowingLeaf(Vector position, Rectangle shape, Vector speed) {
         this.file = new ArrayList<>();
         this.file.addAll(Arrays.asList("./res/images/leaf.1.png", "./res/images/leaf.2.png", "./res/images/leaf.3.png",
@@ -39,7 +64,7 @@ public class BlowingLeaf implements GraphicalObjects {
         if (this.elapsedAnimationTime > this.animationTime)
             this.elapsedAnimationTime = 0;
         this.graphicsCounter = ((int) (this.elapsedAnimationTime / this.animationTime * this.file.size()) + this.initialOffset) % this.file.size();
-        this.elapedTime += deltaTime;
+        this.elapsedTime += deltaTime;
     }
 
     @Override
@@ -64,8 +89,8 @@ public class BlowingLeaf implements GraphicalObjects {
 
     @Override
     public boolean getIfResets() {
-        if (this.elapedTime > this.timeTillDeath) {
-            this.elapedTime = 0;
+        if (this.elapsedTime > this.timeTillDeath) {
+            this.elapsedTime = 0;
             return true;
         } else
             return false;

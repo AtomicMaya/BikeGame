@@ -6,15 +6,28 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
+/** A Cloud, that whizzes by in the sky. */
 public class Cloud implements GraphicalObjects {
-    private String graphics;
-    private Vector position, speed;
-    private float length, height;
-    private ActorGame game;
-    private float timeTillDeath, elapedTime;
 
+    /** A {@linkplain String} that is the file path as referencefor drawing.*/
+    private String graphics;
+
+    /** {@linkplain Vector}s describing semi-physical attributes. */
+    private Vector position, speed;
+
+    /** The dimensions of the image. */
+    private float length, height;
+
+    /** The time till this {@linkplain BlowingLeaf} resets */
+    private float timeTillDeath, elapsedTime;
+
+    /**
+     * Creates a new {@linkplain Cloud}.
+     * @param position The position {@linkplain Vector}.
+     * @param shape The {@linkplain Rectangle} shape of the {@linkplain Cloud}.
+     * @param speed The speed {@linkplain Vector} of this {@linkplain Cloud}.
+     */
     public Cloud(ActorGame game, Vector position, Rectangle shape, Vector speed) {
-        this.game = game;
         this.graphics = "./res/images/cloud.png";
         this.position = position;
         this.length = shape.getHeight();
@@ -26,7 +39,7 @@ public class Cloud implements GraphicalObjects {
     @Override
     public void update(float deltaTime) {
         this.position = this.position.add(this.speed.mul(deltaTime));
-        this.elapedTime += deltaTime;
+        this.elapsedTime += deltaTime;
     }
 
     @Override
@@ -41,8 +54,8 @@ public class Cloud implements GraphicalObjects {
 
     @Override
     public boolean getIfResets() {
-        if (this.elapedTime > this.timeTillDeath) {
-            this.elapedTime = 0;
+        if (this.elapsedTime > this.timeTillDeath) {
+            this.elapsedTime = 0;
             return true;
         } else
             return false;

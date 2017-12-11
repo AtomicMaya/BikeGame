@@ -4,6 +4,7 @@ import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
 
+/** A sound loader, allowing us to play sounds and music in the game. */
 public class Audio implements LineListener {
 	private boolean isPlaying;
 	private AudioInputStream stream;
