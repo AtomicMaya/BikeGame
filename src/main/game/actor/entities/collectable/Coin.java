@@ -24,15 +24,10 @@ public class Coin extends GameEntity implements Collectable {
 	/** The affected {@linkplain ProximitySensor}. */
 	private transient ProximitySensor sensor;
 
-	/**
-	 * The {@linkplain Polygon}, the geometric representation of thix
-	 * {@linkplain Coin}.
-	 */
+	/** The {@linkplain Polygon}, the geometric representation of this {@linkplain Coin}. */
 	private transient Polygon shape;
 
-	/**
-	 * The time that has already passed for the {@linkplain Coin}'s animation.
-	 */
+	/** The time that has already passed for the {@linkplain Coin}'s animation. */
 	private transient float elapsedAnimationTime;
 
 	/** The total animation time. */
@@ -41,16 +36,12 @@ public class Coin extends GameEntity implements Collectable {
 	/** The current index for the {@linkplain ArrayList graphics} iteration. */
 	private transient int graphicsCounter;
 
-	/**
-	 * If this {@linkplain Coin} is a special type of coin that gives a higher
-	 * score bonus.
-	 */
+	/** If this {@linkplain Coin} is a special type of coin that gives a higher score bonus. */
 	private boolean isBigCoin;
 
 	/**
 	 * Creates a coin.
-	 * @param game The {@linkplain ActorGame} where this {@linkplain Coin}
-	 * exists.
+	 * @param game The {@linkplain ActorGame} where this {@linkplain Coin} exists.
 	 * @param position This {@linkplain Coin}'s position {@linkplain Vector}.
 	 * @param isBigCoin Whether this {@linkplain Coin} is a special coin.
 	 */
@@ -58,12 +49,12 @@ public class Coin extends GameEntity implements Collectable {
 		super(game, true, position);
 		this.game = game;
 		this.isBigCoin = isBigCoin;
-		create();
+		this.create();
 	}
 	
 	// TODO
 	private void create() {
-		if (isBigCoin) {
+		if (this.isBigCoin) {
 			this.graphics = new ArrayList<>(
 					Arrays.asList(this.addGraphics("./res/images/coin.gold.big.1.png", 1.5f, 1.5f),
 							this.addGraphics("./res/images/coin.gold.big.2.png", 1.5f, 1.5f),
@@ -98,7 +89,7 @@ public class Coin extends GameEntity implements Collectable {
 	@Override
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
-		create();
+		this.create();
 	}
 
 	@Override

@@ -2,8 +2,9 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
-import main.game.actor.sensors.ProximitySensor;
 import main.game.graphics.ShapeGraphics;
+import main.math.BasicContactListener;
+import main.math.Entity;
 import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
@@ -11,24 +12,47 @@ import main.window.Canvas;
 import java.awt.*;
 import java.util.Random;
 
-/**
- * Created on 12/8/2017 at 7:27 PM.
- */
+/** A Gravity Well, which affects all objects in the world space. */
 public class GravityWell extends GameEntity {
-    private ProximitySensor sensor;
+    /** The associated {@linkplain BasicContactListener}*/
+    private BasicContactListener listener;
+
+    /** The associated {@linkplain ParticleEmitter}'s emission time. */
     private final float particleEmissionTime;
+
+    /** Reference the {@linkplain GravityWell}'s graphical representation. */
     private ShapeGraphics graphics;
+
+    /** References the elapsed time. */
     private float elapsedTime;
+
+    /** The master {@linkplain ActorGame}. */
     private ActorGame game;
-    private Vector force, position;
+
+    /** The force {@linkplain Vector} to be applied to {@linkplain GameEntity}s that enter the {@linkplain GravityWell}. */
+    private Vector force;
+
+    /** The position {@linkplain Vector} of this {@linkplain GravityWell}. */
+    private Vector position;
+
+    /** References the {@linkplain Shape} of this {@linkplain GravityWell}. */
     private Shape shape;
+
+    /** References the direction in which this {@linkplain GravityWell} points. */
     private float direction;
 
+    /**
+     * Creates a new {@linkplain GravityWell}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     * @param appliedForce The force {@linkplain Vector}.
+     * @param shape The initial {@linkplain Shape} of the {@linkplain GravityWell}.
+     * @param direction The direction in which this {@linkplain GravityWell} points.
+     */
     public GravityWell(ActorGame game, Vector position, Vector appliedForce, Shape shape, float direction) {
         super(game, true, position);
 
         this.game = game;
-        this.sensor = new ProximitySensor(game, position, shape);
         this.position = position;
 
         this.particleEmissionTime = 3;
@@ -38,6 +62,8 @@ public class GravityWell extends GameEntity {
         this.direction = direction;
         this.build(shape, -1, -1, true, ObjectGroup.SENSOR.group);
         this.graphics = addGraphics(shape, Color.CYAN, null, 0, .1f, 0);
+        this.listener = new BasicContactListener();
+        this.addContactListener(this.listener);
     }
 
     @Override
@@ -50,9 +76,9 @@ public class GravityWell extends GameEntity {
             this.elapsedTime = 0;
         }
 
-        this.sensor.update(deltaTime);
-        if(this.sensor.getSensorDetectionStatus()) {
-            sensor.getCollidingEntity().applyImpulse(new Vector(0, .05f), null);
+        if (this.listener.getEntities().size() > 0) {
+            for (Entity entity : this.listener.getEntities())
+                entity.applyImpulse(this.force, null);
         }
     }
 

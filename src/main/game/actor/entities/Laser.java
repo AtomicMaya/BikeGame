@@ -13,33 +13,53 @@ import java.awt.*;
 import java.util.Random;
 
 public class Laser extends GameEntity {
-
+    /** Used for save purposes. */
 	private static final long serialVersionUID = 1950911327670926865L;
 
+	/** The master {@linkplain ActorGame}. */
 	private transient ActorGame game;
+
+	/** The emitter position {@linkplain Vector}. */
 	private Vector startPosition;
+
+	/** The {@linkplain Laser} length. */
 	private float distance;
-	// private float width;
+
+	/** Time values used to delimit animation stages. */
 	private float waitTime, pulsateTime, laserTime, elapsedTime;
+
+	/** Number of oscillations. */
 	private float oscillationCount, maxOscillationCount;
+
+	/** It's a secret ! */
 	private final float secretProbability = 4.2f / 404;
+
+	/** Number of discharges. */
 	private int maxFires, firesCount;
+
+	/** Direction of the {@linkplain Laser}. */
 	private int direction;
+
+	/** The {@linkplain Color} of the {@linkplain Laser}. */
 	private Color color;
 
+	/***/
 	private transient ProximitySensor sensor;
+
 	private boolean sensorActive;
+
 	private transient Polyline shape;
+
 	private transient ShapeGraphics graphics;
+
 	private transient ImageGraphics emitterGraphics;
 
-	public Laser(ActorGame game, Vector startPosition, float distance, float width, float waitTime, float pulsateTime,
+	public Laser(ActorGame game, Vector startPosition, float distance, float waitTime, float pulsateTime,
 			float laserTime, int maxFires, int direction, String color) {
 		super(game, true, startPosition);
 		this.game = game;
 		this.startPosition = startPosition;
 		this.distance = distance;
-		// this.width = width;
 		this.waitTime = waitTime;
 		this.pulsateTime = pulsateTime;
 		this.laserTime = laserTime;
@@ -53,25 +73,32 @@ public class Laser extends GameEntity {
 		this.maxOscillationCount = 3.5f;
 		this.sensorActive = false;
 
-		create();
+		this.create();
 	}
 
-	private void create() {
+    public Laser(ActorGame game, Vector startPosition, float distance, int direction) {
+        this(game, startPosition, distance, 2, 2, 3, 2, direction, "#00FFFF");
+    }
 
+	/**
+     * Actual creation of the parameters of the {@linkplain GameEntity}, not in
+     * the constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
+     */
+	private void create() {
 		switch (this.direction) {
 			default:
 			case 0:
 				this.shape = new Polyline(0, 0,  this.distance, 0);
-			break;
+			    break;
 			case 1:
 				this.shape = new Polyline(0, 0, 0,  this.distance);
-			break;
+			    break;
 			case 2:
 				this.shape = new Polyline(0, 0, - this.distance, 0);
-			break;
+			    break;
 			case 3:
 				this.shape = new Polyline(0, 0, 0, - this.distance);
-			break;
+			    break;
 		}
 
 		if ( this.sensor != null)
@@ -90,9 +117,7 @@ public class Laser extends GameEntity {
 		create();
 	}
 
-	public Laser(ActorGame game, Vector startPosition, float distance, int direction) {
-		this(game, startPosition, distance, .5f, 2, 2, 3, 2, direction, "#00FFFF");
-	}
+
 
     @Override
     public void update(float deltaTime) {

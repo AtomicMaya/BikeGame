@@ -12,35 +12,44 @@ import java.util.ArrayList;
 
 import static main.math.ExtendedMath.*;
 
-/**
- * Represents the character and its animation, which we deemed too verbose to leave in the {@linkplain Bike} class. */
+/** Represents the character and its animation, which we deemed too verbose to leave in the {@linkplain Bike} class. */
 
 public class CharacterBike extends GameEntity {
     /** {@linkplain Vector}s representing the position of the head, the arm joint, the back, both arms,
      * both hands, both legs and both feet. */
-	private Vector headPos, armJointPos, backPos, lElbowPos, rElbowPos, lHandPos, rHandPos, lKneePos, rKneePos, lFootPos, rFootPos;
+	private Vector headPos, armJointPos, backPos,
+            lElbowPos, rElbowPos, lHandPos,
+            rHandPos, lKneePos, rKneePos,
+            lFootPos, rFootPos;
 
 	/** A {@linkplain Float} containing the direction modifier. */
 	private float directionModifier;
 
-	/***/
+	/** An {@linkplain ArrayList} of {@linkplain ShapeGraphics} containing the Graphics associated to all the limbs. */
 	private ArrayList<ShapeGraphics> graphics;
+
+	/** The linked {@linkplain PrismaticConstraint}. */
 	private PrismaticConstraint constraint;
 
+	/** Whether this {@linkplain CharacterBike} is happy. */
 	private boolean isHappy;
+
+	/** Maximum animation time. Default {@value} */
 	private final float timeTillHappinessEnd = 1.5f;
+
+	/** Current animation time. */
 	private float elapsedHappinessTime;
 
-	// Insurance Vectors, so as to reset the various moving limbs to default positions
-	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f);
-	private Vector initRElbowPos = new Vector(.5f, 1.f), initRHandPos = new Vector(1.f, .8f);
-	private Vector lElbowRaisedPos = new Vector(.4f, 2.2f), lHandRaisedPos = new Vector(.4f, 2.75f);
-	private Vector rElbowRaisedPos = new Vector(.2f, 2.2f), rHandRaisedPos = new Vector(.2f, 2.75f);
+    /** Insurance {@linkplain Vector}s. */
+	private Vector initLElbowPos = new Vector(.5f, 1.f), initLHandPos = new Vector(1.f, .8f),
+            initRElbowPos = new Vector(.5f, 1.f), initRHandPos = new Vector(1.f, .8f),
+            lElbowRaisedPos = new Vector(.4f, 2.2f), lHandRaisedPos = new Vector(.4f, 2.75f),
+            rElbowRaisedPos = new Vector(.2f, 2.2f), rHandRaisedPos = new Vector(.2f, 2.75f);
 
 	/**
-	 * Initialize a Character
-	 * @param game : The game in which this character exists
-	 * @param position : The position the character occupies
+	 * Initialize a {@linkplain CharacterBike}
+	 * @param game The {@linkplain ActorGame} in which this {@linkplain CharacterBike} exists.
+	 * @param position The position {@linkplain Vector} of this {@linkplain CharacterBike}.
 	 */
 	public CharacterBike(ActorGame game, Vector position) {
 		super(game, false, position);
@@ -53,8 +62,7 @@ public class CharacterBike extends GameEntity {
         this.rKneePos = new Vector(.0f, .2f); this.rFootPos = new Vector(-.1f, -.3f);
 
         this.updateGraphics();
-		Circle anchor = new Circle(0.1f);
-		this.build(anchor, -1, -1, false, ObjectGroup.PLAYER.group);
+		this.build(new Circle(0.1f), -1, -1, false, ObjectGroup.PLAYER.group);
 	}
 
 	private void updateGraphics() {
@@ -90,33 +98,29 @@ public class CharacterBike extends GameEntity {
 
 	/**
 	 * Generates the shape of the body given all positions.
-	 * @return a Polyline
+	 * @return a {@linkplain Polyline}
 	 */
 	private Polyline generateLimb(int limb) {
         switch (limb) {
-            case 0:    // Left arm
+            case 0:     // Left arm
                 return new Polyline(this.armJointPos, this.lElbowPos, this.lHandPos);
-            case 1:
+            case 1:     // Right arm
                 return new Polyline(this.armJointPos, this.rElbowPos, this.rHandPos);
-            case 2:
+            case 2:     // Left leg
                 return new Polyline(this.backPos, this.lKneePos, this.lFootPos, this.lKneePos, this.backPos);
-            case 3:
+            case 3:     // Right leg
                 return new Polyline(this.backPos, this.rKneePos, this.rFootPos);
             default:
                 return null;
         }
 	}
 
-	/**
-	 * Removes the constraint.
-	 */
+	/** Removes the constraint. */
 	public void detach() {
 		if (this.constraint != null) this.constraint.destroy();
 	}
 
-	/**
-	 * Calculate the next position of the feet and the knees.
-	 */
+	/** Calculate the next position {@linkplain Vector} of the feet and the knees. */
 	public void nextPedal(float angle) {
         this.lFootPos = new Vector( (float) (Math.cos(toRadians(angle)) * 0.4 + 0.15f) * this.directionModifier,
                 (float) (Math.sin(toRadians(angle)) * 0.4 - 0.25f));
@@ -127,11 +131,11 @@ public class CharacterBike extends GameEntity {
     }
 
 	/**
-	 * Calculates the coordinates of the next point relative to time.
-	 * @param anchor : the point to which this point is 'attached', can moved.
-	 * @param initial : the absolute initial coordinates that this point occupied.
-	 * @param goal : the point that this point should attain.
-	 * @return the new coordinates of this point.
+	 * Calculates the coordinates of the next {@linkplain Vector} relative to time.
+	 * @param anchor The position {@linkplain Vector} to which this point is 'attached', can move.
+	 * @param initial The absolute initial position that this {@linkplain Vector} occupied.
+	 * @param goal The destination {@linkplain Vector}.
+	 * @return the new {@linkplain Vector}.
 	 */
 	private Vector getNewPosition(Vector anchor, Vector initial, Vector goal) {
 		float radius = ExtendedMath.getDistance(anchor, initial);
@@ -141,8 +145,8 @@ public class CharacterBike extends GameEntity {
 	}
 
 	/**
-	 * Calculates all the next positions and assigns them to the elbows and hands
-	 * @param deltaTime : the current deltaTime, so that we can use time as a parameter of the animation
+	 * Calculates all the next positions and assigns them to the elbows and hands.
+	 * @param deltaTime The current deltaTime, so that we can use time as a parameter of the animation
 	 */
 	private void nextYay(float deltaTime) {
 		this.elapsedHappinessTime += deltaTime;
@@ -162,29 +166,23 @@ public class CharacterBike extends GameEntity {
 			this.isHappy = false;
 			this.elapsedHappinessTime = 0.f;
 
-			// Insurance for bad math...
+			// Insurance for bad math.
 			this.lElbowPos = this.initLElbowPos; this.lHandPos = this.initLHandPos;
 			this.rElbowPos = this.initRElbowPos; this.rHandPos = this.initRHandPos;
 		}
 	}
 
-	/**
-	 * Trigger the Victory animation
-	 */
+	/** Trigger the Victory animation */
 	public void triggerYayAnimation() {
 		this.isHappy = true;
 	}
 
-	/**
-	 * @return if the Victory animation is active
-	 */
+	/** @return whether the Victory animation is active. */
 	public boolean getIsYaying() {
 		return this.isHappy;
 	}
 
-	/**
-	 * Inverts all the xCoordinates on the x axis
-	 */
+	/** Inverts all the xCoordinates on the x axis. */
 	public void invertX() {
         this.directionModifier = this.directionModifier * -1;
         this.headPos = this.headPos.mul(xInverted); this.armJointPos = this.armJointPos.mul(xInverted);
@@ -204,10 +202,15 @@ public class CharacterBike extends GameEntity {
         this.initRElbowPos = this.initRElbowPos.mul(xInverted); this.initRHandPos = this.initRHandPos.mul(xInverted);
 	}
 
-    public float getDirectionModifier() {
+	/** @return the current direction modifier. */
+    private float getDirectionModifier() {
         return this.directionModifier;
     }
 
+    /**
+     * Sets a new {@linkplain PrismaticConstraint} to this {@linkplain CharacterBike}.
+     * @param constraint The linked {@linkplain PrismaticConstraint}.
+     */
     public void setConstraint(PrismaticConstraint constraint) {
         this.constraint = constraint;
     }
