@@ -96,7 +96,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 		System.out.println("loading level");
 		this.levels.get(currentLevel).createAllActors();
 		super.addActor(levels.get(currentLevel).getActors());
-//		super.addActor(levels.get(currentLevel));
+		super.addActor(levels.get(currentLevel));
 
 		SpawnCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
 		if (!wasPlayed) {
@@ -116,7 +116,6 @@ public abstract class ComplexBikeGame extends ActorGame {
 	}
 
 	/**
-	 * Create all the {@linkplain Level} for this {@linkplain GameWithLevels}
 	 */
 	protected abstract List<Level> createLevelList();
 

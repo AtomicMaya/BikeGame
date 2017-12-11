@@ -8,6 +8,8 @@ import main.window.Canvas;
 
 /** Wheels to be attached to our bike. */
 public class Wheel extends GameEntity {
+    /** Used for save purpose. */
+    private static final long serialVersionUID = 3427364356329461380L;
 
     /** The local {@linkplain WheelConstraint} that this {@linkplain Wheel} should use. */
 	private WheelConstraint constraint = null;

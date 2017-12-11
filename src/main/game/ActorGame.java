@@ -40,7 +40,7 @@ public class ActorGame implements Game {
 	/** The {@linkplain Window} where to draw the {@linkplain main.game.graphics.Graphics}. */
 	private Window window;
 
-	/** The global {@linkplain FileSystem}.*/
+	/** The global {@linkplain FileSystem}. */
 	private FileSystem fileSystem;
 
     /** Whether the game is frozen. */
@@ -188,11 +188,13 @@ public class ActorGame implements Game {
 	 * Destroy all stored {@linkplain Actor}s.
 	 */
 	public void destroyAllActors() {
+		System.out.println("Remove all");
 		// destroy all entities in the world!!! na!
 		// TODO remove attomatic de actors		
 		while (world.getEntities().size() > 0)
 			world.getEntities().get(0).destroy();
 		this.destroyActor(actors);
+		this.setPayload(null);
 	}
 
 	/**

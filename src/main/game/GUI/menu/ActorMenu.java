@@ -1,6 +1,5 @@
 /**
- *	Author: Clément Jeannet
- *	Date: 	4 déc. 2017
+ * Author: Clément Jeannet Date: 4 déc. 2017
  */
 package main.game.GUI.menu;
 
@@ -9,33 +8,53 @@ import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
 import main.game.GUI.actorBuilder.*;
 import main.math.ExtendedMath;
-import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
-import main.window.Window;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+/** A {@linkplain Menu} to add a {@linkplain Actor} to the game */
 public class ActorMenu extends Menu {
 
+	/** Contains all the buttons of this {@linkplain ActorMenu}. */
 	private ArrayList<GraphicalButton> boutons = new ArrayList<>();
 
+	/** Size of a button. */
 	private float sizeX = 3f, sizeY = 3f;
+
+	/** Space between the buttons. */
 	private float betweenButton = .2f;
+
+	/** Contains all the description of the {@linkplain GraphicalButton}. */
 	private ArrayList<Comment> description = new ArrayList<>();
+
+	/** Max and minimum position of this {@linkplain ActorMenu}. */
 	private Vector maxPosition = Vector.ZERO, minPosition = Vector.ZERO;
 
+	/** Position of this {@linkplain ActorMenu}. */
 	private Vector position = new Vector(20, 0);
+
+	/** Size of this {@linkplain ActorMenu}. */
 	float width, height;
 
+	/** Text of this {@linkplain ActorMenu}. */
 	private final String text = "Actors menu";
+
+	/** Font site of this {@linkplain ActorMenu}. */
 	private final float fontSize = 1;
 
+	/** Number of buttons/line */
 	private int nbButonLine = 3;
 
-	public ActorMenu(ActorGame game, LevelEditor levelEditor, Window window, Color backgroundColor) {
+	/**
+	 * Create a new {@linkplain ActorMenu}
+	 * @param game {@linkplain ActorGame} where this {@linkplain ActorMenu} belong
+	 * @param levelEditor {@linkplain LevelEditor} where this {@linkplain ActorMenu} will create new {@linkplain ActorBuilder}
+	 * @param backgroundColor COlor of the back ground
+	 */
+	public ActorMenu(ActorGame game, LevelEditor levelEditor, Color backgroundColor) {
 		super(game, Vector.ZERO, false);
 
 		this.setAnchor(position);
@@ -57,7 +76,7 @@ public class ActorMenu extends Menu {
 		});
 		description.add(new Comment(game, "Add or edit the Ground"));
 
-		// spawn 
+		// spawn
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addSpawn(new SpawnBuilder(game));
@@ -73,7 +92,7 @@ public class ActorMenu extends Menu {
 		});
 		description.add(new Comment(game, "Add a checkpoint"));
 
-		// bike 
+		// bike
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addFinish(new FinishBuilder(game));
@@ -188,8 +207,7 @@ public class ActorMenu extends Menu {
 	@Override
 	public void draw(Canvas canvas) {
 		if (isOpen()) {
-
-			canvas.drawShape(new Polygon(createRectangle(minPosition.sub(0, -3), minPosition.add(maxPosition))),
+			canvas.drawShape(ExtendedMath.createRectangle(minPosition.sub(0, -3), minPosition.add(maxPosition)),
 					getTransform(), Color.LIGHT_GRAY, Color.LIGHT_GRAY, .1f * getZoom(), 1, 1335);
 
 			for (int i = 0; i < boutons.size(); i++) {
@@ -213,17 +231,5 @@ public class ActorMenu extends Menu {
 	public boolean isHovered() {
 		return ExtendedMath.isInRectangle(getPosition().add(minPosition), getPosition().add(maxPosition),
 				getMousePosition());
-	}
-
-	private ArrayList<Vector> createRectangle(Vector un, Vector deux) {
-
-		ArrayList<Vector> points = new ArrayList<>();
-
-		points.add(un);
-		points.add(new Vector(deux.x, un.y));
-		points.add(deux);
-		points.add(new Vector(un.x, deux.y));
-		return points;
-
 	}
 }

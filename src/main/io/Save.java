@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	2 déc. 2017
- */
 package main.io;
 
 import main.game.ActorGame;

@@ -4,6 +4,7 @@ import main.game.ComplexBikeGame;
 import main.game.GUI.GraphicalButton;
 import main.game.graphics.ShapeGraphics;
 import main.game.graphics.TextGraphics;
+import main.game.levels.Level;
 import main.io.Save;
 import main.math.*;
 import main.math.Polygon;
@@ -18,39 +19,68 @@ import java.util.ArrayList;
 /** MainMenu of our game */
 public class MainMenu extends FullScreenMenu {
 
+	/** The master {@linkplain ComplexBikeGame}. */
 	private ComplexBikeGame game;
 	// text main menu
+	/** {@linkplain TextGraphics} to display {@link #menuMainText}. */
 	private TextGraphics menuMainGraphics;
-	private final String menuMainTest = "Menu";
+	
+	/** Text to display in the {@linkplain TextGraphics}  {@link #menuMainGraphics}. */
+	private final String menuMainText = "Menu";
+	
+	/** {@linkplain Color} of the {@link #menuMainText}. */
 	private Color menuColor = Color.CYAN;
 
 	// TODO remove this, for placing purpose #grid lines
 	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
 
 	// buttons list
+	/** {@linkplain ArrayList} containing all the loading save {@linkplain GraphicalButton} created by the user. */
 	private ArrayList<GraphicalButton> buttons = new ArrayList<>();
+	
+	/** {@linkplain ArrayList} containing all the {@linkplain GraphicalButton} to delete the corresponding save. */
 	private ArrayList<GraphicalButton> deleteButons = new ArrayList<>();
 
 	// our level buttons
+	/** {@linkplain ArrayList} containing all the {@linkplain GraphicalButton} to load our levels. */
 	private ArrayList<GraphicalButton> levelButtons = new ArrayList<>();
-	private final float sizeX = 5f;
-	private final float sizeY = 2f;
+	
+	/** Size of the {@linkplain GraphicalButton} contained in {@link #levelButtons}. */
+	private final float sizeX = 5f, sizeY = 2f;
+	
+	/** Space between the {@linkplain GraphicalButton}. */
 	private final float shiftLB = .3f;
+	
+	/** Top left corner of the first {@linkplain GraphicalButton} of {@link #levelButtons}. */
 	private final Vector topLeftLB = new Vector(6, -4);
 
 	// if a save is clicked
+	/** Whether this menu is busy, to avoid spam click on {@linkplain GraphicalButton}. */
 	private boolean busy = false;
 
+	/** {@linkplain GraphicalButton} to load the first {@linkplain Level}. */
 	private GraphicalButton play;
 
 	// load saved created with level editor
+	/** Current page of the load save. */
 	private int savePage = 0;
+	
+	/** Maximum number of saves on the {@linkplain Menu}. */
 	private final int maxNumberButtonsSave = 9;
+	
+	/** {@linkplain GraphicalButton} used to move between the pages of the load save, if the number of saved
+	 *  {@linkplain GraphicalButton} is bigger then {@value #maxNumberButtonsSave}.
+	 *  */
 	private GraphicalButton left, right; // navigate between the saves
+	
+	/** Timer used to avoid spam clicking on the {@linkplain GraphicalButton}. */
 	private float waitBeforeClick = 0; // avoid spam click with this timer
 
 	// level editor
+	/** Go into the {@linkplain LevelEditor} interface */
 	private GraphicalButton levelEditorButton;
+	
+	/** {@linkplain LevelEditor} where you can create your own levels! */
 	private LevelEditor levelEditor;
 
 	/**
@@ -68,7 +98,7 @@ public class MainMenu extends FullScreenMenu {
 		// main menu text
 		float fontSize = 4.5f;
 		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
-		menuMainGraphics = new TextGraphics(menuMainTest, fontSize, menuColor, Color.BLACK.brighter(), .01f, false,
+		menuMainGraphics = new TextGraphics(menuMainText, fontSize, menuColor, Color.BLACK.brighter(), .01f, false,
 				false, anchor, 1, 1);
 
 		// TODO remove this grid
@@ -236,6 +266,7 @@ public class MainMenu extends FullScreenMenu {
 		this.play.destroy();
 	}
 
+	/** Create the different save {@linkplain GraphicalButton}. */
 	private void createSaveButtons() {
 		buttons.clear();
 		deleteButons.clear();

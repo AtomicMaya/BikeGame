@@ -1,7 +1,6 @@
 package main.game.levels;
 
 import main.game.ActorGame;
-import main.game.GraphicalDrawer;
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
@@ -11,6 +10,7 @@ import main.game.audio.Audio;
 import main.game.graphicalStuff.Preset;
 import main.game.graphicalStuff.Scenery;
 import main.game.graphics.BetterTextGraphics;
+import main.game.graphics.GraphicalDrawer;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;

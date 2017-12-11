@@ -7,21 +7,22 @@ package main.game.GUI.actorBuilder;
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.collectable.Coin;
 import main.math.ExtendedMath;
-import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
 import java.awt.event.KeyEvent;
 
+/** Use in the {@linkplain LevelEditor} to create and add a coin to the game. */
 public class CoinBuilder extends ActorBuilder {
 
+	
 	private boolean isDone = false;
 
 	private Coin coin;
-	private Polygon shape;
 	private Vector position;
 
 	private GraphicalButton askBigCoin;
