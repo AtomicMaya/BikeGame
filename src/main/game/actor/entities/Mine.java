@@ -9,20 +9,38 @@ import main.window.Canvas;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * Created on 12/9/2017 at 10:53 AM.
- */
+/** Create new Mines, that explode in your face. */
 public class Mine extends GameEntity {
-	private transient ArrayList<String> stateGraphics;
-	private transient ArrayList<String> boomGraphics;
+    /** An {@linkplain ArrayList} of {@linkplain String} containing references of file locations. */
+	private transient ArrayList<String> stateGraphics, boomGraphics;
+
+	/** Relevant animation times. */
 	private final float beepTime, boomAnimationTime;
+
+    /** The number of times the mine will beep before it's explosion. */
 	private final int beeps;
+
+    /** The time since the mine was triggered up until it explodes*/
 	private float elapsedTime, elapsedBoomTime;
-	private boolean triggered, blowingUp, state, previousState;
+
+    /** Booleans relevant to the advancement of time. */
+	private boolean triggered, blowingUp;
+
+	/** Booleans relevant to the animation. */
+	private boolean state, previousState;
+
+    /** Indices of the graphical advancement preceding the explosion.*/
 	private int boomGraphicsCounter, currentBeep;
 
+    /** The local {@linkplain ProximitySensor}, so that the {@linkplain PlayableEntity} is the only one able to
+     *  trigger these mines. */
 	private transient ProximitySensor sensor;
 
+    /**
+     * Creates a new {@linkplain Mine} .
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     */
 	public Mine(ActorGame game, Vector position) {
 		super(game, true, position);
 
@@ -32,9 +50,13 @@ public class Mine extends GameEntity {
 		this.state = false;
 		this.previousState = false;
 		this.triggered = false;
-		create();
+		this.create();
 	}
 
+    /**
+     * Actual creation of the parameters of the {@linkplain GameEntity}, not in the
+     * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
+     */
 	private void create() {
 		this.build(new Polygon(0, 0, .5f, 0, .5f, 1, 0, 1), -1, -1, false);
 
@@ -54,9 +76,10 @@ public class Mine extends GameEntity {
 				new Polygon(0, 0, 1.5f, 0, 1.5f, 3, 0, 3));
 	}
 
+	@Override
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
-		create();
+		this.create();
 	}
 
 	@Override
@@ -73,7 +96,7 @@ public class Mine extends GameEntity {
 		}
 
 		if (this.state != this.previousState && this.state)
-			currentBeep += 1;
+			this.currentBeep += 1;
 
 		if (this.currentBeep >= this.beeps)
 			this.blowingUp = true;
@@ -103,9 +126,9 @@ public class Mine extends GameEntity {
 	@Override
 	public void draw(Canvas canvas) {
 		if (this.blowingUp)
-			this.sensor.addGraphics(this.boomGraphics.get(boomGraphicsCounter), 1.5f, 3).draw(canvas);
+			this.sensor.addGraphics(this.boomGraphics.get(this.boomGraphicsCounter), 1.5f, 3).draw(canvas);
 		if (this.triggered)
-			this.addGraphics(stateGraphics.get(this.state ? 1 : 0), .5f, 1, Vector.ZERO, 1, 100).draw(canvas);
+			this.addGraphics(this.stateGraphics.get(this.state ? 1 : 0), .5f, 1, Vector.ZERO, 1, 100).draw(canvas);
 	}
 
 	@Override

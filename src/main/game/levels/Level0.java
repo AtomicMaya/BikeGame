@@ -71,12 +71,12 @@ public class Level0 extends Level {
         this.btgJump = new BetterTextGraphics(this.game, "Jump with Q", .75f, new Vector(50, -7), .6f);
         this.btgSpace = new BetterTextGraphics(this.game, "Change orientation with space", .75f, new Vector(55, -1), .6f);
         this.btgDoubleJump = new BetterTextGraphics(this.game, "Reach for the skies ! Press Q twice.", .75f, new Vector(56, 8), .6f);
-        this.btgLever = new BetterTextGraphics(this.game, "Levers can be activated by pressing E", .75f, new Vector(88, 9));
-        this.btgPlatform = new BetterTextGraphics(this.game, "Keep on moving to stay on track !", .75f, new Vector(95, 10));
-        this.btgLava = new BetterTextGraphics(this.game, "The Bee Gees on fire ! Burnin' alive !", .75f, new Vector(105, 1));
-        this.btgCoin = new BetterTextGraphics(this.game, "Collectibles are awesome !", .75f, new Vector(108, 9));
-        this.btgMud = new BetterTextGraphics(this.game, "Mud, good for pies, less so for traction !", .75f, new Vector(130, 13));
-        this.btgFinish = new BetterTextGraphics(this.game, "You haven't died yet ! Or have you ?", .75f, new Vector(155, 13));
+        this.btgLever = new BetterTextGraphics(this.game, "Levers can be activated by pressing E", .75f, new Vector(88, 9), .6f);
+        this.btgPlatform = new BetterTextGraphics(this.game, "Keep on moving to stay on track !", .75f, new Vector(95, 10), .6f);
+        this.btgLava = new BetterTextGraphics(this.game, "The Bee Gees on fire ! Burnin' alive !", .75f, new Vector(105, 1), .6f);
+        this.btgCoin = new BetterTextGraphics(this.game, "Collectibles are awesome !", .75f, new Vector(108, 9), .6f);
+        this.btgMud = new BetterTextGraphics(this.game, "Mud, good for pies, less so for traction !", .75f, new Vector(130, 13), .6f);
+        this.btgFinish = new BetterTextGraphics(this.game, "You haven't died yet ! Or have you ?", .75f, new Vector(155, 13), .6f);
         
         gd.addGraphics(btgForward);
         gd.addGraphics(btgBrake);
@@ -89,7 +89,7 @@ public class Level0 extends Level {
         gd.addGraphics(btgMud);
         gd.addGraphics(btgFinish);
 
-        this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 10f);
+        //this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 10f);
 
         Scenery scenery = new Scenery(this.game, Preset.Breezy);
 
