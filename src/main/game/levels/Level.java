@@ -19,7 +19,8 @@ public abstract class Level extends Node implements Actor {
 
 	// The list of Actors in this level
 	private ArrayList<Actor> actors = new ArrayList<>();
-
+	
+	public boolean loaded = false;
 	// associated Actor Game
 	protected ActorGame game;
 

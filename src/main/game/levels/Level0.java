@@ -1,6 +1,7 @@
 package main.game.levels;
 
 import main.game.ActorGame;
+import main.game.GraphicalDrawer;
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
@@ -28,7 +29,6 @@ public class Level0 extends Level {
 
     @Override
     public void createAllActors() {
-    	System.out.println("init level");
         Polyline groundBody = new Polyline(-3, -1000,
                 0.f, 0.f,
                 20.f, 0.f,
@@ -62,7 +62,7 @@ public class Level0 extends Level {
         Liquid lava = new Liquid(this.game, new Vector(100, -2), new Polygon(0, 0, 30, 0, 30, 2, 0, 2), true);
         FinishActor finish = new FinishActor(this.game, new Vector(175, 11));
 
-
+        GraphicalDrawer gd = new GraphicalDrawer();
 
 
         this.btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(1,6), .6f);
@@ -77,6 +77,17 @@ public class Level0 extends Level {
         this.btgCoin = new BetterTextGraphics(this.game, "Collectibles are awesome !", .75f, new Vector(108, 9));
         this.btgMud = new BetterTextGraphics(this.game, "Mud, good for pies, less so for traction !", .75f, new Vector(130, 13));
         this.btgFinish = new BetterTextGraphics(this.game, "You haven't died yet ! Or have you ?", .75f, new Vector(155, 13));
+        
+        gd.addGraphics(btgForward);
+        gd.addGraphics(btgBrake);
+        gd.addGraphics(btgTilt);
+        gd.addGraphics(btgJump);
+        gd.addGraphics(btgSpace);
+        gd.addGraphics(btgDoubleJump);
+        gd.addGraphics(btgLever);
+        gd.addGraphics(btgLava);
+        gd.addGraphics(btgMud);
+        gd.addGraphics(btgFinish);
 
         this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 10f);
 
@@ -92,12 +103,12 @@ public class Level0 extends Level {
         this.addActor(lava);
         this.addActor(finish);
         this.addActor(scenery);
+        this.addActor(gd);
     }
 
     @Override
     public void dispose() {
-        if (this.backgroundAudio != null) { this.backgroundAudio.destroy();System.out.println("destroy audio");}
-        System.out.println("dispose");
+        if (this.backgroundAudio != null) this.backgroundAudio.destroy();
     }
 
     @Override
@@ -112,18 +123,18 @@ public class Level0 extends Level {
 
     @Override
     public void draw(Canvas canvas) {
-        this.btgForward.draw(canvas);
-        this.btgBrake.draw(canvas);
-        this.btgTilt.draw(canvas);
-        this.btgJump.draw(canvas);
-        this.btgSpace.draw(canvas);
-        this.btgDoubleJump.draw(canvas);
-        this.btgLever.draw(canvas);
-        this.btgPlatform.draw(canvas);
-        this.btgLava.draw(canvas);
-        this.btgCoin.draw(canvas);
-        this.btgMud.draw(canvas);
-        this.btgFinish.draw(canvas);
+//        this.btgForward.draw(canvas);
+//        this.btgBrake.draw(canvas);
+//        this.btgTilt.draw(canvas);
+//        this.btgJump.draw(canvas);
+//        this.btgSpace.draw(canvas);
+//        this.btgDoubleJump.draw(canvas);
+//        this.btgLever.draw(canvas);
+//        this.btgPlatform.draw(canvas);
+//        this.btgLava.draw(canvas);
+//        this.btgCoin.draw(canvas);
+//        this.btgMud.draw(canvas);
+//        this.btgFinish.draw(canvas);
     }
 
 	@Override

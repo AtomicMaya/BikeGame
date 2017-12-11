@@ -1,16 +1,14 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	10 déc. 2017
- */
 package main.game.actor;
 
 import main.game.ActorGame;
 import main.game.ComplexBikeGame;
 import main.game.GUI.menu.LevelEditor;
 import main.game.actor.entities.Bike;
+import main.game.actor.entities.PlayableEntity;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.graphics.BetterTextGraphics;
+import main.game.graphics.Graphics;
 import main.math.ExtendedMath;
 import main.math.Transform;
 import main.math.Vector;
@@ -19,51 +17,105 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class GameManager {
+public class GameManager implements Graphics {
 
+	/** Tell {@link this} that the last thing loaded is a {@linkplain Level} */
 	private static final int levelState = 0;
+
+	/** Tell {@link this} that the last thing loaded is a saved game */
 	private static final int saveState = 1;
+
+	/**
+	 * Tell {@link this} that the last thing loaded is a
+	 * {@linkplain LevelEditor}
+	 */
 	private static final int levelEditorState = 2;
 
+	/** The master {@linkplain ActorGame}. */
 	private ActorGame game;
+
+	/** The {@linkplain ComplexBikeGame}, needed in some cases. */
 	private ComplexBikeGame gameLevel;
-	private LevelEditor levelEditor;
 
 	// score management
+	/** Keep track of the current score */
 	private int score = 0;
+
+	/** {@linkplain BetterTextGraphics} to display the score */
 	private BetterTextGraphics scoreDisapplay;
+
+	/** Message to display with {@link #scoreDisapplay} */
 	private final String scoreText = "Your score is :";
+
+	/** {@linkplain Vector} position of the {@link #scoreDisapplay} */
 	private Vector scorePos = new Vector(-19, -9.5f);
 
 	// level management
+	/** Message to display when we won a {@linkplain Level} */
 	private final String messageNextLevelText = "Press N to go to the next level";
+
+	/** Message to display when we have lost */
 	private final String respawnText = "Press R to respawn";
+
+	/** Message to display when we won a saved game */
 	private final String backToMenu = "Press ESCAPE to go back to the menu";
+
+	/**
+	 * Actual message display
+	 * @see #messageNextLevelText
+	 * @see #respawnText
+	 * @see #backToMenu
+	 */
 	private String messageDisplayed = "";
+
+	/** Font size of the {@link #scoreDisapplay} */
 	private float fontSize = 1.5f;
 
 	// respawn mechanics
-	private Vector position;
+	/** Last {@linkplain Checkpoint} triggered */
 	private Checkpoint lastCheckpoint;
+
+	/** {@linkplain SpawnCheckpoint} of the main {@linkplain PlayableEntity} */
 	private SpawnCheckpoint startCheckpoint;
-	private final float timeToRespawn = 3f;
+
+	/** Time (in second) before being able to respawn */
+	private final float timeToRespawn = 2f;
+
+	/**
+	 * Timer to count how much time passed, when it reach
+	 * {@link #timeToRespawn}, {@link #messageDisplayed} is displayed
+	 */
 	private float respawnTimer = 0;
 
 	// temp save management
+	/**
+	 * If {@link #gameState} == {@value #saveState}, this is the name of the
+	 * save which is going to be loaded
+	 */
 	private String saveLoaded;
 
+	/**
+	 * Actual state, can be {@link #levelState}, {@link #saveState} or
+	 * {@link #levelEditorState}
+	 */
 	private int gameState = -1;
 
+	/** Create a new {@linkplain GameManager} */
 	public GameManager(ActorGame game) {
 		this.game = game;
-		scoreDisapplay = new BetterTextGraphics(game, scoreText + score, 1f, scorePos);
-		scoreDisapplay.setParent(game.getCanvas());
-		scoreDisapplay.setDepth(42042);
+		this.scoreDisapplay = new BetterTextGraphics(game, this.scoreText + this.score, 1f, this.scorePos);
+		this.scoreDisapplay.setParent(game.getCanvas());
+		this.scoreDisapplay.setDepth(42042);
 	}
 
+	/**
+	 * Simulates a single time step.
+	 * @param deltaTime elapsed time since last update, in seconds, non-negative
+	 */
 	public void update(float deltaTime) {
 		if (game.getPayload() != null && game.getKeyboard().get(KeyEvent.VK_9).isPressed())
-			System.out.println("player start : death: "+ game.getPayload().getDeathStatus() + " win : " + game.getPayload().getVictoryStatus());
+			System.out.println("player start : death: " + game.getPayload().getDeathStatus() + " win : "
+					+ game.getPayload().getVictoryStatus());
 		// spawn a bike if payload is not defind, which happend at the start of
 		// a game or after a reset
 		if (game.getPayload() == null && (startCheckpoint != null)) {
@@ -78,60 +130,60 @@ public class GameManager {
 				this.respawnTimer += deltaTime;
 
 				if (this.respawnTimer > this.timeToRespawn) {
-					messageDisplayed = messageNextLevelText;
-					switch (gameState) {
+					this.messageDisplayed = this.messageNextLevelText;
+					switch (this.gameState) {
 						case levelState: {
 							if (game.getKeyboard().get(KeyEvent.VK_N).isPressed()) {
-								restart();
-								gameLevel.nextLevel();
-								respawnTimer = 0;
-								messageDisplayed = "";
+								this.restart();
+								this.gameLevel.nextLevel();
+								this.respawnTimer = 0;
+								this.messageDisplayed = "";
 							}
 							break;
 						}
 						case saveState: {
 
-							if (game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
+							if (this.game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
 								// TODO
 								restart();
-								gameLevel.goToMainMenu();
-								respawnTimer = 0;
-								messageDisplayed = "";
+								this.gameLevel.goToMainMenu();
+								this.respawnTimer = 0;
+								this.messageDisplayed = "";
 							}
-							messageDisplayed = backToMenu;
+							this.messageDisplayed = this.backToMenu;
 							break;
 						}
 						case levelEditorState: {
-							game.setGameFreezeStatus(false);
-							messageDisplayed = "";
+							this.game.setGameFreezeStatus(false);
+							this.messageDisplayed = "";
 							break;
 						}
 					}
 				}
-			} else if (game.getPayload().getDeathStatus()) {
+			} else if (this.game.getPayload().getDeathStatus()) {
 				this.respawnTimer += deltaTime;
-				messageDisplayed = respawnText;
-				if (this.respawnTimer > this.timeToRespawn && game.getKeyboard().get(KeyEvent.VK_R).isPressed()) {
+				this.messageDisplayed = this.respawnText;
+				if (this.respawnTimer > this.timeToRespawn && this.game.getKeyboard().get(KeyEvent.VK_R).isPressed()) {
 
 					reset();
-					switch (gameState) {
+					switch (this.gameState) {
 						case levelState:
-							gameLevel.resetLevel();
-						break;
+							this.gameLevel.resetLevel();
+							break;
 						case saveState:
-							game.load(saveLoaded);
+							this.game.load(this.saveLoaded);
 
-						break;
+							break;
 						case levelEditorState:
-						break;
+							break;
 					}
 					messageDisplayed = "";
 					respawnTimer = 0;
 				}
 			}
-
 	}
 
+	@Override
 	public void draw(Canvas canvas) {
 		if (this.respawnTimer > this.timeToRespawn)
 			canvas.drawText(messageDisplayed, fontSize * game.getViewScale() / 20f,
@@ -157,6 +209,7 @@ public class GameManager {
 		lastCheckpoint = checkpoint;
 	}
 
+	/** Method called by the {@linkplain SpawnCheckpoint} */
 	public void setStartCheckpoint(SpawnCheckpoint checkpoint) {
 		startCheckpoint = checkpoint;
 	}
@@ -176,8 +229,10 @@ public class GameManager {
 		game.setViewCandidate(null);
 		messageDisplayed = "";
 		respawnTimer = 0;
+		resetScore();
 	}
 
+	/** Spawn a new {@linkplain Bike} at the right place */
 	private void spawnBike() {
 		Bike nextPlayer = new Bike(game,
 				(lastCheckpoint == null ? startCheckpoint : lastCheckpoint).getPosition().add(0, 2));
@@ -188,6 +243,7 @@ public class GameManager {
 	}
 
 	// score management
+	/** Reset the score */
 	public void resetScore() {
 		score = 0;
 	}
@@ -196,23 +252,36 @@ public class GameManager {
 		this.score += score;
 	}
 
+	/** @return the {@linkplain} #score} */
 	public int getScore() {
 		return score;
 	}
 
+	/**
+	 * Set the current {@link #gameState} to the {@link #levelState}
+	 * @param gameLevel the {@linkplain ComplexBikeGame} from which it is called
+	 */
 	public void setGameState(ComplexBikeGame gameLevel) {
 		this.gameState = levelState;
 		this.gameLevel = gameLevel;
 	}
 
+	/**
+	 * Set the current {@link #gameState} to the {@link #saveState}
+	 * @param gameLevel the {@linkplain ComplexBikeGame} from which it is called
+	 * @param saveName Name of the save loaded
+	 */
 	public void setGameState(ComplexBikeGame gameLevel, String saveName) {
 		this.gameState = saveState;
 		this.saveLoaded = saveName;
 		this.gameLevel = gameLevel;
 	}
 
+	/**
+	 * Set the current {@link #gameState} to the {@link #levelEditorState}
+	 * @param levelEditor the {@linkplain LevelEditor} from which it is called
+	 */
 	public void setGameState(LevelEditor levelEditor) {
 		this.gameState = levelEditorState;
-		this.levelEditor = levelEditor;
 	}
 }

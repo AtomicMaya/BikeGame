@@ -84,9 +84,6 @@ public class ActorGame implements Game {
 		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
 			System.out.println("actors size : "+actors.size() + " world entities : " + world.getEntities().size());
 
-		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed())
-		    this.gameFrozen = !this.gameFrozen;
-
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();

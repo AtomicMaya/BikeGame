@@ -38,7 +38,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 
 	@Override
 	public void update(float deltaTime) {
-//		System.out.println(this.levels.get(currentLevel));
+		// System.out.println(this.levels.get(currentLevel));
 		super.update(deltaTime);
 		mainMenu.update(deltaTime, 1);
 		if (mainMenu.isOpen()) {
@@ -75,8 +75,8 @@ public abstract class ComplexBikeGame extends ActorGame {
 
 	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
 	private void clearCurrentLevel() {
-
-		this.levels.get(currentLevel).dispose();
+		if (levels.get(currentLevel).loaded)
+			this.levels.get(currentLevel).dispose();
 		super.destroyAllActors();
 
 	}
@@ -96,7 +96,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 		System.out.println("loading level");
 		this.levels.get(currentLevel).createAllActors();
 		super.addActor(levels.get(currentLevel).getActors());
-		super.addActor(levels.get(currentLevel));
+//		super.addActor(levels.get(currentLevel));
 
 		SpawnCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
 		if (!wasPlayed) {

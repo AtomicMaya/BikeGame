@@ -14,6 +14,7 @@ import main.window.Window;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+/** In game {@linkplain Menu} */
 public class InGameMenu extends FullScreenMenu {
 
 	private ActorGame game;

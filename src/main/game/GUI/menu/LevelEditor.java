@@ -35,16 +35,16 @@ import java.util.ArrayList;
 public class LevelEditor implements Graphics {
 
 	// actorBuilder stuff
-	/** {@linkplain ArrayList} of all the {@linkplain ActorBuilder} created by the user */
+	/** {@linkplain ArrayList} of all the {@linkplain ActorBuilder} created by the user. */
 	private ArrayList<ActorBuilder> actorBuilders = new ArrayList<>();
 	
-	/** Unique {@linkplain GroundBuilder}, has to be created to save/test the game */
+	/** Unique {@linkplain GroundBuilder}, has to be created to save/test the game. */
 	private GroundBuilder gb; // is unique
 	
-	/** Unique {@linkplain SpawnBuilder}, has to be created to save/test the game */
+	/** Unique {@linkplain SpawnBuilder}, has to be created to save/test the game. */
 	private SpawnBuilder spawn; // is unique
 	
-	/** Unique {@linkplain FinishBuilder}, has to be created to save/test the game */
+	/** Unique {@linkplain FinishBuilder}, has to be created to save/test the game. */
 	private FinishBuilder finish; // is unique
 
 	
@@ -61,7 +61,7 @@ public class LevelEditor implements Graphics {
 	private boolean open = false;
 	
 	
-	/** Initial camera position */
+	/** Initial position of the camera, represent the center of the screen  */
 	private Vector cameraPosition = Vector.ZERO;
 	
 	/** Default zoom of the {@linkplain Window} : {@value}*/
@@ -79,33 +79,66 @@ public class LevelEditor implements Graphics {
 	/** Maximum zoom value : {@value #minZoom} */
 	private static final float minZoom = 0.4f;
 	
-	/** Maximum camera position */
+	/** 
+	 * Maximum camera position 
+	 * @see #cameraPosition 
+	 * */
 	private float maxPosX = 120;
+	
+	/** 
+	 * Minimun camera position 	
+	 * @see #cameraPosition 
+	 * */
 	private float maxPosY = 30;
+	
+	/** Camera acceleration, when CTRL is pressed */
 	private float cameraAcceleration = .4f;
-	private float xPP = 1;// camera acceleration
+	
+	/** Current camera acceleration, default value : 1*/
+	private float currentCameraAcceleration = 1;
+	
+	/** Maximum camera acceleration */
 	private final float maxCameraXPP = 3;
-
+ 
 	
 	// Grid parameters
+	/** {@linkplain ArrayList} containing the {@linkplain Graphics} of a grid */
 	private ArrayList<ShapeGraphics> gridLine = new ArrayList<>();
+	
+	/** Axe of the grid, in x = 0 and y = 0 */
 	private ShapeGraphics axeX, axeY;
-	private int lineNumberX = 120, lineNumberY = 66;
+	
+	/** Number of lines on the screen */
+	private final int lineNumberX = 120, lineNumberY = 66;
+	
+	/** Thickness of the lines of the grid */
 	private float lineThickness = .01f;
 
 	// button font size
+	/** Font size of the different {@linkplain GraphicalButton} */
 	private float fontSize = .63f;
+	
+	/** Depth of the {@linkplain GraphicalButton}*/
 	private float butonDepth = 51;
 
 	// position showing
+	/** Initial position of the {@link #redSquareGraphics}*/
 	private Vector redSquarePosition = Vector.ZERO;
+	
+	/** Red square displayed if the {@link #showRedSquare} {@linkplain GraphicalButton} is clicked */
 	private ShapeGraphics redSquareGraphics;
-	private boolean showRedSquare = false; // true if the red square is show
-	private boolean hasClicked = false; // true if we clicked once to get
-										// position on screen
+	
+	/** Whether the {@link #redSquareGraphics} is displayed */
+	private boolean showRedSquare = false; 
+	
+	/** Whether a place has been clicked on screen */
+	private boolean hasClicked = false; 
+									
+	/** Display the coordinates of the {@link #redSquareGraphics} */
 	private BetterTextGraphics redSquarePosText;
 
 	// activate/desactivate position pointer
+	/** */
 	private GraphicalButton getPositionButton;
 	private Vector getPositionButtonPosition = new Vector(-29, 14);
 	private final String getPosButtonText = "Positionneur";
@@ -290,26 +323,26 @@ public class LevelEditor implements Graphics {
 		}
 		// camera acceleration
 		if (this.game.getKeyboard().get(KeyEvent.VK_CONTROL).isDown()) {
-			this.xPP += this.cameraAcceleration * deltaTime;
-			this.xPP = (this.xPP >= this.maxCameraXPP) ? this.maxCameraXPP : this.xPP;
+			this.currentCameraAcceleration += this.cameraAcceleration * deltaTime;
+			this.currentCameraAcceleration = (this.currentCameraAcceleration >= this.maxCameraXPP) ? this.maxCameraXPP : this.currentCameraAcceleration;
 		}
 		if (this.game.getKeyboard().get(KeyEvent.VK_CONTROL).isReleased())
-			this.xPP = 1;
+			this.currentCameraAcceleration = 1;
 
 		// camera controls
 		float posX = this.cameraPosition.x;
 		float posY = this.cameraPosition.y;
 		if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
-			posY += deltaTime * cameraSpeed * this.xPP;
+			posY += deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
 		if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
-			posY -= deltaTime * cameraSpeed * this.xPP;
+			posY -= deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
 		if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-			posX -= deltaTime * cameraSpeed * this.xPP;
+			posX -= deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
 		if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-			posX += deltaTime * cameraSpeed * this.xPP;
+			posX += deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
 
 		posX = (posX >= this.maxPosX) ? this.maxPosX : posX;
