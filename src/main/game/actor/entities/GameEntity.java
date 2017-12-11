@@ -22,8 +22,7 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Create a new {@linkplain GameEntity}, and its associated
-	 * {@linkplain Entity}
-	 * 
+	 * {@linkplain Entity}.
 	 * @param game : The {@linkplain ActorGame} where this {@linkplain Entity}
 	 * inhabits.
 	 * @param fixed : Whether the {@linkplain Entity} is fixed.
@@ -42,42 +41,29 @@ public abstract class GameEntity implements Actor, Saveable {
 		create();
 	}
 
+    /** @see #GameEntity(ActorGame, boolean, Vector) */
+    public GameEntity(ActorGame game, boolean fixed) {
+        this(game, fixed, Vector.ZERO);
+    }
+
 	/**
 	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in
 	 * the constructor to avoid duplication with the method reCreate
 	 */
 	private void create() {
-		if (entity == null)
+		if (this.entity == null)
 			this.entity = this.actorGame.newEntity(this.position, this.fixed);
-		// System.out.println(this + " " + position + " " + fixed);
 	}
 
 	@Override
 	public void reCreate(ActorGame game) {
-		actorGame = game;
+        this.actorGame = game;
 		create();
-	}
-
-	/**
-	 * Create a new {@linkplain GameEntity}, and its associated Entity
-	 * 
-	 * @param game : The {@linkplain ActorGame} where the
-	 * {@linkplain GameEntity} evolves
-	 * @param fixed : Whether the {@linkplain Entity} is fixed
-	 */
-	public GameEntity(ActorGame game, boolean fixed) {
-		if (game == null)
-			throw new NullPointerException("Game is null");
-		this.actorGame = game;
-
-		this.fixed = fixed;
-
-		this.entity = game.newEntity(fixed);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		if (!entity.isAlive())
+		if (!this.entity.isAlive())
 			this.destroy();
 	}
 
@@ -116,21 +102,9 @@ public abstract class GameEntity implements Actor, Saveable {
 		return this.entity.getVelocity();
 	}
 
-	/**
-	 * Create and add an ImageGraphics to this entity
-	 * 
-	 * @param imagePath : the path to the image to add
-	 * @param width : the width of the image
-	 * @param height : the height of the image
-	 * @return a new {@linkplain ImageGraphics} associated to this
-	 * {@linkplain GameEntity}
-	 */
-	public ImageGraphics addGraphics(String imagePath, float width, float height) {
-		return addGraphics(imagePath, width, height, Vector.ZERO, 1, 0);
-	}
 
 	/**
-	 *
+     * Create and add a {@linkplain ImageGraphics} to this {@linkplain Entity}
 	 * @param imagePath : the path to the image to add
 	 * @param width : the width of the image
 	 * @param height : the height of the image
@@ -148,19 +122,15 @@ public abstract class GameEntity implements Actor, Saveable {
 		return graphics;
 	}
 
-	/**
-	 *
-	 * @param imagePath : the path to the image to add
-	 * @param width : the width of the image
-	 * @param height : the height of the image
-	 * @param anchor : a {@linkplain Vector} which give an anchor to the
-	 * {@linkplain ImageGraphics}, relative to its parent
-	 * @return a new {@linkplain ImageGraphics} associated to this
-	 * {@linkplain GameEntity}
-	 */
-	public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor) {
-		return addGraphics(imagePath, width, height, anchor, 1, 0);
-	}
+    /** @see #addGraphics(String, float, float, Vector, float, float) */
+    public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor) {
+        return this.addGraphics(imagePath, width, height, anchor, 1, 0);
+    }
+
+    /** @see #addGraphics(String, float, float, Vector, float, float) */
+    public ImageGraphics addGraphics(String imagePath, float width, float height) {
+        return this.addGraphics(imagePath, width, height, Vector.ZERO, 1, 0);
+    }
 
 	/**
 	 * Create and add a {@linkplain ShapeGraphics} to this {@linkplain Entity}
@@ -180,74 +150,39 @@ public abstract class GameEntity implements Actor, Saveable {
 		return graphics;
 	}
 
-	/**
-	 * Create and add a {@linkplain ShapeGraphics} to an {@linkplain Entity}
-	 *
-	 * @param shape : a {@linkplain Shape}, may be null
-	 * @param color : a fill {@linkplain Color}, may be null
-	 * @return a new {@linkplain ShapeGraphics} associated to this
-	 * {@linkplain GameEntity}
-	 */
+	/** @see #addGraphics(Shape, Color, Color, float, float, float) */
 	public ShapeGraphics addGraphics(Shape shape, Color color) {
-		return addGraphics(shape, color, color, 0.f, 0.f, 0.f);
+		return this.addGraphics(shape, color, color, 0.f, 0.f, 0.f);
 	}
 
 	/**
-	 * Build the {@linkplain Entity}, which gives it a physical representation
-	 * in the engine
-	 * @param shape : the {@linkplain Shape} to be given to the
-	 * {@linkplain Entity}
-	 */
+     * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
+     * @param shape : The {@linkplain Shape} to be given to the {@linkplain Entity}.
+     * @param friction : The friction to be given to the {@linkplain Entity}, defaults if negative.
+     * @param density : The density of the {@linkplain Entity}, defaults if negative.
+     * @param ghost : Whether this part is hidden and should act only as a sensor.
+     * @param collisionGroup : This {@linkplain Entity}'s collision group.
+     */
+    public void build(Shape shape, float friction, float density, boolean ghost, int collisionGroup) {
+        PartBuilder partBuilder = this.entity.createPartBuilder();
+        partBuilder.setShape(shape);
+        if (friction >= 0)
+            partBuilder.setFriction(friction);
+        if (density >= 0)
+            partBuilder.setDensity(density);
+        partBuilder.setGhost(ghost);
+        partBuilder.setCollisionGroup(collisionGroup);
+        partBuilder.build();
+    }
+
+    /** @see #build(Shape, float, float, boolean, int) */
 	public void build(Shape shape) {
-		build(shape, -1, -1, false);
+		build(shape, -1, -1, false, 0);
 	}
 
-	/**
-	 * Builds the {@linkplain Entity}, which gives it a physical representation
-	 * in the engine.
-	 * @param shape : The {@linkplain Shape} to be given to the
-	 * {@linkplain Entity}.
-	 * @param friction : The friction to be given to the {@linkplain Entity},
-	 * defaults if negative.
-	 * @param density : The density of the {@linkplain Entity}, defaults if
-	 * negative.
-	 * @param ghost : Whether this part is hidden and should act only as a
-	 * sensor.
-	 */
+	/** @see #build(Shape, float, float, boolean, int) */
 	public void build(Shape shape, float friction, float density, boolean ghost) {
-		PartBuilder partBuilder = this.entity.createPartBuilder();
-		partBuilder.setShape(shape);
-		if (friction >= 0)
-			partBuilder.setFriction(friction);
-		if (density >= 0)
-			partBuilder.setDensity(density);
-		partBuilder.setGhost(ghost);
-		partBuilder.build();
-	}
-
-	/**
-	 * Builds the {@linkplain Entity}, which gives it a physical representation
-	 * in the engine.
-	 * @param shape : The {@linkplain Shape} to be given to the
-	 * {@linkplain Entity}.
-	 * @param friction : The friction to be given to the {@linkplain Entity},
-	 * defaults if negative.
-	 * @param density : The density of the {@linkplain Entity}, defaults if
-	 * negative.
-	 * @param ghost : Whether this part is hidden and should act only as a
-	 * sensor.
-	 * @param collisionGroup : This {@linkplain Entity}'s collision group.
-	 */
-	public void build(Shape shape, float friction, float density, boolean ghost, int collisionGroup) {
-		PartBuilder partBuilder = this.entity.createPartBuilder();
-		partBuilder.setShape(shape);
-		if (friction >= 0)
-			partBuilder.setFriction(friction);
-		if (density >= 0)
-			partBuilder.setDensity(density);
-		partBuilder.setGhost(ghost);
-		partBuilder.setCollisionGroup(collisionGroup);
-		partBuilder.build();
+        this.build(shape, friction, density, ghost, 0);
 	}
 
 	/**

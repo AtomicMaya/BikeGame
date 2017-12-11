@@ -242,6 +242,11 @@ public class GraphicalButton extends GUIComponent {
 		return width;
 	}
 
+    /**
+     * Sets the viewDepth of the {@linkplain GraphicalButton}.
+     * @param depth : The wanted depth.
+     */
+
 	public void setDepth(float depth) {
 		this.depth = depth;
 		this.setNewGraphics(idleGraphics, hoverGraphics);

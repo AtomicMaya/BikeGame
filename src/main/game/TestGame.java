@@ -106,7 +106,7 @@ public class TestGame extends ActorGame {
 
         //GravityWell well = new GravityWell(this, new Vector(15,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
 
-        //Mine mine = new Mine(this, new Vector(15, 2));
+        Mine mine = new Mine(this, new Vector(15, 2));
 
         this.graphics = new EndGameGraphics(this);
         Liquid liquid = new Liquid(this, new Vector(20, -7), new Polygon(0, 0, 5, 0, 5, 2, 0, 2),  true);
@@ -119,7 +119,7 @@ public class TestGame extends ActorGame {
         this.addActor(player);
         this.addActor(sensor);
         //this.addActor(pendulum);
-        //this.addActor(mine);
+        this.addActor(mine);
         this.addActor(liquid);
         this.addActor(graphics);
 //		this.addActor(lever);
@@ -145,7 +145,7 @@ public class TestGame extends ActorGame {
 //            graphics.displayDeathMessage();
         ArrayList<Polyline> lines = LightningGen.getPolylines(5);
         for (Polyline line : lines) {
-            window.drawShape(line, Transform.I, null, Color.CYAN, .1f, .1f, 10000);
+            this.window.drawShape(line, Transform.I, null, Color.CYAN, .1f, .1f, 10000);
         }
     }
 

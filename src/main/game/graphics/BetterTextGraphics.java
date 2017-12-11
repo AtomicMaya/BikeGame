@@ -18,7 +18,7 @@ public class BetterTextGraphics extends Node implements Graphics {
 	private String text = "";
 	private float charSize = 1;
 	private float textLength;
-	private float alpha = 1, depth = 52-.01f;
+	private float alpha = .4f, depth = 52-.01f;
 	private float letterRatio = 73f;
 	private float inBeetweenCharOffset = 0;
 
@@ -38,13 +38,13 @@ public class BetterTextGraphics extends Node implements Graphics {
 	 */
 	private ArrayList<String> getFileLocations(String text) {
 		ArrayList<String> fileLocations = new ArrayList<>();
-		for (char c : text.toCharArray()) {
-			if (c >= 'A' && c <= 'Z')
-				fileLocations.add("./res/font/l" + c + ".png");
-			else if (c >= '0' && c <= '9')
-				fileLocations.add("./res/font/n" + c + ".png");
+		for (char character : text.toCharArray()) {
+			if (character >= 'A' && character <= 'Z')
+				fileLocations.add("./res/font/l" + character + ".png");
+			else if (character >= '0' && character <= '9')
+				fileLocations.add("./res/font/n" + character + ".png");
 			else {
-				switch (c) {
+				switch (character) {
 					case '\'':
 						fileLocations.add("./res/font/sApostrophe.png");
 					break;
@@ -86,9 +86,9 @@ public class BetterTextGraphics extends Node implements Graphics {
 					break;
 					case ' ':
 						fileLocations.add("./res/font/sSpace.png");
-					break;
+					    break;
 					default:
-					break;
+                        break;
 				}
 			}
 		}
@@ -125,8 +125,8 @@ public class BetterTextGraphics extends Node implements Graphics {
 	/**
 	 * Change the text of this better text graphics
 	 * 
-	 * @param text new text
-	 * @param charSize new char size, negative value will flip the text through
+	 * @param text : The new text
+	 * @param fontSize : The new font size, negative value will flip the text through
 	 * f(x) = -x;
 	 */
 	public void setText(String text, float fontSize) {
@@ -137,15 +137,15 @@ public class BetterTextGraphics extends Node implements Graphics {
 		this.charSizes = new ArrayList<>();
 		this.text = text;
 
-		float o = 0;
+		float offset = 0;
 		for (int i = 0; i < this.graphics.size(); i++) {
 			float letterWidth = canvas.getImage(graphics.get(i)).getWidth() / letterRatio;
-			this.offsets.add(new Vector(o, 0));
+			this.offsets.add(new Vector(offset, 0));
 			this.charSizes.add(new float[] { letterWidth * this.charSize, this.charSize });
-			o += letterWidth * this.charSize + inBeetweenCharOffset;
+			offset += letterWidth * this.charSize + inBeetweenCharOffset;
 
 		}
-		textLength = o - inBeetweenCharOffset; // - inBeetweenCharOffset pour
+		textLength = offset - inBeetweenCharOffset; // - inBeetweenCharOffset pour
 												// corigé, il y en a un en trop
 	}
 

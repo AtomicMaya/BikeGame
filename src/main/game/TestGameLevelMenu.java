@@ -8,8 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import main.game.levels.Level;
-import main.game.levels.Level1;
-import main.game.levels.Level2;
+import main.game.levels.LevelTest;
 import main.io.FileSystem;
 import main.window.Window;
 import main.window.swing.FontList;
@@ -32,7 +31,8 @@ public class TestGameLevelMenu extends GameWithLevelAndMenu {
 
 	@Override
 	protected List<Level> createLevelList() {
-		return Arrays.asList(new Level1(this), new Level2(this));
+
+	    return Arrays.asList(new LevelTest(this), new LevelTest(this));
 	}
 
 }

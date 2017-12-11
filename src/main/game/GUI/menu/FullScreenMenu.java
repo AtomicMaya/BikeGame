@@ -27,19 +27,19 @@ public abstract class FullScreenMenu extends Menu {
 
 	/**
 	 * Create a new Menu
-	 * 
-	 * @param window window where to draw this menu
-	 * @param isOpen weather this menu is open or close when created
-	 * @param backgroundColor Background color of this menu
-	 * @param fullScreen whether this menu occupy all the screen
+	 * @param game : The game.
+	 * @param window : The window where to draw this menu.
+	 * @param isOpen : Whether this menu is open or close when created.
+	 * @param backgroundColor : The background color of this menu.
 	 */
 	public FullScreenMenu(ActorGame game, Window window, boolean isOpen, Color backgroundColor) {
 		super(game, Vector.ZERO, isOpen);
 		this.window = window;
 		this.backgroundColor = backgroundColor;
 
-		shape = new Polygon(-scale * 2, -scale * 2, -scale * 2, scale * 2, scale * 2, scale * 2, scale * 2, -scale * 2);
-		background = new ShapeGraphics(shape, backgroundColor, null, 0, 1, -10);
+        this.shape = new Polygon(-this.scale * 2, -this.scale * 2, -this.scale * 2, this.scale * 2,
+                this.scale * 2, this.scale * 2, this.scale * 2, -this.scale * 2);
+        this.background = new ShapeGraphics(this.shape, backgroundColor, null, 0, 1, -10);
 
 		game.setGameFreezeStatus(isOpen());
 	}
@@ -49,19 +49,17 @@ public abstract class FullScreenMenu extends Menu {
 		super.update(deltaTime, zoom);
 		
 		if (isOpen()) {
-
-			window.setRelativeTransform(Transform.I.scaled(scale * zoom));
-			shape = new Polygon(-scale * 2 * zoom, -scale * 2 * zoom, -scale * 2 * zoom, scale * 2 * zoom,
-					scale * 2 * zoom, scale * 2 * zoom, scale * 2 * zoom, -scale * 2 * zoom);
-			background = new ShapeGraphics(shape, backgroundColor, null, 0, 1, -10);
-
+            this.window.setRelativeTransform(Transform.I.scaled(this.scale * zoom));
+            this.shape = new Polygon(-this.scale * 2 * zoom, -this.scale * 2 * zoom, -this.scale * 2 * zoom, this.scale * 2 * zoom,
+                    this.scale * 2 * zoom, this.scale * 2 * zoom, this.scale * 2 * zoom, -this.scale * 2 * zoom);
+            this.background = new ShapeGraphics(this.shape, this.backgroundColor, null, 0, 1, -10);
 		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		if (isOpen())
-			if (background != null)
-				background.draw(canvas);
+			if (this.background != null)
+                this.background.draw(canvas);
 	}
 }

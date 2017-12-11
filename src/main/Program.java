@@ -1,7 +1,9 @@
 package main;
 
 import main.game.Game;
+import main.game.TestGame;
 import main.game.TestGameLevelMenu;
+import main.game.TestGameWithLevel;
 import main.io.DefaultFileSystem;
 import main.io.FileSystem;
 import main.io.FolderFileSystem;

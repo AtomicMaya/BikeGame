@@ -31,36 +31,40 @@ public class Crate extends GameEntity {
 	/**
 	 * Create a new Crate
 	 * 
-	 * @param game ActorGame where the Crate evolve
-	 * @param position initial position of the Crate
-	 * @param imagePath path to the image to give to the Crate, if null, default
-	 * image
-	 * @param fixed weather the crate is fixed
-	 * @param size of the crate
+	 * @param game {@linkplain ActorGame} where the {@linkplain Crate} evolve.
+	 * @param position initial position of the {@linkplain Crate}.
+	 * @param imagePath path to the image to give to the {@linkplain Crate}, if null, default image.
+	 * @param fixed : Whether the {@linkplain Crate} is fixed.
+	 * @param width of the {@linkplain Crate}.
+	 * @param height of the {@linkplain Crate}.
 	 */
+    public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float width, float height) {
+        super(game, fixed, position);
+        this.imagePath = (imagePath == null || imagePath.equals("")) ? "res/images/crate.1.png" : imagePath;
+        this.width = width;
+        this.height = height;
+
+        create();
+    }
+
+    /**
+     * @see #Crate(ActorGame, Vector, String, boolean, float, float)
+     * Size replaced by width and height.
+     */
 	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
 		this(game, position, imagePath, fixed, size, size);
 	}
 
-	public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float width, float height) {
-		super(game, fixed, position);
-		this.imagePath = (imagePath == null || imagePath.equals("")) ? "res/images/crate.1.png" : imagePath;
-		this.width = width;
-		this.height = height;
-
-		create();
-	}
-
 	/**
-	 * Actual creation of the parameters of the GameEntity, not in the
-	 * constructor to avoid duplication with the method reCreate
+	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in the
+	 * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
 	 */
 	private void create() {
-		imagePath = (imagePath == null || imagePath == "") ? "res/images/crate.1.png" : imagePath;
+		this.imagePath = (this.imagePath == null || !this.imagePath.equals("")) ? "res/images/crate.1.png" : this.imagePath;
 
-		Polygon square = new Polygon(0, 0, 0, height, width, height, width, 0);
+		Polygon square = new Polygon(0, 0, 0, this.height, this.width, this.height, this.width, 0);
 		this.build(square);
-		graphic = this.addGraphics(this.imagePath, width, height);
+        this.graphic = this.addGraphics(this.imagePath, this.width, this.height);
 	}
 
 	@Override
@@ -71,7 +75,7 @@ public class Crate extends GameEntity {
 
 	@Override
 	public void draw(Canvas canvas) {
-		graphic.draw(canvas);
+        this.graphic.draw(canvas);
 	}
 
 	public void setSize(float width, float height) {
