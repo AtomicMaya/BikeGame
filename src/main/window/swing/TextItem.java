@@ -45,7 +45,8 @@ public class TextItem implements Item {
         this.fillColor = fillColor;
         this.outlineColor = outlineColor;
         this.thickness = thickness;
-        this.font = new Font(MyFont.getFontName(), Font.PLAIN | (bold ? Font.BOLD : 0) | (italics ? Font.ITALIC : 0), 1);
+        // We like better this font 
+        this.font = new Font(FontList.BELL_MT.toString(), Font.PLAIN | (bold ? Font.BOLD : 0) | (italics ? Font.ITALIC : 0), 1);
         this.anchor = anchor;
         this.depth = depth;
         this.alpha = alpha;

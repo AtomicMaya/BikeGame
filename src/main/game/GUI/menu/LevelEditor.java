@@ -219,7 +219,7 @@ public class LevelEditor implements Graphics {
 	public LevelEditor(ComplexBikeGame game, Window window, MainMenu mainMenu) {
 		this.game = game;
 		this.window = window;
-		this.actorMenu = new ActorMenu(game, this, window, Color.LIGHT_GRAY);
+		this.actorMenu = new ActorMenu(game, this, Color.LIGHT_GRAY);
 
 		// red square
 		Polygon p = new Polygon(0, 0, 0, 1, 1, 1, 1, 0);

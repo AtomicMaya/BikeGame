@@ -50,6 +50,7 @@ public class LevelTest extends Level {
 //		addActor(pp);
 		addActor(new Checkpoint(game, new Vector(-26, 0)));
 		 sc = new SpawnCheckpoint(game, new Vector(-30, 0), null);
+//		 addActor(sc);
 		// addActor(m);
 		this.addActor(terrain);
 //		this.addActor(player);

@@ -7,7 +7,11 @@ import main.math.*;
 import main.window.Canvas;
 
 public class Wheel extends GameEntity {
+
+	/** Used for save purpose. */
+	private static final long serialVersionUID = 3427364356329461380L;
 	// keep references
+	
 	private WheelConstraint constraint = null;
 	private ImageGraphics graphics;
 	private BasicContactListener listener;

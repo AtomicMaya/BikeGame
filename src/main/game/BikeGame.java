@@ -4,25 +4,22 @@
  */
 package main.game;
 
-import java.util.Arrays;
-import java.util.List;
-
 import main.game.levels.Level;
 import main.game.levels.Level0;
 import main.game.levels.Level2;
 import main.game.levels.LevelTest;
 import main.io.FileSystem;
 import main.window.Window;
-import main.window.swing.FontList;
-import main.window.swing.MyFont;
 
-public class TestGameLevelMenu extends ComplexBikeGame {
+import java.util.Arrays;
+import java.util.List;
+
+/** Create an instance of {@linkplain ComplexBikeGame}. */
+public class BikeGame extends ComplexBikeGame {
 
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
-
-		MyFont.setFont(FontList.BELL_MT);
 		return true;
 	}
 

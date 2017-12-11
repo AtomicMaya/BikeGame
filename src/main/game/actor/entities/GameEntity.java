@@ -23,7 +23,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	private transient ActorGame actorGame;
 
 	/** The initial position {@linkplain Vector}. */
-	private Vector position;
+	private Vector position = Vector.ZERO;
 
 	/** Whether this {@linkplain Entity} is fixed. */
 	private boolean fixed;
