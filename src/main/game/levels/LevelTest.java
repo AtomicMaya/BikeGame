@@ -21,7 +21,7 @@ public class LevelTest extends Level {
 //	private Bike player;
 	BetterTextGraphics btg;
 	StartCheckpoint sc;
-	
+
 	public LevelTest(ActorGame game) {
 		super(game);
 	}
@@ -74,6 +74,12 @@ public class LevelTest extends Level {
 	public boolean isFinished() {
 		return getPayload() != null && getPayload().getVictoryStatus() | getPayload().getDeathStatus();
 	}
+
+    @Override
+    public void dispose() {
+
+    }
+
 
 	@Override
 	public StartCheckpoint getSpawnCheckpoint() {

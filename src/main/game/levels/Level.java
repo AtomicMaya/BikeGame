@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public abstract class Level extends Node implements Actor {
 
-	// list of Actors in this level
+	// The list of Actors in this level
 	private ArrayList<Actor> actors = new ArrayList<>();
 
 	// associated Actor Game
@@ -92,4 +92,7 @@ public abstract class Level extends Node implements Actor {
 	 * @see StartCheckpoint#StartCheckpoint
 	 */
 	public abstract StartCheckpoint getSpawnCheckpoint();
+
+	/** Allows the game to dispose of unrepresented {@linkplain Actor}s, such as the {@linkplain main.game.audio.Audio}*/
+    public abstract void dispose();
 }

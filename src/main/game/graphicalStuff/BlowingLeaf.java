@@ -15,6 +15,7 @@ public class BlowingLeaf implements GraphicalObjects {
     private Vector position, speed;
     private float length, height, elapsedAnimationTime;
     private final float animationTime;
+    private float timeTillDeath, elapedTime;
 
     public BlowingLeaf(Vector position, Rectangle shape, Vector speed) {
         this.file = new ArrayList<>();
@@ -28,19 +29,22 @@ public class BlowingLeaf implements GraphicalObjects {
         this.initialOffset = new Random().nextInt(this.file.size() - 1);
         this.animationTime = 1.05f;
         this.elapsedAnimationTime = 0;
+        this.timeTillDeath = 10;
     }
 
     @Override
     public void update(float deltaTime) {
         this.position = this.position.add(this.speed.mul(deltaTime));
         this.elapsedAnimationTime += deltaTime;
-        if (this.elapsedAnimationTime > this.animationTime) this.elapsedAnimationTime = 0;
+        if (this.elapsedAnimationTime > this.animationTime)
+            this.elapsedAnimationTime = 0;
         this.graphicsCounter = ((int) (this.elapsedAnimationTime / this.animationTime * this.file.size()) + this.initialOffset) % this.file.size();
+        this.elapedTime += deltaTime;
     }
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(canvas.getImage(this.file.get(this.graphicsCounter)), Transform.I.translated(this.position).scaled(this.length, this.height), 1, -20);
+        canvas.drawImage(canvas.getImage(this.file.get(this.graphicsCounter)), Transform.I.scaled(length, height).translated(this.position), .7f, -20);
     }
 
     @Override
@@ -56,5 +60,14 @@ public class BlowingLeaf implements GraphicalObjects {
     @Override
     public void setPosition(Vector position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean getIfResets() {
+        if (this.elapedTime > this.timeTillDeath) {
+            this.elapedTime = 0;
+            return true;
+        } else
+            return false;
     }
 }
