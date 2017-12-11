@@ -105,11 +105,28 @@ public class ActorMenu extends Menu {
 		});
 		description.add(new Comment(game, "Create a mine"));
 
+		// boum barrel
+		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
+			levelEditor.addActorBuilder(new BoomBarrelBuilder(game));
+			changeStatus();
+		});
+		description.add(new Comment(game, "Create a barrel"));
+		
+		// pandule
+		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
+			levelEditor.addActorBuilder(new PenduleBuilder(game));
+			changeStatus();
+		});
+		description.add(new Comment(game, "Create a pendulum"));
+
+		// adjust size
 		for (GraphicalButton gb : boutons) {
 			gb.forceShape(width - betweenButton, height - betweenButton);
 			gb.setDepth(1337);
 		}
-
+		// adjust position
 		for (int i = 0; i < boutons.size(); i++) {
 			boutons.get(i).setAnchor(new Vector((i % nbButonLine) * (sizeX + betweenButton),
 					-sizeY - i / nbButonLine * (sizeY + betweenButton)).add(this.getAnchor()));
@@ -119,8 +136,8 @@ public class ActorMenu extends Menu {
 			description.get(i).setAnchor(new Vector(-10, 0));
 
 		}
+		// compute size of this menu
 		minPosition = new Vector(-betweenButton, betweenButton);
-
 		maxPosition = new Vector(nbButonLine * (sizeX + betweenButton),
 				-(sizeY + betweenButton) * ((float) Math.ceil(boutons.size() / nbButonLine) + 1)).add(betweenButton,
 						-betweenButton);
@@ -170,7 +187,7 @@ public class ActorMenu extends Menu {
 
 	@Override
 	public boolean isHovered() {
-		return ExtendedMath.isInRectangle(getPosition().add(minPosition) , getPosition().add(maxPosition),
+		return ExtendedMath.isInRectangle(getPosition().add(minPosition), getPosition().add(maxPosition),
 				getMousePosition());
 	}
 

@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import main.game.ActorGame;
 import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
-import main.game.actor.weapons.PortableWeapon;
+import main.game.actor.sensors.Checkpoint;
+import main.game.actor.sensors.Trigger;
 import main.game.actor.weapons.Rocket;
 import main.game.actor.weapons.Shotgun;
 import main.game.actor.weapons.Weapon;
@@ -56,7 +57,6 @@ public class Bike extends GameEntity implements PlayableEntity {
 	private transient boolean isDead = false, wasTriggered = false;
 
 	// weapons
-	// private transient Shotgun shotgun;
 	private transient ArrayList<Weapon> weapons = new ArrayList<>();
 	private int activeWeapon = 0;
 	private transient boolean isWeaponDeployed = false;
@@ -98,7 +98,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 
 		this.weapons = new ArrayList<>();
 		this.weapons.add(new Shotgun(this.game, 3, this));
-		this.weapons.add(new Rocket(game,3, this));
+		this.weapons.add(new Rocket(game, 3, this));
 
 		this.activeWeapon = 0;
 
@@ -244,11 +244,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 		this.wonTheGame = true;
 	}
 
-	@Override
-	public void triggerCheckpoint() {
-
-	}
-
+	/** Swap between the different {@linkplain Weapon} */
 	public void swapWeapon() {
 		weapons.get(activeWeapon).deploy(false);
 		activeWeapon++;

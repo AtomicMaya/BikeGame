@@ -101,6 +101,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	 * Destroy the {@linkplain Entity} associated with this
 	 * {@linkplain GameEntity}.
 	 */
+	@Override
 	public void destroy() {
 		this.entity.destroy();
 	}
@@ -265,8 +266,11 @@ public abstract class GameEntity implements Actor, Saveable {
 		entity.setPosition(newPosition);
 		this.position = newPosition;
 	}
-	
-	/** @return whether this {@linkplain GameEntity} is still in the {@linkplain World}*/
+
+	/**
+	 * @return whether this {@linkplain GameEntity} is still in the
+	 * {@linkplain World}
+	 */
 	public boolean isAlive() {
 		return entity.isAlive();
 	}

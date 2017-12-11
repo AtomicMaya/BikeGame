@@ -26,5 +26,4 @@ public interface Actor extends Positionable, Graphics {
 	default void draw(Canvas canvas) {
 		// By default , actors have nothing to draw
 	}
-
 }

@@ -169,19 +169,27 @@ public class LevelEditor implements Graphics {
 		playButton.setAnchor(playButtonPosition);
 		playButton.addOnClickAction(() -> {
 
+			error.setParent(playButton);
+			if (isBusy() && game.isGameFrozen()) {
+				errorText = "Please finish editing the actor";
+				displayErrorText = true;
+				errorTimer = 0;
+				return;
+			}
 			game.setGameFreezeStatus(!game.isGameFrozen());
 			if (!game.isGameFrozen()) {// play
 				playButton.setText(playButtonEditText, fontSize);
 				game.addActor(getActors());
 				game.setPayload(bb.getActor());
 				game.setViewCandidate(this.bb.getActor());
-			} else { // unplay
+			} else { // edit
 				playButton.setText(playButtonText, fontSize);
-				game.destroyAllActors();
-				game.setViewCandidate(null);
+				
 				for (ActorBuilder ab : actorBuilders) {
 					ab.reCreate();
 				}
+				game.setViewCandidate(null);
+				
 			}
 		});
 
@@ -206,16 +214,18 @@ public class LevelEditor implements Graphics {
 		}
 		currentSaveName = (temp);
 		System.out.println(currentSaveName);
-		
+
 		// create save button
 		saveButon = new GraphicalButton(game, saveButonPos, saveButonText, fontSize);
 		saveButon.setDepth(butonDepth);
 		saveButon.addOnClickAction(() -> {
 			errorText = null;
 			displayErrorText = false;
+			error.setParent(saveButon);
 			if (isBusy()) {
 				errorText = "Please finish editing the actor";
 				displayErrorText = true;
+				errorTimer = 0;
 				return;
 			}
 			if (this.gb == null)

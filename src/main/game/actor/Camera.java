@@ -104,8 +104,9 @@ public class Camera extends Node implements Actor {
 	 */
 	public void setViewCandidate(Positionable positionable) {
 		this.viewCandidate = positionable;
-		viewCenter = positionable.getPosition();
-		System.out.println("View candidate : "+viewCandidate);
+		if (positionable != null)
+			viewCenter = positionable.getPosition();
+		System.out.println("View candidate : " + viewCandidate);
 	}
 
 	public Positionable getViewCandidate() {

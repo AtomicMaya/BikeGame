@@ -27,13 +27,11 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 	private boolean keyPressedStatus;
 	private boolean sensorOccupied = false;
 	private float timeToActionEnd, elapsedActionTime = 0.f;
-	private Vector position;
 
 	public KeyboardProximitySensor(ActorGame game, Vector position, Shape shape, int key) {
 		super(game, true, position);
 		this.keyboard = game.getKeyboard();
 		this.key = key;
-		this.position = position;
 
 		this.sensorArea = shape;
 		this.build(this.sensorArea, -1, -1, true);
@@ -93,9 +91,4 @@ public class KeyboardProximitySensor extends GameEntity implements Sensor {
 	public boolean isOccupied() {
 		return this.sensorOccupied;
 	}
-
-    @Override
-    public void setPosition(Vector newPosition) {
-        this.position = position;
-    }
 }

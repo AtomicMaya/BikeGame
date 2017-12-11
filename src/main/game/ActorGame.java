@@ -1,23 +1,37 @@
 package main.game;
 
-import main.game.actor.Actor;
-import main.game.actor.Camera;
-import main.game.actor.entities.GameEntity;
-import main.game.actor.entities.PlayableEntity;
-import main.game.graphicalStuff.EndGameGraphics;
-import main.io.FileSystem;
-import main.io.Save;
-import main.math.*;
-import main.window.Canvas;
-import main.window.Keyboard;
-import main.window.Mouse;
-import main.window.Window;
-
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
+
+import main.game.actor.Actor;
+import main.game.actor.Camera;
+import main.game.actor.GameManager;
+import main.game.actor.entities.GameEntity;
+import main.game.actor.entities.PlayableEntity;
+import main.game.graphicalStuff.EndGameGraphics;
+import main.io.FileSystem;
+import main.io.Save;
+import main.math.Attachable;
+import main.math.DistanceConstraintBuilder;
+import main.math.Entity;
+import main.math.EntityBuilder;
+import main.math.Impact;
+import main.math.PointConstraintBuilder;
+import main.math.Positionable;
+import main.math.PrismaticConstraintBuilder;
+import main.math.RopeConstraintBuilder;
+import main.math.Transform;
+import main.math.Vector;
+import main.math.WeldConstraintBuilder;
+import main.math.WheelConstraintBuilder;
+import main.math.World;
+import main.window.Canvas;
+import main.window.Keyboard;
+import main.window.Mouse;
+import main.window.Window;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
 public class ActorGame implements Game {
@@ -44,6 +58,9 @@ public class ActorGame implements Game {
 	// list to add or remove actors
 	private ArrayList<Actor> actorsToRemove = new ArrayList<>(), actorsToAdd = new ArrayList<>();
 
+	// actor to manage checkpoint, reload, ...
+	private GameManager gameManager;
+
 	/**
 	 * The Save directory path : {@value #saveDirectory}
 	 */
@@ -67,11 +84,14 @@ public class ActorGame implements Game {
 		this.fileSystem = fileSystem;
 
 		this.score = 0;
+
+		this.gameManager = new GameManager(this, actors);
 		return true;
 	}
 
 	@Override
 	public void update(float deltaTime) {
+		gameManager.update(deltaTime);
 		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
 			System.out.println(actors.size() + " " + world.getEntities().size());
 		if (this.getKeyboard().get(KeyEvent.VK_P).isPressed()) {
@@ -106,7 +126,7 @@ public class ActorGame implements Game {
 			}
 		}
 		// for (Actor a:actors)a.update(deltaTime);
-
+		gameManager.draw(window);
 		for (Actor actor : this.actors) {
 			actor.draw(this.window);
 		}
@@ -154,7 +174,7 @@ public class ActorGame implements Game {
 	 * @param actor : An {@linkplain Actor} to be added in the game.
 	 */
 	public void addActor(Actor actor) {
-		if (!this.actors.contains(actor))
+		if (!this.actors.contains(actor) && !this.actorsToAdd.contains(actor))
 			this.actorsToAdd.add(actor);
 	}
 
@@ -163,7 +183,7 @@ public class ActorGame implements Game {
 	 */
 	public void addActor(List<Actor> actors) {
 		for (Actor a : actors) {
-			if (!this.actors.contains(a))
+			if (!this.actors.contains(a) && !this.actorsToAdd.contains(a))
 				this.actorsToAdd.add(a);
 		}
 	}
@@ -320,6 +340,7 @@ public class ActorGame implements Game {
 	 * {@linkplain Actor} of the game.
 	 */
 	public void setPayload(PlayableEntity player) {
+		// this.addActor(player);
 		this.player = player;
 	}
 
@@ -360,6 +381,8 @@ public class ActorGame implements Game {
 	 * @param saveName : The name of the save to load.
 	 */
 	public boolean load(String saveName) {
+		this.getGameManager().resetCheckpoint();
+		this.getGameManager().inLevel(saveName);
 		ArrayList<Actor> toAdd = new ArrayList<>();
 		synchronized (toAdd) {
 
@@ -460,6 +483,10 @@ public class ActorGame implements Game {
 
 	public int getScore() {
 		return this.score;
+	}
+
+	public GameManager getGameManager() {
+		return gameManager;
 	}
 
 }

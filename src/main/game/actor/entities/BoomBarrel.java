@@ -3,6 +3,7 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
+import main.io.Saveable;
 import main.math.BasicContactListener;
 import main.math.Entity;
 import main.math.Polygon;
@@ -15,22 +16,27 @@ import java.util.Arrays;
 /**
  * Created on 12/8/2017 at 11:25 PM.
  */
-public class BoomBarrel extends GameEntity {
-	private ImageGraphics graphics;
-	private ArrayList<String> boomGraphics;
-	private final float animationTime;
-	private float elapsedAnimationTime;
+public class BoomBarrel extends GameEntity implements Saveable {
+
+	private static final long serialVersionUID = -1395668954465139357L;
+	
+	private transient ImageGraphics graphics;
+	private transient ArrayList<String> boomGraphics;
+	private final float animationTime = .5f;
+	private float elapsedAnimationTime = 0;
 	private int graphicsCounter;
-	private BasicContactListener contactListener;
-	private boolean triggered, explosive;
+	private transient BasicContactListener contactListener;
+	private boolean triggered = false, explosive;
 
 	private boolean wasPlayer = false;
 
 	public BoomBarrel(ActorGame game, Vector position, boolean explosive) {
 		super(game, false, position);
-
 		this.explosive = explosive;
+		create();
+	}
 
+	private void create() {
 		this.build(new Polygon(0, 0, 1, 0, 1, 1.5f, 0, 1.5f), 100, 1, false, ObjectGroup.ENEMY.group);
 
 		this.graphics = addGraphics(explosive ? "./res/images/barrel.red.png" : "./res/images/barrel.green.png", 1,
@@ -64,12 +70,14 @@ public class BoomBarrel extends GameEntity {
 							"./res/images/explosion.acid.12.png", "./res/images/explosion.acid.13.png",
 							"./res/images/explosion.acid.14.png", "./res/images/explosion.acid.15.png"));
 		}
-
-		this.animationTime = .5f;
-		this.elapsedAnimationTime = 0;
 		this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);
-		this.triggered = false;
+	}
+
+	@Override
+	public void reCreate(ActorGame game) {
+		super.reCreate(game);
+		create();
 	}
 
 	@Override

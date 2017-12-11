@@ -20,15 +20,14 @@ public class CrateBuilder extends ActorBuilder {
 	private Crate crate;
 	private Vector position;
 
-	boolean placed = false;
-
 	// number field stuff
 	private NumberField height, width;
 	private Vector heightNumberFieldPos = new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
 	private Comment heightComment, widthComments;
 
 	private boolean isDone = false;
-	private boolean hoover = false;
+	private boolean hover = false;
+	private boolean placed = false;
 
 	public CrateBuilder(ActorGame game) {
 		super(game);
@@ -46,6 +45,8 @@ public class CrateBuilder extends ActorBuilder {
 		widthComments = new Comment(game, "Crate Width");
 		widthComments.setParent(width);
 		widthComments.setAnchor(new Vector(-6, 0));
+
+		position = getFlooredMousePosition();
 	}
 
 	@Override
@@ -57,7 +58,8 @@ public class CrateBuilder extends ActorBuilder {
 			}
 			crate.setPosition(position);
 
-		}
+		} else if (hover && isRightPressed())
+			placed = false;
 		if (!isDone()) {
 			height.update(deltaTime, zoom);
 			width.update(deltaTime, zoom);
@@ -69,10 +71,11 @@ public class CrateBuilder extends ActorBuilder {
 				crate.setSize(width.getNumber(), height.getNumber());
 				isDone = true;
 			}
-		} else
-			hoover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
-					getMousePosition());
-		if (hoover && isRightPressed())
+		}
+
+		hover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
+				getMousePosition());
+		if (hover && isRightPressed())
 			isDone = false;
 	}
 
@@ -107,7 +110,7 @@ public class CrateBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isHovered() {
-		return hoover;
+		return hover;
 	}
 
 	@Override
