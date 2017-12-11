@@ -20,9 +20,7 @@ public class Program {
 
 	/**
 	 * Main entry point.
-	 * 
-	 * @param args
-	 *            ignored
+	 * @param args : Ignored
 	 */
 	public static void main(String[] args) {
 
@@ -42,7 +40,7 @@ public class Program {
 			// Game game = new ContactGame();
 			// Game game = new PolyLineGame();
 			// Game game = new CrateGame();
-
+            //Game game = new TestGame();
 			Game game = new TestGameWithLevel();
 			if (game.begin(window, fileSystem)) {
 

@@ -11,6 +11,7 @@ public class Cloud implements GraphicalObjects {
     private Vector position, speed;
     private float length, height;
     private ActorGame game;
+    private float timeTillDeath, elapedTime;
 
     public Cloud(ActorGame game, Vector position, Rectangle shape, Vector speed) {
         this.game = game;
@@ -19,11 +20,13 @@ public class Cloud implements GraphicalObjects {
         this.length = shape.getHeight();
         this.height = shape.getLength();
         this.speed = speed;
+        this.timeTillDeath = 10;
     }
 
     @Override
     public void update(float deltaTime) {
         this.position = this.position.add(this.speed.mul(deltaTime));
+        this.elapedTime += deltaTime;
     }
 
     @Override
@@ -34,6 +37,15 @@ public class Cloud implements GraphicalObjects {
     @Override
     public void setPosition(Vector position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean getIfResets() {
+        if (this.elapedTime > this.timeTillDeath) {
+            this.elapedTime = 0;
+            return true;
+        } else
+            return false;
     }
 
     @Override

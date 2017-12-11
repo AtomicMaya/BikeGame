@@ -9,6 +9,9 @@ import main.window.Canvas;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * Class handling the display of an awesome font.
+ */
 public class BetterTextGraphics extends Node implements Graphics {
 	private ArrayList<String> graphics;
 	private ArrayList<Vector> offsets;
@@ -18,23 +21,36 @@ public class BetterTextGraphics extends Node implements Graphics {
 	private String text = "";
 	private float charSize = 1;
 	private float textLength;
-	private float alpha = .4f, depth = 52-.01f;
+	private float alpha = 1f, depth = 52-.01f;
 	private float letterRatio = 73f;
-	private float inBeetweenCharOffset = 0;
+	private float inBetweenCharOffset = 0;
 
 	private Canvas canvas;
 
+    /**
+     * @param game : The {@linkplain ActorGame} instance where this will be displayed.
+     * @param text : A {@linkplain String} containing the text to be displayed
+     * @param fontSize : A {@linkplain Float} representing the font size.
+     * @param anchor : A position {@linkplain Vector}, where this should be anchored.
+     * @param alpha : A {@linkplain Float} representing the alpha value.
+     */
+    public BetterTextGraphics(ActorGame game, String text, float fontSize, Vector anchor, float alpha) {
+        this.canvas = game.getCanvas();
+        this.setRelativeTransform(Transform.I.translated(anchor));
+        this.setText(text, fontSize);
+        this.setAlpha(alpha);
+    }
+
+    /** @see #BetterTextGraphics(ActorGame, String, float, Vector, float) */
 	public BetterTextGraphics(ActorGame game, String text, float fontSize, Vector anchor) {
-		canvas = game.getCanvas();
-		setRelativeTransform(Transform.I.translated(anchor));
-		setText(text, fontSize);
+        this(game, text, fontSize, anchor, 1f);
 	}
 
+
 	/**
-	 * Gets all related paths to letters of font...
-	 * 
-	 * @param text : The input text
-	 * @return an arrayList containing paths to the font image.
+	 * Gets all related paths to the letters of font.
+	 * @param text : The {@linkplain String} containing the text.
+	 * @return a {@linkplain ArrayList<String>} containing the paths to the font image.
 	 */
 	private ArrayList<String> getFileLocations(String text) {
 		ArrayList<String> fileLocations = new ArrayList<>();
@@ -47,43 +63,43 @@ public class BetterTextGraphics extends Node implements Graphics {
 				switch (character) {
 					case '\'':
 						fileLocations.add("./res/font/sApostrophe.png");
-					break;
+					    break;
 					case '\\':
 						fileLocations.add("./res/font/sBackslash.png");
-					break;
+					    break;
 					case '/':
 						fileLocations.add("./res/font/sSlash.png");
-					break;
+					    break;
 					case ':':
 						fileLocations.add("./res/font/sColon.png");
-					break;
+					    break;
 					case ',':
 						fileLocations.add("./res/font/sComma.png");
-					break;
+					    break;
 					case '.':
 						fileLocations.add("./res/font/sDot.png");
-					break;
+					    break;
 					case '-':
 						fileLocations.add("./res/font/sDash.png");
-					break;
+					    break;
 					case '+':
 						fileLocations.add("./res/font/sPlus.png");
-					break;
+					    break;
 					case '!':
 						fileLocations.add("./res/font/sEMark.png");
-					break;
+                        break;
 					case '?':
 						fileLocations.add("./res/font/sQMark.png");
-					break;
+					    break;
 					case '(':
 						fileLocations.add("./res/font/sLParen.png");
-					break;
+					    break;
 					case ')':
 						fileLocations.add("./res/font/sRParen.png");
-					break;
+					    break;
 					case '"':
 						fileLocations.add("./res/font/sQuot.png");
-					break;
+					    break;
 					case ' ':
 						fileLocations.add("./res/font/sSpace.png");
 					    break;
@@ -142,10 +158,10 @@ public class BetterTextGraphics extends Node implements Graphics {
 			float letterWidth = canvas.getImage(graphics.get(i)).getWidth() / letterRatio;
 			this.offsets.add(new Vector(offset, 0));
 			this.charSizes.add(new float[] { letterWidth * this.charSize, this.charSize });
-			offset += letterWidth * this.charSize + inBeetweenCharOffset;
+			offset += letterWidth * this.charSize + inBetweenCharOffset;
 
 		}
-		textLength = offset - inBeetweenCharOffset; // - inBeetweenCharOffset pour
+		this.textLength = offset - this.inBetweenCharOffset; // - inBetweenCharOffset pour
 												// corigé, il y en a un en trop
 	}
 
@@ -176,7 +192,7 @@ public class BetterTextGraphics extends Node implements Graphics {
 	 * @return the total text length of this better text graphics
 	 */
 	public float getTotalWidth() {
-		return textLength;
+		return this.textLength;
 	}
 
 	/**
@@ -184,8 +200,8 @@ public class BetterTextGraphics extends Node implements Graphics {
 	 * @param value space value
 	 */
 	public void setInBetweenCharTextOffset(float value) {
-		this.inBeetweenCharOffset = value;
-		setText(text);
+		this.inBetweenCharOffset = value;
+		this.setText(this.text);
 	}
 
 	/**

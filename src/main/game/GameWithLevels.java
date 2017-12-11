@@ -35,10 +35,10 @@ public abstract class GameWithLevels extends ActorGame {
 	public boolean begin(Window window, FileSystem fileSystem) {
 		super.begin(window, fileSystem);
 
-		message1 = new TextGraphics(messageNextLevelText, fontSize, new Color(66, 241, 244), Color.RED.darker(), .02f,
+		this.message1 = new TextGraphics(this.messageNextLevelText, this.fontSize, new Color(66, 241, 244), Color.RED.darker(), .02f,
 				false, false, Vector.ZERO, 1, 1337);
-		message1.setAnchor(new Vector(.5f, -2.5f));
-		levels = createLevelList();
+        this.message1.setAnchor(new Vector(.5f, -2.5f));
+        this.levels = createLevelList();
 		return true;
 	}
 
@@ -47,34 +47,34 @@ public abstract class GameWithLevels extends ActorGame {
 		super.update(deltaTime);
 
 		if (this.isGameFrozen()) {
-			message1.setText("");
-			display = false;
-			timerMessage = 0;
+            this.message1.setText("");
+            this.display = false;
+            this.timerMessage = 0;
 		}
-		if (levels != null && !levels.isEmpty() && levels.get(currentLevel).isFinished()) {
+		if (this.levels != null && !this.levels.isEmpty() && this.levels.get(this.currentLevel).isFinished()) {
 			if (getKeyboard().get(KeyEvent.VK_R).isPressed()) {
 				resetLevel();
 			}
 
-			timerMessage += deltaTime;
-			if (timerMessage > timeBeforeMessage1 & !display) {
-				display = true;
+            this.timerMessage += deltaTime;
+			if (this.timerMessage > this.timeBeforeMessage1 & !this.display) {
+                this.display = true;
 
 				if (getPayload().getVictoryStatus()) {
-					message1.setText(messageNextLevelText);
-					message1.setFillColor(Color.BLUE);
-					message1.setOutlineColor(null);
+                    this.message1.setText(this.messageNextLevelText);
+                    this.message1.setFillColor(Color.BLUE);
+                    this.message1.setOutlineColor(null);
 				} else if (getPayload().getDeathStatus()) {
-					message1.setFillColor(new Color(66, 241, 244));
-					message1.setOutlineColor(new Color(155, 18, 48));
-					message1.setText(messageRestartLevelText);
+                    this.message1.setFillColor(new Color(66, 241, 244));
+                    this.message1.setOutlineColor(new Color(155, 18, 48));
+                    this.message1.setText(this.messageRestartLevelText);
 				}
 
 			}
-			if (display) {
+			if (this.display) {
 				Vector position = getCanvas().getPosition();
-				message1.setRelativeTransform(Transform.I.translated(position));
-				message1.draw(getCanvas());
+                this.message1.setRelativeTransform(Transform.I.translated(position));
+                this.message1.draw(getCanvas());
 			}
 			if (getPayload().getVictoryStatus()) {
 				if (getKeyboard().get(KeyEvent.VK_N).isPressed())
@@ -89,37 +89,37 @@ public abstract class GameWithLevels extends ActorGame {
 
 	/** Go to the next {@linkplain Level} */
 	protected void nextLevel() {
-		beginLevel(currentLevel + 1);
+		beginLevel(this.currentLevel + 1);
 	}
 
 	/** Reset the current {@linkplain Level} */
 	protected void resetLevel() {
 		clearCurrentLevel();
-		beginLevel(currentLevel);
+		beginLevel(this.currentLevel);
 	}
 
-	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
+	/** Clear all {@linkplain main.game.actor.Actor} in the current {@linkplain Level} */
 	protected void clearCurrentLevel() {
+        if(this.levels.size() > 0) this.levels.get(this.currentLevel).dispose();
 		super.destroyAllActors();
-		message1.setText("");
-		display = false;
+        this.message1.setText("");
+        this.display = false;
 	}
 
 	/**
 	 * Begin a {@linkplain Level}
-	 * @param i : Number in the {@linkplain List} of the {@linkplain Level} to
-	 * start
+	 * @param levelIndex : Index in the {@linkplain List} of the {@linkplain Level} to start.
 	 */
-	public void beginLevel(int i) {
-		clearCurrentLevel();
-		currentLevel = i;
-		if (currentLevel > levels.size() - 1)
-			currentLevel = 0;
-		super.addActor(levels.get(currentLevel));
-		this.levels.get(currentLevel).createAllActors();
-		super.addActor(levels.get(currentLevel).getActors());
-		super.setViewCandidate(levels.get(currentLevel).getViewCandidate());
-		super.setPayload(levels.get(currentLevel).getPayload());
+	public void beginLevel(int levelIndex) {
+        this.clearCurrentLevel();
+        this.currentLevel = levelIndex;
+		if (this.currentLevel > this.levels.size() - 1)
+            this.currentLevel = 0;
+		super.addActor(this.levels.get(this.currentLevel));
+		this.levels.get(this.currentLevel).createAllActors();
+		super.addActor(this.levels.get(this.currentLevel).getActors());
+		super.setViewCandidate(this.levels.get(this.currentLevel).getViewCandidate());
+		super.setPayload(this.levels.get(this.currentLevel).getPayload());
 	}
 
 	/**
@@ -128,8 +128,7 @@ public abstract class GameWithLevels extends ActorGame {
 	protected abstract List<Level> createLevelList();
 
 	/**
-	 * @return the number of {@linkplain Level} in this
-	 * {@linkplain GameWithLevels}
+	 * @return the number of {@linkplain Level} in this {@linkplain GameWithLevels}
 	 */
 	public int numberOfLevel() {
 		return levels.size();

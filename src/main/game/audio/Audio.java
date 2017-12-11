@@ -50,8 +50,9 @@ public class Audio implements LineListener {
 	}
 
 	public void destroy() {
-		this.audioClip.close();
-		try { this.stream.close(); }
-		catch (IOException ignored) { }
+		try {
+            this.audioClip.close();
+            this.stream.close(); }
+		catch (IOException|NullPointerException ignored) { }
 	}
 }

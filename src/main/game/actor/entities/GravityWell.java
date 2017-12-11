@@ -52,7 +52,7 @@ public class GravityWell extends GameEntity {
 
         this.sensor.update(deltaTime);
         if(this.sensor.getSensorDetectionStatus()) {
-            ((GameEntity) this.game.getPayload()).getEntity().setVelocity(this.force);
+            sensor.getCollidingEntity().applyImpulse(new Vector(0, .05f), null);
         }
     }
 

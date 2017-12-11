@@ -67,4 +67,10 @@ public class LevelTest extends Level {
 		return getPayload() != null && getPayload().getVictoryStatus() | getPayload().getDeathStatus();
 	}
 
+    @Override
+    public void dispose() {
+
+    }
+
+
 }

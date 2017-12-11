@@ -35,5 +35,6 @@ public interface GraphicalObjects extends Graphics {
      */
     void setPosition(Vector position);
 
+    boolean getIfResets();
 
 }

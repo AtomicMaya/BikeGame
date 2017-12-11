@@ -8,6 +8,7 @@ import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.ProximitySensor;
 import main.game.audio.Audio;
 import main.game.graphicalStuff.EndGameGraphics;
+import main.game.graphicalStuff.Preset;
 import main.game.graphicalStuff.Scenery;
 import main.game.graphics.BetterTextGraphics;
 import main.game.levels.Level;
@@ -104,13 +105,15 @@ public class TestGame extends ActorGame {
 
         BoomBarrel crate = new BoomBarrel(this, new Vector(10, 7), true);
 
-        //GravityWell well = new GravityWell(this, new Vector(15,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
+        GravityWell well = new GravityWell(this, new Vector(15,3), new Vector(3f, 3f), new Polygon(0,0, 5,0,5,5,0,5), (float) Math.PI / 2);
 
         Mine mine = new Mine(this, new Vector(15, 2));
 
         this.graphics = new EndGameGraphics(this);
         Liquid liquid = new Liquid(this, new Vector(20, -7), new Polygon(0, 0, 5, 0, 5, 2, 0, 2),  true);
         //Pendulum pendulum = new Pendulum(this, new Vector(5, 10), new Vector(0, 12), 4);
+
+        scenery = new Scenery(this, Preset.Breezy);
 
         //this.addActor(a);
         //this.addActor(crate1);
@@ -123,7 +126,7 @@ public class TestGame extends ActorGame {
         this.addActor(liquid);
         this.addActor(graphics);
 //		this.addActor(lever);
-//		this.addActor(well);
+		this.addActor(well);
         //this.addActor(platform);
         //this.addActor(movingPlatform);
         //this.addActor(button);
@@ -134,7 +137,7 @@ public class TestGame extends ActorGame {
         this.addActor(checkpoint);
         this.addActor(finishActor);
         //this.addActor(emitter);
-        //this.addActor(scenery);
+        this.addActor(scenery);
         return true;
     }
 

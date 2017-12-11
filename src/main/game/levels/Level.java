@@ -15,16 +15,16 @@ import java.util.ArrayList;
  */
 public abstract class Level extends Node implements Actor {
 
-	// list of Actors in this level
+	// The list of Actors in this level
 	private ArrayList<Actor> actors = new ArrayList<>();
 
-	// associated Actor Game
+	// The associated ActorGame
 	protected transient ActorGame game;
 
-	// Actor to follow with the camera in the game
+	// Actor to follow with the camera in the game, usually the player
 	private Positionable viewCandidate;
 
-	// player's actor
+	// The Player
 	private PlayableEntity payload;
 
 	/**
@@ -73,18 +73,21 @@ public abstract class Level extends Node implements Actor {
 	 * @return the {@linkplain Actor} to follow with he camera in the {@linkplain Level}
 	 */
 	public Positionable getViewCandidate() {
-		return viewCandidate;
+		return this.viewCandidate;
 	}
 
 	/**
 	 * @return the playable {@linkplain Actor}.
 	 */
 	public PlayableEntity getPayload() {
-		return payload;
+		return this.payload;
 	}
 
 	/**
 	 * @return whether this {@linkplain Level} is finished
 	 */
 	public abstract boolean isFinished();
+
+	/** Allows the game to dispose of unrepresented {@linkplain Actor}s, such as the {@linkplain main.game.audio.Audio}*/
+	public abstract void dispose();
 }

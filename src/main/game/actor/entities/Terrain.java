@@ -11,6 +11,7 @@ import main.window.Canvas;
 import java.awt.*;
 import java.util.List;
 
+
 public class Terrain extends GameEntity {
 	private static final long serialVersionUID = 7454750386019416210L;
 

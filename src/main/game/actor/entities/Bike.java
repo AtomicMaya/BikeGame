@@ -3,13 +3,13 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
-import main.game.actor.entities.weapons.Shotgun;
-import main.game.actor.entities.weapons.Weapon;
+import main.game.actor.weapons.Rocket;
+import main.game.actor.weapons.Shotgun;
+import main.game.actor.weapons.Weapon;
 import main.game.graphics.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
 import main.window.Canvas;
-import main.math.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

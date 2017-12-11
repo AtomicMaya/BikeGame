@@ -9,6 +9,8 @@ import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
 import main.game.actor.sensors.FinishActor;
 import main.game.audio.Audio;
+import main.game.graphicalStuff.Preset;
+import main.game.graphicalStuff.Scenery;
 import main.game.graphics.BetterTextGraphics;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -20,6 +22,7 @@ import main.window.Canvas;
 public class Level0 extends Level {
     private Bike player;
     private BetterTextGraphics btgForward, btgBrake, btgTilt, btgJump, btgCheckpoin, btgSpace, btgDoubleJump, btgLever, btgPlatform, btgLava, btgCoin, btgMud, btgFinish;
+    private Audio backgroundAudio;
 
     public Level0(ActorGame game) {
         super(game);
@@ -61,12 +64,14 @@ public class Level0 extends Level {
         FinishActor finish = new FinishActor(this.game, new Vector(175, 11));
 
 
-        this.btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(1,6));
-        this.btgBrake = new BetterTextGraphics(this.game, "Brake with S",.75f, new Vector(3, 4));
-        this.btgTilt = new BetterTextGraphics(this.game, "Tilt with A, D", .75f, new Vector(22, 4));
-        this.btgJump = new BetterTextGraphics(this.game, "Jump with Q", .75f, new Vector(50, -7));
-        this.btgSpace = new BetterTextGraphics(this.game, "Change orientation with space", .75f, new Vector(55, -1));
-        this.btgDoubleJump = new BetterTextGraphics(this.game, "Reach for the skies ! Press Q twice.", .75f, new Vector(56, 8));
+
+
+        this.btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(1,6), .6f);
+        this.btgBrake = new BetterTextGraphics(this.game, "Brake with S",.75f, new Vector(3, 4), .6f);
+        this.btgTilt = new BetterTextGraphics(this.game, "Tilt with A, D", .75f, new Vector(22, 4), .6f);
+        this.btgJump = new BetterTextGraphics(this.game, "Jump with Q", .75f, new Vector(50, -7), .6f);
+        this.btgSpace = new BetterTextGraphics(this.game, "Change orientation with space", .75f, new Vector(55, -1), .6f);
+        this.btgDoubleJump = new BetterTextGraphics(this.game, "Reach for the skies ! Press Q twice.", .75f, new Vector(56, 8), .6f);
         this.btgLever = new BetterTextGraphics(this.game, "Levers can be activated by pressing E", .75f, new Vector(88, 9));
         this.btgPlatform = new BetterTextGraphics(this.game, "Keep on moving to stay on track !", .75f, new Vector(95, 10));
         this.btgLava = new BetterTextGraphics(this.game, "The Bee Gees on fire ! Burnin' alive !", .75f, new Vector(105, 1));
@@ -74,7 +79,9 @@ public class Level0 extends Level {
         this.btgMud = new BetterTextGraphics(this.game, "Mud, good for pies, less so for traction !", .75f, new Vector(130, 13));
         this.btgFinish = new BetterTextGraphics(this.game, "You haven't died yet ! Or have you ?", .75f, new Vector(155, 13));
 
-        Audio backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 10f);
+        this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 10f);
+
+        Scenery scenery = new Scenery(this.game, Preset.Breezy);
 
         this.addActor(terrain);
         this.addActor(muddyTerrain);
@@ -85,9 +92,15 @@ public class Level0 extends Level {
         this.addActor(coin);
         this.addActor(lava);
         this.addActor(finish);
+        this.addActor(scenery);
 
         this.setViewCandidate(this.player);
         this.setPayload(this.player);
+    }
+
+    @Override
+    public void dispose() {
+        if (this.backgroundAudio != null) this.backgroundAudio.destroy();
     }
 
     @Override
