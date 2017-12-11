@@ -127,7 +127,7 @@ public class MainMenu extends FullScreenMenu {
 		int n = game.numberOfLevel();
 		for (int i = 0; i < n; i++) {
 			Vector position = new Vector(topLeftLB.x + (i % 3) * (sizeX + shiftLB), topLeftLB.y - (i / 3) * sizeY);
-			levelButtons.add(new GraphicalButton(game, position, "Level" + (i + 1), 1));
+			levelButtons.add(new GraphicalButton(game, position, "Level" + (i), 1));
 			levelButtons.get(i).forceShape(sizeX, -1);
 			int temp = i;
 			levelButtons.get(i).addOnClickAction(() -> {

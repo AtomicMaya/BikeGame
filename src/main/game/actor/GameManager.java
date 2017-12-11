@@ -10,6 +10,7 @@ import main.game.GUI.menu.LevelEditor;
 import main.game.actor.entities.Bike;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.StartCheckpoint;
+import main.game.graphics.BetterTextGraphics;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
@@ -25,7 +26,10 @@ public class GameManager {
 
 	private ActorGame game;
 	private ComplexBikeGame gameLevel;
+	
+	// score management
 	private int score = 0;
+	private BetterTextGraphics scoreDisapplay;
 
 	// level management
 	private final String messageNextLevelText = "Press N to go to the next level";
@@ -44,12 +48,10 @@ public class GameManager {
 	// temp save management
 	private String saveLoaded;
 
-	private boolean isInLevel = true;
 	private int gameState = -1;
 
 	public GameManager(ActorGame game) {
 		this.game = game;
-
 	}
 
 	public void update(float deltaTime) {
@@ -126,6 +128,9 @@ public class GameManager {
 			canvas.drawText(messageDisplayed, fontSize * game.getViewScale() / 20f,
 					Transform.I.translated(canvas.getPosition()), new Color(66, 241, 244), new Color(155, 18, 48), .02f,
 					false, false, new Vector(.5f, -2.5f * game.getViewScale() / 20f), 1, 42000);
+		if (!game.isGameFrozen()) {
+			
+		}
 	}
 
 	// respawn management
