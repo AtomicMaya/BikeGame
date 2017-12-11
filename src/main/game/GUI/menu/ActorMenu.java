@@ -57,7 +57,7 @@ public class ActorMenu extends Menu {
 		});
 		description.add(new Comment(game, "Add or edit the Ground"));
 
-		// bike pos 3, 0
+		// spawn 
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addSpawn(new SpawnBuilder(game));
@@ -65,23 +65,31 @@ public class ActorMenu extends Menu {
 		});
 		description.add(new Comment(game, "Add or edit the spawnpoint"));
 
-		// bike pos 3, 0
+		// checkpoint
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new CheckpointBuilder(game));
 			changeStatus();
 		});
 		description.add(new Comment(game, "Add a checkpoint"));
-		
-		// bike pos 3, 0
+
+		// bike 
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addFinish(new FinishBuilder(game));
 			changeStatus();
 		});
 		description.add(new Comment(game, "Add or edit the finish point"));
-		
-		// mouving platform pos 1, -1
+
+		// coin
+		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
+			levelEditor.addActorBuilder(new CoinBuilder(game));
+			changeStatus();
+		});
+		description.add(new Comment(game, "Add a coin"));
+
+		// mouving platform
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new PlatformBuilder(game));
@@ -89,7 +97,7 @@ public class ActorMenu extends Menu {
 		});
 		description.add(new Comment(game, "Add a platform"));
 
-		// trampoline builder pos 2 -1
+		// trampoline builder
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
 			levelEditor.addActorBuilder(new TrampolineBuilder(game));
@@ -128,7 +136,7 @@ public class ActorMenu extends Menu {
 			changeStatus();
 		});
 		description.add(new Comment(game, "Create a barrel"));
-		
+
 		// pandule
 		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
 		boutons.get(boutons.size() - 1).addOnClickAction(() -> {

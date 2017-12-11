@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	3 déc. 2017
- */
 package main.game.GUI.menu;
 
 import main.game.ComplexBikeGame;

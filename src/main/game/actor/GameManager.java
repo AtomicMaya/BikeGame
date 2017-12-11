@@ -27,6 +27,7 @@ public class GameManager {
 
 	private ActorGame game;
 	private ComplexBikeGame gameLevel;
+	private LevelEditor levelEditor;
 
 	// score management
 	private int score = 0;
@@ -101,6 +102,8 @@ public class GameManager {
 							break;
 						}
 						case levelEditorState: {
+							game.setGameFreezeStatus(false);
+							messageDisplayed = "";
 							break;
 						}
 					}
@@ -210,5 +213,6 @@ public class GameManager {
 
 	public void setGameState(LevelEditor levelEditor) {
 		this.gameState = levelEditorState;
+		this.levelEditor = levelEditor;
 	}
 }
