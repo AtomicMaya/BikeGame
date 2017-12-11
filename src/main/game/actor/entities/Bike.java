@@ -138,6 +138,7 @@ public class Bike extends GameEntity implements PlayableEntity {
                 if (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group
                         || entity.getCollisionGroup() == ObjectGroup.OBSTACLE.group) {
                     this.isDead = true;
+                    System.out.println(entity.getCollisionGroup());
                     if (!this.wasTriggered) {
                         this.triggerDeath(true);
                         this.wasTriggered = true;

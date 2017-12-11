@@ -121,6 +121,13 @@ public class GameManager implements Graphics {
 
 		// spawn a bike if payload is not defind, which happend at the start of
 		// a game or after a reset
+		if (game.getKeyboard().get(KeyEvent.VK_8).isPressed()) {
+			Bike b = new Bike(game, game.getMouse().getPosition());
+			game.setPayload(b);
+			game.setViewCandidate(b);
+			game.addActor(b);
+		}
+			
 		if (game.getPayload() == null && (startCheckpoint != null)) {
 			spawnBike();
 			// if bike is spawned, ckeck for bike death/win status in order to
@@ -228,8 +235,8 @@ public class GameManager implements Graphics {
 	/** Called at the reset of a level */
 	private void reset() {
 		game.destroyAllActors();
-		game.getPayload().destroy();
-		game.setPayload(null);
+//		game.getPayload().destroy();
+//		game.setPayload(null);
 		game.setViewCandidate(null);
 		messageDisplayed = "";
 		respawnTimer = 0;

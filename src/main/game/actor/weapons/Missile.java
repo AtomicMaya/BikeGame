@@ -90,7 +90,7 @@ public class Missile extends GameEntity {
 		if (!this.triggered) {
 			Vector resize = (secretProbability < 42 / 404f) ? new Vector(1, 47 / 50f) : new Vector(1, 24 / 96f);
 			canvas.drawImage(canvas.getImage((secretProbability < 42 / 404f) ? "res/images/roquette.png" : imagePath),
-					Transform.I.scaled(resize.x, resize.y).rotated((float) (direction.getAngle() + Math.PI))
+					Transform.I.scaled(resize.x, resize.y).rotated((float) (direction.getAngle()))
 							.translated(getPosition()),
 					1, 12);
 		} else

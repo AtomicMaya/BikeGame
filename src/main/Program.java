@@ -28,7 +28,7 @@ public class Program {
 		FileSystem fileSystem = new FolderFileSystem(new ResourceFileSystem(DefaultFileSystem.INSTANCE));
 
 		// Use Swing display
-		Window window = new SwingWindow("Play", fileSystem);
+		Window window = new SwingWindow("See you next semester to the MAN !", fileSystem);
 
 		try {
 

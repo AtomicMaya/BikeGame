@@ -18,7 +18,7 @@ public class Checkpoint extends Trigger {
 	/** The associated {@linkplain ImageGraphics}. */
 	private transient ImageGraphics graphics;
 
-	/** The paths to the image ressources. */
+	/** The paths to the image resources. */
 	private String imagePath, imagePathTriggered;
 
 	/**

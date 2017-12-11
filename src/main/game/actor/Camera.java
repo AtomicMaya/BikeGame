@@ -59,6 +59,9 @@ public class Camera extends Node implements Actor {
 		this.viewCenter = this.viewCenter.mixed(this.viewTarget, 1f - ratio);
 		// Compute new viewport
 		Transform viewTransform = Transform.I.scaled(VIEW_SCALE_CURRENT).translated(this.viewCenter);
+		if (game.getPayload()!=null)
+		 viewTransform = Transform.I.scaled(VIEW_SCALE_CURRENT).translated(game.getPayload().getPosition());
+
 		this.window.setRelativeTransform(viewTransform);
 		VIEW_SCALE_PREVIOUS = VIEW_SCALE_CURRENT;
 	}
