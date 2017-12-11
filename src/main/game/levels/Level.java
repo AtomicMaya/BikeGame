@@ -1,7 +1,5 @@
 package main.game.levels;
 
-import java.util.ArrayList;
-
 import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.entities.PlayableEntity;
@@ -10,6 +8,8 @@ import main.game.actor.sensors.StartCheckpoint;
 import main.game.graphicalStuff.EndGameGraphics;
 import main.math.Node;
 import main.math.Positionable;
+
+import java.util.ArrayList;
 
 /**
  * Represent a {@linkplain Level} which can create some {@linkplain Actor}s to
@@ -64,6 +64,7 @@ public abstract class Level extends Node implements Actor {
 	 * @return the {@linkplain Actor} to follow with he camera in the
 	 * {@linkplain Level}, if null the viewCandidate will be set to the bike
 	 * spawned by the {@linkplain StartCheckpoint}
+	 * @see #getSpawnCheckpoint()
 	 */
 	public Positionable getViewCandidate() {
 		return null;
@@ -72,6 +73,7 @@ public abstract class Level extends Node implements Actor {
 	/**
 	 * @return the playable {@linkplain Actor}, if null the payload will be set
 	 * to the bike spawned by the {@linkplain StartCheckpoint}
+	 * @see #getSpawnCheckpoint()
 	 */
 	public PlayableEntity getPayload() {
 		return null;
@@ -83,9 +85,11 @@ public abstract class Level extends Node implements Actor {
 	public abstract boolean isFinished();
 
 	/**
-	 * @return the spawn {@linkplain Checkpoint}, has to be defined if
-	 * getPayload is not defined
+	 * @return the spawn {@linkplain Checkpoint}, will spawn the bike if created
+	 * with attribute player equals null, has to be defined if getPayload is not
+	 * defined
 	 * @see #getPayload
+	 * @see StartCheckpoint#StartCheckpoint
 	 */
 	public abstract StartCheckpoint getSpawnCheckpoint();
 }

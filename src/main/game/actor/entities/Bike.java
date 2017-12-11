@@ -3,18 +3,13 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
-import main.game.actor.sensors.Checkpoint;
-import main.game.actor.sensors.Trigger;
 import main.game.actor.weapons.Rocket;
 import main.game.actor.weapons.Shotgun;
 import main.game.actor.weapons.Weapon;
 import main.game.graphics.ShapeGraphics;
 import main.math.*;
 import main.math.Polygon;
-import main.math.Polyline;
-import main.math.Vector;
 import main.window.Canvas;
-import main.math.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -38,7 +33,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 	private boolean lookRight = true;
 	private transient boolean wonTheGame, wasKilledByGravity;
 	private transient int jumpCount;
-        private transient float timeTillRejump = 7f, elapsedRejumpTime = 0;
+	private transient float timeTillRejump = 7f, elapsedRejumpTime = 0;
 
 	private transient BasicContactListener contactListener;
 
@@ -60,7 +55,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 	private transient ArrayList<Weapon> weapons = new ArrayList<>();
 	private int activeWeapon = 0;
 	private transient boolean isWeaponDeployed = false;
-
+	
 	/**
 	 * Create a {@linkplain Bike}, the BikeGame's main actor.
 	 * @param game : The {@linkplain ActorGame} in which this object exists.
@@ -73,8 +68,9 @@ public class Bike extends GameEntity implements PlayableEntity {
 	}
 
 	/**
-	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in the
-	 * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
+	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in
+	 * the constructor to avoid duplication with the method
+	 * {@linkplain #reCreate(ActorGame)}
 	 */
 	private void create() {
 		this.hitbox = new Polygon(0.0f, 0.5f, 0.5f, 1.0f, 0.0f, 2.0f, -0.5f, 1.0f);
@@ -83,9 +79,9 @@ public class Bike extends GameEntity implements PlayableEntity {
 		this.contactListener = new BasicContactListener();
 		this.addContactListener(this.contactListener);
 
-		this.bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f, -1.f, .9f, -.7f, .8f, -.3f, .8f,
-				-.4f, 1.1f, -.3f, .7f, -1.f, 0.1f, -.25f, .2f, -1.f, 0.1f, -.3f, .7f, -.25f, .2f, .8f, .85f, -.3f, .7f,
-                .8f, .85f, 1.f, .85f, 1.f, 1.25f, 0.9f, 1.3f, 1.f, 1.25f, 1.f, .8f, 1.f, 0.1f, 1.f, .8f, 1.3f, .75f, 1.4f, .7f);
+		this.bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f, -1.f, .9f, -.7f, .8f, -.3f, .8f, -.4f, 1.1f, -.3f, .7f,
+				-1.f, 0.1f, -.25f, .2f, -1.f, 0.1f, -.3f, .7f, -.25f, .2f, .8f, .85f, -.3f, .7f, .8f, .85f, 1.f, .85f,
+				1.f, 1.25f, 0.9f, 1.3f, 1.f, 1.25f, 1.f, .8f, 1.f, 0.1f, 1.f, .8f, 1.3f, .75f, 1.4f, .7f);
 		this.bikeFrameGraphic = this.addGraphics(this.bikeFrame, null, Color.decode("#58355e"), .1f, 1, 1);
 
 		this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
@@ -109,7 +105,7 @@ public class Bike extends GameEntity implements PlayableEntity {
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
 		this.game = game;
-		create();
+		this.create();
 	}
 
 	@Override

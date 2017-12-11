@@ -43,6 +43,7 @@ public class MovingPlatform extends GameEntity {
 
 	@Override
 	public void update(float deltaTime) {
+		super.update(deltaTime);
 		this.elapsedTime += deltaTime;
 		if (0 < this.elapsedTime && this.elapsedTime < this.loopTime) {
 			this.platform.setPosition(this.evolution.mul(this.speed * deltaTime, this.speed * deltaTime));

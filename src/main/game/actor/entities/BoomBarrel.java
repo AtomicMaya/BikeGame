@@ -82,7 +82,7 @@ public class BoomBarrel extends GameEntity implements Saveable {
 
 	@Override
 	public void update(float deltaTime) {
-
+		super.update(deltaTime);
 		if (this.triggered)
 			this.elapsedAnimationTime += deltaTime;
 

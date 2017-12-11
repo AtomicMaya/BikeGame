@@ -36,7 +36,7 @@ public class Level2 extends Level {
 
 	@Override
 	public StartCheckpoint getSpawnCheckpoint() {
-		return new StartCheckpoint(game, new Vector(4, 3));
+		return new StartCheckpoint(game, new Vector(4, 3), null);
 	}
 
 }

@@ -1,37 +1,25 @@
 package main.game;
 
+import main.game.actor.Actor;
+import main.game.actor.Camera;
+import main.game.actor.GameManager;
+import main.game.actor.entities.GameEntity;
+import main.game.actor.entities.ParticleEmitter;
+import main.game.actor.entities.PlayableEntity;
+import main.game.graphicalStuff.EndGameGraphics;
+import main.io.FileSystem;
+import main.io.Save;
+import main.math.*;
+import main.window.Canvas;
+import main.window.Keyboard;
+import main.window.Mouse;
+import main.window.Window;
+
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
-
-import main.game.actor.Actor;
-import main.game.actor.Camera;
-import main.game.actor.GameManager;
-import main.game.actor.entities.GameEntity;
-import main.game.actor.entities.PlayableEntity;
-import main.game.graphicalStuff.EndGameGraphics;
-import main.io.FileSystem;
-import main.io.Save;
-import main.math.Attachable;
-import main.math.DistanceConstraintBuilder;
-import main.math.Entity;
-import main.math.EntityBuilder;
-import main.math.Impact;
-import main.math.PointConstraintBuilder;
-import main.math.Positionable;
-import main.math.PrismaticConstraintBuilder;
-import main.math.RopeConstraintBuilder;
-import main.math.Transform;
-import main.math.Vector;
-import main.math.WeldConstraintBuilder;
-import main.math.WheelConstraintBuilder;
-import main.math.World;
-import main.window.Canvas;
-import main.window.Keyboard;
-import main.window.Mouse;
-import main.window.Window;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
 public class ActorGame implements Game {
@@ -101,6 +89,8 @@ public class ActorGame implements Game {
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
+				if (actorsToRemove.get(i).getClass() != ParticleEmitter.class)
+					System.out.println(actorsToRemove.get(i));
 			}
 			this.actors.removeAll(this.actorsToRemove);
 			this.actorsToRemove.clear();
@@ -174,7 +164,7 @@ public class ActorGame implements Game {
 	 * @param actor : An {@linkplain Actor} to be added in the game.
 	 */
 	public void addActor(Actor actor) {
-		if (!this.actors.contains(actor) && !this.actorsToAdd.contains(actor))
+		if (actor != null && !this.actors.contains(actor) && !this.actorsToAdd.contains(actor))
 			this.actorsToAdd.add(actor);
 	}
 
@@ -183,7 +173,7 @@ public class ActorGame implements Game {
 	 */
 	public void addActor(List<Actor> actors) {
 		for (Actor a : actors) {
-			if (!this.actors.contains(a) && !this.actorsToAdd.contains(a))
+			if (a != null && !this.actors.contains(a) && !this.actorsToAdd.contains(a))
 				this.actorsToAdd.add(a);
 		}
 	}
@@ -211,7 +201,12 @@ public class ActorGame implements Game {
 	 * Destroy all stored {@linkplain Actor}s.
 	 */
 	public void destroyAllActors() {
+		// destroy all entities in the world!!! na!
+		// TODO remove attomatic de actors
+		while (world.getEntities().size() > 0)
+			world.getEntities().get(0).destroy();
 		this.actorsToRemove.addAll(this.actors);
+
 	}
 
 	/**
@@ -340,7 +335,7 @@ public class ActorGame implements Game {
 	 * {@linkplain Actor} of the game.
 	 */
 	public void setPayload(PlayableEntity player) {
-		// this.addActor(player);
+		this.addActor(player);
 		this.player = player;
 	}
 
@@ -381,7 +376,6 @@ public class ActorGame implements Game {
 	 * @param saveName : The name of the save to load.
 	 */
 	public boolean load(String saveName) {
-		this.getGameManager().resetCheckpoint();
 		this.getGameManager().inLevel(saveName);
 		ArrayList<Actor> toAdd = new ArrayList<>();
 		synchronized (toAdd) {

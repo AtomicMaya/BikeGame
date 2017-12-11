@@ -8,6 +8,7 @@ import main.game.actor.entities.TriggeredPlatform;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
 import main.game.actor.sensors.FinishActor;
+import main.game.actor.sensors.StartCheckpoint;
 import main.game.audio.Audio;
 import main.game.graphics.BetterTextGraphics;
 import main.math.Polygon;
@@ -85,9 +86,6 @@ public class Level0 extends Level {
         this.addActor(coin);
         this.addActor(lava);
         this.addActor(finish);
-
-        this.setViewCandidate(this.player);
-        this.setPayload(this.player);
     }
 
     @Override
@@ -115,4 +113,9 @@ public class Level0 extends Level {
         this.btgMud.draw(canvas);
         this.btgFinish.draw(canvas);
     }
+
+	@Override
+	public StartCheckpoint getSpawnCheckpoint() {
+		return new StartCheckpoint(game, new Vector(1, 2), player);
+	}
 }

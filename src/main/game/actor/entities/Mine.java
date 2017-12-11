@@ -61,6 +61,7 @@ public class Mine extends GameEntity {
 
 	@Override
 	public void update(float deltaTime) {
+		super.update(deltaTime);
 		this.sensor.update(deltaTime);
 		if (this.sensor.getSensorDetectionStatus())
 			this.triggered = true;

@@ -29,10 +29,10 @@ public class EndGameGraphics extends Node implements Actor {
 	@Override
 	public void update(float deltaTime) {
 		if (game.getPayload() != null)
-			if (game.getPayload().getDeathStatus() && !this.displayed)
-				this.displayDeathMessage();
-			else if (game.getPayload().getVictoryStatus() && !this.displayed)
+			if (game.getPayload().getVictoryStatus() && !this.displayed)
 				this.displayVictoryMessage();
+			else if (game.getPayload().getDeathStatus() && !this.displayed)
+				this.displayDeathMessage();
 			else if (!game.getPayload().getDeathStatus() && !game.getPayload().getVictoryStatus())
 				this.resetGraphics();
 	}

@@ -56,6 +56,7 @@ public class Liquid extends GameEntity implements Saveable {
     }
     @Override
     public void update(float deltaTime) {
+    	super.update(deltaTime);
     	this.sensor.update(deltaTime);
         this.elapsedAnimationTime += deltaTime;
         if (this.elapsedAnimationTime > animationTime) {

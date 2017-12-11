@@ -4,15 +4,16 @@
  */
 package main.game;
 
-import java.util.Arrays;
-import java.util.List;
-
 import main.game.levels.Level;
+import main.game.levels.Level2;
 import main.game.levels.LevelTest;
 import main.io.FileSystem;
 import main.window.Window;
 import main.window.swing.FontList;
 import main.window.swing.MyFont;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class TestGameLevelMenu extends GameWithLevelAndMenu {
 
@@ -32,7 +33,7 @@ public class TestGameLevelMenu extends GameWithLevelAndMenu {
 	@Override
 	protected List<Level> createLevelList() {
 
-	    return Arrays.asList(new LevelTest(this), new LevelTest(this));
+	    return Arrays.asList(new LevelTest(this), new Level2(this));
 	}
 
 }

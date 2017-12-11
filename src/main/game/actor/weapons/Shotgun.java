@@ -1,8 +1,5 @@
 package main.game.actor.weapons;
 
-import java.awt.Color;
-import java.util.List;
-
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
 import main.game.actor.entities.PlayableEntity;
@@ -11,6 +8,9 @@ import main.math.Polyline;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
+import java.util.List;
 
 /** {@linkplain PortableWeapon} of type shotgun */
 public class Shotgun extends PortableWeapon {
@@ -29,8 +29,10 @@ public class Shotgun extends PortableWeapon {
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
 		if (isDeployed()) {
-			canvas.drawImage(canvas.getImage(imagePath), Transform.I.scaled(2, .5f * ((isShoutingOnTheRight()) ? 1 : -1))
-					.translated(getPosition()).rotated(getAngle(), getPosition()), 1, 5);
+			canvas.drawImage(canvas.getImage(imagePath),
+					Transform.I.scaled(2, .5f * ((isShoutingOnTheRight()) ? 1 : -1)).translated(getPosition())
+							.rotated(getAngle(), getPosition()),
+					1, 5);
 
 			Vector corection = new Vector(
 					(float) (Math.sin(-getAngle() + Math.PI / 2 + Math.PI / 14 * (isShoutingOnTheRight() ? -1 : 1))),
@@ -47,8 +49,20 @@ public class Shotgun extends PortableWeapon {
 	public void shout() {
 		List<Impact> impacts = getOwner().getImpacts(this.getPosition(),
 				this.getPosition().add(this.getDirection().mul(-this.laserDistance)));
-		if (!impacts.isEmpty() && impacts.get(0).getPart().getCollisionGroup() == ObjectGroup.ENEMY.group)
-			impacts.get(0).getPart().getEntity().destroy();
+
+		for (Impact i : impacts) {
+			int group = i.getPart().getCollisionGroup();
+
+			if (group == ObjectGroup.CHECKPOINT.group || group == ObjectGroup.FINISH.group
+					|| group == ObjectGroup.SENSOR.group) {
+
+			} else if (group == ObjectGroup.OBSTACLE.group || group == ObjectGroup.TERRAIN.group) {
+				break;
+			} else if (group == ObjectGroup.ENEMY.group) {
+				i.getPart().getEntity().destroy();
+				break;
+			}
+		}
 	}
 
 }

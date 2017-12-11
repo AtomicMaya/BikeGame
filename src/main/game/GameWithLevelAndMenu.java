@@ -1,15 +1,14 @@
 package main.game;
 
-import java.util.List;
-
 import main.game.GUI.menu.InGameMenu;
 import main.game.GUI.menu.MainMenu;
 import main.game.actor.Actor;
-import main.game.actor.entities.Bike;
 import main.game.actor.sensors.StartCheckpoint;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.window.Window;
+
+import java.util.List;
 
 /**
  * Represent a game with different level, and some menus
@@ -61,7 +60,6 @@ public abstract class GameWithLevelAndMenu extends ActorGame {
 	/** Go to the next {@linkplain Level} */
 	public void nextLevel() {
 		wasPlayed = false;
-		this.getGameManager().resetCheckpoint();
 		beginLevel(currentLevel + 1);
 	}
 
@@ -71,11 +69,7 @@ public abstract class GameWithLevelAndMenu extends ActorGame {
 	 */
 	public void resetLevel() {
 		this.wasPlayed = true;
-		clearCurrentLevel();
 		beginLevel(currentLevel);
-
-		if (wasPlayed)
-			levels.get(currentLevel).getSpawnCheckpoint().setTriggerStatus(false);
 	}
 
 	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
@@ -97,17 +91,20 @@ public abstract class GameWithLevelAndMenu extends ActorGame {
 
 		this.levels.get(currentLevel).createAllActors();
 		super.addActor(levels.get(currentLevel).getActors());
-
+		StartCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
 		if (!wasPlayed) {
-			// if first time level is loaded, 
-			StartCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
+			// if first time level is loaded,
 			if (sc == null && (levels.get(currentLevel).getViewCandidate() == null)
 					&& (levels.get(currentLevel).getPayload() == null))
 				throw new NullPointerException("No PlayableEntity detected");
-			getGameManager().setLastCheckpoint(sc);
 		}
-		super.setViewCandidate(levels.get(currentLevel).getViewCandidate());
-		super.setPayload(levels.get(currentLevel).getPayload());
+		super.addActor(sc);
+
+		// in case they are @Override
+		if (levels.get(currentLevel).getViewCandidate() != null)
+			super.setViewCandidate(levels.get(currentLevel).getViewCandidate());
+		if (levels.get(currentLevel).getPayload() != null)
+			super.setPayload(levels.get(currentLevel).getPayload());
 
 	}
 
