@@ -45,7 +45,7 @@ public class LevelTest extends Level {
 		Polygon p1 = new Polygon(0, 0, 0, 3f, 1.5f, 3f, 1.5f, 0);
 //		Liquid l = new Liquid(game, new Vector(-9, 2), p1, true);
 //		Mine m = new Mine(game, new Vector(-3, -1));
-		GravityWell gw = new GravityWell(game, new Vector(-5,0), new Vector(0,1), ExtendedMath.createRectangle(3, 7), (float) Math.PI);
+		GravityWell gw = new GravityWell(game, new Vector(-50,0), new Vector(0,.4f), ExtendedMath.createRectangle(3, 7), (float) Math.PI);
 		addActor(gw);
 //		addActor(pp);
 		addActor(new Checkpoint(game, new Vector(-26, 0)));

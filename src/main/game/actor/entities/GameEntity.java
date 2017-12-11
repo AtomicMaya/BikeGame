@@ -10,23 +10,28 @@ import main.math.Shape;
 
 import java.awt.*;
 
-/** Represent an {@linkplain Actor} in its physical sense */
+/** Represent an {@linkplain Actor} in its physical sense. */
 public abstract class GameEntity implements Actor, Saveable {
+    /** Used for save purposes. */
 	private static final long serialVersionUID = 8519429675636563656L;
 
+    /** The master {@linkplain Entity}. */
 	private transient Entity entity;
+
+	/** The master {@linkplain ActorGame}. */
 	private transient ActorGame actorGame;
 
+	/** The initial position {@linkplain Vector}. */
 	private Vector position;
+
+	/** Whether this {@linkplain Entity} is fixed. */
 	private boolean fixed;
 
 	/**
-	 * Create a new {@linkplain GameEntity}, and its associated
-	 * {@linkplain Entity}.
-	 * @param game : The {@linkplain ActorGame} where this {@linkplain Entity}
-	 * inhabits.
-	 * @param fixed : Whether the {@linkplain Entity} is fixed.
-	 * @param position : The position of the {@linkplain Entity}.
+	 * Create a new {@linkplain GameEntity}, and its associated {@linkplain Entity}.
+	 * @param game The master {@linkplain ActorGame}.
+	 * @param fixed Whether the {@linkplain Entity} is fixed.
+	 * @param position The position of the {@linkplain Entity}.
 	 */
 	public GameEntity(ActorGame game, boolean fixed, Vector position) {
 		if (game == null)
@@ -38,7 +43,7 @@ public abstract class GameEntity implements Actor, Saveable {
 		this.fixed = fixed;
 
 		this.actorGame = game;
-		create();
+		this.create();
 	}
 
     /** @see #GameEntity(ActorGame, boolean, Vector) */
@@ -48,7 +53,7 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Actual creation of the parameters of the {@linkplain GameEntity}, not in
-	 * the constructor to avoid duplication with the method reCreate
+	 * the constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
 	 */
 	private void create() {
 		if (this.entity == null)
@@ -58,7 +63,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	@Override
 	public void reCreate(ActorGame game) {
         this.actorGame = game;
-		create();
+        this.create();
 	}
 
 	@Override
@@ -68,7 +73,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * Get the {@linkplain Entity} associated with this {@linkplain GameEntity}
+	 * Gets the {@linkplain Entity} associated with this {@linkplain GameEntity}.
 	 * @return the {@linkplain Entity}.
 	 */
 	protected Entity getEntity() {
@@ -76,17 +81,14 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * Get the ActorGame associated with this GameEntity.
+	 * Get the {@linkplain ActorGame} associated with this {@linkplain GameEntity}.
 	 * @return the {@linkplain ActorGame}.
 	 */
 	protected ActorGame getOwner() {
 		return this.actorGame;
 	}
 
-	/**
-	 * Destroy the {@linkplain Entity} associated with this
-	 * {@linkplain GameEntity}.
-	 */
+	/** Destroy the {@linkplain Entity} associated with this {@linkplain GameEntity}. */
 	@Override
 	public void destroy() {
 		this.entity.destroy();
@@ -105,15 +107,13 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
      * Create and add a {@linkplain ImageGraphics} to this {@linkplain Entity}
-	 * @param imagePath : the path to the image to add
-	 * @param width : the width of the image
-	 * @param height : the height of the image
-	 * @param anchor : a {@linkplain Vector} which give an anchor to the
-	 * {@linkplain ImageGraphics}, relative to its parent
-	 * @param alpha : the transparency, between 0 (invisible) and 1 (opaque)
-	 * @param depth : the render priority, lower-values drawn first
-	 * @return a new {@linkplain ImageGraphics} associated to this
-	 * {@linkplain GameEntity}
+	 * @param imagePath The {@linkplain String} filepath to the image.
+	 * @param width The width of the image.
+	 * @param height The height of the image.
+	 * @param anchor The anchor {@linkplain Vector} relative to the parent {@linkplain GameEntity}.
+	 * @param alpha The transparency, between 0 (invisible) and 1 (opaque).
+	 * @param depth The render priority, lower-values are drawn first.
+	 * @return a new {@linkplain ImageGraphics} associated to this {@linkplain GameEntity}
 	 */
 	public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor, float alpha,
 			float depth) {
@@ -133,15 +133,14 @@ public abstract class GameEntity implements Actor, Saveable {
     }
 
 	/**
-	 * Create and add a {@linkplain ShapeGraphics} to this {@linkplain Entity}
-	 * @param shape : a {@linkplain Shape}, may be null
-	 * @param fillColor : a fill {@linkplain Color}, may be null
-	 * @param outlineColor : an outline {@linkplain Color}, may be null
-	 * @param thickness : the outline thickness
-	 * @param alpha : the transparency, between 0 (invisible) and 1 (opaque)
-	 * @param depth : the render priority, lower-values drawn first
-	 * @return a new {@linkplain ShapeGraphics} associated to this
-	 * {@linkplain GameEntity}
+	 * Create and add a {@linkplain ShapeGraphics} to this {@linkplain Entity}.
+	 * @param shape A {@linkplain Shape}, may be null.
+	 * @param fillColor A fill {@linkplain Color}, may be null.
+	 * @param outlineColor An outline {@linkplain Color}, may be null.
+	 * @param thickness The outline thickness.
+	 * @param alpha The transparency, between 0 (invisible) and 1 (opaque).
+	 * @param depth The render priority, lower-values are drawn first.
+	 * @return a new {@linkplain ShapeGraphics} associated to this {@linkplain GameEntity}.
 	 */
 	public ShapeGraphics addGraphics(Shape shape, Color fillColor, Color outlineColor, float thickness, float alpha,
 			float depth) {
@@ -157,11 +156,11 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
      * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
-     * @param shape : The {@linkplain Shape} to be given to the {@linkplain Entity}.
-     * @param friction : The friction to be given to the {@linkplain Entity}, defaults if negative.
-     * @param density : The density of the {@linkplain Entity}, defaults if negative.
-     * @param ghost : Whether this part is hidden and should act only as a sensor.
-     * @param collisionGroup : This {@linkplain Entity}'s collision group.
+     * @param shape The {@linkplain Shape} to be given to the {@linkplain Entity}.
+     * @param friction The friction to be given to the {@linkplain Entity}, defaults if negative.
+     * @param density The density of the {@linkplain Entity}, defaults if negative.
+     * @param ghost Whether this part is hidden and should act only as a sensor.
+     * @param collisionGroup This {@linkplain Entity}'s collision group.
      */
     public void build(Shape shape, float friction, float density, boolean ghost, int collisionGroup) {
         PartBuilder partBuilder = this.entity.createPartBuilder();
@@ -186,7 +185,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * @param listener : the listener to add this {@linkplain Entity}.
+	 * @param listener : the {@linkplain ContactListener} to add this {@linkplain Entity}.
 	 */
 	public void addContactListener(ContactListener listener) {
 		this.entity.addContactListener(listener);
@@ -194,8 +193,7 @@ public abstract class GameEntity implements Actor, Saveable {
 
 	/**
 	 * Gives a new position to this {@linkplain Entity}.
-	 * @param newPosition : A position {@linkplain Vector} (x-axis value, y-axis
-	 * value).
+	 * @param newPosition : A position {@linkplain Vector}.
 	 */
 	public void setPosition(Vector newPosition) {
 		entity.setPosition(newPosition);
@@ -203,8 +201,7 @@ public abstract class GameEntity implements Actor, Saveable {
 	}
 
 	/**
-	 * @return whether this {@linkplain GameEntity} is still in the
-	 * {@linkplain World}
+	 * @return whether this {@linkplain GameEntity} is still in the {@linkplain World}.
 	 */
 	public boolean isAlive() {
 		return entity.isAlive();
