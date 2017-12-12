@@ -43,12 +43,15 @@ public class GameManager implements Graphics {
 	// score management
 	/** Keep track of the current score */
 	private int score = 0;
+	
+	/** Score at the last {@linkplain Checkpoint} */
+	private int savedScore = 0;
 
 	/** {@linkplain BetterTextGraphics} to display the score */
 	private BetterTextGraphics scoreDisapplay;
 
 	/** Message to display with {@link #scoreDisapplay} */
-	private final String scoreText = "Your score is :";
+	private final String scoreText = "Your score is : ";
 
 	/** {@linkplain Vector} position of the {@link #scoreDisapplay} */
 	private Vector scorePos = new Vector(-19, -9.5f);
@@ -179,7 +182,7 @@ public class GameManager implements Graphics {
 				this.respawnTimer += deltaTime;
 				this.messageDisplayed = this.respawnText;
 				if (this.respawnTimer > this.timeToRespawn && this.game.getKeyboard().get(KeyEvent.VK_R).isPressed()) {
-
+					score = savedScore;
 					reset();
 					switch (this.gameState) {
 						case levelState:
@@ -223,6 +226,7 @@ public class GameManager implements Graphics {
 		if (lastCheckpoint != null)
 			lastCheckpoint.setTriggerStatus(false);
 		lastCheckpoint = checkpoint;
+		savedScore = score;
 	}
 
 	/** Method called by the {@linkplain SpawnCheckpoint} */
@@ -235,6 +239,7 @@ public class GameManager implements Graphics {
 	private void restart() {
 		startCheckpoint = null;
 		lastCheckpoint = null;
+		savedScore = 0;
 		reset();
 	}
 
@@ -261,7 +266,7 @@ public class GameManager implements Graphics {
 
 	// score management
 	/** Reset the score */
-	public void resetScore() {
+	private void resetScore() {
 		score = 0;
 	}
 

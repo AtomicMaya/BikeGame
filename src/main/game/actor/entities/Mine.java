@@ -12,7 +12,11 @@ import java.util.Arrays;
 
 /** Create new Mines, that explode in your face. */
 public class Mine extends GameEntity {
-    /** An {@linkplain ArrayList} of {@linkplain String} containing references of file locations. */
+   
+	/** Used for saving purpose */
+	private static final long serialVersionUID = 6296328392231086220L;
+
+	/** An {@linkplain ArrayList} of {@linkplain String} containing references of file locations. */
 	private transient ArrayList<String> stateGraphics, boomGraphics;
 
 	/** Relevant animation times. */

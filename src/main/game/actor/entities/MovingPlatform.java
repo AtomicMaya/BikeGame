@@ -10,7 +10,12 @@ import main.window.Canvas;
 
 /** A moving {@linkplain GenericPlatform}, on a loop. */
 public class MovingPlatform extends GameEntity {
-    /** References to the {@linkplain MovingPlatform} displacement. */
+    
+	
+	/** */
+	private static final long serialVersionUID = 8938371620409472520L;
+
+	/** References to the {@linkplain MovingPlatform} displacement. */
     private float loopTime, pauseTime;
 
     /** Currently elapsed time. */

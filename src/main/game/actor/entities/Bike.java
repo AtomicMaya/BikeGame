@@ -14,6 +14,7 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Set;
 
 import static main.math.ExtendedMath.invertXCoordinates;
 import static main.math.ExtendedMath.xInverted;
@@ -134,7 +135,8 @@ public class Bike extends GameEntity implements PlayableEntity {
 
         // Checks whether the Bike has collided with the ground or an obstacle.
         if (this.contactListener.getEntities().size() > 0) {
-            for (Entity entity : this.contactListener.getEntities()) {
+        	Set<Entity> entities = this.contactListener.getEntities();
+            for (Entity entity : entities) {
                 if (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group
                         || entity.getCollisionGroup() == ObjectGroup.OBSTACLE.group) {
                     this.isDead = true;

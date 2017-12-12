@@ -4,7 +4,6 @@ import main.game.actor.Actor;
 import main.game.actor.Camera;
 import main.game.actor.GameManager;
 import main.game.actor.entities.GameEntity;
-import main.game.actor.entities.ParticleEmitter;
 import main.game.actor.entities.PlayableEntity;
 import main.game.graphicalStuff.EndGameGraphics;
 import main.io.FileSystem;
@@ -81,7 +80,7 @@ public class ActorGame implements Game {
 	@Override
 	public void update(float deltaTime) {
 		
-		gameManager.update(deltaTime);
+		this.gameManager.update(deltaTime);
 		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
 			System.out.println("actors size : "+actors.size() + " world entities : " + world.getEntities().size());
 
@@ -91,8 +90,8 @@ public class ActorGame implements Game {
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
-				if (actorsToRemove.get(i).getClass() != ParticleEmitter.class)
-					System.out.println("removed : " +actorsToRemove.get(i));
+//				if (actorsToRemove.get(i).getClass() != ParticleEmitter.class)
+//					System.out.println("removed : " +actorsToRemove.get(i));
 			}
 			this.actors.removeAll(this.actorsToRemove);
 			this.actorsToRemove.clear();
@@ -107,6 +106,11 @@ public class ActorGame implements Game {
 			return;
 		}
 
+		// TODO remove
+		if (this.getKeyboard().get(KeyEvent.VK_6).isDown()) {
+			for (int i = 0;i<150;i++)
+				this.world.update(deltaTime);
+		}
 		this.world.update(deltaTime);
 		this.camera.update(deltaTime);
 

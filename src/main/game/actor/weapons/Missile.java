@@ -1,22 +1,23 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	10 déc. 2017
- */
 package main.game.actor.weapons;
 
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
 import main.game.actor.entities.GameEntity;
 import main.math.*;
+import main.math.Shape;
 import main.window.Canvas;
 
+import java.awt.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Set;
 
 /** A Missile {@linkplain Weapon}. */
 public class Missile extends GameEntity {
-    /** The direction {@linkplain Vector}. */
+	
+	/** Used for save purposes */
+	private static final long serialVersionUID = 4121913978716092865L;
+
+	/** The direction {@linkplain Vector}. */
 	private Vector direction;
 
 	/** The reference to where the image is stored on disk. */
@@ -25,10 +26,15 @@ public class Missile extends GameEntity {
 	/** The associated {@linkplain BasicContactListener}. */
 	private BasicContactListener listener;
 
-	/** An {@linkplain ArrayList} containing the links to where the explosion animation graphics are stored on disk. */
+	/**
+	 * An {@linkplain ArrayList} containing the links to where the explosion
+	 * animation graphics are stored on disk.
+	 */
 	private ArrayList<String> boomGraphics;
 
-	/** Whether this {@linkplain main.game.actor.sensors.Trigger} is triggered. */
+	/**
+	 * Whether this {@linkplain main.game.actor.sensors.Trigger} is triggered.
+	 */
 	private boolean triggered = false;
 
 	/** The time until the explosion has finished animating. */
@@ -43,43 +49,47 @@ public class Missile extends GameEntity {
 	/** It's a secret ! */
 	private float secretProbability = (float) Math.random();
 
-    /**
-     * Creates a {@linkplain Missile}.
-     * @param game The master {@linkplain ActorGame}.
-     * @param position The initial position {@linkplain Vector}.
-     * @param targetPos The position {@linkplain Vector} of this {@linkplain Missile}'s target.
-     */
+	private Shape shape;
+
+	/**
+	 * Creates a {@linkplain Missile}.
+	 * @param game The master {@linkplain ActorGame}.
+	 * @param position The initial position {@linkplain Vector}.
+	 * @param targetPos The position {@linkplain Vector} of this
+	 * {@linkplain Missile}'s target.
+	 */
 	public Missile(ActorGame game, Vector position, Vector targetPos) {
 		super(game, false, position);
 		this.direction = ExtendedMath.direction(position, targetPos).mul(-1);
 		listener = new BasicContactListener();
 		this.getEntity().addContactListener(this.listener);
 		this.build(ExtendedMath.createRectangle(1, 24 / 96f), 100, -1, false, ObjectGroup.PROJECTILE.group);
-
-		boomGraphics = new ArrayList<>(
-				Arrays.asList("./res/images/explosion.bomb.0.png", "./res/images/explosion.bomb.1.png",
-						"./res/images/explosion.bomb.2.png", "./res/images/explosion.bomb.3.png",
-						"./res/images/explosion.bomb.4.png", "./res/images/explosion.bomb.5.png",
-						"./res/images/explosion.bomb.6.png", "./res/images/explosion.bomb.7.png",
-						"./res/images/explosion.bomb.8.png", "./res/images/explosion.bomb.9.png",
-						"./res/images/explosion.bomb.10.png", "./res/images/explosion.bomb.11.png",
-						"./res/images/explosion.bomb.12.png", "./res/images/explosion.bomb.13.png",
-						"./res/images/explosion.bomb.14.png", "./res/images/explosion.bomb.15.png",
-						"./res/images/explosion.bomb.16.png", "./res/images/explosion.bomb.17.png",
-						"./res/images/explosion.bomb.18.png", "./res/images/explosion.bomb.19.png",
-						"./res/images/explosion.bomb.20.png", "./res/images/explosion.bomb.21.png",
-						"./res/images/explosion.bomb.22.png", "./res/images/explosion.bomb.23.png",
-						"./res/images/explosion.bomb.24.png", "./res/images/explosion.bomb.25.png",
-						"./res/images/explosion.bomb.26.png", "./res/images/explosion.bomb.27.png",
-						"./res/images/explosion.bomb.28.png", "./res/images/explosion.bomb.29.png",
-						"./res/images/explosion.bomb.30.png", "./res/images/explosion.bomb.31.png"));
+		shape = ExtendedMath.createRectangle(1, 24 / 96f);
+//		boomGraphics = new ArrayList<>(
+//				Arrays.asList("./res/images/explosion.bomb.0.png", "./res/images/explosion.bomb.1.png",
+//						"./res/images/explosion.bomb.2.png", "./res/images/explosion.bomb.3.png",
+//						"./res/images/explosion.bomb.4.png", "./res/images/explosion.bomb.5.png",
+//						"./res/images/explosion.bomb.6.png", "./res/images/explosion.bomb.7.png",
+//						"./res/images/explosion.bomb.8.png", "./res/images/explosion.bomb.9.png",
+//						"./res/images/explosion.bomb.10.png", "./res/images/explosion.bomb.11.png",
+//						"./res/images/explosion.bomb.12.png", "./res/images/explosion.bomb.13.png",
+//						"./res/images/explosion.bomb.14.png", "./res/images/explosion.bomb.15.png",
+//						"./res/images/explosion.bomb.16.png", "./res/images/explosion.bomb.17.png",
+//						"./res/images/explosion.bomb.18.png", "./res/images/explosion.bomb.19.png",
+//						"./res/images/explosion.bomb.20.png", "./res/images/explosion.bomb.21.png",
+//						"./res/images/explosion.bomb.22.png", "./res/images/explosion.bomb.23.png",
+//						"./res/images/explosion.bomb.24.png", "./res/images/explosion.bomb.25.png",
+//						"./res/images/explosion.bomb.26.png", "./res/images/explosion.bomb.27.png",
+//						"./res/images/explosion.bomb.28.png", "./res/images/explosion.bomb.29.png",
+//						"./res/images/explosion.bomb.30.png", "./res/images/explosion.bomb.31.png"));
 
 	}
 
 	@Override
 	public void update(float deltaTime) {
 		super.update(deltaTime);
-		this.getEntity().setVelocity(this.direction.mul(19));
+		this.getEntity().setVelocity(this.direction.mul(18));
+		this.getEntity().setAngularPosition(direction.getAngle());
 
 		if (!this.triggered) {
 			Set<Entity> entities = this.listener.getEntities();
@@ -93,27 +103,37 @@ public class Missile extends GameEntity {
 					this.triggered = true;
 			}
 		}
-		if (this.triggered)
-			this.elapsedAnimationTime += deltaTime;
-		this.graphicsCounter = (int) Math
-				.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
-		if (this.graphicsCounter > this.boomGraphics.size() - 1) {
-			this.destroy();
-			this.graphicsCounter = 0;
+		if (this.triggered) {
+			getOwner().addActor(
+					new Explosion(getOwner(), new Vector(0, (float) Math.sin(direction.getAngle())), this, 0));
+//			this.elapsedAnimationTime += deltaTime;
+			getOwner().destroyActor(this);
 		}
+//		this.graphicsCounter = (int) Math
+//				.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
+//		if (this.graphicsCounter > this.boomGraphics.size() - 1) {
+//			this.destroy();
+//			this.graphicsCounter = 0;
+//		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		if (!this.triggered) {
 			Vector resize = (this.secretProbability < 42 / 404f) ? new Vector(1, 47 / 50f) : new Vector(1, 24 / 96f);
-			canvas.drawImage(canvas.getImage((this.secretProbability < 42 / 404f) ? "res/images/roquette.png" : this.imagePath),
+			canvas.drawImage(
+					canvas.getImage((this.secretProbability < 42 / 404f) ? "res/images/roquette.png" : this.imagePath),
 					Transform.I.scaled(resize.x, resize.y).rotated((float) (this.direction.getAngle()))
 							.translated(getPosition()),
 					1, 12);
-		} else
-			this.addGraphics(this.boomGraphics.get(this.graphicsCounter), 4, 4, new Vector(.5f, .5f), 1, 10)
-					.draw(canvas);
+			canvas.drawShape(shape, getTransform(), Color.black, Color.black, 0, .3f, 12000);
+		}
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		this.getOwner().destroyActor(this);
 	}
 
 }

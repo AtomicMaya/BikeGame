@@ -84,9 +84,9 @@ public class LiquidBuilder extends ActorBuilder {
 		if (!isDone) {
 			if (isLeftPressed()) {
 				if (start == null)
-					start = getHalfFlooredMousePosition();
+					start = getFlooredMousePosition();
 				else if (end == null) {
-					end = getHalfFlooredMousePosition();
+					end = getFlooredMousePosition();
 					shape = ExtendedMath.createRectangle(start, end);
 					position = new Vector(start.x < end.x ? start.x : end.x, start.y < end.y ? start.y : end.y);
 					liquid = new Liquid(getOwner(), position, shape, isLava);

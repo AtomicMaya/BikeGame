@@ -2,13 +2,10 @@ package main.game.GUI.menu;
 
 import main.game.ComplexBikeGame;
 import main.game.GUI.GraphicalButton;
-import main.game.graphics.ShapeGraphics;
 import main.game.graphics.TextGraphics;
 import main.game.levels.Level;
 import main.io.Save;
-import main.math.*;
-import main.math.Polygon;
-import main.math.Shape;
+import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
 
@@ -31,8 +28,8 @@ public class MainMenu extends FullScreenMenu {
 	/** {@linkplain Color} of the {@link #menuMainText}. */
 	private Color menuColor = new Color(58, 160, 201);
 
-	// TODO remove this, for placing purpose #grid lines
-	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
+//	// TODO remove this, for placing purpose #grid lines
+//	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
 
 	// buttons list
 	/** {@linkplain ArrayList} containing all the loading save {@linkplain GraphicalButton} created by the user. */
@@ -55,7 +52,7 @@ public class MainMenu extends FullScreenMenu {
 	private final float shiftLB = .3f;
 	
 	/** Top left corner of the first {@linkplain GraphicalButton} of {@link #levelButtons}. */
-	private final Vector topLeftLB = new Vector(6, -2);
+	private final Vector topLeftLB = new Vector(9, -2);
 
 	// if a save is clicked
 	/** Whether this menu is busy, to avoid spam click on {@linkplain GraphicalButton}. */
@@ -99,25 +96,25 @@ public class MainMenu extends FullScreenMenu {
 		this.game = game;
 
 		// main menu text
-		float fontSize = 4.5f;
+		float fontSize = 8f;
 		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
 		menuMainGraphics = new TextGraphics(menuMainText, fontSize, menuColor, Color.BLACK.brighter(), .01f, true,
 				false, anchor, 1, 1);
 
-		// TODO remove this grid
-		float w = .01f;
-		int size = 40;
-		Shape t = new Polygon(-w, -size / 2, -w, size / 2, w, size / 2, w, -size / 2);
-
-		for (int i = 0; i < size; i++) {
-			graphics.add(new ShapeGraphics(t, Color.BLACK, null, 0));
-			graphics.get(i).setRelativeTransform(Transform.I.translated(new Vector(1f * i - size / 2, 0)));
-		}
-		Shape t2 = new Polygon(-size / 2, -w, size / 2, -w, size / 2, w, -size / 2, w);
-		for (int i = 0; i < size; i++) {
-			graphics.add(new ShapeGraphics(t2, Color.BLACK, null, 0));
-			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
-		}
+//		// TODO remove this grid
+//		float w = .01f;
+//		int size = 40;
+//		Shape t = new Polygon(-w, -size / 2, -w, size / 2, w, size / 2, w, -size / 2);
+//
+//		for (int i = 0; i < size; i++) {
+//			graphics.add(new ShapeGraphics(t, Color.BLACK, null, 0));
+//			graphics.get(i).setRelativeTransform(Transform.I.translated(new Vector(1f * i - size / 2, 0)));
+//		}
+//		Shape t2 = new Polygon(-size / 2, -w, size / 2, -w, size / 2, w, -size / 2, w);
+//		for (int i = 0; i < size; i++) {
+//			graphics.add(new ShapeGraphics(t2, Color.BLACK, null, 0));
+//			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
+//		}
 
 		// create the saves buttons
 		createSaveButtons();
@@ -143,8 +140,8 @@ public class MainMenu extends FullScreenMenu {
 		});
 
 		// play button
-		play = new GraphicalButton(game, new Vector(0, 0), "Play", 1f);
-		play.setAnchor(new Vector(-play.getWidth() / 2f, 0));
+		play = new GraphicalButton(game, new Vector(0, 0), "Play", 3f);
+		play.setAnchor(new Vector(-play.getWidth() / 2f, -play.getHeight()/2));
 		play.addOnClickAction(() -> {
 			// start the first level
 			game.beginLevel(0);
@@ -225,9 +222,9 @@ public class MainMenu extends FullScreenMenu {
 
 		super.draw(canvas);
 		menuMainGraphics.draw(canvas);
-		for (ShapeGraphics sg : graphics) {
-			sg.draw(canvas);
-		}
+//		for (ShapeGraphics sg : graphics) {
+//			sg.draw(canvas);
+//		}
 
 		for (int i = 0; i < loadingSaveButtons.size(); i++) {
 			// draw only the buttons on the current page
@@ -246,7 +243,7 @@ public class MainMenu extends FullScreenMenu {
 		}
 		levelEditorButton.draw(canvas);
 		play.draw(canvas);
-		canvas.drawShape(new Circle(.2f), Transform.I, Color.MAGENTA, Color.RED, .02f, 1, 10000);
+//		canvas.drawShape(new Circle(.2f), Transform.I, Color.MAGENTA, Color.RED, .02f, 1, 10000);
 	}
 
 	@Override

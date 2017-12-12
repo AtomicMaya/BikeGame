@@ -1,10 +1,7 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	11 déc. 2017
- */
 package main.game.levels;
 
 import main.game.ActorGame;
+import main.game.actor.entities.Bombarder;
 import main.game.actor.entities.Terrain;
 import main.game.actor.entities.TerrainType;
 import main.game.actor.sensors.Checkpoint;
@@ -26,7 +23,10 @@ public class Level2 extends Level {
 		addActor(new Terrain(game, null, p, TerrainType.MUD));
 		addActor(new FinishActor(game, new Vector(-40, 0)));
 		addActor(new Checkpoint(game, new Vector(-20, 0)));
-
+		
+		Bombarder b = new Bombarder(game, new Vector (-30, 3));
+		b.setPath(new Vector(-35, 5), new Vector(-20, 7), 3);
+		addActor(b);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class Level2 extends Level {
 
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-		return new SpawnCheckpoint(game, new Vector(4, 3), null);
+		return new SpawnCheckpoint(game, new Vector(-22, 1));
 	}
 
 	@Override

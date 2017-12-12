@@ -63,7 +63,7 @@ public class Level0 extends Level {
                 0, 0, 0, 0, 0, new Polygon(.0f, .0f, 6.f, .0f, 6.f, 1.f, .0f, 1.f), 6, 1);
 
         Terrain muddyTerrain = new Terrain(this.game, new Vector(130, 7), new Polygon(0, 0, 20, 4, 20, 0), TerrainType.MUD);
-        this.player = new Bike(this.game, new Vector(1, 2));
+//        this.player = new Bike(this.game, new Vector(1, 2));
         SimpleLever lever = new SimpleLever(this.game, new Vector(94, 6));
 
         TriggeredPlatform triggeredPlatform = new TriggeredPlatform(this.game, new Vector(100, 5), new Vector(1, 0),
@@ -113,7 +113,7 @@ public class Level0 extends Level {
         this.addActor(obstacle);
         this.addActor(obstacle2);
         this.addActor(muddyTerrain);
-        this.addActor(this.player);
+//        this.addActor(this.player);
         this.addActor(checkpoint1);
         this.addActor(platform);
         this.addActor(checkpoint2);
@@ -143,6 +143,6 @@ public class Level0 extends Level {
 
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-		return new SpawnCheckpoint(this.game, new Vector(1, 0), this.player);
+		return new SpawnCheckpoint(this.game, new Vector(1, 0));
 	}
 }

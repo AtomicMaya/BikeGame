@@ -49,8 +49,8 @@ public class LevelTest extends Level {
 		addActor(gw);
 //		addActor(pp);
 		addActor(new Checkpoint(game, new Vector(-26, 0)));
-		 sc = new SpawnCheckpoint(game, new Vector(-30, 0), null);
-		 addActor(sc);
+//		 sc = new SpawnCheckpoint(game, new Vector(-30, 0), null);
+//		 addActor(sc);
 		// addActor(m);
 		this.addActor(terrain);
 //		this.addActor(player);
@@ -81,7 +81,7 @@ public class LevelTest extends Level {
 
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-		return sc;
+		return new SpawnCheckpoint(game, new Vector(-30, 0));
 	}
 
 }
