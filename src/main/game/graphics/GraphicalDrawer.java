@@ -15,20 +15,20 @@ public class GraphicalDrawer implements Actor {
 
 	@Override
 	public void draw(Canvas canvas) {
-		for (Graphics g : graphics) 
-			g.draw(canvas);
+		for (Graphics graphics : this.graphics)
+			graphics.draw(canvas);
 	}
 
 	/** @param graphics {@linkplain ArrayList} of {@linkplain Graphics} to add to the game */
 	public void addGraphics(ArrayList<Graphics> graphics) {
-		for (Graphics g : graphics) 
-			addGraphics(g);
+		for (Graphics graphic : graphics)
+			addGraphics(graphic);
 	}
 
 	/** @param graphics {@linkplain Graphics} to add to the game */
-	public void addGraphics(Graphics graphic) {
-		if (!graphics.contains(graphic))
-			this.graphics.add(graphic);
+	public void addGraphics(Graphics graphics) {
+		if (!this.graphics.contains(graphics))
+			this.graphics.add(graphics);
 	}
 
 	/** @return null, no sense of having a transform */

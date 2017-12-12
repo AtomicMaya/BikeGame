@@ -112,6 +112,7 @@ public class Trampoline implements Actor, Saveable {
 		this.width = width;
 		this.height = height;
 
+
 		this.genericPlatform.setSize(width, height);
 	}
 

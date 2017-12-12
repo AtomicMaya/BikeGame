@@ -8,51 +8,29 @@ import java.util.List;
 
 public class ExtendedMath {
 	/**
-	 * Gets the distance between two points.
-	 * @param first : The first point.
-	 * @param second : The second point.
-	 * @return the distance between both points.
+	 * Gets the distance between two {@linkplain Vector}s.
+	 * @param first The first {@linkplain Vector}.
+	 * @param second The second {@linkplain Vector}.
+	 * @return the distance between both {@linkplain Vector}s.
 	 */
 	public static float getDistance(Vector first, Vector second) {
 		return (float) Math.sqrt(Math.pow(first.x - second.x, 2) + Math.pow(first.y - second.y, 2));
 	}
 
 	/**
-	 * Gets the angle between two points and the center.
-	 * @param first : The first point.
-	 * @param second : The second point.
-	 * @return the absolute angle between both points, relative to the center.
-	 */
-	public static float getAngle(Vector first, Vector second) {
-
-		float lengthFirst = first.getLength();
-		float lengthSecond = second.getLength();
-
-		float cosineValue = (first.x * second.x + first.y * second.y) / (lengthFirst * lengthSecond);
-		float sineValue = (first.x * second.y - first.y * second.x);
-
-		return (float) (Math.signum(sineValue) * Math.acos(cosineValue));
-	}
-
-	/**
-	 * Gets the angle between the two points / vectors and the x-axis.
-	 * @param center : The center point.
-	 * @param from : The first point.
-	 * @param to : The second point.
+	 * Gets the angle between the two {@linkplain Vector}s and the x-axis.
+	 * @param center The center {@linkplain Vector}.
+	 * @param from The first {@linkplain Vector}.
+	 * @param to The second {@linkplain Vector}.
 	 * @return an angle in radians.
 	 */
 	public static float getAngle(Vector center, Vector from, Vector to) {
 		return (float) Math.atan2((from.y - center.y) - (to.y - center.y), (from.x - center.x) - (to.x - center.x));
 	}
 
-	public float getDotProduct(Vector first, Vector second) {
-		return first.x * second.x + first.y * second.y;
-	}
-
 	/**
 	 * Converts from degrees to radians
-	 * 
-	 * @param angle : An angle in degrees
+	 * @param angle An angle in degrees
 	 * @return an angle in radians
 	 */
 	public static float toRadians(float angle) {
@@ -60,12 +38,11 @@ public class ExtendedMath {
 	}
 
 	/**
-	 * Inverts a list of vectors on an axis.
-	 * 
-	 * @param vectors : The given list of vectors
-	 * @param axis : The given axis, should be ([-1.f | 1.f], [-1.f | 1.f]) for
+	 * Inverts a list of {@linkplain Vector}s on an axis.
+	 * @param vectors The given {@linkplain List} of {@linkplain Vector}s.
+	 * @param axis The given axis, should be ([-1.f | 1.f], [-1.f | 1.f]) for
 	 * clean inversion.
-	 * @return a list with the inverted vectors
+	 * @return a {@linkplain List} with the inverted {@linkplain Vector}.
 	 */
 	public static List<Vector> invertXCoordinates(List<Vector> vectors, Vector axis) {
 		List<Vector> newVectors = new ArrayList<>();
@@ -82,7 +59,7 @@ public class ExtendedMath {
 
 	/**
 	 * Returns red component from given packed color.
-	 * @param rgb : A 32-bits ARGB color
+	 * @param rgb A 32-bits ARGB color
 	 * @return an integer between 0 and 255
 	 */
 	public static int getRed(int rgb) {
@@ -91,7 +68,7 @@ public class ExtendedMath {
 
 	/**
 	 * Returns green component from given packed color.
-	 * @param rgb : A 32-bits ARGB color
+	 * @param rgb A 32-bits ARGB color
 	 * @return an integer between 0 and 255
 	 */
 	public static int getGreen(int rgb) {
@@ -100,7 +77,7 @@ public class ExtendedMath {
 
 	/**
 	 * Returns blue component from given packed color.
-	 * @param rgb : A 32-bits ARGB color.
+	 * @param rgb A 32-bits ARGB color.
 	 * @return an integer between 0 and 255.
 	 */
 	public static int getBlue(int rgb) {
@@ -109,7 +86,7 @@ public class ExtendedMath {
 
 	/**
 	 * Returns alpha component from given packed color.
-	 * @param argb : A 32-bits ARGB color.
+	 * @param argb A 32-bits ARGB color.
 	 * @return an int between 0 and 255.
 	 */
 	public static int getAlpha(int argb) {
@@ -117,8 +94,7 @@ public class ExtendedMath {
 	}
 
 	/**
-	 * Checks whether a value is a 8-bit value, and corrects the value
-	 * otherwise.
+	 * Checks whether a value is a 8-bit value, and corrects the value otherwise.
 	 * @param someInt : The ?-bit value.
 	 * @return a possible refactored value, if necessary.
 	 */
@@ -131,32 +107,31 @@ public class ExtendedMath {
 	}
 
 	/**
-	 * Floor a Vector.
-	 * @param vector : a vector to floor.
-	 * @return a new Vector with floored x and y components.
+	 * Floor a {@linkplain Vector}.
+	 * @param vector A {@linkplain Vector} to floor.
+	 * @return a new {@linkplain Vector} with floored x and y components.
 	 */
 	public static Vector floor(Vector vector) {
 		return new Vector((float) Math.floor(vector.x), (float) Math.floor(vector.y));
 	}
 	
 	/**
-	 * Floor a Vector, to the lower .5f
-	 * @param vector : a vector to floor.
-	 * @return a new Vector with floored to the .5f x and y components.
+	 * Floor a {@linkplain Vector}, to the lower .5f
+	 * @param vector A {@linkplain Vector} to floor.
+	 * @return a new {@linkplain Vector} with x and y components floored to .5f.
 	 */
 	public static Vector halfFloor(Vector vector) {
 		return new Vector((float) Math.floor(vector.x*2)/2f, (float) Math.floor(vector.y*2f)/2f);
 	}
 
 	/**
-	 * Test whether a Vector is between two other
-	 * @param first : The first position.
-	 * @param second : The second position.
-	 * @param toTest : The position to test.
-	 * @return whether the given vector is in the bounds.
+	 * Test whether a {@linkplain Vector} is between two other {@linkplain Vector}s.     *
+	 * @param first The first {@linkplain Vector}.
+	 * @param second The second {@linkplain Vector}.
+	 * @param toTest The {@linkplain Vector} to test.
+	 * @return whether the given {@linkplain Vector} is in the bounds.
 	 */
 	public static boolean isInRectangle(Vector first, Vector second, Vector toTest) {
-
 		float minX = Math.min(first.x, second.x);
 		float maxX = Math.max(first.x, second.x);
 		float minY = Math.min(first.y, second.y);
@@ -166,9 +141,9 @@ public class ExtendedMath {
 	}
 
 	/**
-	 * Sort Vectors by their x coordinate.
-	 * @param points : The list of Vectors.
-	 * @return the sorted list.
+	 * Sort {@linkplain Vector}s by their x coordinate.
+	 * @param points The {@linkplain ArrayList} of {@linkplain Vector}s.
+	 * @return the sorted {@linkplain ArrayList}.
 	 */
 	public static ArrayList<Vector> sortVectorByX(ArrayList<Vector> points) {
 
@@ -199,8 +174,8 @@ public class ExtendedMath {
 
 	/**
 	 * Delete useless {@linkplain Vector} which have the same x coordinate.
-	 * @param points : {@linkplain Vector}s to test.
-	 * @return a list with two {@linkplain Vector}s, the one with the smallest
+	 * @param points The {@linkplain Vector}s to test.
+	 * @return a {@linkplain ArrayList} with two {@linkplain Vector}s, the one with the smallest
 	 * and the one with the biggest y coordinate.
 	 */
 	public static ArrayList<Vector> deleteUselessInY(ArrayList<Vector> points) {
@@ -222,46 +197,34 @@ public class ExtendedMath {
 	}
 
 	/**
-	 * Test if a string is a numerical value.
-	 * @param string: : the input string.
-	 * @return true if input is a numeric value.
+	 * @param first The first {@linkplain Vector}.
+	 * @param second The second {@linkplain Vector}.
+     * @return the {@linkplain Rectangle} between them.
 	 */
-	public static boolean isNumeric(String string) {
-		return string != null && string.matches("-?\\d+(\\.\\d+)?");
-		// work as well:
-		// try {
-		// Integer.parseInt(string);
-		// return true;
-		// } catch (NumberFormatException e) {
-		// return false;
-		// }
+	public static Polygon createRectangle(Vector first, Vector second) {
 
-	}
-
-	/**
-	 * @return the rectangle between them
-	 * @param un start point
-	 * @param deux end point
-	 */
-	public static Polygon createRectangle(Vector un, Vector deux) {
-
-		float width = Math.abs(un.x - deux.x);
-		float height = Math.abs(un.y - deux.y);
+		float width = Math.abs(first.x - second.x);
+		float height = Math.abs(first.y - second.y);
 
 		return new Polygon(0, 0, 0, height, width, height, width, 0);
 	}
 
 	/**
-	 * @return the rectangle between them
-	 * @param width width of the rectangle
-	 * @param height height of the rectangle
+	 * @param width width of the {@linkplain Rectangle}.
+	 * @param height height of the {@linkplain Rectangle}.
+     * @return the {@linkplain Rectangle} between them.
 	 */
 	public static Polygon createRectangle(float width, float height) {
 		return new Polygon(0, 0, 0, height, width, height, width, 0);
 	}
-	
-	/** Compute the unit direction vector */
-	public static Vector direction(Vector un, Vector deux) {
-		return new Vector(un.x - deux.x, un.y - deux.y).normalized();
+
+    /**
+     * Compute the unit direction {@linkplain Vector}.
+     * @param first The first {@linkplain Vector}.
+     * @param second The second {@linkplain Vector}.
+     * @return the new unit direction {@linkplain Vector}.
+     */
+	public static Vector direction(Vector first, Vector second) {
+		return new Vector(first.x - second.x, first.y - second.y).normalized();
 	}
 }

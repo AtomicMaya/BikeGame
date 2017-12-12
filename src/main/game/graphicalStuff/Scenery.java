@@ -29,7 +29,7 @@ public class Scenery implements Actor {
     /**
      * Creates a new {@linkplain Scenery}.
      * @param game The master {@linkplain ActorGame}.
-     * @param preset Tbe chosen {@linkplain Preset}.
+     * @param preset The chosen {@linkplain Preset}.
      */
     public Scenery(ActorGame game, Preset preset) {
         this.game = game;

@@ -117,7 +117,7 @@ public class Wheel extends GameEntity {
 	    boolean isColliding = false;
 	    if (this.listener.getEntities().size() > 0)
 	        for(Entity entity : this.listener.getEntities())
-	            if (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group) isColliding = true;
+	            if (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group || entity.getCollisionGroup() == ObjectGroup.OBSTACLE.group) isColliding = true;
 
         return isColliding;
     }
