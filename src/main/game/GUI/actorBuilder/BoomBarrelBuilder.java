@@ -124,6 +124,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return boumBarel;
 	}
 

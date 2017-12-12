@@ -33,7 +33,7 @@ public class GroundBuilder extends ActorBuilder {
 	private ArrayList<Vector> fixEnd = new ArrayList<>();
 	
 	/** {@linkplain Vector} bounds of the {@linkplain Terrain} to */
-	private Vector start = new Vector(-400, 0), end = new Vector(400, 0);
+	private Vector start = new Vector(-600, 0), end = new Vector(600, 0);
 
 	/** {@linkplain Polyline} used for the drawing */
 	private Polyline groundLine;
@@ -82,10 +82,10 @@ public class GroundBuilder extends ActorBuilder {
 	public GroundBuilder(ActorGame game) {
 		super(game);
 
-		fixStart.add(new Vector(-500, -500));
-		fixStart.add(new Vector(-500, 0));
-		fixEnd.add(new Vector(500, 0));
-		fixEnd.add(new Vector(500, -500));
+		fixStart.add(new Vector(-1000, -1000));
+		fixStart.add(new Vector(-1000, 0));
+		fixEnd.add(new Vector(1000, 0));
+		fixEnd.add(new Vector(1000, -1000));
 
 		points.add(start);
 		points.add(end);

@@ -193,10 +193,14 @@ public class MainMenu extends FullScreenMenu {
 			}
 			super.update(deltaTime, zoom);
 			waitBeforeClick += deltaTime;
+			if (savePage > loadingSaveButtons.size() % maxNumberButtonsSave)
+				savePage--;
 			for (int i = 0; i < loadingSaveButtons.size(); i++) {
 				// update only the buttons on the current page
-				if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
+				if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave) {
 					loadingSaveButtons.get(i).update(deltaTime, zoom);
+					deleteButons.get(i).update(deltaTime, zoom);
+				}
 			}
 			// update the left/right buttons only of their is too much saves
 			if (loadingSaveButtons.size() > maxNumberButtonsSave) {
@@ -204,9 +208,6 @@ public class MainMenu extends FullScreenMenu {
 				right.update(deltaTime, zoom);
 			}
 			for (GraphicalButton gb : levelButtons) {
-				gb.update(deltaTime, zoom);
-			}
-			for (GraphicalButton gb : deleteButons) {
 				gb.update(deltaTime, zoom);
 			}
 			levelEditorButton.update(deltaTime, zoom);
@@ -230,8 +231,10 @@ public class MainMenu extends FullScreenMenu {
 
 		for (int i = 0; i < loadingSaveButtons.size(); i++) {
 			// draw only the buttons on the current page
-			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
+			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave) {
 				loadingSaveButtons.get(i).draw(canvas);
+				deleteButons.get(i).draw(canvas);
+			}
 		}
 		// draw the left/right buttons only of their is too much saves
 		if (loadingSaveButtons.size() > maxNumberButtonsSave) {
@@ -239,9 +242,6 @@ public class MainMenu extends FullScreenMenu {
 			right.draw(canvas);
 		}
 		for (GraphicalButton gb : levelButtons) {
-			gb.draw(canvas);
-		}
-		for (GraphicalButton gb : deleteButons) {
 			gb.draw(canvas);
 		}
 		levelEditorButton.draw(canvas);

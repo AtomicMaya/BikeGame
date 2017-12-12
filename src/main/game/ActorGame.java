@@ -80,10 +80,14 @@ public class ActorGame implements Game {
 
 	@Override
 	public void update(float deltaTime) {
+		
 		gameManager.update(deltaTime);
 		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
 			System.out.println("actors size : "+actors.size() + " world entities : " + world.getEntities().size());
 
+		if (this.getKeyboard().get(KeyEvent.VK_7).isPressed())
+			System.out.println("frozen game :  "+isGameFrozen());
+		
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();

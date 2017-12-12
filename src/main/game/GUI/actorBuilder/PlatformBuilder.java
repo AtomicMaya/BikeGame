@@ -130,6 +130,7 @@ public class PlatformBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return platform;
 	}
 

@@ -59,6 +59,7 @@ public class TrampolineBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return trampoline;
 	}
 

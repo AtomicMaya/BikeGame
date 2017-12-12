@@ -64,6 +64,7 @@ public class MineBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return mine;
 	}
 

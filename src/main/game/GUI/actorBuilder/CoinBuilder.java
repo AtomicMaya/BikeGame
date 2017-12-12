@@ -120,6 +120,7 @@ public class CoinBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return coin;
 	}
 

@@ -83,22 +83,22 @@ public class LevelEditor implements Graphics {
 	 * Maximum camera position. 
 	 * @see #cameraPosition 
 	 * */
-	private float maxPosX = 120;
+	private float maxPosX = 250;
 	
 	/** 
-	 * Minimun camera position. 	
+	 * Minimum camera position. 	
 	 * @see #cameraPosition 
 	 * */
-	private float maxPosY = 30;
+	private float maxPosY = 40;
 	
-	/** Camera acceleration, when CTRL is pressed. */
-	private float cameraAcceleration = .4f;
+	/** Camera acceleration per second, when CTRL is pressed. */
+	private final float cameraAcceleration = .6f;
 	
 	/** Current camera acceleration, default value : 1. */
 	private float currentCameraAcceleration = 1;
 	
 	/** Maximum camera acceleration. */
-	private final float maxCameraXPP = 3;
+	private final float maxCameraXPP = 4;
  
 	
 	// Grid parameters
@@ -145,7 +145,7 @@ public class LevelEditor implements Graphics {
 	private Vector getPositionButtonPosition = new Vector(-29, 14);
 	
 	/** Text of the {@linkplain GraphicalButton} {@link #getPositionButton}. */
-	private final String getPosButtonText = "Positionneur";
+	private final String getPosButtonText = "Pointer";
 
 	// reset camera button + position (absolue sur l'ecran)
 	/** {@linkplain GraphicalButton} which reset the camera position to (0, 0). */
@@ -279,6 +279,7 @@ public class LevelEditor implements Graphics {
 
 				game.getGameManager().setStartCheckpoint(this.spawn.getSpawn());
 				game.getGameManager().setGameState(this);
+				game.getGameManager().setLastCheckpoint(null);
 				game.setPayload(null);
 			} else { // edit
 				playButton.setText(playButtonText, fontSize);

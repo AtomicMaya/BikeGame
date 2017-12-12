@@ -5,7 +5,6 @@ import main.game.GUI.Comment;
 import main.game.GUI.NumberField;
 import main.game.actor.Actor;
 import main.game.actor.sensors.Checkpoint;
-import main.game.actor.sensors.SpawnCheckpoint;
 import main.math.ExtendedMath;
 import main.math.Transform;
 import main.math.Vector;
@@ -114,6 +113,7 @@ public class CheckpointBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return checkpoint;
 	}
 
@@ -125,7 +125,7 @@ public class CheckpointBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		checkpoint.destroy();
-		checkpoint = new SpawnCheckpoint(getOwner(), position, null);
+		checkpoint = new Checkpoint(getOwner(), position);
 		checkpoint.setSize(width.getNumber(), height.getNumber());
 	}
 

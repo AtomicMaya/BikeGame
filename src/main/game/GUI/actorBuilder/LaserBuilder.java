@@ -138,6 +138,7 @@ public class LaserBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return laser;
 	}
 

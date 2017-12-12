@@ -166,6 +166,14 @@ public class ActorMenu extends Menu {
 			changeStatus();
 		});
 		description.add(new Comment(game, "Create a pendulum"));
+		
+		// obstacle
+		boutons.add(new GraphicalButton(game, Vector.ZERO, sizeX, sizeY));
+		boutons.get(boutons.size() - 1).addOnClickAction(() -> {
+			levelEditor.addActorBuilder(new ObstacleBuilder(game));
+			changeStatus();
+		});
+		description.add(new Comment(game, "Create an obstacle"));
 
 		// adjust size
 		for (GraphicalButton gb : boutons) {

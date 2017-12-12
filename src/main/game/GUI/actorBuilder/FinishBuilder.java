@@ -115,6 +115,7 @@ public class FinishBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return finish;
 	}
 

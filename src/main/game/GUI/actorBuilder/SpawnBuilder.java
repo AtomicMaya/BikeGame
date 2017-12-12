@@ -49,10 +49,12 @@ public class SpawnBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return spawn;
 	}
 
 	public SpawnCheckpoint getSpawn() {
+		reCreate();
 		return spawn;
 	}
 

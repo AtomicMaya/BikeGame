@@ -108,6 +108,7 @@ public class PenduleBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return pendule;
 	}
 

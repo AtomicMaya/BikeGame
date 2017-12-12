@@ -103,6 +103,7 @@ public class CrateBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
+		reCreate();
 		return crate;
 	}
 

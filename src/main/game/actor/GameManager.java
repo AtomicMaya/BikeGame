@@ -37,6 +37,9 @@ public class GameManager implements Graphics {
 	/** The {@linkplain ComplexBikeGame}, needed in some cases. */
 	private ComplexBikeGame gameLevel;
 
+	/** {@linkplain LevelEditor} from which the {@link levelEditorState} is set.*/
+	private LevelEditor levelEditor;
+	
 	// score management
 	/** Keep track of the current score */
 	private int score = 0;
@@ -162,6 +165,7 @@ public class GameManager implements Graphics {
 								this.messageDisplayed = "";
 							}
 							this.messageDisplayed = this.backToMenu;
+							this.game.setGameFreezeStatus(true);
 							break;
 						}
 						case levelEditorState: {
@@ -186,6 +190,7 @@ public class GameManager implements Graphics {
 
 							break;
 						case levelEditorState:
+							game.addActor(levelEditor.getActors());
 							break;
 					}
 					messageDisplayed = "";
@@ -295,5 +300,6 @@ public class GameManager implements Graphics {
 	 */
 	public void setGameState(LevelEditor levelEditor) {
 		this.gameState = levelEditorState;
+		this.levelEditor = levelEditor;
 	}
 }

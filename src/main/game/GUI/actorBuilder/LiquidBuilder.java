@@ -140,7 +140,7 @@ public class LiquidBuilder extends ActorBuilder {
 
 	@Override
 	public Actor getActor() {
-
+		reCreate();
 		return liquid;
 	}
 
