@@ -22,6 +22,13 @@ public enum Preset {
     /** What size these {@linkplain GraphicalObjects} can have. */
     private ArrayList<Float[]> sizeBounds;
 
+    /***
+     * Generates an easily callable {@linkplain Preset} allowing for quick generation on {@linkplain GraphicalObjects}.
+     * @param classPaths The class names of the {@linkplain GraphicalObjects}.
+     * @param number The quantity of {@linkplain GraphicalObjects}.
+     * @param speedBounds The speed bounds of the {@linkplain GraphicalObjects}.
+     * @param sizeBounds The size bounds of the {@linkplain GraphicalObjects}.
+     */
     Preset(String[] classPaths, Integer[] number, Float[][] speedBounds, Float[][] sizeBounds) {
         this.objectNames = new ArrayList<>();
         this.objectQuantities = new ArrayList<>();
@@ -33,18 +40,22 @@ public enum Preset {
         Collections.addAll(this.sizeBounds, sizeBounds);
     }
 
+    /** @return the class names of the chosen presets {@linkplain GraphicalObjects}. */
     public ArrayList<String> getObjectNames() {
         return this.objectNames;
     }
 
+    /** @return the amount of {@linkplain GraphicalObjects} to generate. */
     public ArrayList<Integer> getObjectQuantities() {
         return this.objectQuantities;
     }
 
+    /** @return the {@linkplain GraphicalObjects} speed limits. */
     public ArrayList<Float[]> getSpeedBounds() {
         return this.speedBounds;
     }
 
+    /** @return the {@linkplain GraphicalObjects} size bounds. */
     public ArrayList<Float[]> getSizeBounds() {
         return this.sizeBounds;
     }

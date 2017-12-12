@@ -36,10 +36,10 @@ public class Bike extends GameEntity implements PlayableEntity {
     private transient boolean wonTheGame, wasKilledByGravity;
 
     /** Counts the number of jumps. */
-    private transient int jumpCount;
+    private transient int jumpCount = 0;
 
     /** Represents the quantity of time till the player can double jump again. */
-    private transient float timeTillRejump = 8f, elapsedRejumpTime = 0;
+    private transient float timeTillRejump = 20f, elapsedRejumpTime = 0;
 
     /** A {@linkplain BasicContactListener} associated to this {@linkplain Bike}. */
     private transient BasicContactListener contactListener;
@@ -138,7 +138,6 @@ public class Bike extends GameEntity implements PlayableEntity {
                 if (entity.getCollisionGroup() == ObjectGroup.TERRAIN.group
                         || entity.getCollisionGroup() == ObjectGroup.OBSTACLE.group) {
                     this.isDead = true;
-                    System.out.println(entity.getCollisionGroup());
                     if (!this.wasTriggered) {
                         this.triggerDeath(true);
                         this.wasTriggered = true;
@@ -167,11 +166,12 @@ public class Bike extends GameEntity implements PlayableEntity {
         }
 
         // Make the Bike jump.
-        if (this.game.getKeyboard().get(KeyEvent.VK_Q).isPressed() && this.jumpCount < 2) {
+        if (this.game.getKeyboard().get(KeyEvent.VK_Q).isPressed() && this.jumpCount < 1) {
             this.getEntity().setVelocity(this.getVelocity().add(0, 13));
+            System.out.println(this.jumpCount);
             this.jumpCount += 1;
         }
-        if (this.jumpCount <= 2)
+        if (this.jumpCount <= 1)
             this.elapsedRejumpTime += deltaTime;
         if (this.elapsedRejumpTime > this.timeTillRejump) {
             this.elapsedRejumpTime = 0;
@@ -192,11 +192,9 @@ public class Bike extends GameEntity implements PlayableEntity {
                 this.rightWheel.power(this.MAX_WHEEL_SPEED);
             }
         }
-/*
         if (this.rightWheel.isCollidingWithTerrain() && this.leftWheel.isCollidingWithTerrain()) {
-            System.out.println("called");
             this.elapsedRejumpTime = this.timeTillRejump - .1f;
-        }*/
+        }
 
         // Handle Weapons
         if (this.isWeaponDeployed

@@ -35,6 +35,7 @@ public interface GraphicalObjects extends Graphics {
      */
     void setPosition(Vector position);
 
+    /** @return whether the {@linkplain GraphicalObjects} should reset. */
     boolean getIfResets();
 
 }
