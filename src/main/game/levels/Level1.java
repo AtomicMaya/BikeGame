@@ -130,7 +130,7 @@ public class Level1 extends Level {
         drawer.addGraphics(new ShapeGraphics(new Polygon(0, 0, 65, 0, 65, 16, 0, 16), Color.decode("#d3d3d3"), null, 0, 1, -5), new Vector(107.5f, 50));
         drawer.addGraphics(new ShapeGraphics(new Polygon(0, 0, 200, 0, 200, 100, 0, 100), Color.decode("#d3d3d3"), null, 0, 1, -5), new Vector(120, -5));
 
-        GravityWell gravityWell = new GravityWell(this.game, new Vector(102.5f, 50), new Vector(.1f, .06f), new Polygon(0, 0, 57.5f, 0, 57.5f, 10, 0, 10), 0);
+        GravityWell gravityWell = new GravityWell(this.game, new Vector(107.5f, 50), new Vector(.1f, .06f), new Polygon(0, 0, 52.5f, 0, 52.5f, 10, 0, 10), 0);
 
         Checkpoint checkpoint3 = new Checkpoint(this.game, new Vector(161, 34.5f));
 
@@ -269,7 +269,7 @@ public class Level1 extends Level {
 
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-        return new SpawnCheckpoint(this.game, new Vector(235, 31));
+        return new SpawnCheckpoint(this.game, new Vector(0, 0));
 	}
 
 }
