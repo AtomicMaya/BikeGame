@@ -115,7 +115,7 @@ public class ParticleEmitter implements Actor {
         Vector velocity = new Vector((float) Math.cos(angle) * speed, (float) Math.sin(angle) * speed);
         Vector position = this.position.add(velocity.mul(offset));
 
-        this.particles.push(new Particle(position, new Circle(.1f),
+        this.particles.push(new Particle(position, new Circle(.05f),
                 this.startColor, this.endColor, lifeTime, velocity, this.gravity));
     }
 

@@ -43,7 +43,7 @@ public class Coin extends GameEntity implements Collectable {
 	private boolean isBigCoin;
 
 	/**
-	 * Creates a coin.
+	 * Creates a {@linkplain Coin}.
 	 * @param game The {@linkplain ActorGame} where this {@linkplain Coin} exists.
 	 * @param position This {@linkplain Coin}'s position {@linkplain Vector}.
 	 * @param isBigCoin Whether this {@linkplain Coin} is a special coin.
@@ -54,8 +54,11 @@ public class Coin extends GameEntity implements Collectable {
 		this.isBigCoin = isBigCoin;
 		this.create();
 	}
-	
-	// TODO
+
+    /**
+     * Actual creation of the parameters of the {@linkplain GameEntity}, not in the constructor to
+     * avoid duplication with the method {@linkplain #reCreate(ActorGame)}.
+     */
 	private void create() {
 		if (this.isBigCoin) {
 			this.graphics = new ArrayList<>(

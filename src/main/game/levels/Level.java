@@ -34,17 +34,26 @@ public abstract class Level extends Node implements Actor {
 	}
 
 	/**
-	 * Creation of all the {@linkplain Actor}s in the {@linkplain Level}
+	 * Creation of all the {@linkplain Actor}s in the {@linkplain Level}.
 	 */
 	public abstract void createAllActors();
 
 	/**
-	 * @param actor {@linkplain Actor} to ads in the {@linkplain Level}
+	 * @param actor {@linkplain Actor} to add in the {@linkplain Level}.
 	 */
 	public void addActor(Actor actor) {
 		if (!actors.contains(actor))
 			this.actors.add(actor);
 	}
+
+    /**
+     * @param actors An {@linkplain ArrayList} of {@linkplain Actor} to add in the {@linkplain Level}.
+     */
+    public void addActors(ArrayList<Actor> actors) {
+        for (Actor actor : actors)
+            if (!this.actors.contains(actor))
+                this.actors.add(actor);
+    }
 
 	/**
 	 * @return the list of all the {@linkplain Actor}s in this
