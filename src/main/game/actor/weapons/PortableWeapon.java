@@ -46,10 +46,10 @@ public abstract class PortableWeapon extends Weapon {
 
 			this.angle = this.direction.rotated(Math.PI).getAngle();
 			// System.out.println(angle);
-			if (this.angle > Math.PI / 4 && this.angle <= Math.PI / 2)
-                this.angle = (float) (Math.PI / 4);
-			else if (this.angle > Math.PI / 2 && this.angle < Math.PI * 3 / 4f)
-                this.angle = (float) Math.PI * 3 / 4f;
+			if (this.angle > Math.PI / 3 && this.angle <= Math.PI / 2)
+                this.angle = (float) (Math.PI / 3);
+			else if (this.angle > Math.PI / 2 && this.angle < Math.PI * 2 / 3f)
+                this.angle = (float) Math.PI * 2 / 3f;
 			else if (this.angle < -Math.PI / 4 && this.angle >= -Math.PI / 2)
                 this.angle = (float) (-Math.PI / 4);
 			else if (this.angle < -Math.PI / 2 && this.angle > -Math.PI * 3 / 4f)

@@ -28,7 +28,7 @@ public class SpawnBuilder extends ActorBuilder {
 	 */
 	public SpawnBuilder(ActorGame game) {
 		super(game);
-		this.spawn = new SpawnCheckpoint(game, getHalfFlooredMousePosition(), null);
+		this.spawn = new SpawnCheckpoint(game, getHalfFlooredMousePosition());
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class SpawnBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		spawn.destroy();
-		spawn = new SpawnCheckpoint(getOwner(), position, null);
+		spawn = new SpawnCheckpoint(getOwner(), position);
 	}
 
 	@Override

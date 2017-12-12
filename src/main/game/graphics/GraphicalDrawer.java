@@ -22,11 +22,19 @@ public class GraphicalDrawer implements Actor {
 	/** @param graphics {@linkplain ArrayList} of {@linkplain Graphics} to add to the game */
 	public void addGraphics(ArrayList<Graphics> graphics) {
 		for (Graphics graphic : graphics)
-			addGraphics(graphic);
+			this.addGraphics(graphic);
 	}
 
 	/** @param graphics {@linkplain Graphics} to add to the game */
 	public void addGraphics(Graphics graphics) {
+		
+		if (!this.graphics.contains(graphics))
+			this.graphics.add(graphics);
+	}
+	
+	/** @param graphics {@linkplain ShapeGraphics} to add to the game */
+	public void addGraphics(ShapeGraphics graphics, Vector anchor) {
+		graphics.setRelativeTransform(Transform.I.translated(anchor));
 		if (!this.graphics.contains(graphics))
 			this.graphics.add(graphics);
 	}

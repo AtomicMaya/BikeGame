@@ -8,38 +8,66 @@ import main.math.Polygon;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
-import main.window.Mouse;
 
 import java.awt.*;
 import java.util.ArrayList;
 
+/** Button wich can be clicked to execute an action */
 public class GraphicalButton extends GUIComponent {
-	private Mouse mouse;
 
+	/** Path to the images */
 	private String idleGraphics, hoverGraphics;
+	
+	/** List of time, for when this button is supposed to be busy */
 	private ArrayList<Float> time = new ArrayList<>();
+	
+	/** List of actions to run when this button is clicked */
 	private ArrayList<Runnable> actions = new ArrayList<>();
 
+	/** Drowning parameters */
 	private float alpha = .6f, depth = -.02f;
 
-	private boolean hovered, clicked;
+	/** Whether this button is hovered */
+	private boolean hovered;
+	
+	/** Whether this button has been clicked */
+	private boolean clicked;
+	
+	/** Whether this button is busy */
 	private boolean buttonBusy = false;
 
+	/** Timer */
 	private float timeToActionEnd = 0.f, elapsedActionTime = 0.f;
+	
+	/** Text graphics */
 	private BetterTextGraphics textGraphics;
 
+	/** Default size */
 	private float width = 1, height = 1;
 
+	/** Default offset of the text */
 	private final Vector defaultTextOffset;
+	
+	/** Actual shift of the text */
 	private Vector shiftText = Vector.ZERO;
+	
+	/** Whether we forced the text shift */
 	private boolean forcedTextShift = false;
 
+	/** Background shape */
 	private Polygon shape;
+	
+	/** Font size */
 	private float fontSize;
 
+	/** 
+	 * Create a new {@linkplain GraphicalButton}
+	 * @param game The master {@linkplain ActorGame}
+	 * @param text Text to display
+	 * @param fontSize Font size
+	 * */
 	public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
 		super(game, position);
-		this.mouse = game.getMouse();
 		this.fontSize = fontSize;
 		defaultTextOffset = new Vector(fontSize / 4f, fontSize / 4f);
 
@@ -47,10 +75,15 @@ public class GraphicalButton extends GUIComponent {
 		this.setText(text, fontSize);
 	}
 
+	/** 
+	 * Create a new {@linkplain GraphicalButton}
+	 * @param game The master {@linkplain ActorGame}
+	 * @param width With of the {@linkplain GraphicalButton}
+	 * @param height Height of the {@linkplain GraphicalButton}
+	 * */
 	public GraphicalButton(ActorGame game, Vector position, float width, float height) {
 		super(game, position);
-		this.mouse = game.getMouse();
-		defaultTextOffset = new Vector(0, 0);// does not matter
+		this.defaultTextOffset = new Vector(0, 0);// does not matter
 		this.width = width;
 		this.height = height;
 		forceShape(width, height);
@@ -68,7 +101,7 @@ public class GraphicalButton extends GUIComponent {
 		if (ExtendedMath.isInRectangle(getPosition(), getPosition().add(new Vector(width * zoom, height * zoom)),
 				getMousePosition())) {
 			this.hovered = true;
-			this.clicked = this.mouse.getLeftButton().isReleased();
+			this.clicked = getOwner().getMouse().getLeftButton().isReleased();
 		} else {
 			this.hovered = false;
 		}
@@ -153,7 +186,6 @@ public class GraphicalButton extends GUIComponent {
 		this.buttonBusy = true;
 		this.timeToActionEnd = time > this.timeToActionEnd ? time : this.timeToActionEnd;
 		ParallelAction.generateWorker(runnable).execute();
-
 	}
 
 	/**
@@ -213,9 +245,7 @@ public class GraphicalButton extends GUIComponent {
 			height = textGraphics.getCharSize();
 
 			forceShape(width, height);
-
 		}
-
 	}
 
 	/**
@@ -237,9 +267,14 @@ public class GraphicalButton extends GUIComponent {
 		}
 	}
 
+	/** @return this {@linkplain GraphicalButton} width */
 	public float getWidth() {
-		// return maxX - minX;
 		return width;
+	}
+	
+	/** @return this {@linkplain GraphicalButton} height */
+	public float getHeight() {
+		return height;
 	}
 
     /**
@@ -256,7 +291,6 @@ public class GraphicalButton extends GUIComponent {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
+		// nothing to destroy
 	}
 }

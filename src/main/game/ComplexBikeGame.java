@@ -45,10 +45,12 @@ public abstract class ComplexBikeGame extends ActorGame {
 			mainMenu.draw(getCanvas());
 			return;
 		}
+		if (getPayload() != null && (getPayload().getDeathStatus() || getPayload().getVictoryStatus())) {
+			return;
+		}
 		ingameMenu.update(deltaTime, 1);
 		if (ingameMenu.isOpen())
 			ingameMenu.draw(getCanvas());
-
 	}
 
 	/** Go to the MainMenu */
