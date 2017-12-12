@@ -42,7 +42,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 	private GraphicalButton askExplosive;
 	
 	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #askExplosive} */
-	private Vector askExplosivPos = new Vector(22, 8);
+	private Vector askExplosivPos = new Vector(18, 8);
 	
 	/** {@linkplain Comment} associated to the {@linkplain GraphicalButton} {@link #askExplosive} */
 	private Comment askExplosiveComment;

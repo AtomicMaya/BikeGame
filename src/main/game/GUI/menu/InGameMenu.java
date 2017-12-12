@@ -55,7 +55,6 @@ public class InGameMenu extends FullScreenMenu {
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
 		if (isOpen()) {
-
 			close.draw(canvas);
 			backToMainMenu.draw(canvas);
 		}
@@ -63,6 +62,7 @@ public class InGameMenu extends FullScreenMenu {
 
 	@Override
 	public void changeStatus() {
+		super.changeStatus();
 		getOwner().setGameFreezeStatus(isOpen());
 	}
 

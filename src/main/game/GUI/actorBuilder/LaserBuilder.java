@@ -74,7 +74,7 @@ public class LaserBuilder extends ActorBuilder {
 			laser.changeDirection(direction);
 		});
 
-		length = new NumberField(game, lengthPos, 3, 1, 5);
+		length = new NumberField(game, lengthPos, 5);
 
 		lengthComment = new Comment(game, lengthCommentText);
 		lengthComment.setParent(length);

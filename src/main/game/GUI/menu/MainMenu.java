@@ -29,14 +29,17 @@ public class MainMenu extends FullScreenMenu {
 	private final String menuMainText = "Menu";
 	
 	/** {@linkplain Color} of the {@link #menuMainText}. */
-	private Color menuColor = Color.CYAN;
+	private Color menuColor = new Color(58, 160, 201);
 
 	// TODO remove this, for placing purpose #grid lines
 	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
 
 	// buttons list
 	/** {@linkplain ArrayList} containing all the loading save {@linkplain GraphicalButton} created by the user. */
-	private ArrayList<GraphicalButton> buttons = new ArrayList<>();
+	private ArrayList<GraphicalButton> loadingSaveButtons = new ArrayList<>();
+	
+	/** Absolute position on screen of the top left corner of the first save button */
+	private Vector loadingSavePosition = new Vector(-24, 8);
 	
 	/** {@linkplain ArrayList} containing all the {@linkplain GraphicalButton} to delete the corresponding save. */
 	private ArrayList<GraphicalButton> deleteButons = new ArrayList<>();
@@ -52,7 +55,7 @@ public class MainMenu extends FullScreenMenu {
 	private final float shiftLB = .3f;
 	
 	/** Top left corner of the first {@linkplain GraphicalButton} of {@link #levelButtons}. */
-	private final Vector topLeftLB = new Vector(6, -4);
+	private final Vector topLeftLB = new Vector(6, -2);
 
 	// if a save is clicked
 	/** Whether this menu is busy, to avoid spam click on {@linkplain GraphicalButton}. */
@@ -98,7 +101,7 @@ public class MainMenu extends FullScreenMenu {
 		// main menu text
 		float fontSize = 4.5f;
 		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
-		menuMainGraphics = new TextGraphics(menuMainText, fontSize, menuColor, Color.BLACK.brighter(), .01f, false,
+		menuMainGraphics = new TextGraphics(menuMainText, fontSize, menuColor, Color.BLACK.brighter(), .01f, true,
 				false, anchor, 1, 1);
 
 		// TODO remove this grid
@@ -120,10 +123,10 @@ public class MainMenu extends FullScreenMenu {
 		createSaveButtons();
 
 		// Arrow buttons to navigate in the save menu
-		right = new GraphicalButton(game, new Vector(-24, -11), 2, 2);
+		right = new GraphicalButton(game, new Vector(loadingSavePosition.x + 4, -14), 2, 2);
 		right.addOnClickAction(() -> PagePlusPlus());
 
-		left = new GraphicalButton(game, new Vector(-28, -11), 2, 2);
+		left = new GraphicalButton(game, new Vector(loadingSavePosition.x, -14), 2, 2);
 		left.addOnClickAction(() -> PageMinusMinus());
 
 		// set arrows graphics
@@ -133,7 +136,7 @@ public class MainMenu extends FullScreenMenu {
 				"./res/images/arrows/left_arrow_light_green.png");
 
 		// level editor
-		levelEditorButton = new GraphicalButton(game, new Vector(4, 3), "Level Editor", 1.4f);
+		levelEditorButton = new GraphicalButton(game, new Vector(topLeftLB.x, topLeftLB.y + 5), "Level Editor", 1.4f);
 		levelEditorButton.addOnClickAction(() -> {
 			levelEditor = new LevelEditor(game, window, this);
 			levelEditor.open();
@@ -166,7 +169,7 @@ public class MainMenu extends FullScreenMenu {
 
 	private void PagePlusPlus() {
 		savePage++;
-		if (savePage > buttons.size() % maxNumberButtonsSave)
+		if (savePage > loadingSaveButtons.size() % maxNumberButtonsSave)
 			savePage--;
 	}
 
@@ -190,13 +193,13 @@ public class MainMenu extends FullScreenMenu {
 			}
 			super.update(deltaTime, zoom);
 			waitBeforeClick += deltaTime;
-			for (int i = 0; i < buttons.size(); i++) {
+			for (int i = 0; i < loadingSaveButtons.size(); i++) {
 				// update only the buttons on the current page
 				if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
-					buttons.get(i).update(deltaTime, zoom);
+					loadingSaveButtons.get(i).update(deltaTime, zoom);
 			}
 			// update the left/right buttons only of their is too much saves
-			if (buttons.size() > maxNumberButtonsSave) {
+			if (loadingSaveButtons.size() > maxNumberButtonsSave) {
 				left.update(deltaTime, zoom);
 				right.update(deltaTime, zoom);
 			}
@@ -225,13 +228,13 @@ public class MainMenu extends FullScreenMenu {
 			sg.draw(canvas);
 		}
 
-		for (int i = 0; i < buttons.size(); i++) {
+		for (int i = 0; i < loadingSaveButtons.size(); i++) {
 			// draw only the buttons on the current page
 			if (i >= savePage * maxNumberButtonsSave && i < (savePage + 1) * maxNumberButtonsSave)
-				buttons.get(i).draw(canvas);
+				loadingSaveButtons.get(i).draw(canvas);
 		}
 		// draw the left/right buttons only of their is too much saves
-		if (buttons.size() > maxNumberButtonsSave) {
+		if (loadingSaveButtons.size() > maxNumberButtonsSave) {
 			left.draw(canvas);
 			right.draw(canvas);
 		}
@@ -256,7 +259,7 @@ public class MainMenu extends FullScreenMenu {
 	public void destroy() {
 		this.left.destroy();
 		this.right.destroy();
-		for (GraphicalButton gb : this.buttons)
+		for (GraphicalButton gb : this.loadingSaveButtons)
 			gb.destroy();
 		for (GraphicalButton gb : this.levelButtons)
 			gb.destroy();
@@ -268,7 +271,7 @@ public class MainMenu extends FullScreenMenu {
 
 	/** Create the different save {@linkplain GraphicalButton}. */
 	private void createSaveButtons() {
-		buttons.clear();
+		loadingSaveButtons.clear();
 		deleteButons.clear();
 		ArrayList<GraphicalButton> tempSaveButons = new ArrayList<>();
 		ArrayList<GraphicalButton> tempDeleteButons = new ArrayList<>();
@@ -276,7 +279,7 @@ public class MainMenu extends FullScreenMenu {
 		// get the saves and create buttons to load them
 		File[] list = Save.availableSaves(getOwner());
 		for (int i = 0; i < list.length; i++) {
-			Vector position = new Vector(-28, -(i % maxNumberButtonsSave) * 2.4f + 8f);
+			Vector position = new Vector(loadingSavePosition.x, -(i % maxNumberButtonsSave) * 2.4f + loadingSavePosition.y);
 			tempSaveButons.add(new GraphicalButton(getOwner(), position, list[i].getName(), 1.4f));
 			int p = i;
 			tempSaveButons.get(i).addOnClickAction(() -> {
@@ -308,7 +311,7 @@ public class MainMenu extends FullScreenMenu {
 			});
 			tempDeleteButons.get(i).setDepth(1337);
 		}
-		buttons.addAll(tempSaveButons);
+		loadingSaveButtons.addAll(tempSaveButons);
 		deleteButons.addAll(tempDeleteButons);
 	}
 

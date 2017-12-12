@@ -54,13 +54,13 @@ public class CheckpointBuilder extends ActorBuilder {
 		super(game);
 		this.checkpoint = new Checkpoint(game, getHalfFlooredMousePosition());
 
-		height = new NumberField(game, heightNumberFieldPos, 3, 1, 10);
+		height = new NumberField(game, heightNumberFieldPos, 10);
 
 		heightComment = new Comment(game, "Area of trigger height");
 		heightComment.setParent(height);
 		heightComment.setAnchor(new Vector(-6, 0));
 
-		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
+		width = new NumberField(game, widthNumberFieldPos, 1);
 
 		widthComments = new Comment(game, "Area of trigger width");
 		widthComments.setParent(width);

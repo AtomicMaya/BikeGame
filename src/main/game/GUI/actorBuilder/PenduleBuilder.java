@@ -49,13 +49,13 @@ public class PenduleBuilder extends ActorBuilder {
 
 		pendule = new Pendulum(game, getHalfFlooredMousePosition(), 5, 1);
 
-		length = new NumberField(game, lengthNumberFieldPos, 3, 1, 5);
+		length = new NumberField(game, lengthNumberFieldPos, 5);
 
 		lengthComment = new Comment(game, "Rope length");
 		lengthComment.setParent(length);
 		lengthComment.setAnchor(new Vector(-6, 0));
 
-		radius = new NumberField(game, radiusPos, 3, 1, 1);
+		radius = new NumberField(game, radiusPos, 1);
 
 		radiusComment = new Comment(game, "Weight radius");
 		radiusComment.setParent(length);

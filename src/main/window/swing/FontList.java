@@ -467,7 +467,7 @@ public enum FontList {
 
 	private String name;
 
-	FontList(String name) {
+	private FontList(String name) {
 		this.name = name;
 	}
 
@@ -475,21 +475,4 @@ public enum FontList {
 	public String toString() {
 		return name;
 	}
-
-//	public float getStringLength(String s) {
-//		Font f = new Font(toString(), Font.PLAIN, 1);
-//		Canvas canvas = new java.awt.Canvas();
-//		JFrame frame = new JFrame("test");
-//		frame.add(canvas);
-//		frame.pack();
-//
-//		canvas.createBufferStrategy(2);
-//		BufferStrategy strategy = canvas.getBufferStrategy();
-//		Graphics2D g = (Graphics2D) strategy.getDrawGraphics();
-//
-//		float fl = g.getFontMetrics(f).getLineMetrics(s, g).get;
-//		frame.dispose();
-//		return fl;
-//	}
-
 }

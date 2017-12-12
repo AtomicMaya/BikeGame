@@ -55,13 +55,13 @@ public class PlatformBuilder extends ActorBuilder {
 	public PlatformBuilder(ActorGame game) {
 		super(game);
 
-		waitTime = new NumberField(game, waitTimePos, 3, 1, 1);
+		waitTime = new NumberField(game, waitTimePos, 1);
 
 		waitTimeComment = new Comment(game, waitTimeCommentText);
 		waitTimeComment.setParent(waitTime);
 		waitTimeComment.setAnchor(new Vector(-6, 0));
 
-		timeToGo = new NumberField(game, timeToGoPos, 3, 1, 3);
+		timeToGo = new NumberField(game, timeToGoPos, 3);
 
 		timeToGoComment = new Comment(game, timeToGoCommentText);
 		timeToGoComment.setParent(timeToGo);

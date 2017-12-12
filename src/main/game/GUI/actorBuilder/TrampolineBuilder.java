@@ -32,11 +32,12 @@ public class TrampolineBuilder extends ActorBuilder {
 	public TrampolineBuilder(ActorGame game) {
 		super(game);
 		trampoline = new Trampoline(getOwner(), getHalfFlooredMousePosition(), 5, 1);
+		position = getHalfFlooredMousePosition();
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-
+		super.update(deltaTime, zoom);
 		if (!isDone) {
 			position = getHalfFlooredMousePosition();
 			if (isLeftPressed()) {

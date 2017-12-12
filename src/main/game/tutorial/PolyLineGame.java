@@ -44,7 +44,7 @@ public class PolyLineGame implements Game {
 
 
 
-		Polyline p = new Polyline(new Vector(-10, 3), new Vector(-10, -4), new Vector(-2, -4), new Vector(10, 0));
+//		Polyline p = new Polyline(new Vector(-10, 3), new Vector(-10, -4), new Vector(-2, -4), new Vector(10, 0));
 
 		// EntityBuilder entityBuilder = world.createEntityBuilder();
 		// entityBuilder.setFixed(true);

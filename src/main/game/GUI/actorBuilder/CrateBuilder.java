@@ -48,13 +48,13 @@ public class CrateBuilder extends ActorBuilder {
 
 		crate = new Crate(game, getHalfFlooredMousePosition(), null, false, 1);
 
-		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
+		height = new NumberField(game, heightNumberFieldPos, 1);
 
 		heightComment = new Comment(game, "Crate Height");
 		heightComment.setParent(height);
 		heightComment.setAnchor(new Vector(-6, 0));
 
-		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
+		width = new NumberField(game, widthNumberFieldPos, 1);
 
 		widthComments = new Comment(game, "Crate Width");
 		widthComments.setParent(width);

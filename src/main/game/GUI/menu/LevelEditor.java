@@ -371,16 +371,16 @@ public class LevelEditor implements Graphics {
 		// camera controls
 		float posX = this.cameraPosition.x;
 		float posY = this.cameraPosition.y;
-		if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown()) {
+		if (this.game.getKeyboard().get(KeyEvent.VK_W).isDown() || this.game.getKeyboard().get(KeyEvent.VK_UP).isDown()) {
 			posY += deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
-		if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown()) {
+		if (this.game.getKeyboard().get(KeyEvent.VK_S).isDown() || this.game.getKeyboard().get(KeyEvent.VK_DOWN).isDown()) {
 			posY -= deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
-		if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
+		if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown() || this.game.getKeyboard().get(KeyEvent.VK_LEFT).isDown()) {
 			posX -= deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
-		if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
+		if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown() || this.game.getKeyboard().get(KeyEvent.VK_RIGHT).isDown()) {
 			posX += deltaTime * cameraSpeed * this.currentCameraAcceleration;
 		}
 
@@ -408,7 +408,7 @@ public class LevelEditor implements Graphics {
 		// right click menu
 		if (!isBusy())
 			this.actorMenu.update(deltaTime, this.zoom);
-		else
+		else if (isBusy() && game.getMouse().getRightButton().isPressed())
 			this.actorMenu.setStatus(false);
 
 		// positionneur stuff
@@ -485,6 +485,10 @@ public class LevelEditor implements Graphics {
 		// draw axis
 		axeX.draw(canvas);
 		axeY.draw(canvas);
+		
+		// draw a background
+		canvas.drawShape(ExtendedMath.createRectangle(Vector.ZERO, new Vector(windowZoom * zoom*2, windowZoom * zoom*2)),
+				Transform.I.translated(cameraPosition.add(-windowZoom * zoom, -windowZoom * zoom)), new Color(146, 180, 206), null, 0, .8f, -42042);
 
 		if (showRedSquare && hasClicked) {
 			redSquareGraphics.draw(canvas);
@@ -629,7 +633,7 @@ public class LevelEditor implements Graphics {
 		this.open = true;
 	}
 
-	/** Set the status of this {@linkplain LevelEditor} to false */
+	/** Set the status of this {@linkplain LevelEditor} to false, and destroy it */
 	public void close() {
 		this.open = false;
 		this.destroy();

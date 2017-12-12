@@ -55,13 +55,13 @@ public class FinishBuilder extends ActorBuilder {
 
 		this.finish = new FinishActor(game, getHalfFlooredMousePosition());
 
-		height = new NumberField(game, heightNumberFieldPos, 3, 1, 10);
+		height = new NumberField(game, heightNumberFieldPos, 10);
 
 		heightComment = new Comment(game, "Height of the area of trigger");
 		heightComment.setParent(height);
 		heightComment.setAnchor(new Vector(-6, 0));
 
-		width = new NumberField(game, widthNumberFieldPos, 3, 1, 1);
+		width = new NumberField(game, widthNumberFieldPos, 1);
 
 		widthComments = new Comment(game, "Width of the area of trigger");
 		widthComments.setParent(width);
