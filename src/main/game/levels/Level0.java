@@ -32,18 +32,19 @@ public class Level0 extends Level {
         Polyline groundBody = new Polyline(-3, -1000,
                 0.f, 0.f,
                 20.f, 0.f,
-                22.5f, -11.f,
-                60.f, -9.f,
+                22.5f, -9.f,
+                60.f, -7.f,
                 61.f, -4.f,
                 75.f, -3.f,
-                74.f, 6.f,
+                75.f, 8.f,
+                88, 6,
                 100.f, 6.f,
                 100.f, -2.f,
                 130.f, -2.f,
                 130.f, 7.f,
                 150.f, 7.f,
                 150.f, 11.f,
-                200.f, 11.f,
+                200.f, 10.f,
                 200, -1000);
 
         Terrain terrain = new Terrain(this.game, null, groundBody, TerrainType.NORMAL);
@@ -62,7 +63,7 @@ public class Level0 extends Level {
         Liquid lava = new Liquid(this.game, new Vector(100, -2), new Polygon(0, 0, 30, 0, 30, 2, 0, 2), true);
         FinishActor finish = new FinishActor(this.game, new Vector(175, 11));
 
-        GraphicalDrawer gd = new GraphicalDrawer();
+        GraphicalDrawer graphicsDrawer = new GraphicalDrawer();
 
 
         this.btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(1,6), .6f);
@@ -78,16 +79,18 @@ public class Level0 extends Level {
         this.btgMud = new BetterTextGraphics(this.game, "Mud, good for pies, less so for traction !", .75f, new Vector(130, 13), .6f);
         this.btgFinish = new BetterTextGraphics(this.game, "You haven't died yet ! Or have you ?", .75f, new Vector(155, 13), .6f);
         
-        gd.addGraphics(btgForward);
-        gd.addGraphics(btgBrake);
-        gd.addGraphics(btgTilt);
-        gd.addGraphics(btgJump);
-        gd.addGraphics(btgSpace);
-        gd.addGraphics(btgDoubleJump);
-        gd.addGraphics(btgLever);
-        gd.addGraphics(btgLava);
-        gd.addGraphics(btgMud);
-        gd.addGraphics(btgFinish);
+        graphicsDrawer.addGraphics(btgForward);
+        graphicsDrawer.addGraphics(btgBrake);
+        graphicsDrawer.addGraphics(btgTilt);
+        graphicsDrawer.addGraphics(btgJump);
+        graphicsDrawer.addGraphics(btgSpace);
+        graphicsDrawer.addGraphics(btgDoubleJump);
+        graphicsDrawer.addGraphics(btgLever);
+        graphicsDrawer.addGraphics(btgPlatform);
+        graphicsDrawer.addGraphics(btgLava);
+        graphicsDrawer.addGraphics(btgCoin);
+        graphicsDrawer.addGraphics(btgMud);
+        graphicsDrawer.addGraphics(btgFinish);
 
         //this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 10f);
 
@@ -103,7 +106,7 @@ public class Level0 extends Level {
         this.addActor(lava);
         this.addActor(finish);
         this.addActor(scenery);
-        this.addActor(gd);
+        this.addActor(graphicsDrawer);
     }
 
     @Override
