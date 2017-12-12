@@ -19,8 +19,6 @@ import main.math.Vector;
 /** The Tutorial Level
  */
 public class Level0 extends Level {
-    private Bike player;
-    private BetterTextGraphics btgForward, btgBrake, btgTilt, btgJump, btgCheckpoin, btgSpace, btgDoubleJump, btgLever, btgPlatform, btgLava, btgCoin, btgMud, btgFinish;
     private Audio backgroundAudio;
 
     public Level0(ActorGame game) {
@@ -44,7 +42,7 @@ public class Level0 extends Level {
                 130.f, 7.f,
                 150.f, 7.f,
                 150.f, 11.f,
-                200.f, 10.f,
+                200.f, 11.f,
                 200, -1000);
 
         Terrain terrain = new Terrain(this.game, null, groundBody, TerrainType.NORMAL);
@@ -63,7 +61,6 @@ public class Level0 extends Level {
                 0, 0, 0, 0, 0, new Polygon(.0f, .0f, 6.f, .0f, 6.f, 1.f, .0f, 1.f), 6, 1);
 
         Terrain muddyTerrain = new Terrain(this.game, new Vector(130, 7), new Polygon(0, 0, 20, 4, 20, 0), TerrainType.MUD);
-        this.player = new Bike(this.game, new Vector(1, 2));
         SimpleLever lever = new SimpleLever(this.game, new Vector(94, 6));
 
         TriggeredPlatform triggeredPlatform = new TriggeredPlatform(this.game, new Vector(100, 5), new Vector(1, 0),
@@ -72,25 +69,27 @@ public class Level0 extends Level {
 
         Coin coin = new Coin(this.game, new Vector(114.5f, 7), false);
         Liquid lava = new Liquid(this.game, new Vector(100, -2), new Polygon(0, 0, 30, 0, 30, 2, 0, 2), true);
-        FinishActor finish = new FinishActor(this.game, new Vector(175, 9));
+        FinishActor finish = new FinishActor(this.game, new Vector(175, 11));
 
         GraphicalDrawer graphicsDrawer = new GraphicalDrawer();
 
         Checkpoint checkpoint1 = new Checkpoint(this.game, new Vector(62, -4));
         Checkpoint checkpoint2 = new Checkpoint(this.game, new Vector(88, 6));
 
-        this.btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(0,6), .6f);
-        this.btgBrake = new BetterTextGraphics(this.game, "Brake with S",.75f, new Vector(2, 5), .6f);
-        this.btgTilt = new BetterTextGraphics(this.game, "Tilt with A, D", .75f, new Vector(22, 4), .6f);
-        this.btgJump = new BetterTextGraphics(this.game, "Jump with Q", .75f, new Vector(48, -6), .6f);
-        this.btgSpace = new BetterTextGraphics(this.game, "Change orientation with space", .75f, new Vector(55, 0), .6f);
-        this.btgDoubleJump = new BetterTextGraphics(this.game, "Reach for the skies ! Press Q twice.", .75f, new Vector(52, 5), .6f);
-        this.btgLever = new BetterTextGraphics(this.game, "Levers can be activated by pressing E", .75f, new Vector(88, 9), .6f);
-        this.btgPlatform = new BetterTextGraphics(this.game, "Keep on moving to stay on track !", .75f, new Vector(95, 10), .6f);
-        this.btgLava = new BetterTextGraphics(this.game, "The Bee Gees on fire ! Burnin' alive !", .75f, new Vector(105, 1), .6f);
-        this.btgCoin = new BetterTextGraphics(this.game, "Collectibles are awesome !", .75f, new Vector(108, 9), .6f);
-        this.btgMud = new BetterTextGraphics(this.game, "Mud, good for pies, less so for traction !", .75f, new Vector(130, 13), .6f);
-        this.btgFinish = new BetterTextGraphics(this.game, "You haven't died yet ! Or have you ?", .75f, new Vector(155, 13), .6f);
+        BetterTextGraphics btgForward, btgBrake, btgTilt, btgJump, btgSpace, btgDoubleJump, btgLever, btgPlatform, btgLava, btgCoin, btgMud, btgFinish;
+
+        btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(0,6), .6f);
+        btgBrake = new BetterTextGraphics(this.game, "Brake with S",.75f, new Vector(2, 5), .6f);
+        btgTilt = new BetterTextGraphics(this.game, "Tilt with A, D", .75f, new Vector(22, 4), .6f);
+        btgJump = new BetterTextGraphics(this.game, "Jump with Q", .75f, new Vector(48, -6), .6f);
+        btgSpace = new BetterTextGraphics(this.game, "Change orientation with space", .75f, new Vector(55, 0), .6f);
+        btgDoubleJump = new BetterTextGraphics(this.game, "Reach for the skies ! Press Q twice.", .75f, new Vector(52, 5), .6f);
+        btgLever = new BetterTextGraphics(this.game, "Levers can be activated by pressing E", .75f, new Vector(88, 9), .6f);
+        btgPlatform = new BetterTextGraphics(this.game, "Keep on moving to stay on track !", .75f, new Vector(100, 10), .6f);
+        btgLava = new BetterTextGraphics(this.game, "The Bee Gees on fire ! Burnin' alive !", .75f, new Vector(105, 1), .6f);
+        btgCoin = new BetterTextGraphics(this.game, "Collectibles are awesome !", .75f, new Vector(110  , 9), .6f);
+        btgMud = new BetterTextGraphics(this.game, "Mud, good for pies, less so for traction !", .75f, new Vector(130, 13), .6f);
+        btgFinish = new BetterTextGraphics(this.game, "You haven't died yet ! Or have you ?", .75f, new Vector(155, 13), .6f);
         
         graphicsDrawer.addGraphics(btgForward);
         graphicsDrawer.addGraphics(btgBrake);
@@ -113,7 +112,6 @@ public class Level0 extends Level {
         this.addActor(obstacle);
         this.addActor(obstacle2);
         this.addActor(muddyTerrain);
-        this.addActor(this.player);
         this.addActor(checkpoint1);
         this.addActor(platform);
         this.addActor(checkpoint2);
@@ -143,6 +141,6 @@ public class Level0 extends Level {
 
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-		return new SpawnCheckpoint(this.game, new Vector(1, 0), this.player);
+		return new SpawnCheckpoint(this.game, new Vector(1, 0), null);
 	}
 }

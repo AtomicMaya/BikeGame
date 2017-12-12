@@ -11,6 +11,7 @@ import main.math.Vector;
 import main.window.Canvas;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /** Random Liquids such as Lava and Acid */
 public class Liquid extends GameEntity implements Saveable {
@@ -19,9 +20,6 @@ public class Liquid extends GameEntity implements Saveable {
 
     /** The {@linkplain Liquid}'s associated {@linkplain BasicContactListener}. */
     private BasicContactListener listener;
-
-    /** The animation time. */
-    private final float animationTime;
 
     /** The elapsed animation time. */
     private float elapsedAnimationTime;
@@ -34,6 +32,9 @@ public class Liquid extends GameEntity implements Saveable {
 
     /** Whether or not the displayed {@linkplain ImageGraphics} should be replaced by it's inverted. */
     private boolean switched;
+
+    /** A new {@linkplain Random} generator. */
+    private transient Random random;
 
     /**
      * Creates a new {@linkplain Liquid}.
@@ -48,7 +49,6 @@ public class Liquid extends GameEntity implements Saveable {
         this.isLava = isLava;
         this.switched = false;
 
-        this.animationTime = .25f;
         this.elapsedAnimationTime = 0;
         this.length = shape.getPoints().get(2).x;
         this.height = shape.getPoints().get(2).y;
@@ -63,6 +63,7 @@ public class Liquid extends GameEntity implements Saveable {
      * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
      */
     private void create() {
+        this.random = new Random();
         this.graphics = new ArrayList<>();
         for (int l = 0; l < this.length; l++) {
             for (int h = 0; h < this.height; h++) {
@@ -85,7 +86,7 @@ public class Liquid extends GameEntity implements Saveable {
         super.update(deltaTime);
 
         this.elapsedAnimationTime += deltaTime;
-        if (this.elapsedAnimationTime > animationTime) {
+        if (this.elapsedAnimationTime > this.random.nextFloat()) {
             this.switched = !this.switched;
             this.graphics = new ArrayList<>();
             for (int l = 0; l < this.length; l++) {

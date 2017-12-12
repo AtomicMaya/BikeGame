@@ -42,10 +42,10 @@ public class Mine extends GameEntity {
      * @param game The master {@linkplain ActorGame}.
      * @param position The initial position {@linkplain Vector}.
      */
-	public Mine(ActorGame game, Vector position) {
+	public Mine(ActorGame game, Vector position, float delay) {
 		super(game, true, position);
 
-		this.beepTime = 2f;
+		this.beepTime = delay;
 		this.boomAnimationTime = .3f;
 		this.beeps = 3;
 		this.state = false;
@@ -53,6 +53,10 @@ public class Mine extends GameEntity {
 		this.triggered = false;
 		this.create();
 	}
+
+	public Mine(ActorGame game, Vector position) {
+	    this(game, position, 1.1f);
+    }
 
     /**
      * Actual creation of the parameters of the {@linkplain GameEntity}, not in the
@@ -74,7 +78,7 @@ public class Mine extends GameEntity {
 
 		this.triggered = false;
 		this.sensor = new ProximitySensor(getOwner(), getPosition().add(-.5f, 1),
-				new Polygon(0, 0, 1.5f, 0, 1.5f, 3, 0, 3));
+				new Polygon(0, 0, 1.5f, 0, 1.5f, 5, 0, 5));
 	}
 
 	@Override
@@ -102,11 +106,15 @@ public class Mine extends GameEntity {
 		if (this.currentBeep >= this.beeps)
 			this.blowingUp = true;
 
+
 		if (this.blowingUp) {
 			this.elapsedBoomTime += deltaTime;
 			this.boomGraphicsCounter = (int) Math
 					.floor(this.elapsedBoomTime / this.boomAnimationTime * (this.boomGraphics.size()));
 		}
+		if (this.boomGraphicsCounter == this.boomGraphics.size() / 2 && this.sensor.getCollidingEntity() != null)
+            this.sensor.getCollidingEntity().applyImpulse( new Vector(5, 25), Vector.ZERO);
+
 		if (this.boomGraphicsCounter > this.boomGraphics.size() - 1) {
 			if (this.sensor.getSensorDetectionStatus())
 				this.getOwner().getPayload().triggerDeath(false);
