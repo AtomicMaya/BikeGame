@@ -62,7 +62,7 @@ public class Terrain extends GameEntity {
         float friction = this.type.friction;
 		this.build(shape, friction, -1, false, ObjectGroup.TERRAIN.group);
         this.graphics = this.addGraphics(shape, Color.decode(this.type.fillColor), Color.decode(this.type.outlineColor),
-                .2f, 1, 10);
+                .2f, 1, 1);
 	}
 
 	@Override

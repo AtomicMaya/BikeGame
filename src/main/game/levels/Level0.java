@@ -4,6 +4,7 @@ import main.game.ActorGame;
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.SimpleLever;
+import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.audio.Audio;
@@ -14,7 +15,6 @@ import main.game.graphics.GraphicalDrawer;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
-import main.window.Canvas;
 
 /** The Tutorial Level
  */
@@ -29,14 +29,14 @@ public class Level0 extends Level {
 
     @Override
     public void createAllActors() {
-        Polyline groundBody = new Polyline(-3, -1000,
-                0.f, 0.f,
+        Polyline groundBody = new Polyline(-30, -1000,
+                -30.f, -7.f,
+                -5, 0,
                 20.f, 0.f,
                 22.5f, -9.f,
                 60.f, -7.f,
                 61.f, -4.f,
                 75.f, -3.f,
-                75.f, 8.f,
                 88, 6,
                 100.f, 6.f,
                 100.f, -2.f,
@@ -48,6 +48,17 @@ public class Level0 extends Level {
                 200, -1000);
 
         Terrain terrain = new Terrain(this.game, null, groundBody, TerrainType.NORMAL);
+
+        Obstacle obstacle = new Obstacle(this.game, new Vector(-30, -7), new Polygon(0.f, -7.f,
+                25.f, 0.f, 23.440f, 4.2403f, 24.159f, 5.2519f, 23.440f, 6.8225f, 21.603f, 8.3664f, 23.413f, 11.792f,
+                22.535f, 15.013f, 24.372f, 18.314f, 24.744f, 21.934f, 22.428f, 23.531f, 18.116f, 24.144f,
+                2.8457f, 23.851f, -0.534f, 21.854f, 0.f, 19.272f));
+
+        Obstacle obstacle2 = new Obstacle(this.game, new Vector(75, -3), new Polygon(0.f, 0.f, 2.62f, 0.74f,
+                5.1f, 2.8f, 7.f, 3.f, 7.86f, 4.18f, 9.62f, 4.74f, 10.54f, 5.8f, 12.08f, 6.24f, 12.62f, 7.84f,
+                13.f, 9.f, 11.64f, 9.12f, 9.5f, 9.44f, 7.64f, 10.4f, 5.5f, 11.36f, 3.f, 11.66f, 0.66f, 11.76f,
+                -1.f, 12.f, -0.58f, 9.3f, 0.f, 8.f, 0.18f, 6.64f, 0.24f, 5.06f, 0.3f, 3.66f));
+
         TriggeredPlatform platform = new TriggeredPlatform(this.game, new Vector(62, 3), new Vector(0, 0),
                 0, 0, 0, 0, 0, new Polygon(.0f, .0f, 6.f, .0f, 6.f, 1.f, .0f, 1.f), 6, 1);
 
@@ -61,17 +72,19 @@ public class Level0 extends Level {
 
         Coin coin = new Coin(this.game, new Vector(114.5f, 7), false);
         Liquid lava = new Liquid(this.game, new Vector(100, -2), new Polygon(0, 0, 30, 0, 30, 2, 0, 2), true);
-        FinishActor finish = new FinishActor(this.game, new Vector(175, 11));
+        FinishActor finish = new FinishActor(this.game, new Vector(175, 9));
 
         GraphicalDrawer graphicsDrawer = new GraphicalDrawer();
 
+        Checkpoint checkpoint1 = new Checkpoint(this.game, new Vector(62, -4));
+        Checkpoint checkpoint2 = new Checkpoint(this.game, new Vector(88, 6));
 
-        this.btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(1,6), .6f);
-        this.btgBrake = new BetterTextGraphics(this.game, "Brake with S",.75f, new Vector(3, 4), .6f);
+        this.btgForward = new BetterTextGraphics(this.game, "Advance with W", .75f, new Vector(0,6), .6f);
+        this.btgBrake = new BetterTextGraphics(this.game, "Brake with S",.75f, new Vector(2, 5), .6f);
         this.btgTilt = new BetterTextGraphics(this.game, "Tilt with A, D", .75f, new Vector(22, 4), .6f);
-        this.btgJump = new BetterTextGraphics(this.game, "Jump with Q", .75f, new Vector(50, -7), .6f);
-        this.btgSpace = new BetterTextGraphics(this.game, "Change orientation with space", .75f, new Vector(55, -1), .6f);
-        this.btgDoubleJump = new BetterTextGraphics(this.game, "Reach for the skies ! Press Q twice.", .75f, new Vector(56, 8), .6f);
+        this.btgJump = new BetterTextGraphics(this.game, "Jump with Q", .75f, new Vector(48, -6), .6f);
+        this.btgSpace = new BetterTextGraphics(this.game, "Change orientation with space", .75f, new Vector(55, 0), .6f);
+        this.btgDoubleJump = new BetterTextGraphics(this.game, "Reach for the skies ! Press Q twice.", .75f, new Vector(52, 5), .6f);
         this.btgLever = new BetterTextGraphics(this.game, "Levers can be activated by pressing E", .75f, new Vector(88, 9), .6f);
         this.btgPlatform = new BetterTextGraphics(this.game, "Keep on moving to stay on track !", .75f, new Vector(95, 10), .6f);
         this.btgLava = new BetterTextGraphics(this.game, "The Bee Gees on fire ! Burnin' alive !", .75f, new Vector(105, 1), .6f);
@@ -97,9 +110,13 @@ public class Level0 extends Level {
         Scenery scenery = new Scenery(this.game, Preset.Breezy);
 
         this.addActor(terrain);
+        this.addActor(obstacle);
+        this.addActor(obstacle2);
         this.addActor(muddyTerrain);
         this.addActor(this.player);
+        this.addActor(checkpoint1);
         this.addActor(platform);
+        this.addActor(checkpoint2);
         this.addActor(lever);
         this.addActor(triggeredPlatform);
         this.addActor(coin);
@@ -124,24 +141,8 @@ public class Level0 extends Level {
         super.update(deltaTime);
     }
 
-    @Override
-    public void draw(Canvas canvas) {
-//        this.btgForward.draw(canvas);
-//        this.btgBrake.draw(canvas);
-//        this.btgTilt.draw(canvas);
-//        this.btgJump.draw(canvas);
-//        this.btgSpace.draw(canvas);
-//        this.btgDoubleJump.draw(canvas);
-//        this.btgLever.draw(canvas);
-//        this.btgPlatform.draw(canvas);
-//        this.btgLava.draw(canvas);
-//        this.btgCoin.draw(canvas);
-//        this.btgMud.draw(canvas);
-//        this.btgFinish.draw(canvas);
-    }
-
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-		return new SpawnCheckpoint(game, new Vector(1, 2), player);
+		return new SpawnCheckpoint(this.game, new Vector(1, 0), this.player);
 	}
 }
