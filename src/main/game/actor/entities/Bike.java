@@ -152,9 +152,9 @@ public class Bike extends GameEntity implements PlayableEntity {
 
         // Tilt the Bike
         if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-            this.getEntity().applyAngularForce(10.0f);
+            this.getEntity().applyAngularForce(20.0f);
         } else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-            this.getEntity().applyAngularForce(-10.f);
+            this.getEntity().applyAngularForce(-20.f);
         }
 
         // Switch the orientation of the Bike.

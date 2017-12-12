@@ -61,7 +61,7 @@ public class GravityWell extends GameEntity {
         this.shape = shape;
         this.direction = direction;
         this.build(shape, -1, -1, true, ObjectGroup.SENSOR.group);
-        this.graphics = addGraphics(shape, Color.CYAN, null, 0, .1f, 0);
+        this.graphics = addGraphics(shape, Color.CYAN, null, 0, .1f, -2);
         this.listener = new BasicContactListener();
         this.addContactListener(this.listener);
     }
