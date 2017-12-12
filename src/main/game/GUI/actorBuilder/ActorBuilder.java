@@ -6,15 +6,10 @@ import main.game.GUI.GUIComponent;
 import main.game.GUI.NumberField;
 import main.game.actor.Actor;
 import main.math.Vector;
-import main.window.Canvas;
-
-import java.util.ArrayList;
 
 /** Used to create an {@linkplain Actor} in the game. */
 public abstract class ActorBuilder extends GUIComponent {
 
-	private ArrayList<NumberField> parameters = new ArrayList<>();
-	ArrayList<Comment> descriptions = new ArrayList<>();
 
 	/**
 	 * Create an {@linkplain ActorBuilder} to add an {@linkplain Actor} to the
@@ -28,27 +23,12 @@ public abstract class ActorBuilder extends GUIComponent {
 	 */
 	public ActorBuilder(ActorGame game) {
 		super(game, Vector.ZERO);
-
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-		for (int i = 0; i < parameters.size(); i++) {
-			parameters.get(i).update(deltaTime, zoom);
-			if (parameters.get(i).isHovered()) {
-				descriptions.get(i).update(deltaTime, zoom);
-			}
-		}
-	}
-
-	@Override
-	public void draw(Canvas canvas) {
-		for (int i = 0; i < parameters.size(); i++) {
-			parameters.get(i).draw(canvas);
-			if (parameters.get(i).isHovered()) {
-				descriptions.get(i).draw(canvas);
-			}
-		}
+		if (isHovered() && isRightPressed())
+			this.edit();
 	}
 
 	/**
@@ -61,11 +41,23 @@ public abstract class ActorBuilder extends GUIComponent {
 	 * {@linkplain Actor}
 	 */
 	public abstract boolean isDone();
+	
 
-	/** Method called to recreate what's needed after we test the game. */
+	/**
+	 * Method called to recreate what's needed after we test the game, or more
+	 * generally to recreate the {@linkplain Actor}
+	 */
 	public abstract void reCreate();
 
 	/** Start editing this {@linkplain ActorBuilder}. */
 	public abstract void edit();
+
+	/**
+	 * @return whether this {@linkplain ActorBuilder} is hovered, mostly used to
+	 * edit it
+	 * @see #edit()
+	 */
+	@Override
+	public abstract boolean isHovered();
 
 }

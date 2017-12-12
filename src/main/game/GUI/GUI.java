@@ -25,6 +25,13 @@ public interface GUI extends Graphics, Attachable {
 	public default Vector getMousePosition() {
 		return getOwner().getMouse().getPosition();
 	}
+	
+	/**
+	 * @return the {@linkplain Mouse} position, (x and y) floored to the closest .5 {@linkplain Float}
+	 */
+	public default Vector getHalfFlooredMousePosition() {
+		return ExtendedMath.halfFloor(getMousePosition());
+	}
 
 	/**
 	 * @return the {@linkplain Mouse} position, (x and y) floored to the closest
@@ -33,7 +40,7 @@ public interface GUI extends Graphics, Attachable {
 	public default Vector getFlooredMousePosition() {
 		return ExtendedMath.floor(getMousePosition());
 	}
-
+	
 	/**
 	 * @return whether the left {@linkplain Button} of the {@linkplain Mouse} is
 	 * pressed

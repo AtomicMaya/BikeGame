@@ -1,29 +1,34 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	6 déc. 2017
- */
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.sensors.SpawnCheckpoint;
 import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
+/** Use in the {@linkplain LevelEditor} to build and add a {@linkplain SpawnCheckpoint} */
 public class SpawnBuilder extends ActorBuilder {
 
+	/** Unique {@linkplain SpawnCheckpoint} created and added to the game */
 	private SpawnCheckpoint spawn;
+
+	/** Position to give to the {@linkplain SpawnCheckpoint} */
 	private Vector position;
-	private ActorGame game;
 
+	/**
+	 * Whether this {@linkplain SpawnBuilder} has finished building its
+	 * {@linkplain SpawnCheckpoint}
+	 */
 	private boolean isDone = false;
-	private boolean hover = false;
 
+	/** Create a new {@linkplain SpawnBuilder}
+	 *  @param game The master {@linkplain ActorGame}
+	 */
 	public SpawnBuilder(ActorGame game) {
 		super(game);
-		this.game = game;
-		this.spawn = new SpawnCheckpoint(game, getFlooredMousePosition(), null);
+		this.spawn = new SpawnCheckpoint(game, getHalfFlooredMousePosition(), null);
 	}
 
 	@Override
@@ -32,13 +37,9 @@ public class SpawnBuilder extends ActorBuilder {
 			isDone = true;
 		}
 		if (!isDone) {
-			position = getFlooredMousePosition();
+			position = getHalfFlooredMousePosition();
 			spawn.setPosition(position);
-		} else
-			hover = ExtendedMath.isInRectangle(position, position.add(1, 1), game.getMouse().getPosition());
-
-		if (hover && isRightPressed())
-			isDone = false;
+		}
 	}
 
 	@Override
@@ -63,12 +64,12 @@ public class SpawnBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		spawn.destroy();
-		spawn = new SpawnCheckpoint(game, position, null);
+		spawn = new SpawnCheckpoint(getOwner(), position, null);
 	}
 
 	@Override
 	public boolean isHovered() {
-		return hover;
+		return ExtendedMath.isInRectangle(position, position.add(1, 1), getMousePosition());
 	}
 
 	@Override

@@ -12,7 +12,11 @@ import java.awt.*;
 
 /** The mass at the end of the {@linkplain Pendulum}. */
 class Weight extends GameEntity {
-    /** The {@linkplain ImageGraphics} representation of this {@linkplain Weight}. */
+    
+	/** Used for saving purpose */
+	private static final long serialVersionUID = 3936792281847123347L;
+
+	/** The {@linkplain ImageGraphics} representation of this {@linkplain Weight}. */
 	private ImageGraphics graphics;
 
 	/** The associated {@linkplain RopeConstraint}. */
@@ -89,7 +93,6 @@ public class Pendulum implements Saveable {
 		this.position = position;
 		this.length = length;
 		this.create();
-
 	}
 
 

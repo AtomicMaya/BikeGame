@@ -113,6 +113,7 @@ public class GameManager implements Graphics {
 	 * @param deltaTime elapsed time since last update, in seconds, non-negative
 	 */
 	public void update(float deltaTime) {
+		// TODO supress thoses
 		if (game.getPayload() != null && game.getKeyboard().get(KeyEvent.VK_9).isPressed())
 			System.out.println("player start : death: " + game.getPayload().getDeathStatus() + " win : "
 					+ game.getPayload().getVictoryStatus());
@@ -221,7 +222,7 @@ public class GameManager implements Graphics {
 
 	/** Method called by the {@linkplain SpawnCheckpoint} */
 	public void setStartCheckpoint(SpawnCheckpoint checkpoint) {
-		System.out.println(checkpoint.getPosition());
+//		System.out.println(checkpoint.getPosition());
 		startCheckpoint = checkpoint;
 	}
 

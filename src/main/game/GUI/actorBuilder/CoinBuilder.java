@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	11 déc. 2017
- */
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
@@ -16,25 +12,43 @@ import main.window.Canvas;
 
 import java.awt.event.KeyEvent;
 
-/** Use in the {@linkplain LevelEditor} to create and add a coin to the game. */
+/** Use in the {@linkplain LevelEditor} to create and add a {@linkplain Coin} to the game. */
 public class CoinBuilder extends ActorBuilder {
 
-	
+	/**
+	 * Whether this {@linkplain CoinBuilder} has finished building its
+	 * {@linkplain Coin}
+	 */
 	private boolean isDone = false;
 
+	/** {@linkplain Coin} created and returned by {@link #getActor()} */
 	private Coin coin;
+	
+	/** Position to give to the {@linkplain Coin} */
 	private Vector position;
 
+	/** {@linkplain GraphicalButton} used to change whether the {@linkplain Coin} is a big {@linkplain Coin} or not*/
 	private GraphicalButton askBigCoin;
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #askBigCoin} */
 	private Vector askBigCoinPos = new Vector(22, 8);
+	
+	/** {@linkplain Comment} of this {@linkplain GraphicalButton} {@link #askBigCoin} */
 	private Comment askBigCoinComment;
 
+	/** Text value of the {@linkplain GraphicalButton} {@link #askBigCoin}*/
 	private String normalText = "Change for normal", bigCoinText = "Change for big coin";
+	
+	/** Whether this {@linkplain Coin} is a big {@linkplain Coin}*/
 	private boolean isBigCoin = false;
 
-	private boolean hover = false;
+	/** Whether the {@linkplain Coin} is placed */
 	private boolean placed = false;
 
+	/** 
+	 * Create a new {@linkplain CoinBuilder} 
+	 *  @param game The master {@linkplain ActorGame}
+	 *  */
 	public CoinBuilder(ActorGame game) {
 		super(game);
 
@@ -53,14 +67,15 @@ public class CoinBuilder extends ActorBuilder {
 		askBigCoinComment = new Comment(game, normalText);
 		askBigCoinComment.setParent(askBigCoin);
 		askBigCoinComment.setAnchor(new Vector(-10, 0));
-		coin = new Coin(game, getFlooredMousePosition(), false);
+		coin = new Coin(game, getHalfFlooredMousePosition(), false);
+		position = getHalfFlooredMousePosition();
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-
+		super.update(deltaTime, zoom);
 		if (!placed) {
-			position = getFlooredMousePosition();
+			position = getHalfFlooredMousePosition();
 			if (isLeftPressed()) {
 				placed = true;
 			}
@@ -73,15 +88,10 @@ public class CoinBuilder extends ActorBuilder {
 			if (askBigCoin.isHovered())
 				askBigCoinComment.update(deltaTime, zoom);
 		}
-		hover = ExtendedMath.isInRectangle(position, position.add((isBigCoin) ? 2 : 1, (isBigCoin) ? 2 : 1),
-				getMousePosition());
+		
 		if (coin != null) {
 			coin.update(deltaTime);
 
-		}
-		if (isHovered() && isRightPressed()) {
-			placed = false;
-			isDone = false;
 		}
 	}
 
@@ -98,7 +108,8 @@ public class CoinBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isHovered() {
-		return hover;
+		return ExtendedMath.isInRectangle(position, position.add((isBigCoin) ? 2 : 1, (isBigCoin) ? 2 : 1),
+				getMousePosition());
 	}
 
 	@Override
@@ -126,5 +137,6 @@ public class CoinBuilder extends ActorBuilder {
 	@Override
 	public void edit() {
 		this.isDone = false;
+		this.placed = false;
 	}
 }

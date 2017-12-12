@@ -9,10 +9,17 @@ import main.game.GUI.GUIComponent;
 import main.math.Vector;
 import main.window.Mouse;
 
+/** Represent a {@linkplain GUI} of type {@linkplain Menu} */
 public abstract class Menu extends GUIComponent {
 
+	/** Whether this {@linkplain Menu} is open */
 	private boolean open = false;
 
+	/** Create a new {@linkplain Menu}
+	 * @param game The master {@linkplain ActorGame}
+	 * @param open Whether this {@linkplain Menu} is open when created
+	 * @param anchor Absolute anchor of this {@linkplain Menu on screen}
+	 * */
 	public Menu(ActorGame game, Vector anchor, boolean open) {
 		super(game, anchor);
 		this.open = open;
@@ -20,8 +27,7 @@ public abstract class Menu extends GUIComponent {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
+		// default destroy of a menu, does not do anything
 	}
 
 	/** @return whether this {@linkplain FullScreenMenu} is open */

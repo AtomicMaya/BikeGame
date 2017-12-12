@@ -1,40 +1,53 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	10 déc. 2017
- */
 package main.game.GUI.actorBuilder;
-
-import java.awt.event.KeyEvent;
 
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.NumberField;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
-import main.game.actor.entities.BoomBarrel;
+import main.game.actor.entities.Laser;
 import main.game.actor.entities.Pendulum;
-import main.game.actor.entities.crate.Crate;
 import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
+import java.awt.event.KeyEvent;
+
+/** Use in the {@linkplain LevelEditor} to build and add a new {@linkplain Pendulum} */
 public class PenduleBuilder extends ActorBuilder {
 
+	/** {@linkplain Pendulum} created and returned by {@link #getActor()} */
 	private Pendulum pendule;
+	
+	/** Position to give to the {@linkplain Pendulum} */
 	private Vector position;
 
-	// number field stuff
+	/** {@linkplain NumberField} used to give to the {@linkplain Pendulum} its size */
 	private NumberField length, radius;
+	
+	/** Absolute position on screen of the {@linkplain NumberField} */
 	private Vector lengthNumberFieldPos = new Vector(26, 6), radiusPos = new Vector(26, 8);
+	
+	/** {@linkplain Comment} of the {@linkplain NumberField} */
 	private Comment lengthComment, radiusComment;
 
+	/**
+	 * Whether this {@linkplain PenduleBuilder} has finished building its
+	 * {@linkplain Pendulum}
+	 */
 	private boolean isDone = false;
-	private boolean hover = false;
+
+	/** Whether the {@linkplain Laser} is placed */
 	private boolean placed = false;
 
+	/**
+	 * Create a new {@linkplain PenduleBuilder}
+	 * @param game The master {@linkplain ActorGame}
+	 */
 	public PenduleBuilder(ActorGame game) {
 		super(game);
 
-		pendule = new Pendulum(game, getFlooredMousePosition(), 5, 1);
+		pendule = new Pendulum(game, getHalfFlooredMousePosition(), 5, 1);
 
 		length = new NumberField(game, lengthNumberFieldPos, 3, 1, 5);
 
@@ -48,19 +61,20 @@ public class PenduleBuilder extends ActorBuilder {
 		radiusComment.setParent(length);
 		radiusComment.setAnchor(new Vector(-6, 0));
 
+		position = getHalfFlooredMousePosition();
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
+		super.update(deltaTime, zoom);
 		if (!placed) {
-			position = getFlooredMousePosition();
+			position = getHalfFlooredMousePosition();
 			if (isLeftPressed()) {
 				placed = true;
 			}
 			pendule.setPosition(position);
+		}
 
-		} else if (hover && isRightPressed())
-			placed = false;
 		if (!isDone()) {
 			length.update(deltaTime, zoom);
 			if (length.isHovered())
@@ -75,8 +89,7 @@ public class PenduleBuilder extends ActorBuilder {
 			}
 		}
 
-		hover = ExtendedMath.isInRectangle(position.sub(1, 1), position.add(1, 1), getMousePosition());
-		if (hover && isRightPressed())
+		if (isHovered() && isRightPressed())
 			isDone = false;
 	}
 
@@ -111,7 +124,7 @@ public class PenduleBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isHovered() {
-		return hover;
+		return ExtendedMath.isInRectangle(position.sub(1, 1), position.add(1, 1), getMousePosition());
 	}
 
 	@Override

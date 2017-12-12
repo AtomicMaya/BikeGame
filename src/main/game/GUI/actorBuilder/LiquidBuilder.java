@@ -1,12 +1,12 @@
 /**
- *	Author: Clément Jeannet
- *	Date: 	9 déc. 2017
+ * Author: Clément Jeannet Date: 9 déc. 2017
  */
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.Liquid;
 import main.math.*;
@@ -16,24 +16,48 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+/**
+ * Use in the {@linkplain LevelEditor} to build and add a new {@linkplain Liquid}
+ */
 public class LiquidBuilder extends ActorBuilder {
 
+	/**
+	 * Whether this {@linkplain LiquidBuilder} has finished building its
+	 * {@linkplain Liquid}
+	 */
 	private boolean isDone = false;
+	
+	/** Area {@linkplain Vector} parameter */
 	private Vector start, end;
 
+	/** {@linkplain Liquid} created and returned by {@link #getActor()} */
 	private Liquid liquid;
+	
+	/** Shape of this {@linkplain Liquid} */
 	private Polygon shape;
+	
+	/** Position to give to the {@linkplain Liquid} */
 	private Vector position;
 
+	/** {@linkplain GraphicalButton} used to ask the user if the {@linkplain Liquid} is acid or lava */
 	private GraphicalButton askLava;
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #askLava} */
 	private Vector askLavaPos = new Vector(22, 8);
+	
+	/** {@linkplain Comment} of the {@linkplain GraphicalButton} {@link #askLava} */
 	private Comment askLavaComment;
 
+	/** Text value of the {@linkplain Comment} {@link #askLavaComment} */
 	private String acideText = "Change for acid", lavaText = "Change for lava";
-	private boolean isLava = true;
+	
+	/** Whether this {@linkplain Liquid} is lava or acid */
+	private boolean isLava = true; 
 
-	private boolean hover = false;
-
+	/**
+	 * Create a new {@linkplain LiquidBuilder}
+	 * @param game The master {@linkplain ActorGame}
+	 */
 	public LiquidBuilder(ActorGame game) {
 		super(game);
 
@@ -56,13 +80,13 @@ public class LiquidBuilder extends ActorBuilder {
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-
+		super.update(deltaTime, zoom);
 		if (!isDone) {
 			if (isLeftPressed()) {
 				if (start == null)
-					start = getFlooredMousePosition();
+					start = getHalfFlooredMousePosition();
 				else if (end == null) {
-					end = getFlooredMousePosition();
+					end = getHalfFlooredMousePosition();
 					shape = ExtendedMath.createRectangle(start, end);
 					position = new Vector(start.x < end.x ? start.x : end.x, start.y < end.y ? start.y : end.y);
 					liquid = new Liquid(getOwner(), position, shape, isLava);
@@ -73,14 +97,10 @@ public class LiquidBuilder extends ActorBuilder {
 			askLava.update(deltaTime, zoom);
 			if (askLava.isHovered())
 				askLavaComment.update(deltaTime, zoom);
-		} else
-			hover = ExtendedMath.isInRectangle(start, end, getMousePosition());
+		}
 		if (liquid != null) {
 			liquid.update(deltaTime);
-
 		}
-		if (isDone && isHovered() && isRightPressed())
-			isDone = false;
 	}
 
 	@Override
@@ -92,8 +112,8 @@ public class LiquidBuilder extends ActorBuilder {
 			if (askLava.isHovered())
 				askLavaComment.draw(canvas);
 
-			Vector tempStart = (start == null) ? getFlooredMousePosition() : start;
-			Vector tempEnd = (end == null) ? getFlooredMousePosition() : end;
+			Vector tempStart = (start == null) ? getHalfFlooredMousePosition() : start;
+			Vector tempEnd = (end == null) ? getHalfFlooredMousePosition() : end;
 
 			if (!tempStart.equals(tempEnd))
 				canvas.drawShape(new Polyline(tempStart, tempEnd), Transform.I, null, new Color(32, 246, 14), .1f, 1,
@@ -106,7 +126,10 @@ public class LiquidBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isHovered() {
-		return hover;
+		if (start == null | end == null)
+			return false;
+		return ExtendedMath.isInRectangle(start, end, getMousePosition());
+
 	}
 
 	@Override

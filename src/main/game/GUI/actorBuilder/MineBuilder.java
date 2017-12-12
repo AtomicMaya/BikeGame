@@ -1,10 +1,10 @@
 /**
- *	Author: Clément Jeannet
- *	Date: 	10 déc. 2017
+ * Author: Clément Jeannet Date: 10 déc. 2017
  */
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.Mine;
 import main.math.ExtendedMath;
@@ -12,33 +12,43 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
+/**
+ * Use in the {@linkplain LevelEditor} to build and add a new {@linkplain Mine}
+ */
 public class MineBuilder extends ActorBuilder {
 
+	/** Position to give to the {@linkplain Mine} */
 	private Vector position;
 
+	/** {@linkplain Mine} created by this {@linkplain MineBuilder} */
 	private Mine mine;
 
+	/**
+	 * Whether this {@linkplain MineBuilder} has finished building its
+	 * {@linkplain Mine}
+	 */
 	private boolean isDone = false;
-	private boolean hover = false;
 
+	/**
+	 * Create a new {@linkplain MineBuilder}
+	 * @param game The master {@linkplain ActorGame}
+	 */
 	public MineBuilder(ActorGame game) {
 		super(game);
-		mine = new Mine(game, getFlooredMousePosition());
+		position = getHalfFlooredMousePosition();
+		mine = new Mine(game, position);
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
-
+		super.update(deltaTime, zoom);
 		if (!isDone) {
-			position = getFlooredMousePosition();
+			position = getHalfFlooredMousePosition();
 			if (isLeftPressed()) {
 				isDone = true;
 			}
 			mine.setPosition(position);
-		} else
-			hover = ExtendedMath.isInRectangle(position, position.add(1, 1), getMousePosition());
-		if (hover && isRightPressed())
-			isDone = false;
+		}
 		mine.update(deltaTime);
 	}
 
@@ -70,7 +80,7 @@ public class MineBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isHovered() {
-		return hover;
+		return ExtendedMath.isInRectangle(position, position.add(1, 1), getMousePosition());
 	}
 
 	@Override

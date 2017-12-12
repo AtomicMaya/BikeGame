@@ -3,10 +3,8 @@
  */
 package main.game.GUI.menu;
 
-import main.game.ActorGame;
 import main.game.ComplexBikeGame;
 import main.game.GUI.GraphicalButton;
-import main.game.graphics.BetterTextGraphics;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
@@ -17,15 +15,15 @@ import java.awt.event.KeyEvent;
 /** In game {@linkplain Menu} */
 public class InGameMenu extends FullScreenMenu {
 
-	private ActorGame game;
-
+	/** {@linkplain GraphicalButton} used in this {@linkplain InGameMenu} */
 	private GraphicalButton close, backToMainMenu;
 
-	private BetterTextGraphics menuText;
-
+	/** Create a new {@linkplain InGameMenu}
+	 * @param game The {@linkplain ComplexBikeGame} where this {@linkplain InGameMenu} live 
+	 * @param window : The window where to draw this menu.
+	 * */
 	public InGameMenu(ComplexBikeGame game, Window window) {
 		super(game, window, false, Color.GRAY);
-		this.game = game;
 
 		close = new GraphicalButton(game, new Vector(8, -10), "Close", 2);
 
@@ -43,8 +41,8 @@ public class InGameMenu extends FullScreenMenu {
 	public void update(float deltaTime, float zoom) {
 		super.update(deltaTime, zoom);
 
-		if (game.getKeyboard().get(KeyEvent.VK_M).isPressed() || game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()
-				|| game.getKeyboard().get(KeyEvent.VK_P).isPressed()) {
+		if (getOwner().getKeyboard().get(KeyEvent.VK_M).isPressed() || getOwner().getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()
+				|| getOwner().getKeyboard().get(KeyEvent.VK_P).isPressed()) {
 			changeStatus();
 		}
 		if (isOpen()) {
@@ -65,8 +63,7 @@ public class InGameMenu extends FullScreenMenu {
 
 	@Override
 	public void changeStatus() {
-		super.changeStatus();
-		game.setGameFreezeStatus(isOpen());
+		getOwner().setGameFreezeStatus(isOpen());
 	}
 
 	@Override

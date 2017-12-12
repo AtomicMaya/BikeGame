@@ -287,6 +287,7 @@ public class LevelEditor implements Graphics {
 					ab.reCreate();
 				}
 				game.setViewCandidate(null);
+				game.getGameManager().setStartCheckpoint(null);
 			}
 		});
 
@@ -413,11 +414,13 @@ public class LevelEditor implements Graphics {
 		// positionneur stuff
 		if (this.showRedSquare && this.game.getMouse().getLeftButton().isPressed()) {
 			this.hasClicked = true;
-			this.redSquarePosition = this.game.getMouse().getPosition();
+			this.redSquarePosition = ExtendedMath.floor(game.getMouse().getPosition());
 			this.redSquareGraphics
-					.setRelativeTransform(Transform.I.translated(ExtendedMath.floor(this.redSquarePosition)));
+					.setRelativeTransform(Transform.I.translated(this.redSquarePosition));
 			this.redSquarePosText.setText(
-					(int) Math.floor(this.redSquarePosition.x) + ", " + (int) Math.floor(this.redSquarePosition.y));
+					(int) this.redSquarePosition.x + ", " + (int) this.redSquarePosition.y);
+			if (isBusy())
+				this.showRedSquare = false;
 		}
 
 		// buttons update
@@ -432,7 +435,7 @@ public class LevelEditor implements Graphics {
 			actor.update(deltaTime, zoom);
 			if (!actor.isDone() && !actor.equals(gb))
 				current = actor;
-			if (actor.isHovered() && game.getMouse().getRightButton().isPressed())
+			if (actor.isDone() && actor.isHovered() && game.getMouse().getRightButton().isPressed())
 				actor.edit();
 		}
 

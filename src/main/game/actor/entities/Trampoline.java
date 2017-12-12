@@ -53,9 +53,9 @@ public class Trampoline implements Actor, Saveable {
 		this.height = this.height < 0 ? 1 : this.height;
 		this.anchor = new AnchorPoint(this.game, this.position);
 
-		this.genericPlatform = new GenericPlatform(this.game, this.position, this.width, this.height);
+		this.genericPlatform = new GenericPlatform(this.game, this.position.add(1, -.5f), this.width, this.height);
 
-        this.genericPlatform.setConstraint(Linker.attachWeldConstraint(this.game, this.anchor.getEntity(), this.genericPlatform.getEntity(), new Vector(-1, 0),
+        this.genericPlatform.setConstraint(Linker.attachWeldConstraint(this.game, this.anchor.getEntity(), this.genericPlatform.getEntity(), new Vector(-1, .5f),
                 0, 2.5f, 0));
 
     }
@@ -105,7 +105,7 @@ public class Trampoline implements Actor, Saveable {
 	public void setPosition(Vector newPosition) {
 		this.position = newPosition;
 		this.anchor.setPosition(newPosition);
-		this.genericPlatform.setPosition(newPosition.add(1,0));
+		this.genericPlatform.setPosition(newPosition.add(1, -.5f));
 	}
 
 	public void setSize(float width, float height) {

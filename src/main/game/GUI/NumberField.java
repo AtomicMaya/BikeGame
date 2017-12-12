@@ -9,7 +9,7 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-/** Field to enter a number which can be then recover */
+/** Field to enter a number which can then be then recovered */
 public class NumberField extends GUIComponent {
 
 	private String text;

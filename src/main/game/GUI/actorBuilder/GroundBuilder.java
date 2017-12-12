@@ -11,6 +11,7 @@ import main.game.actor.entities.Terrain;
 import main.game.actor.entities.TerrainType;
 import main.math.*;
 import main.window.Canvas;
+import main.window.Mouse;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -22,35 +23,56 @@ import java.util.ArrayList;
  */
 public class GroundBuilder extends ActorBuilder {
 
-	// points list and stuff
+	/** {@linkplain ArrayList} of {@linkplain Vector}, points of the {@linkplain Terrain} */
 	private ArrayList<Vector> points = new ArrayList<>();
+	
+	/** {@linkplain ArrayList} of {@linkplain Vector}, fix start points of the {@linkplain Terrain} */
 	private ArrayList<Vector> fixStart = new ArrayList<>();
+	
+	/** {@linkplain ArrayList} of {@linkplain Vector}, fix end points of the {@linkplain Terrain} */
 	private ArrayList<Vector> fixEnd = new ArrayList<>();
+	
+	/** {@linkplain Vector} bounds of the {@linkplain Terrain} to */
 	private Vector start = new Vector(-400, 0), end = new Vector(400, 0);
-	private ActorGame game;
 
+	/** {@linkplain Polyline} used for the drawing */
 	private Polyline groundLine;
 
-	// current mousePosition
+	/** Current {@linkplain Mouse} position, used to add a temporary point to the {@link #groundLine}, for showing purpose */
 	private Vector currentPoint;
 
-	// button fontSize
+	/** Font size of the {@linkplain GraphicalButton }*/
 	private float fontSize = .83f;
 
-	// drawing mode
+	
+	/** Drawing mode, 0 for normal, with adding points between other, and 1 for free, where you just add points from left to right,
+	 * <b>Warning</b> changing mode will update points as in the normal mode */
 	private int drawMode = 0;
+	
+	/** {@linkplain GraphicalButton} used to change the {@link #drawMode}, won't add a new point if clicked */
 	private GraphicalButton drawModeButton;
+	
+	/** Absolute position of the {@linkplain GraphicalButton} {@link #drawModeButton} */
 	private Vector drawModeButtonPosition = new Vector(15, 14);
 
-	// finish button
+	
+	/** {@linkplain GraphicalButton} used to finish the creation of the 
+	 * {@linkplain Terrain}, won't add a new point if clicked */
 	private GraphicalButton finish;
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #finish} */
 	private Vector finishPosition = new Vector(0, 11);
+	
+	/** Text of the {@linkplain GraphicalButton} {@link #finish} */
 	private final String finishText = "Finish";
 
-
+	/**
+	 * Whether this {@linkplain GroundBuilder} has finished building its
+	 * {@linkplain Terrain}
+	 */
 	private boolean isDone = false;
 
-	// actor build
+	/** {@linkplain Terrain} created and returned by {@link #getActor()} */
 	private Terrain terrain;
 
 	/**
@@ -59,8 +81,6 @@ public class GroundBuilder extends ActorBuilder {
 	 */
 	public GroundBuilder(ActorGame game) {
 		super(game);
-		this.game = game;
-//		this.lv = levelEditor;
 
 		fixStart.add(new Vector(-500, -500));
 		fixStart.add(new Vector(-500, 0));
@@ -87,8 +107,6 @@ public class GroundBuilder extends ActorBuilder {
 			groundLine = new Polyline(updateGround(null));
 		});
 		finish.setAnchor(finishPosition);
-		// terrain = new Terrain(game, Vector.ZERO, new
-		// Polyline(updateGround(null)));
 	}
 
 	@Override
@@ -97,7 +115,7 @@ public class GroundBuilder extends ActorBuilder {
 			for (Vector v : points) {
 				canvas.drawShape(new Circle(.1f), Transform.I.translated(v), Color.ORANGE, null, 0, 1, 12);
 			}
-			canvas.drawShape(new Circle(.1f), Transform.I.translated(getFlooredMousePosition()),
+			canvas.drawShape(new Circle(.1f), Transform.I.translated(getHalfFlooredMousePosition()),
 					new Color(22, 84, 44), null, 0, 1, 15);
 
 			drawModeButton.draw(canvas);
@@ -111,7 +129,7 @@ public class GroundBuilder extends ActorBuilder {
 	public void update(float deltaTime, float zoom) {
 
 		if (!isDone) {
-			currentPoint = getFlooredMousePosition();
+			currentPoint = getHalfFlooredMousePosition();
 			if (isLeftPressed() && !drawModeButton.isHovered() && !finish.isHovered()) {
 				addPoint(currentPoint);
 
@@ -121,21 +139,17 @@ public class GroundBuilder extends ActorBuilder {
 			groundLine = new Polyline(updateGround(currentPoint));
 
 			// buttons update
-//			drawModeButton.setText(null, fontSize *  zoom);
-			// drawModeButton.setPosition(drawModeButtonPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
 			drawModeButton.update(deltaTime, zoom);
 
-//			finish.setText(null, fontSize * lv.getZoom());
-			// finish.setPosition(finishPosition.mul(lv.getZoom()).add(lv.getCameraPosition()));
 			finish.update(deltaTime, zoom);
 
 			// reset if escape is pressed
-			if (game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
+			if (getOwner().getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
 				points.clear();
 				points.add(start);
 				points.add(end);
 			}
-			if (game.getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
+			if (getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
 				isDone = true;
 				groundLine = new Polyline(updateGround(null));
 			}
@@ -196,7 +210,7 @@ public class GroundBuilder extends ActorBuilder {
 	public Actor getActor() {
 		if (terrain != null)
 			terrain.destroy();
-		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), TerrainType.NORMAL);
+		terrain = new Terrain(getOwner(), Vector.ZERO, new Polyline(updateGround(null)), TerrainType.NORMAL);
 		return terrain;
 	}
 
@@ -208,7 +222,7 @@ public class GroundBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		terrain.destroy();
-		terrain = new Terrain(game, Vector.ZERO, new Polyline(updateGround(null)), TerrainType.NORMAL);
+		terrain = new Terrain(getOwner(), Vector.ZERO, new Polyline(updateGround(null)), TerrainType.NORMAL);
 	}
 
 	@Override

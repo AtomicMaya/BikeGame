@@ -1,12 +1,12 @@
 /**
- *	Author: Clément Jeannet
- *	Date: 	11 déc. 2017
+ * Author: Clément Jeannet Date: 11 déc. 2017
  */
 package main.game.GUI.actorBuilder;
 
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.NumberField;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.sensors.FinishActor;
 import main.math.ExtendedMath;
@@ -17,25 +17,43 @@ import main.window.Canvas;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
+/** Use in the {@linkplain LevelEditor} to build and add a unique {@linkplain FinishActor} */
 public class FinishBuilder extends ActorBuilder {
 
+	/** {@linkplain FinishActor} created and returned by {@link #getActor()} */
 	private FinishActor finish;
-	private Vector position;
-	private ActorGame game;
 
-	// number field stuff
+	/** Position to give to the {@linkplain FinishActor} */
+	private Vector position;
+	
+	/**
+	 * {@linkplain NumberField} used to give to the {@linkplain FinishActor} its size of trigger
+	 */
 	protected NumberField height, width;
+	
+	/** Absolute position on screen of the {@linkplain NumberField} */
 	private Vector heightNumberFieldPos = new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
+	
+	/** {@linkplain Comment} of the {@linkplain NumberField} */
 	private Comment heightComment, widthComments;
 
+	/**
+	 * Whether this {@linkplain CheckpointBuilder} has finished building its
+	 * {@linkplain FinishActor}
+	 */
 	private boolean isDone = false;
-	private boolean hover = false;
+	
+	/** Whether the {@linkplain FinishActor} is placed */
 	private boolean placed = false;
 
+	/**
+	 * Create a new {@linkplain FinishBuilder}
+	 * @param game The master {@linkplain ActorGame}
+	 */
 	public FinishBuilder(ActorGame game) {
 		super(game);
-		this.game = game;
-		this.finish = new FinishActor(game, getFlooredMousePosition());
+
+		this.finish = new FinishActor(game, getHalfFlooredMousePosition());
 
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 10);
 
@@ -49,19 +67,20 @@ public class FinishBuilder extends ActorBuilder {
 		widthComments.setParent(width);
 		widthComments.setAnchor(new Vector(-6, 0));
 
-		position = getFlooredMousePosition();
+		position = getHalfFlooredMousePosition();
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
+		super.update(deltaTime, zoom);
 		if (!placed) {
-			position = getFlooredMousePosition();
+			position = getHalfFlooredMousePosition();
 			if (isLeftPressed()) {
 				placed = true;
 			}
 			finish.setPosition(position);
 
-		} else if (hover && isRightPressed())
+		} else if (isHovered() && isRightPressed())
 			placed = false;
 		if (!isDone) {
 
@@ -76,10 +95,6 @@ public class FinishBuilder extends ActorBuilder {
 				isDone = true;
 			}
 		}
-		hover = ExtendedMath.isInRectangle(position, position.add(1, 1), game.getMouse().getPosition());
-
-		if (hover && isRightPressed())
-			isDone = false;
 	}
 
 	@Override
@@ -111,13 +126,13 @@ public class FinishBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 		finish.destroy();
-		finish = new FinishActor(game, position);
+		finish = new FinishActor(getOwner(), position);
 		finish.setSize(width.getNumber(), height.getNumber());
 	}
 
 	@Override
 	public boolean isHovered() {
-		return hover;
+		return ExtendedMath.isInRectangle(position, position.add(1, 1), getMousePosition());
 	}
 
 	@Override

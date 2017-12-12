@@ -138,6 +138,15 @@ public class ExtendedMath {
 	public static Vector floor(Vector vector) {
 		return new Vector((float) Math.floor(vector.x), (float) Math.floor(vector.y));
 	}
+	
+	/**
+	 * Floor a Vector, to the lower .5f
+	 * @param vector : a vector to floor.
+	 * @return a new Vector with floored to the .5f x and y components.
+	 */
+	public static Vector halfFloor(Vector vector) {
+		return new Vector((float) Math.floor(vector.x*2)/2f, (float) Math.floor(vector.y*2f)/2f);
+	}
 
 	/**
 	 * Test whether a Vector is between two other

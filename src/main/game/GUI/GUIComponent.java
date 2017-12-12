@@ -8,14 +8,30 @@ import main.math.Vector;
 /** Concrete implementation of GUI */
 public abstract class GUIComponent extends Node implements GUI {
 
+	/** The master {@linkplain ActorGame} */
 	private ActorGame game;
+
+	/** Default anchor of this {@linkplain GUIComponent}. */
 	private Vector anchor = Vector.ZERO;
+
+	/** Current zoom */
 	private float zoom = 1;
 
+	/**
+	 * Create a new CUIComponent,
+	 * @param game Master {@linkplain ActorGame}
+	 * @param anchor relative anchor of this {@linkplain GUIComponent}, default
+	 * if null
+	 * @see NumberField
+	 * @see GraphicalButton
+	 * @see Comment
+	 */
 	public GUIComponent(ActorGame game, Vector anchor) {
 		this.game = game;
-		this.anchor = anchor;
-		setRelativeTransform(Transform.I.translated(anchor));
+		if (anchor != null)
+			this.anchor = anchor;
+		else this.anchor = Vector.ZERO;
+		setRelativeTransform(Transform.I.translated(this.anchor));
 	}
 
 	@Override
@@ -46,7 +62,7 @@ public abstract class GUIComponent extends Node implements GUI {
 	 * Set the relative position to the parent
 	 * @param anchor relative position, before rescaling with zoom
 	 */
-	public final void setAnchor(Vector anchor) {
+	public void setAnchor(Vector anchor) {
 		this.anchor = anchor;
 	}
 

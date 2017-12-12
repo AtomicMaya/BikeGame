@@ -8,6 +8,7 @@ import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
 import main.game.GUI.actorBuilder.*;
 import main.math.ExtendedMath;
+import main.math.Polygon;
 import main.math.Vector;
 import main.window.Canvas;
 
@@ -33,8 +34,8 @@ public class ActorMenu extends Menu {
 	/** Max and minimum position of this {@linkplain ActorMenu}. */
 	private Vector maxPosition = Vector.ZERO, minPosition = Vector.ZERO;
 
-	/** Position of this {@linkplain ActorMenu}. */
-	private Vector position = new Vector(20, 0);
+	/** Absolute position on screen of this {@linkplain ActorMenu}. */
+	private Vector position = new Vector(20, 4);
 
 	/** Size of this {@linkplain ActorMenu}. */
 	float width, height;
@@ -50,8 +51,10 @@ public class ActorMenu extends Menu {
 
 	/**
 	 * Create a new {@linkplain ActorMenu}
-	 * @param game {@linkplain ActorGame} where this {@linkplain ActorMenu} belong
-	 * @param levelEditor {@linkplain LevelEditor} where this {@linkplain ActorMenu} will create new {@linkplain ActorBuilder}
+	 * @param game {@linkplain ActorGame} where this {@linkplain ActorMenu}
+	 * belong
+	 * @param levelEditor {@linkplain LevelEditor} where this
+	 * {@linkplain ActorMenu} will create new {@linkplain ActorBuilder}
 	 * @param backgroundColor COlor of the back ground
 	 */
 	public ActorMenu(ActorGame game, LevelEditor levelEditor, Color backgroundColor) {
@@ -180,10 +183,10 @@ public class ActorMenu extends Menu {
 
 		}
 		// compute size of this menu
-		minPosition = new Vector(-betweenButton, betweenButton);
+		minPosition = new Vector(-betweenButton, betweenButton).add(0, 3);
 		maxPosition = new Vector(nbButonLine * (sizeX + betweenButton),
 				-(sizeY + betweenButton) * ((float) Math.ceil(boutons.size() / nbButonLine) + 1)).add(betweenButton,
-						-betweenButton);
+						-betweenButton).add(0,-3);
 	}
 
 	@Override
@@ -198,16 +201,17 @@ public class ActorMenu extends Menu {
 			this.setStatus(false);
 
 		if (isOpen()) {
-			for (GraphicalButton gb : boutons) {
+			for (GraphicalButton gb : boutons)
 				gb.update(deltaTime, zoom);
-			}
+			for (Comment c : description)
+				c.update(deltaTime, zoom);
 		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		if (isOpen()) {
-			canvas.drawShape(ExtendedMath.createRectangle(minPosition.sub(0, -3), minPosition.add(maxPosition)),
+			canvas.drawShape(new Polygon(this.createRectangle(minPosition, minPosition.add(maxPosition))),
 					getTransform(), Color.LIGHT_GRAY, Color.LIGHT_GRAY, .1f * getZoom(), 1, 1335);
 
 			for (int i = 0; i < boutons.size(); i++) {
@@ -229,7 +233,19 @@ public class ActorMenu extends Menu {
 
 	@Override
 	public boolean isHovered() {
-		return ExtendedMath.isInRectangle(getPosition().add(minPosition), getPosition().add(maxPosition),
+		return ExtendedMath.isInRectangle(getPosition().add(minPosition), getPosition().add(maxPosition.add(0,3)),
 				getMousePosition());
+	}
+
+	private ArrayList<Vector> createRectangle(Vector un, Vector deux) {
+
+		ArrayList<Vector> points = new ArrayList<>();
+
+		points.add(un);
+		points.add(new Vector(deux.x, un.y));
+		points.add(deux);
+		points.add(new Vector(un.x, deux.y));
+		return points;
+
 	}
 }

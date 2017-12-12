@@ -3,6 +3,7 @@ package main.game.GUI.actorBuilder;
 import main.game.ActorGame;
 import main.game.GUI.Comment;
 import main.game.GUI.NumberField;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.crate.Crate;
 import main.math.ExtendedMath;
@@ -11,24 +12,41 @@ import main.window.Canvas;
 
 import java.awt.event.KeyEvent;
 
+/** Use in the {@linkplain LevelEditor} to build and add a new {@linkplain Crate} */
 public class CrateBuilder extends ActorBuilder {
 
+	/** {@linkplain Crate} created and returned by {@link #getActor()} */
 	private Crate crate;
+
+	/** Position to give to the {@linkplain Crate} */
 	private Vector position;
 
-	// number field stuff
+	/** {@linkplain NumberField} used to give to the {@linkplain Crate} its size */
 	private NumberField height, width;
+
+	/** Absolute position on screen of the {@linkplain NumberField} */
 	private Vector heightNumberFieldPos = new Vector(26, 6), widthNumberFieldPos = new Vector(26, 8);
+
+	/** {@linkplain Comment} of the {@linkplain NumberField} */
 	private Comment heightComment, widthComments;
 
+	/**
+	 * Whether this {@linkplain CrateBuilder} has finished building its
+	 * {@linkplain Crate}
+	 */
 	private boolean isDone = false;
-	private boolean hover = false;
+
+	/** Whether the {@linkplain Crate} is placed */
 	private boolean placed = false;
 
+	/**
+	 * Create a new {@linkplain CrateBuilder}
+	 * @param game The master {@linkplain ActorGame}
+	 */
 	public CrateBuilder(ActorGame game) {
 		super(game);
 
-		crate = new Crate(game, getFlooredMousePosition(), null, false, 1);
+		crate = new Crate(game, getHalfFlooredMousePosition(), null, false, 1);
 
 		height = new NumberField(game, heightNumberFieldPos, 3, 1, 1);
 
@@ -42,19 +60,19 @@ public class CrateBuilder extends ActorBuilder {
 		widthComments.setParent(width);
 		widthComments.setAnchor(new Vector(-6, 0));
 
-		position = getFlooredMousePosition();
+		position = getHalfFlooredMousePosition();
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
 		if (!placed) {
-			position = getFlooredMousePosition();
+			position = getHalfFlooredMousePosition();
 			if (isLeftPressed()) {
 				placed = true;
 			}
 			crate.setPosition(position);
 
-		} else if (hover && isRightPressed())
+		} else if (isHovered() && isRightPressed())
 			placed = false;
 		if (!isDone()) {
 			height.update(deltaTime, zoom);
@@ -68,11 +86,6 @@ public class CrateBuilder extends ActorBuilder {
 				isDone = true;
 			}
 		}
-
-		hover = ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
-				getMousePosition());
-		if (hover && isRightPressed())
-			isDone = false;
 	}
 
 	@Override
@@ -106,7 +119,8 @@ public class CrateBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isHovered() {
-		return hover;
+		return ExtendedMath.isInRectangle(position, position.add(width.getNumber(), height.getNumber()),
+				getMousePosition());
 	}
 
 	@Override

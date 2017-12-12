@@ -15,14 +15,22 @@ import main.window.Window;
 
 import java.awt.*;
 
+/** Represent a {@linkplain Menu} which occupy the entire of the screen */
 public abstract class FullScreenMenu extends Menu {
 
+	/** Used to have a uniform backgroud behinnd this {@linkplain Menu} */
 	private ShapeGraphics background;
 
+	/** Default view scale of a {@linkplain FullScreenMenu} */
 	private float scale = 30;
+	
+	/** Context frame in which this {@linkplain Menu} is draw. */
 	private Window window;
 
+	/** {@linkplain Shape} of this {@linkplain Menu}, for drawing purposes */
 	private Shape shape;
+	
+	/** {@linkplain Color} of the {@linkplain ShapeGraphics} {@link #background} */
 	private Color backgroundColor;
 
 	/**

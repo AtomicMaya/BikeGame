@@ -1,40 +1,70 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	10 déc. 2017
- */
 package main.game.GUI.actorBuilder;
-
-import java.awt.event.KeyEvent;
 
 import main.game.ActorGame;
 import main.game.GUI.Comment;
+import main.game.GUI.GUIComponent;
 import main.game.GUI.GraphicalButton;
+import main.game.GUI.menu.LevelEditor;
 import main.game.actor.Actor;
 import main.game.actor.entities.BoomBarrel;
-import main.game.actor.entities.Liquid;
-import main.game.actor.entities.Trampoline;
 import main.math.ExtendedMath;
 import main.math.Vector;
 import main.window.Canvas;
 
+import java.awt.event.KeyEvent;
+
+/**
+ * Use in the {@linkplain LevelEditor} to build and add a new
+ * {@linkplain BoomBarrel}
+ */
 public class BoomBarrelBuilder extends ActorBuilder {
 
+	/** {@linkplain BoomBarrel} created and returned by {@link #getActor()}*/
 	private BoomBarrel boumBarel;
-	private boolean isDone = false, hover = false;
+
+	/**
+	 * Whether this {@linkplain BoomBarrelBuilder} has finished building its
+	 * {@linkplain BoomBarrel}
+	 */
+	private boolean isDone = false;
+
+	/**
+	 * Whether this {@linkplain GUIComponent} is hovered by the
+	 * {@linkplain Mouse}
+	 */
+	private boolean hover = false;
+	
+	/** Position to give to the {@linkplain BoomBarrel} */
 	private Vector position;
 
 	// parameters
+	/** {@linkplain GraphicalButton} used to set whether the {@link #boumBarel} is explosive or acid */
 	private GraphicalButton askExplosive;
+	
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #askExplosive} */
 	private Vector askExplosivPos = new Vector(22, 8);
+	
+	/** {@linkplain Comment} associated to the {@linkplain GraphicalButton} {@link #askExplosive} */
 	private Comment askExplosiveComment;
 
+	/** Texts description of the {@linkplain Comment} {@link #askExplosiveComment} */
 	private String acideText = "Change for acid", explosiveText = "Change for explosive";
+	
+	/** Whether the {@linkplain BoomBarrel} is explosive 
+	 * @see {@link #askExplosive}
+	 * */
 	private boolean isExplosive = false;
+	
+	/** Whether the {@linkplain BoomBarrel} is placed */
 	private boolean placed = false;
 
+	/**
+	 * Create a new {@linkplain BoomBarrelBuilder}
+	 * @param game The master {@linkplain ActorGame}
+	 * */
 	public BoomBarrelBuilder(ActorGame game) {
 		super(game);
-		boumBarel = new BoomBarrel(game, getFlooredMousePosition(), false);
+		boumBarel = new BoomBarrel(game, getHalfFlooredMousePosition(), false);
 
 		askExplosive = new GraphicalButton(getOwner(), askExplosivPos, "Acid or explosive", 1);
 		askExplosive.setAnchor(askExplosivPos);
@@ -51,15 +81,15 @@ public class BoomBarrelBuilder extends ActorBuilder {
 		askExplosiveComment = new Comment(game, acideText);
 		askExplosiveComment.setParent(askExplosive);
 		askExplosiveComment.setAnchor(new Vector(-10, 0));
-		
-		position = getFlooredMousePosition();
+
+		position = getHalfFlooredMousePosition();
 	}
 
 	@Override
 	public void update(float deltaTime, float zoom) {
 
 		if (!placed) {
-			position = getFlooredMousePosition();
+			position = getHalfFlooredMousePosition();
 			if (isLeftPressed()) {
 				placed = true;
 			}
