@@ -6,8 +6,8 @@ package main.game;
 
 import main.game.levels.Level;
 import main.game.levels.Level0;
+import main.game.levels.Level1;
 import main.game.levels.Level2;
-import main.game.levels.LevelTest;
 import main.io.FileSystem;
 import main.window.Window;
 
@@ -31,7 +31,7 @@ public class BikeGame extends ComplexBikeGame {
 	@Override
 	protected List<Level> createLevelList() {
 
-		return Arrays.asList(new Level0(this), new LevelTest(this), new Level2(this));
+		return Arrays.asList(new Level0(this), new Level1(this), new Level2(this));
 	}
 
 }
