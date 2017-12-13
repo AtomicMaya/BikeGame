@@ -2,6 +2,7 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
+import main.game.audio.Audio;
 import main.game.graphics.ImageGraphics;
 import main.math.*;
 import main.window.Canvas;
@@ -122,6 +123,7 @@ public class BoomBarrel extends Enemy {
         this.graphicsCounter = (int) Math
                 .floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
         if (this.graphicsCounter > this.boomGraphics.size() - 1) {
+            new Audio("/res/audio/explosion.wav");
             if (this.triggeredByPlayer)
                 this.getOwner().getPayload().triggerDeath(false);
             this.destroy();

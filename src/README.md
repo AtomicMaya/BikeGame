@@ -71,3 +71,17 @@ M or Mouse button 2 - Open the menu to add actor to the game<br />
  
  <br /> <br />
  Level 2 (Boss Battle) :
+ You spawn onto a slope. You have to follow the slope onto a rocky segment where the path downward is blocked. <br />
+ You have to traverse the rocky segment by being careful as to where you go, as a plane is dropping bombs from the sky on this segment.<br />
+ Then you have to jump down onto a platform, then switch sides then jump down onto the next platform.<br />
+ From there you can attain the next checkpoint.<br />
+ Activate the lever and get onto the platform.<br />
+ Whilst going up you can kill the plane with your weapon.<br />
+ You can then get onto the ledge and activate the next checkpoint.<br />
+ The next part is tricky : Once you activate the lever to open the door, lasers will start oscillating, which means certain death on contact.<br />
+ Halfway up you can choose to acquire the bonus coins but the jump is tricky.<br />
+ At the top of this vertical shaft another lever opens the last door and deactivates the lasers.<br />
+ You then have to rush through a carpet-bombed area and jump over a lava pool to attain the other side.<br />
+ Once you enter the tunnel you are safe and can progress towards the final checkpoint.<br />
+ 
+ 

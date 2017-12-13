@@ -7,6 +7,7 @@ import main.game.ActorGame;
 import main.game.actor.Actor;
 import main.game.actor.DepthValue;
 import main.game.actor.entities.GameEntity;
+import main.game.audio.Audio;
 import main.math.Node;
 import main.math.Transform;
 import main.math.Vector;
@@ -76,6 +77,7 @@ public class Explosion extends Node implements Actor {
 		this.graphicsCounter = (int) Math
 				.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
 		if (this.graphicsCounter > this.boomGraphics.size() - 1) {
+		    new Audio("./res/audio/explosion.wav");
 			this.graphicsCounter = 0;
 			this.game.destroyActor(this);
 		}

@@ -2,6 +2,7 @@ package main.game.GUI;
 
 import main.game.ActorGame;
 import main.game.actor.ParallelAction;
+import main.game.audio.Audio;
 import main.game.graphics.BetterTextGraphics;
 import main.math.ExtendedMath;
 import main.math.Polygon;
@@ -96,7 +97,7 @@ public class GraphicalButton extends GUIComponent {
 	}
 
 	private void addClickSound() {
-		
+		addOnClickAction(() -> new Audio("./res/audio/clic.wav"));
 	}
 	
 	@Override

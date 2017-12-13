@@ -2,11 +2,11 @@ Conception du ‘Simple’ Bike Game.
 
 **_I – Modifications de l’architecture._**
 -
-Dans le cadre du développement du jeu, nous avons apportés quelques modifications à l’architecture globale, notamment celle de restructurer les fichiers d’une manière qui nous semblait moins verbose, notamment un package main dans le dossier src/ comme racine de notre projet. Nous avons tout de même noté que remplacer ‘main/java/ch/epfl/cs107/play’ en tant que dossiers imbriqués par un dossier nommé ‘main.java.ch.epfl.cs107.play’ aurait pu mener à certains problèmes chez certains IDE comme Eclipse. Nous avons aussi implémenté une nouvelle forme de texte car nous n’étions pas satisfaits de la police par défaut du projet, avant de finalement mettre la police comme option dans la création de textes.
+Dans le cadre du développement du jeu, nous avons apportés quelques modifications à l’architecture globale, notamment celle de restructurer les fichiers d’une manière qui nous semblait moins verbose, notamment un package main dans le dossier src/ comme racine de notre projet. Nous avons tout de même noté que remplacer ‘main/java/ch/epfl/cs107/play’ en tant que dossiers imbriqués par un dossier nommé ‘main.java.ch.epfl.cs107.play’ aurait pu mener à certains problèmes chez certains IDE comme Eclipse. Nous avons aussi implémenté une nouvelle forme de texte car nous n’étions pas satisfaits de la police par défaut du projet, avant de finalement mettre la police comme option dans la création de textes, avant de finalement changer la police dans le fichier TextItem.java.
 
 **_II – Classes et fonctionalitées implémentées dans le projet._**
 -
-Nous avons en premier écrit les fichiers ActorGame.java, Game.java et GameEntity.java comme conseillé pour ensuite développer l’acteur principal de notre jeu, le Bike (dans Bike.java). Celuici regroupant différents sous objets (les roues et le personnage animé), nous les avons déclarés dans des classes séparées (respectivement Wheel.java et CharacterBike.java). Ceci nous à permis de gérer leurs propriétés respectives, telles que les contraintes ou leur animation séparément.
+Nous avons en premier écrit les fichiers ActorGame.java, Game.java et GameEntity.java comme conseillé pour ensuite développer l’acteur principal de notre jeu, le Bike (dans Bike.java). Celui ci regroupant différents sous objets (les roues et le personnage animé), nous les avons déclarés dans des classes séparées (respectivement Wheel.java et CharacterBike.java). Ceci nous à permis de gérer leurs propriétés respectives, telles que les contraintes ou leur animation séparément.
 
 Ensuite nous nous sommes occupés de la création de nouveaux acteurs, dont voici la liste exhaustive, (pour plus de détails, se référer à la JavaDoc disponible dans les fichiers et sur NB0174.github.io) :
 
@@ -89,5 +89,15 @@ _Nota_ : Certains de ces acteurs peuvent être configurés à l’aide de boites
 
 _Nota_ : Veuillez pardonner l’éventuel oubli de classe ou de fonctionnalité, la liste est longue…
 
+Sources :
+-
+Music <br/>
+*   Ross Bugden - Welcome to Chaos : https://www.youtube.com/watch?v=q5w5VX4tAD4
+*   MotionRide - Chromium : https://www.youtube.com/watch?v=YbS-Gj-zOkg
+<br/>
 
-
+Art - OpenGameArt <br/>
+*   Snowflake : https://opengameart.org/content/snow-flake
+*   Shotgun : https://opengameart.org/content/shotgun
+*   Roquette : https://opengameart.org/content/spinach
+*   Coins : https://opengameart.org/content/animated-coins-0

@@ -145,9 +145,9 @@ public class Level2 extends Level {
 
         Checkpoint checkpoint4 = new Checkpoint(this.game, new Vector(30, 45.75f));
 
-        BoumBarder boumbarder2 = new BoumBarder(this.game, new Vector(35, 70), new Vector(59, 70), .5f, .2f, 1f, .7f);
+        BoumBarder boumbarder2 = new BoumBarder(this.game, new Vector(35, 70), new Vector(59, 70), .5f, .4f, 1f, .65f);
 
-        BoumBarder boumbarder3 = new BoumBarder(this.game, new Vector(62, 55), new Vector(80, 70), .5f, .2f, 1f, .7f);
+        BoumBarder boumbarder3 = new BoumBarder(this.game, new Vector(62, 55), new Vector(80, 70), .5f, .4f, 1f, .65f);
 
         TriggeredPlatform platform12 = new TriggeredPlatform(this.game, new Vector(39.5f, 44.5f), null, 0, 0, 0, 0, 0);
 

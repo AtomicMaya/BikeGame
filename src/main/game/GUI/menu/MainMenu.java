@@ -2,6 +2,7 @@ package main.game.GUI.menu;
 
 import main.game.ComplexBikeGame;
 import main.game.GUI.GraphicalButton;
+import main.game.audio.Audio;
 import main.game.graphics.TextGraphics;
 import main.game.levels.Level;
 import main.io.Save;
@@ -144,6 +145,8 @@ public class MainMenu extends FullScreenMenu {
 				this.setStatus(false);
 			});
 		}
+
+		new Audio("./res/audio/audio_compilation.wav", -1, 10);
 	}
 
 	private void PagePlusPlus() {
