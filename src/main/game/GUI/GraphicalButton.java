@@ -74,6 +74,8 @@ public class GraphicalButton extends GUIComponent {
 
 		shiftText = new Vector(defaultTextOffset.x, defaultTextOffset.y);
 		this.setText(text, fontSize);
+		this.setNewGraphics("res/images/button.white.1.png", "res/images/button.white.2.png");
+		addClickSound();
 	}
 
 	/** 
@@ -89,8 +91,14 @@ public class GraphicalButton extends GUIComponent {
 		this.width = width;
 		this.height = height;
 		forceShape(width, height);
+		this.setNewGraphics("res/images/button.white.1.png", "res/images/button.white.2.png");
+		addClickSound();
 	}
 
+	private void addClickSound() {
+		
+	}
+	
 	@Override
 	public void update(float deltaTime, float zoom) {
 		super.update(deltaTime, zoom);
