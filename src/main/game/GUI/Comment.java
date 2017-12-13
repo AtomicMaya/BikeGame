@@ -21,7 +21,7 @@ public class Comment extends GUIComponent {
 	 * Create a new {@linkplain Comment}, with default anchor Vector(0, 0)
 	 * </br> <b>Warning</b> has to be updated if an other anchor is set
 	 * @param game The master {@linkplain ActorGame}
-	 * @param Text text to display, can be null
+	 * @param text text to display, can be null
 	 */
 	public Comment(ActorGame game, String text) {
 		super(game, new Vector(0, 0)); 
@@ -52,6 +52,7 @@ public class Comment extends GUIComponent {
 	 * correspond to the center of this {@linkplain Comment} in x 
 	 * </br> For example, if its width is 4 , and its anchor is (-10,0), it will go from -12 to -8, 
 	 * relative to its parent, or the Vector (0,0) if no parent
+     * @param anchor The {@linkplain Comment}s anchor position {@linkplain Vector}.
 	 */
 	@Override
 	public void setAnchor(Vector anchor) {

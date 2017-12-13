@@ -21,14 +21,14 @@ import java.util.Arrays;
 
 public class Level1 extends Level {
 
-	private FinishActor finishActor;
+    private FinishActor finishActor;
 
-	public Level1(ActorGame game) {
-		super(game);
-	}
+    public Level1(ActorGame game) {
+        super(game);
+    }
 
-	@Override
-	public void createAllActors() {
+    @Override
+    public void createAllActors() {
         Polyline polyline = new Polyline(-30, -100, -30.f, 0.f, 0.f, 0.f, 14.f, 0.f, 15.f, -5.f, 15.f, -7.f,
                 37.f, -7f, 37.f, -5.f, 38.f, 0.f, 39.95f, 1.05f, 41.49f, 1.42f, 43.58f, 1.42f, 45.342f, 0.9636f,
                 48.f, 0.f, 49.727f, -1.103f, 52.755f, -2.148f, 55.458f, -2.653f, 58.125f, -2.689f, 60.576f, -1.824f,
@@ -249,25 +249,25 @@ public class Level1 extends Level {
         this.addActors(new ArrayList<>(Arrays.asList(boomBarrel, boomBarrel1, boomBarrel2)));
         this.addActor(drawer);
         this.addActor(this.finishActor);
-	}
+    }
 
-	@Override
-	public void update(float deltaTime) {
-		super.update(deltaTime);
-	}
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+    }
 
-	@Override
-	public boolean isFinished() {
-		return getPayload() != null && getPayload().getVictoryStatus() | getPayload().getDeathStatus();
-	}
+    @Override
+    public boolean isFinished() {
+        return getPayload() != null && getPayload().getVictoryStatus() | getPayload().getDeathStatus();
+    }
 
     @Override
     public void dispose() {
     }
 
-	@Override
-	public SpawnCheckpoint getSpawnCheckpoint() {
+    @Override
+    public SpawnCheckpoint getSpawnCheckpoint() {
         return new SpawnCheckpoint(this.game, new Vector(0, 0));
-	}
+    }
 
 }

@@ -1,14 +1,14 @@
 package main.game.actor.entities;
 
-import java.awt.Color;
-import java.util.List;
-
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
 import main.math.Polygon;
 import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
+import java.util.List;
 
 /** Create a new {@linkplain Obstacle} */
 public class Obstacle extends GameEntity {
@@ -21,6 +21,7 @@ public class Obstacle extends GameEntity {
 
 	/**
 	 * Create a new fixed {@linkplain Obstacle}
+     * @param game The master {@linkplain ActorGame}.
 	 * @param position Position of this {@linkplain Obstacle}
 	 * @param shape {@linkplain Shape} of this {@linkplain Obstacle}
 	 */

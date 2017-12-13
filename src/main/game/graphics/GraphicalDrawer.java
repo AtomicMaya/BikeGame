@@ -32,7 +32,8 @@ public class GraphicalDrawer implements Actor {
 			this.graphics.add(graphics);
 	}
 	
-	/** @param graphics {@linkplain ShapeGraphics} to add to the game */
+	/** @param graphics {@linkplain ShapeGraphics} to add to the game.
+     *  @param anchor The anchor position {@linkplain Vector}.   */
 	public void addGraphics(ShapeGraphics graphics, Vector anchor) {
 		graphics.setRelativeTransform(Transform.I.translated(anchor));
 		if (!this.graphics.contains(graphics))

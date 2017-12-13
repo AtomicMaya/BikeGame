@@ -5,7 +5,7 @@ import main.game.actor.Camera;
 import main.game.actor.GameManager;
 import main.game.actor.entities.GameEntity;
 import main.game.actor.entities.PlayableEntity;
-import main.game.graphicalStuff.EndGameGraphics;
+import main.game.graphicalActors.EndGameGraphics;
 import main.io.FileSystem;
 import main.io.Save;
 import main.math.*;
@@ -26,7 +26,7 @@ public class ActorGame implements Game {
     /** The Viewport properties. */
 	private Camera camera;
 
-	 /** A {@linkplain ArrayList<Actor>} containing all {@linkplain Actor}.*/
+	 /** A {@linkplain ArrayList} of {@linkplain Actor}s containing all {@linkplain Actor}.*/
      private LinkedList<Actor> actors = new LinkedList<Actor>();
 
     // main character of the game
@@ -45,7 +45,7 @@ public class ActorGame implements Game {
     /** Whether the game is frozen. */
 	private boolean gameFrozen = false;
 
-	/** {@linkplain ArrayList<Actor>} containing {@linkplain Actor}s to add and to remove from the {@linkplain Game}.*/
+	/** An {@linkplain ArrayList} containing {@linkplain Actor}s to add and to remove from the {@linkplain Game}.*/
 	private ArrayList<Actor> actorsToRemove = new ArrayList<>(), actorsToAdd = new ArrayList<>();
 
 	// actor to manage checkpoint, reload, ...
@@ -295,7 +295,7 @@ public class ActorGame implements Game {
 	 * @param start the origin of the segment
 	 * @param end the end point
 	 * @return start the origin of the segmentend the end point
-	 * @see {@linkplain World}
+	 * @see World
 	 */
 	public List<Impact> getImpacts(Vector start, Vector end) {
 		return world.trace(start, end);
@@ -337,7 +337,8 @@ public class ActorGame implements Game {
 
 	/**
 	 * Save all {@linkplain Actor}s of the current game.
-	 * @param saveName : The path to the folder to save the game.
+     * @param actorsToSave The {@linkplain ArrayList} of {@linkplain Actor}s to be saved.
+	 * @param saveName The path to the folder to save the game.
 	 */
 	public void save(ArrayList<Actor> actorsToSave, String saveName) {
 
@@ -361,6 +362,7 @@ public class ActorGame implements Game {
 	/**
 	 * Load all saved {@linkplain Actor}s.
 	 * @param saveName : The name of the save to load.
+     * @return whether the loading process succeeded.
 	 */
 	public boolean load(String saveName) {
 

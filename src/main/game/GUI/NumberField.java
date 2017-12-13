@@ -35,7 +35,7 @@ public class NumberField extends GUIComponent {
 
 	/**
 	 * Whether this {@linkplain NumberField} is hovered by the
-	 * {@linkplain Mouse}.
+	 * {@linkplain main.window.Mouse}.
 	 */
 	private boolean hover = false;
 
@@ -151,14 +151,14 @@ public class NumberField extends GUIComponent {
 		text = "" + number;
 	}
 
-	/** @return whether this {@linkplain NumberField} has the focus (the last click of the {@linkplain Mouse} was on this) */
+	/** @return whether this {@linkplain NumberField} has the focus (the last click of the {@linkplain main.window.Mouse} was on this) */
 	public boolean hasFocus() {
 		return focus;
 	}
 
 	/**
 	 * @return whether this {@linkplain NumberField} is hovered by the
-	 * {@linkplain Mouse}
+	 * {@linkplain main.window.Mouse}
 	 */
 	public boolean isHovered() {
 		return this.hover;

@@ -5,7 +5,7 @@ import main.game.actor.Actor;
 import main.game.actor.entities.PlayableEntity;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.SpawnCheckpoint;
-import main.game.graphicalStuff.EndGameGraphics;
+import main.game.graphicalActors.EndGameGraphics;
 import main.math.Node;
 import main.math.Positionable;
 
@@ -99,7 +99,6 @@ public abstract class Level extends Node implements Actor {
 	 * with attribute player equals null, has to be defined if getPayload is not
 	 * defined
 	 * @see #getPayload
-	 * @see SpawnCheckpoint#StartCheckpoint
 	 */
 	public abstract SpawnCheckpoint getSpawnCheckpoint();
 

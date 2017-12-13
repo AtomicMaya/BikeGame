@@ -16,6 +16,7 @@ import main.window.Canvas;
 
 import java.awt.*;
 
+// TODO Finish Commenting.
 public abstract class Weapon implements Actor {
 
 	// general params
@@ -83,7 +84,9 @@ public abstract class Weapon implements Actor {
 		}
 	}
 
-	/** Fire this weapon */
+	/** Fire this weapon.
+     * @return whether this weapon succesfully fired.
+     */
 	public boolean fireWeapon() {
 		if (this.ammoCount > 0) {
 			this.ammoCount -= 1;

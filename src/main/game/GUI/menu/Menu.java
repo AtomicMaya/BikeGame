@@ -9,7 +9,7 @@ import main.game.GUI.GUIComponent;
 import main.math.Vector;
 import main.window.Mouse;
 
-/** Represent a {@linkplain GUI} of type {@linkplain Menu} */
+/** Represent a {@linkplain {@linkplain main.game.GUI.GUI}} of type {@linkplain Menu} */
 public abstract class Menu extends GUIComponent {
 
 	/** Whether this {@linkplain Menu} is open */
@@ -40,7 +40,9 @@ public abstract class Menu extends GUIComponent {
 		open = !open;
 	}
 
-	/** Set the status of this {@linkplain FullScreenMenu} */
+	/** Set the status of this {@linkplain FullScreenMenu}.
+     * @param isOpen The new status.
+     */
 	public void setStatus(boolean isOpen) {
 		open = isOpen;
 	}

@@ -47,7 +47,11 @@ public abstract class GameEntity implements Actor, Saveable {
 		this.create();
 	}
 
-    /** @see #GameEntity(ActorGame, boolean, Vector) */
+    /**
+     * Create a new {@linkplain GameEntity}, and its associated {@linkplain Entity}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param fixed Whether the {@linkplain Entity} is fixed.
+     */
     public GameEntity(ActorGame game, boolean fixed) {
         this(game, fixed, Vector.ZERO);
     }
@@ -123,12 +127,25 @@ public abstract class GameEntity implements Actor, Saveable {
 		return graphics;
 	}
 
-    /** @see #addGraphics(String, float, float, Vector, float, float) */
+    /**
+     * Create and add a {@linkplain ImageGraphics} to this {@linkplain Entity}
+     * @param imagePath The {@linkplain String} filepath to the image.
+     * @param width The width of the image.
+     * @param height The height of the image.
+     * @param anchor The anchor {@linkplain Vector} relative to the parent {@linkplain GameEntity}.
+     * @return a new {@linkplain ImageGraphics} associated to this {@linkplain GameEntity}
+     */
     public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor) {
         return this.addGraphics(imagePath, width, height, anchor, 1, 0);
     }
 
-    /** @see #addGraphics(String, float, float, Vector, float, float) */
+    /**
+     * Create and add a {@linkplain ImageGraphics} to this {@linkplain Entity}
+     * @param imagePath The {@linkplain String} filepath to the image.
+     * @param width The width of the image.
+     * @param height The height of the image.
+     * @return a new {@linkplain ImageGraphics} associated to this {@linkplain GameEntity}
+     */
     public ImageGraphics addGraphics(String imagePath, float width, float height) {
         return this.addGraphics(imagePath, width, height, Vector.ZERO, 1, 0);
     }
@@ -150,7 +167,12 @@ public abstract class GameEntity implements Actor, Saveable {
 		return graphics;
 	}
 
-	/** @see #addGraphics(Shape, Color, Color, float, float, float) */
+    /**
+     * Create and add a {@linkplain ShapeGraphics} to this {@linkplain Entity}.
+     * @param shape A {@linkplain Shape}, may be null.
+     * @param color A fill and outline {@linkplain Color}, may be null.
+     * @return a new {@linkplain ShapeGraphics} associated to this {@linkplain GameEntity}.
+     */
 	public ShapeGraphics addGraphics(Shape shape, Color color) {
 		return this.addGraphics(shape, color, color, 0.f, 0.f, 0.f);
 	}
@@ -175,12 +197,21 @@ public abstract class GameEntity implements Actor, Saveable {
         partBuilder.build();
     }
 
-    /** @see #build(Shape, float, float, boolean, int) */
+    /**
+     * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
+     * @param shape The {@linkplain Shape} to be given to the {@linkplain Entity}.
+     */
 	public void build(Shape shape) {
 		build(shape, -1, -1, false, 0);
 	}
 
-	/** @see #build(Shape, float, float, boolean, int) */
+    /**
+     * Builds the {@linkplain Entity}, which gives it a physical representation in the engine.
+     * @param shape The {@linkplain Shape} to be given to the {@linkplain Entity}.
+     * @param friction The friction to be given to the {@linkplain Entity}, defaults if negative.
+     * @param density The density of the {@linkplain Entity}, defaults if negative.
+     * @param ghost Whether this part is hidden and should act only as a sensor.
+     */
 	public void build(Shape shape, float friction, float density, boolean ghost) {
         this.build(shape, friction, density, ghost, 0);
 	}

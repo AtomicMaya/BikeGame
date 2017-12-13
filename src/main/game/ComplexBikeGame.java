@@ -4,7 +4,6 @@ import main.game.GUI.menu.InGameMenu;
 import main.game.GUI.menu.MainMenu;
 import main.game.actor.Actor;
 import main.game.actor.sensors.SpawnCheckpoint;
-import main.game.audio.Audio;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.window.Window;
@@ -33,7 +32,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 		this.ingameMenu = new InGameMenu(this, window);
 
 		this.mainMenu = new MainMenu(this, window);
-        new Audio("./res/audio/audio_compilation.wav", -1, 5);
+        //new Audio("./res/audio/audio_compilation.wav", -1, 5);
 		return true;
 	}
 
@@ -121,6 +120,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 	}
 
 	/**
+     * @return the new {@linkplain List} of {@linkplain Level}s in the game.
 	 */
 	protected abstract List<Level> createLevelList();
 

@@ -12,6 +12,7 @@ public class Save {
 	 * 
 	 * @param actor the actor to save
 	 * @param file where to save the actor
+     * @return whether the task completed successfully.
 	 */
 	public static boolean saveActor(Actor actor, File file) {
 		if (!file.exists())
@@ -61,7 +62,7 @@ public class Save {
 				System.out.println(o + " got");
 				actor.reCreate(game);
 				System.out.println(actor + " recreated");
-				return (Actor) actor;
+				return actor;
 			} catch (ClassCastException cce) {
 				cce.printStackTrace();
 				System.out.println("casting error");
@@ -115,6 +116,7 @@ public class Save {
 //	}
 
 	/**
+     * @param game The master {@linkplain ActorGame}.
 	 * @return the files in a folder
 	 */
 	public static File[] availableSaves(ActorGame game) {

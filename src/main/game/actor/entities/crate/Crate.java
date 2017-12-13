@@ -44,7 +44,11 @@ public class Crate extends GameEntity {
 
     /**
      * @see #Crate(ActorGame, Vector, String, boolean, float, float)
-     * Size replaced by width and height.
+     * @param game {@linkplain ActorGame} where the {@linkplain Crate} evolve.
+     * @param position initial position {@linkplain Vector} of the {@linkplain Crate}.
+     * @param imagePath path to the image to give to the {@linkplain Crate}, if null, set the image.
+     * @param fixed Whether the {@linkplain Crate} is fixed.
+     * @param size of the {@linkplain Crate}.
      */
     public Crate(ActorGame game, Vector position, String imagePath, boolean fixed, float size) {
         this(game, position, imagePath, fixed, size, size);

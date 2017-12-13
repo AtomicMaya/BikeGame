@@ -19,15 +19,14 @@ import java.awt.event.KeyEvent;
 
 public class GameManager implements Graphics {
 
-	/** Tell {@link this} that the last thing loaded is a {@linkplain Level} */
+	/** Tell {@link this} that the last thing loaded is a {@linkplain main.game.levels.Level} */
 	private static final int levelState = 0;
 
 	/** Tell {@link this} that the last thing loaded is a saved game */
 	private static final int saveState = 1;
 
 	/**
-	 * Tell {@link this} that the last thing loaded is a
-	 * {@linkplain LevelEditor}
+	 * Tell {@linkplain GameManager} that the last thing loaded is a {@linkplain LevelEditor}.
 	 */
 	private static final int levelEditorState = 2;
 
@@ -37,7 +36,7 @@ public class GameManager implements Graphics {
 	/** The {@linkplain ComplexBikeGame}, needed in some cases. */
 	private ComplexBikeGame gameLevel;
 
-	/** {@linkplain LevelEditor} from which the {@link levelEditorState} is set.*/
+	/** {@linkplain LevelEditor} from which the {@linkplain #levelEditorState} is set.*/
 	private LevelEditor levelEditor;
 	
 	// score management
@@ -57,7 +56,7 @@ public class GameManager implements Graphics {
 	private Vector scorePos = new Vector(-19, -9.5f);
 
 	// level management
-	/** Message to display when we won a {@linkplain Level} */
+	/** Message to display when we won a {@linkplain main.game.levels.Level} */
 	private final String messageNextLevelText = "Press N to go to the next level";
 
 	/** Message to display when we have lost */
@@ -106,7 +105,9 @@ public class GameManager implements Graphics {
 	 */
 	private int gameState = -1;
 
-	/** Create a new {@linkplain GameManager} */
+	/** Create a new {@linkplain GameManager}.
+     * @param game The master {@linkplain ActorGame}.
+     */
 	public GameManager(ActorGame game) {
 		this.game = game;
 		this.scoreDisapplay = new BetterTextGraphics(game, this.scoreText + this.score, 1f, this.scorePos);
@@ -219,8 +220,8 @@ public class GameManager implements Graphics {
 
 	// respawn management
 	/**
-	 * Give to this {@linkplain GameManager} the last triggered
-	 * {@linkplain Checkpoint} by the payload
+	 * Give to this {@linkplain GameManager} the last triggered {@linkplain Checkpoint} by the payload.
+     * @param checkpoint The last triggered {@linkplain Checkpoint} by the payload.
 	 */
 	public void setLastCheckpoint(Checkpoint checkpoint) {
 		if (lastCheckpoint != null)
@@ -229,7 +230,9 @@ public class GameManager implements Graphics {
 		savedScore = score;
 	}
 
-	/** Method called by the {@linkplain SpawnCheckpoint} */
+	/** Method called by the {@linkplain SpawnCheckpoint}
+     * @param checkpoint The {@linkplain SpawnCheckpoint} that called the method.
+     */
 	public void setStartCheckpoint(SpawnCheckpoint checkpoint) {
 //		System.out.println(checkpoint.getPosition());
 		startCheckpoint = checkpoint;

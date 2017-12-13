@@ -54,7 +54,7 @@ public class LevelEditor implements Graphics {
 	/** {@linkplain ActorMenu}. */
 	private ActorMenu actorMenu;
 	
-	/** @see Window. */
+	/** @see Window */
 	private Window window;
 	
 	/** Whether this {@linkplain LevelEditor} is open. */
@@ -521,8 +521,7 @@ public class LevelEditor implements Graphics {
 	}
 
 	/**
-	 * Make sure we have a unique {@linkplain Terrain}
-	 * @param {@linkplain Terrain} to add to the game
+	 * Make sure we have a unique {@linkplain Terrain}.
 	 */
 	public void addGround() {
 		if (this.gb != null) {

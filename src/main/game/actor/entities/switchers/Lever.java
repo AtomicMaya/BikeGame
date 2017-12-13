@@ -34,10 +34,10 @@ public class Lever extends GameEntity implements Runner {
     /** The {@linkplain ArrayList} containing all {@linkplain Float} representing time of this {@linkplain Lever}.*/
 	private ArrayList<Float> time;
 
-    /** Whether this {@linkplain Lever} is activated or not. Default {@value}. */
+    /** Whether this {@linkplain Lever} is activated or not. */
     private boolean activated;
 
-    /** Whether this {@linkplain Runner} is occupied or not. Default {@value}. */
+    /** Whether this {@linkplain Runner} is occupied or not */
 	boolean isOccupied;
 
 	/** Animation parameters. */

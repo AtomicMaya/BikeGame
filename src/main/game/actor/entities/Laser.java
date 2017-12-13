@@ -70,7 +70,7 @@ public class Laser extends GameEntity {
      * @param pulsateTime The duration of the {@linkplain Laser} beam's oscillation, which doesn't harm the Player.
      * @param laserTime The duration of the {@linkplain Laser} beam's output.
      * @param maxFires The maximum number of iterations, negative numbers are considered as infinite.
-     * @param direction The orientation of the laser.
+     * @param direction The orientation of the {@linkplain Laser}.
      * @param color The {@linkplain String} value of the {@linkplain Color}.
      */
 	public Laser(ActorGame game, Vector startPosition, float distance, float waitTime, float pulsateTime,
@@ -100,12 +100,25 @@ public class Laser extends GameEntity {
 		this.create();
 	}
 
-	/** @see #Laser(ActorGame, Vector, float, float, float, float, int, int, String, boolean) */
+    /**
+     * Creates a new {@linkplain Laser}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param startPosition The initial position {@linkplain Vector}.
+     * @param distance The distance of the {@linkplain Laser}.
+     * @param direction The orientation of the {@linkplain Laser}.
+     */
     public Laser(ActorGame game, Vector startPosition, float distance, int direction) {
         this(game, startPosition, distance, 2, 2, 3, -1, direction, "#00FFFF", true);
     }
 
-    /** @see #Laser(ActorGame, Vector, float, float, float, float, int, int, String, boolean) */
+    /**
+     * Creates a new {@linkplain Laser}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param startPosition The initial position {@linkplain Vector}.
+     * @param distance The distance of the {@linkplain Laser}.
+     * @param direction The orientation of the {@linkplain Laser}.
+     * @param triggered whether the {@linkplain Laser} is initially triggered.
+     */
     public Laser(ActorGame game, Vector startPosition, float distance, int direction, boolean triggered) {
         this(game, startPosition, distance, 2, 2, 3, -1, direction, "#00FFFF", triggered);
     }

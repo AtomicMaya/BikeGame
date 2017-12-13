@@ -21,7 +21,7 @@ public class ParticleEmitter implements Actor {
     /** Given number of particles. */
     private int particlesPerSecond;
 
-    /** The decay rate of the particles -> How many particles should be removed per second. */
+    /** The decay rate of the particles - How many particles should be removed per second. */
     private int decayRate;
 
     /** The launch angle and by how much this angle can vary. */
@@ -49,11 +49,11 @@ public class ParticleEmitter implements Actor {
      * @param gravity The assigned gravity {@linkplain Vector}.
      * @param particlesPerSecond The quantity of {@linkplain Particle}s per second.
      * @param angle The angle of emission.
-     * @param angleVariation The variation of the {@param angle}.
+     * @param angleVariation The variation of the angle.
      * @param speed The speed of the emission.
-     * @param speedVariation The variation of the {@param speed}.
+     * @param speedVariation The variation of the speed.
      * @param particleLifeTime The life time of each {@linkplain Particle}.
-     * @param particleLifeTimeVariation The variation of the {@param particleLifeTime}.
+     * @param particleLifeTimeVariation The variation of the particle life time.
      * @param startColor The beginning color.
      * @param endColor The end color.
      * @param deathStartTime When the {@linkplain ParticleEmitter} should start to decay.
@@ -96,7 +96,7 @@ public class ParticleEmitter implements Actor {
      * @param particleLifeTime The life time of each {@linkplain Particle}.
      * @param startColor The beginning color.
      * @param endColor The end color.
-     * @see #ParticleEmitter(ActorGame, Vector, Vector, int, float, float, float, float, float, float, int, int, float, int).
+     * @see #ParticleEmitter(ActorGame, Vector, Vector, int, float, float, float, float, float, float, int, int, float, int) .
      */
     public ParticleEmitter(ActorGame game, Vector position, int particlesPerSecond, float angle, float speed, float particleLifeTime, int startColor, int endColor) {
         new ParticleEmitter(game, position, null, particlesPerSecond, angle, (float) Math.PI / 6f, speed, speed * 0.1f, particleLifeTime, particleLifeTime * 0.1f, startColor, endColor, -1, 0);

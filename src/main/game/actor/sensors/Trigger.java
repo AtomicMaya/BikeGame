@@ -60,7 +60,9 @@ public abstract class Trigger extends GameEntity implements Saveable {
 		this.addContactListener(this.contactListener);
 	}
 
-	/** Change the group of this {@linkplain Trigger}. */
+	/** Change the group of this {@linkplain Trigger}.
+     * @param objectGroup The new {@linkplain ObjectGroup}.
+     */
 	public void setGroup(ObjectGroup objectGroup) {
 		this.group = objectGroup.group;
 	}
@@ -81,14 +83,18 @@ public abstract class Trigger extends GameEntity implements Saveable {
 	/** Actions to do once this {@linkplain Trigger} is triggered. */
 	abstract void trigger();
 
-	/** Add a list of {@linkplain ObjectGroup} to this {@linkplain Trigger}. */
+	/** Add a list of {@linkplain ObjectGroup} to this {@linkplain Trigger}.
+     *  @param list The {@linkplain List} of {@linkplain ObjectGroup}s.
+     */
 	protected void addGroupTrigger(List<ObjectGroup> list) {
 		for (ObjectGroup objectGroup : list)
 			if (!this.triggerGroups.contains(objectGroup.group))
 				this.triggerGroups.add(objectGroup.group);
 	}
 
-	/** Add an {@linkplain ObjectGroup} to this {@linkplain Trigger}. */
+	/** Add an {@linkplain ObjectGroup} to this {@linkplain Trigger}.
+     * @param objectGroup The {@linkplain ObjectGroup} that has to be added.
+     */
 	protected void addGroupTrigger(ObjectGroup objectGroup) {
 		if (!this.triggerGroups.contains(objectGroup.group))
 			this.triggerGroups.add(objectGroup.group);
@@ -99,7 +105,9 @@ public abstract class Trigger extends GameEntity implements Saveable {
 		return this.trigger;
 	}
 
-	/** Set the trigger status of this {@linkplain Trigger}. */
+	/** Set the trigger status of this {@linkplain Trigger}.
+     * @param triggerStatus Whether this {@linkplain Trigger} should be triggered.
+     */
 	public void setTriggerStatus(boolean triggerStatus) {
 		this.trigger = triggerStatus;
 	}

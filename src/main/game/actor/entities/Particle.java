@@ -61,12 +61,16 @@ public class Particle implements Graphics {
         this.shape = shape;
     }
 
-    /** @return a hex-{@linkplain String} representation of a 32-bit color. */
+    /**
+     * @param color A 32-bit integer representation of a color.
+     * @return a hex-{@linkplain String} representation of a 32-bit color. */
     private String getColor(int[] color) {
         return String.format("#%02x%02x%02x", ExtendedMath.validate8bit(color[1]),  ExtendedMath.validate8bit(color[2]),  ExtendedMath.validate8bit(color[3]));
     }
 
-    /** @return the alpha percentage of the given ARGB 32-bit color. */
+    /**
+     * @param color A 32-bit integer representation of a color.
+     * @return the alpha percentage of the given ARGB 32-bit color. */
     private float getAlpha(int[] color) {
         return color[0] / 255f;
     }
@@ -76,7 +80,7 @@ public class Particle implements Graphics {
         return this.flaggedForDestruction;
     }
 
-    /** @see #update(float) of {@linkplain main.game.actor.Actor} */
+
     public void update(float deltaTime) {
         this.elapsedLifeTime += deltaTime;
 

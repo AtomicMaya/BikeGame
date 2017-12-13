@@ -36,7 +36,7 @@ public class BoomBarrel extends GameEntity implements Saveable {
     /** The {@linkplain BasicContactListener} associated with this {@linkplain BoomBarrel}. */
     private transient BasicContactListener contactListener;
 
-    /** Whether this {@linkplain BoomBarrel} was triggered. Default {@value} */
+    /** Whether this {@linkplain BoomBarrel} was triggered. */
     private boolean triggered = false;
 
     /** Whether this {@linkplain BoomBarrel} is explosive. */

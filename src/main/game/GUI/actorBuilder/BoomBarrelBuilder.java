@@ -20,7 +20,7 @@ import java.awt.event.KeyEvent;
 public class BoomBarrelBuilder extends ActorBuilder {
 
 	/** {@linkplain BoomBarrel} created and returned by {@link #getActor()}*/
-	private BoomBarrel boumBarel;
+	private BoomBarrel boomBarrel;
 
 	/**
 	 * Whether this {@linkplain BoomBarrelBuilder} has finished building its
@@ -30,7 +30,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 
 	/**
 	 * Whether this {@linkplain GUIComponent} is hovered by the
-	 * {@linkplain Mouse}
+	 * {@linkplain main.window.Mouse}
 	 */
 	private boolean hover = false;
 	
@@ -38,11 +38,11 @@ public class BoomBarrelBuilder extends ActorBuilder {
 	private Vector position;
 
 	// parameters
-	/** {@linkplain GraphicalButton} used to set whether the {@link #boumBarel} is explosive or acid */
+	/** {@linkplain GraphicalButton} used to set whether the {@link #boomBarrel} is explosive or acid */
 	private GraphicalButton askExplosive;
 	
-	/** Absolute position on screen of the {@linkplain GraphicalButton} {@link #askExplosive} */
-	private Vector askExplosivPos = new Vector(18, 8);
+	/** Absolute position on screen of the {@linkplain GraphicalButton} {@linkplain #askExplosive} */
+	private Vector askExplosivePos = new Vector(18, 8);
 	
 	/** {@linkplain Comment} associated to the {@linkplain GraphicalButton} {@link #askExplosive} */
 	private Comment askExplosiveComment;
@@ -51,7 +51,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 	private String acideText = "Change for acid", explosiveText = "Change for explosive";
 	
 	/** Whether the {@linkplain BoomBarrel} is explosive 
-	 * @see {@link #askExplosive}
+	 * @see #askExplosive}
 	 * */
 	private boolean isExplosive = false;
 	
@@ -64,17 +64,17 @@ public class BoomBarrelBuilder extends ActorBuilder {
 	 * */
 	public BoomBarrelBuilder(ActorGame game) {
 		super(game);
-		boumBarel = new BoomBarrel(game, getHalfFlooredMousePosition(), false);
+		boomBarrel = new BoomBarrel(game, getHalfFlooredMousePosition(), false);
 
-		askExplosive = new GraphicalButton(getOwner(), askExplosivPos, "Acid or explosive", 1);
-		askExplosive.setAnchor(askExplosivPos);
+		askExplosive = new GraphicalButton(getOwner(), askExplosivePos, "Acid or explosive", 1);
+		askExplosive.setAnchor(askExplosivePos);
 		askExplosive.addOnClickAction(() -> {
 			isExplosive = !isExplosive;
 			askExplosiveComment.setText(isExplosive ? acideText : explosiveText);
 
-			if (boumBarel != null) {
-				boumBarel.destroy();
-				boumBarel = new BoomBarrel(game, position, isExplosive);
+			if (boomBarrel != null) {
+				boomBarrel.destroy();
+				boomBarrel = new BoomBarrel(game, position, isExplosive);
 			}
 
 		});
@@ -93,7 +93,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 			if (isLeftPressed()) {
 				placed = true;
 			}
-			boumBarel.setPosition(position);
+			boomBarrel.setPosition(position);
 		} else if (hover && isRightPressed())
 			placed = false;
 		if (!isDone) {
@@ -101,7 +101,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 			if (askExplosive.isHovered())
 				askExplosiveComment.update(deltaTime, zoom);
 
-			if (boumBarel != null && getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed())
+			if (boomBarrel != null && getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed())
 				isDone = true;
 
 		}
@@ -112,8 +112,8 @@ public class BoomBarrelBuilder extends ActorBuilder {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (boumBarel != null)
-			boumBarel.draw(canvas);
+		if (boomBarrel != null)
+			boomBarrel.draw(canvas);
 		if (!isDone) {
 			askExplosive.draw(canvas);
 			if (askExplosive.isHovered())
@@ -125,7 +125,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 	@Override
 	public Actor getActor() {
 		reCreate();
-		return boumBarel;
+		return boomBarrel;
 	}
 
 	@Override
@@ -135,8 +135,8 @@ public class BoomBarrelBuilder extends ActorBuilder {
 
 	@Override
 	public void reCreate() {
-		boumBarel.destroy();
-		boumBarel = new BoomBarrel(getOwner(), position, isExplosive);
+		boomBarrel.destroy();
+		boomBarrel = new BoomBarrel(getOwner(), position, isExplosive);
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class BoomBarrelBuilder extends ActorBuilder {
 
 	@Override
 	public void destroy() {
-		this.boumBarel.destroy();
+		this.boomBarrel.destroy();
 	}
 
 	@Override

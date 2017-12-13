@@ -51,6 +51,7 @@ public abstract class Enemy extends GameEntity {
 	/** Method called to kill this {@linkplain Enemy} */
 	public abstract void kill();
 	
-	/** Define the hitbox of this {@linkplain Enemy} */
+	/** Gets the hitbox of this {@linkplain Enemy}.
+     * @return the {@linkplain Shape} of the hitbox. */
 	protected abstract Shape getHitbox();
 }

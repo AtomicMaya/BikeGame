@@ -19,7 +19,12 @@ public class Shotgun extends PortableWeapon {
 	private float laserDistance = 16;
 	private String imagePath = "./res/images/shotgun.png";
 
-	/** Create a new shotgun */
+    /**
+     * Create a new {@linkplain Shotgun}
+     * @param game The master {@linkplain ActorGame}.
+     * @param initialAmmoCount The initial amount of ammunition.
+     * @param player The {@linkplain PlayableEntity} that owns this {@linkplain Weapon}.
+     */
 	public Shotgun(ActorGame game, int initialAmmoCount, PlayableEntity player) {
 		super(game, player, initialAmmoCount, 2f);
 

@@ -31,7 +31,7 @@ public class Camera extends Node implements Actor {
 	/** The default view scale. Value : {@value #VIEW_SCALE}*/
 	private static final float VIEW_SCALE = 20.0f;
 
-	/** The view scale modifier. Default {@value #VIEW_SCALE_MOD} */
+	/** The view scale modifier. */
 	private static float VIEW_SCALE_MOD = 0.0f;
 
 	/** The current view scale. */

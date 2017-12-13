@@ -1,26 +1,23 @@
 package main.game;
 
-import main.game.RRT.LightningGen;
+
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.ProximitySensor;
 import main.game.audio.Audio;
-import main.game.graphicalStuff.EndGameGraphics;
-import main.game.graphicalStuff.Preset;
-import main.game.graphicalStuff.Scenery;
+import main.game.graphicalActors.EndGameGraphics;
+import main.game.graphicalActors.Preset;
+import main.game.graphicalActors.Scenery;
 import main.game.graphics.BetterTextGraphics;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.math.Polygon;
 import main.math.Polyline;
-import main.math.Transform;
 import main.math.Vector;
 import main.window.Window;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TestGame extends ActorGame {
@@ -146,10 +143,6 @@ public class TestGame extends ActorGame {
         super.update(deltaTime);
 //        if (getPayload().getDeathStatus())
 //            graphics.displayDeathMessage();
-        ArrayList<Polyline> lines = LightningGen.getPolylines(5);
-        for (Polyline line : lines) {
-            this.window.drawShape(line, Transform.I, null, Color.CYAN, .1f, .1f, 10000);
-        }
     }
 
     @Override

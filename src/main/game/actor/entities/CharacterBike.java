@@ -98,6 +98,7 @@ public class CharacterBike extends GameEntity {
 
 	/**
 	 * Generates the shape of the body given all positions.
+     * @param limb Which limb should be generated.
 	 * @return a {@linkplain Polyline}
 	 */
 	private Polyline generateLimb(int limb) {
@@ -120,7 +121,9 @@ public class CharacterBike extends GameEntity {
 		if (this.constraint != null) this.constraint.destroy();
 	}
 
-	/** Calculate the next position {@linkplain Vector} of the feet and the knees. */
+	/**
+     * @param angle The new angle.
+     * Calculate the next position {@linkplain Vector} of the feet and the knees. */
 	public void nextPedal(float angle) {
         this.lFootPos = new Vector( (float) (Math.cos(toRadians(angle)) * 0.4 + 0.15f) * this.directionModifier,
                 (float) (Math.sin(toRadians(angle)) * 0.4 - 0.25f));
