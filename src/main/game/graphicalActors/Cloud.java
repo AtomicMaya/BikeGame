@@ -1,5 +1,6 @@
 package main.game.graphicalActors;
 
+import main.game.actor.DepthValue;
 import main.math.Rectangle;
 import main.math.Transform;
 import main.math.Vector;
@@ -43,7 +44,7 @@ public class Cloud implements GraphicalObjects {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(canvas.getImage(this.graphics), Transform.I.translated(this.position).scaled(this.length, this.height), 1, -20);
+        canvas.drawImage(canvas.getImage(this.graphics), Transform.I.translated(this.position).scaled(this.length, this.height), 1, DepthValue.BACKGROUND_DEAP.value);
     }
 
     @Override

@@ -124,8 +124,6 @@ public class GameManager implements Graphics {
 		if (game.getPayload() != null && game.getKeyboard().get(KeyEvent.VK_9).isPressed())
 			System.out.println("player start : death: " + game.getPayload().getDeathStatus() + " win : "
 					+ game.getPayload().getVictoryStatus());
-		if (game.getKeyboard().get(KeyEvent.VK_8).isPressed())
-			System.out.println(game.getPayload());
 
 		// spawn a bike if payload is not defind, which happend at the start of
 		// a game or after a reset

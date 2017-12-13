@@ -28,9 +28,6 @@ public class MainMenu extends FullScreenMenu {
 	/** {@linkplain Color} of the {@link #menuMainText}. */
 	private Color menuColor = new Color(58, 160, 201);
 
-//	// TODO remove this, for placing purpose #grid lines
-//	private ArrayList<ShapeGraphics> graphics = new ArrayList<>();
-
 	// buttons list
 	/** {@linkplain ArrayList} containing all the loading save {@linkplain GraphicalButton} created by the user. */
 	private ArrayList<GraphicalButton> loadingSaveButtons = new ArrayList<>();
@@ -100,21 +97,6 @@ public class MainMenu extends FullScreenMenu {
 		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
 		menuMainGraphics = new TextGraphics(menuMainText, fontSize, menuColor, Color.BLACK.brighter(), .01f, true,
 				false, anchor, 1, 1);
-
-//		// TODO remove this grid
-//		float w = .01f;
-//		int size = 40;
-//		Shape t = new Polygon(-w, -size / 2, -w, size / 2, w, size / 2, w, -size / 2);
-//
-//		for (int i = 0; i < size; i++) {
-//			graphics.add(new ShapeGraphics(t, Color.BLACK, null, 0));
-//			graphics.get(i).setRelativeTransform(Transform.I.translated(new Vector(1f * i - size / 2, 0)));
-//		}
-//		Shape t2 = new Polygon(-size / 2, -w, size / 2, -w, size / 2, w, -size / 2, w);
-//		for (int i = 0; i < size; i++) {
-//			graphics.add(new ShapeGraphics(t2, Color.BLACK, null, 0));
-//			graphics.get(i + size).setRelativeTransform(Transform.I.translated(new Vector(0, 1f * i - size / 2)));
-//		}
 
 		// create the saves buttons
 		createSaveButtons();
@@ -288,14 +270,11 @@ public class MainMenu extends FullScreenMenu {
 						busy = true;
 		
 						// problematic loading part
-						System.out.println("    - Going to load");
 						if (getOwner().load(list[p].getName())) {
 							getOwner().getGameManager().setGameState(game, list[p].getName());
-							System.out.println("    - loaded successfully");
 						} else
-							System.out.println("error");
+							System.out.println("Error file coulldn't be loaded");
 		
-						System.out.println("    - Finish loading");
 						getOwner().setGameFreezeStatus(false);
 						this.setStatus(false);
 					}

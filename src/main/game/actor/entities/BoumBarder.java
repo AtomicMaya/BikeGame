@@ -29,11 +29,13 @@ public class BoumBarder extends Enemy {
 	private float missileTimer = 0;
 
 	/** Spawning {@linkplain Missile} parameters */
-	private final float minMissileSpawnTime = 1, maxMissileSpawnTime = 4;
+	private float minMissileSpawnTime = 1f, maxMissileSpawnTime = 4;
 
 	Vector direction, goingTo;
 
 	private boolean goingHorizontal = true;
+	
+	private final float missilProbability;
 
 	/**
 	 * Create a new {@linkplain BoumBarder}
@@ -42,8 +44,29 @@ public class BoumBarder extends Enemy {
 	 */
 	public BoumBarder(ActorGame game, Vector position) {
 		super(game, position);
+		this.setPath(position, position, 1);
+		this.missilProbability = .5f;
 	}
 
+	/**
+	 * Create a new {@linkplain BoumBarder}
+	 * @param game The master {@linkplain ActorGame} {@linkplain}
+	 * @param startPosition initial position of this {@linkplain BoumBarder}
+	 * @param endPosition final position of this {@linkplain BoumBarder}
+	 * @param time Time to make a way between startPosition and endPosition
+	 * @param minMissileSpawnTime minimum time to spawn a missile
+	 * @param maxMinMissileSpawnTime Maximum time to spawn a missile
+	 * @param missileProbabilitySpawn Probability to spawn a missile each second
+	 */
+	public BoumBarder(ActorGame game, Vector startPosition, Vector endPosition, float time, 
+			float minMissileSpawnTime, float maxMinMissileSpawnTime, float missileProbabilitySpawn) {
+		super(game, startPosition);
+		this.setPath(startPosition, endPosition, time);
+		this.minMissileSpawnTime = minMissileSpawnTime;
+		this.maxMissileSpawnTime = maxMinMissileSpawnTime;
+		this.missilProbability = missileProbabilitySpawn;
+	}
+	
 	/**
 	 * Set the path of this {@linkplain BoumBarder}
 	 * @param start Start location of the path
@@ -56,8 +79,7 @@ public class BoumBarder extends Enemy {
 		this.speed = ExtendedMath.getDistance(start, end) / Math.abs(time);
 		this.right = start.x < end.x;
 		this.up = start.y < end.y;
-System.out.println(speed);
-		goingHorizontal = Math.abs(start.x - end.x) > Math.abs(start.y - end.y);
+		this.goingHorizontal = Math.abs(start.x - end.x) > Math.abs(start.y - end.y);
 	}
 
 	@Override
@@ -87,26 +109,22 @@ System.out.println(speed);
 
 		super.getEntity().setVelocity(direction.mul(speed));
 		
-		if (up & right)System.out.println((up & right) + " " + deltaTime);
-		missileTimer += deltaTime;
-		if ((missileTimer > minMissileSpawnTime && Math.random() < .5f * deltaTime)
-				|| missileTimer > maxMissileSpawnTime) {
+		this.missileTimer += deltaTime;
+		if ((this.missileTimer > this.minMissileSpawnTime && Math.random() < this.missilProbability * deltaTime)
+				|| this.missileTimer > this.maxMissileSpawnTime) {
 			getOwner().addActor(new Missile(getOwner(), getPosition().add(2.5f, -1f), getPosition().sub(0, 100)));
-			missileTimer = 0;
+			this.missileTimer = 0;
 		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
-		// for(Missile m: missiles)m.draw(canvas);
+
 		Image i = canvas.getImage("res/images/bomber.png");
 
 		Transform t2 = new Transform(right ? 5 : -5, 0, getPosition().x + (right ? 0 : 5), 0,
 				5 * i.getHeight() / i.getWidth(), getPosition().y);
-		// Transform t = Transform.I.scaled(5, 5 * i.getHeight() /
-		// i.getWidth()).rotated(right ? 0 : (float) Math.PI)
-		// .translated(getPosition());
 		canvas.drawImage(i, t2, 1, 1);
 		canvas.drawShape(new Polyline(start, end), Transform.I, Color.GREEN, Color.GREEN, .1f, 1, 3);
 
@@ -122,9 +140,8 @@ System.out.println(speed);
 		// (float) -Math.PI / 2f, (float) Math.PI, 1.2f, .1f, 1, .3f,
 		// 0xFF830303, 0x00830303, 2, 20));
 
-		getOwner().destroyActor(this);
+		this.getOwner().destroyActor(this);
 		this.destroy();
-		System.out.println(start + " " + end);
 	}
 
 	@Override

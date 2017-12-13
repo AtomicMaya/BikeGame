@@ -4,8 +4,8 @@
 package main.game.GUI.menu;
 
 import main.game.ComplexBikeGame;
-import main.game.GUI.Comment;
 import main.game.GUI.GraphicalButton;
+import main.game.graphics.TextGraphics;
 import main.math.Vector;
 import main.window.Canvas;
 import main.window.Window;
@@ -19,18 +19,15 @@ public class PauseMenu extends FullScreenMenu {
 	/** {@linkplain GraphicalButton} used in this {@linkplain PauseMenu} */
 	private GraphicalButton close, backToMainMenu, save;
 
-	/** {@linkplain Comment} of {@link #save} */
-	private Comment saveComment;
-
-	/** Text display by the {@linkplain Comment} {@link #saveComment} */
-	private String saveCommentText = "Saved sucessfully";
-
-	/** Timer for the display of the {@linkplain Comment} */
-	private float saveTimer = 0;
-
-	/** Whether the {@linkplain Comment} is display */
-	private boolean display = false;
-
+	/** {@linkplain TextGraphics} to display {@link #menuMainText}. */
+	private TextGraphics menuPauseGraphics;
+	
+	/** Text to display in the {@linkplain TextGraphics}  {@link #menuMainGraphics}. */
+	private final String menuPauseText = "Pause";
+	
+	/** {@linkplain Color} of the {@link #menuMainText}. */
+	private Color menuColor = new Color(58, 160, 201);
+	
 	/**
 	 * Create a new {@linkplain PauseMenu}
 	 * @param game The {@linkplain ComplexBikeGame} where this
@@ -40,6 +37,11 @@ public class PauseMenu extends FullScreenMenu {
 	public PauseMenu(ComplexBikeGame game, Window window) {
 		super(game, window, false, Color.GRAY);
 
+		float fontSize = 8f;
+		Vector anchor = new Vector(.5f, 3 * 4f / fontSize);
+		menuPauseGraphics = new TextGraphics(menuPauseText, fontSize, menuColor, Color.BLACK.brighter(), .01f, true,
+				false, anchor, 1, 1);
+		
 		close = new GraphicalButton(game, new Vector(8, -10), "Close", 2);
 		close.setNewGraphics("./res/images/button.white.1.png", "./res/images/button.white.2.png");
 		close.addOnClickAction(() -> changeStatus(), .1f);
@@ -51,13 +53,6 @@ public class PauseMenu extends FullScreenMenu {
 			game.destroyAllActors();
 			game.goToMainMenu();
 		});
-
-//		save = new GraphicalButton(game, new Vector(0, 0), "Save", 2);
-//		save.addOnClickAction(() -> {
-//			if (game.saveCurrentActors())
-//				display = true;
-//		});
-//		saveComment = new Comment(game, saveCommentText);
 
 	}
 
@@ -73,16 +68,6 @@ public class PauseMenu extends FullScreenMenu {
 		if (isOpen()) {
 			close.update(deltaTime, zoom);
 			backToMainMenu.update(deltaTime, zoom);
-//			save.update(deltaTime, zoom);
-//			saveComment.update(deltaTime, zoom);
-//			if (display) {
-//				saveTimer += deltaTime;
-//				if (saveTimer > 2) {
-//					saveTimer = 0;
-//					display = false;
-//				}
-//			}
-
 		}
 	}
 
@@ -92,9 +77,7 @@ public class PauseMenu extends FullScreenMenu {
 		if (isOpen()) {
 			close.draw(canvas);
 			backToMainMenu.draw(canvas);
-//			save.draw(canvas);
-//			if (display)
-//				saveComment.draw(canvas);
+			menuPauseGraphics.draw(canvas);
 		}
 	}
 

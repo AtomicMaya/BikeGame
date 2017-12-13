@@ -79,7 +79,7 @@ public class Ammo extends GameEntity implements Collectable {
         this.sensor.update(deltaTime);
 
         if (this.sensor.getSensorDetectionStatus()) {
-            //this.game.getPayload()..(this.isRocketAmmo ? 200 : 20); //TODO add to ammo
+            this.game.getPayload().addAmmo(this.isRocketAmmo?1:2, this.isRocketAmmo);
             this.destroy();
         }
 

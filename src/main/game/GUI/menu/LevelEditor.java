@@ -378,7 +378,6 @@ public class LevelEditor implements Graphics {
 				this.errorText = "Please create a ground, a spawn and a finish point";
 			if (this.errorText == null) {
 
-				System.out.println("    - start saving");
 				Save.save(game, getActors(), currentSaveName);
 				this.errorText = "Actors saved sucessfully";
 			}

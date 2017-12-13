@@ -171,7 +171,6 @@ public class Bike extends GameEntity implements PlayableEntity {
         // Make the Bike jump.
         if (this.game.getKeyboard().get(KeyEvent.VK_Q).isPressed() && this.jumpCount < 1) {
             this.getEntity().setVelocity(this.getVelocity().add(0, 13));
-            System.out.println(this.jumpCount);
             this.jumpCount += 1;
         }
         if (this.jumpCount <= 1)
@@ -297,7 +296,7 @@ public class Bike extends GameEntity implements PlayableEntity {
     }
     
     @Override
-    public void addAmmos(int quantity, int type) {
-    	// TODO
+    public void addAmmo(int quantity, boolean isRocket) {
+    	this.weapons.get(isRocket ? 1 : 0).addAmmo(quantity);
     }
 }

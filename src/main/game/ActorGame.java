@@ -85,8 +85,6 @@ public class ActorGame implements Game {
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
-//				if (actorsToRemove.get(i).getClass() != ParticleEmitter.class)
-//					System.out.println("removed : " +actorsToRemove.get(i));
 			}
 			this.actors.removeAll(this.actorsToRemove);
 			this.actorsToRemove.clear();
@@ -195,9 +193,7 @@ public class ActorGame implements Game {
 	 * Destroy all stored {@linkplain Actor}s.
 	 */
 	public void destroyAllActors() {
-		System.out.println("Remove all");
-		// destroy all entities in the world!!! na!
-		// TODO remove attomatic de actors		
+		// destroy all entities in the world	
 		while (world.getEntities().size() > 0)
 			world.getEntities().get(0).destroy();
 		this.destroyActor(actors);
@@ -346,14 +342,6 @@ public class ActorGame implements Game {
 
 			System.out.println("    - start loading");
 			File save = new File(saveDirectory + saveName);
-//			try {
-//				System.out.println("start wait");
-//				toAdd.wait(100);
-//				System.out.println("endwait");
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			if (save.exists()) {
 				File[] files = save.listFiles();
 				for (File f : files) {

@@ -41,8 +41,7 @@ public class ObstacleBuilder extends ActorBuilder {
 	 */
 	public ObstacleBuilder(ActorGame game) {
 		super(game);
-		System.out.println("created");
-		position = getHalfFlooredMousePosition();
+		this.position = getHalfFlooredMousePosition();
 	}
 
 	

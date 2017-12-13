@@ -1,4 +1,4 @@
-package main.game.graphicalStuff;
+package main.game.graphicalActors;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;

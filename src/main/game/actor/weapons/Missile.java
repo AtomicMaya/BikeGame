@@ -75,9 +75,9 @@ public class Missile extends GameEntity {
 	public void draw(Canvas canvas) {
 		if (!this.triggered) {
 			// draw the missile graphics
-			Vector resize = (this.secretProbability < 42 / 404f) ? new Vector(1, 47 / 50f) : new Vector(1, 24 / 96f);
+			Vector resize = (this.secretProbability < 42 / 1337f) ? new Vector(1, 47 / 50f) : new Vector(1, 24 / 96f);
 			canvas.drawImage(
-					canvas.getImage((this.secretProbability < 42 / 404f) ? "res/images/roquette.png" : this.imagePath),
+					canvas.getImage((this.secretProbability < 42 / 1337f) ? "res/images/roquette.png" : this.imagePath),
 					Transform.I.scaled(resize.x, resize.y).rotated((float) (this.direction.getAngle()))
 							.translated(getPosition()),
 					1, 12);

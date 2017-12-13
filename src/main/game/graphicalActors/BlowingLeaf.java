@@ -1,5 +1,6 @@
 package main.game.graphicalActors;
 
+import main.game.actor.DepthValue;
 import main.math.Rectangle;
 import main.math.Transform;
 import main.math.Vector;
@@ -69,7 +70,7 @@ public class BlowingLeaf implements GraphicalObjects {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(canvas.getImage(this.file.get(this.graphicsCounter)), Transform.I.scaled(length, height).translated(this.position), .7f, -20);
+        canvas.drawImage(canvas.getImage(this.file.get(this.graphicsCounter)), Transform.I.scaled(length, height).translated(this.position), .7f, DepthValue.BACKGROUND_MEDIUM.value);
     }
 
     @Override

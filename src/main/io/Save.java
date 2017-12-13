@@ -27,7 +27,7 @@ public class Save {
 			if (Save.saveActor(a, file))
 			n++;
 		}
-		System.out.println("saved sucesfully " + (folder.listFiles().length - 1) + " actors");
+		System.out.println("Saved successfully : " + (folder.listFiles().length - 1) + " actors");
 		return true;
 	}
 	
@@ -83,18 +83,16 @@ public class Save {
 			// transform the object into an actor
 			try {
 				Saveable actor = (Saveable) o;
-				System.out.println(o + " got");
 				actor.reCreate(game);
-				System.out.println(actor + " recreated");
 				return actor;
 			} catch (ClassCastException cce) {
 				cce.printStackTrace();
-				System.out.println("casting error");
+				System.out.println("Casting error");
 			}
 
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
-			System.out.println("loading error");
+			System.out.println("Loading error");
 		}
 		return null;
 	}

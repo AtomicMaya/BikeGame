@@ -24,6 +24,6 @@ public interface PlayableEntity extends Actor {
     boolean isLookingRight();
     
     /** Add the given number of ammunitions to the weapon using the good type of ammos */
-    public void addAmmos(int quantity, int type);
+    public void addAmmo(int quantity, boolean isRocket);
 
 }
