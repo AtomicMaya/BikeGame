@@ -238,6 +238,7 @@ public class GameManager implements Graphics {
 		startCheckpoint = null;
 		lastCheckpoint = null;
 		savedScore = 0;
+		score = 0;
 		reset();
 	}
 
@@ -248,7 +249,7 @@ public class GameManager implements Graphics {
 		messageDisplayed = "";
 		respawnTimer = 0;
 		saveLoaded = null;
-		resetScore();
+		score = savedScore;
 	}
 
 	/** Spawn a new {@linkplain Bike} at the right place */
@@ -259,12 +260,6 @@ public class GameManager implements Graphics {
 		game.setPayload(nextPlayer);
 		game.setViewCandidate(nextPlayer);
 
-	}
-
-	// score management
-	/** Reset the score */
-	private void resetScore() {
-		score = 0;
 	}
 
 	public void addToScore(int score) {

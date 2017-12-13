@@ -165,7 +165,7 @@ public abstract class Weapon implements Actor {
 	 */
 	public void addAmmo(int quantity) {
 		this.ammoCount += quantity;
-		this.amoNumber.setText(this.amoText + this.ammoCount);
+		this.amoNumber.setText(this.ammoCount + this.amoText);
 	}
 
 	/** @return whether this weapon is deployed */
