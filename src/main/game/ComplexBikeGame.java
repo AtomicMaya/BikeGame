@@ -4,6 +4,7 @@ import main.game.GUI.menu.InGameMenu;
 import main.game.GUI.menu.MainMenu;
 import main.game.actor.Actor;
 import main.game.actor.sensors.SpawnCheckpoint;
+import main.game.audio.Audio;
 import main.game.levels.Level;
 import main.io.FileSystem;
 import main.window.Window;
@@ -32,7 +33,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 		this.ingameMenu = new InGameMenu(this, window);
 
 		this.mainMenu = new MainMenu(this, window);
-
+        new Audio("./res/audio/audio_compilation.wav", -1, 5);
 		return true;
 	}
 
@@ -67,8 +68,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 	}
 
 	/**
-	 * Reset the current {@linkplain Level}
-	 * @param wasPlayed whether its a respawn
+	 * Reset the current {@linkplain Level}.
 	 */
 	public void resetLevel() {
 		this.wasPlayed = true;
@@ -77,8 +77,11 @@ public abstract class ComplexBikeGame extends ActorGame {
 
 	/** Clear all {@linkplain Actor} in the current {@linkplain Level} */
 	private void clearCurrentLevel() {
-		if (levels.get(currentLevel).loaded)
-			this.levels.get(currentLevel).dispose();
+        try { this.levels.get(currentLevel).dispose();
+            System.out.println("Thing called");}
+        catch ( NullPointerException ignored) { ignored.printStackTrace(); }
+		if (levels.get(currentLevel).loaded) {
+        }
 		super.destroyAllActors();
 
 	}
@@ -122,8 +125,8 @@ public abstract class ComplexBikeGame extends ActorGame {
 	protected abstract List<Level> createLevelList();
 
 	/**
-	 * @return the number of {@linkplain Level} in this
-	 * {@linkplain GameWithLevels}
+	 * @return the number of {@linkplain Level}s in this
+	 * {@linkplain ComplexBikeGame}.
 	 */
 	public int numberOfLevel() {
 		return levels.size();

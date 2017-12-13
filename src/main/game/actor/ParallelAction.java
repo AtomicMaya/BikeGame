@@ -9,6 +9,7 @@ public abstract class ParallelAction {
             @Override
             protected Void doInBackground() {
                 action.run();
+                try { Thread.sleep(1); } catch (InterruptedException ignored) {}
                 return null;
             }
         };

@@ -55,6 +55,7 @@ public class Checkpoint extends Trigger {
 
 	@Override
 	void trigger() {
+	    if (this.getOwner().getPayload().getDeathStatus()) return;
 		this.getOwner().getGameManager().setLastCheckpoint(this);
 		this.graphics = this.addGraphics(this.imagePathTriggered, 1, 1);
 	}

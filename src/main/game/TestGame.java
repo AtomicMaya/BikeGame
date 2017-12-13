@@ -70,7 +70,7 @@ public class TestGame extends ActorGame {
 
         //this.platform = new MovingPlatform(this, new Vector(25, 2), new Vector(1, 0),6,.1f, 3);
         //this.movingPlatform = new MovingPlatform(this, new Vector(20, -6), new Vector(0, 1), 6, 5, 2);
-        //SimpleLever lever = new SimpleLever(this, new Vector(12, 3));
+        //Lever lever = new Lever(this, new Vector(12, 3));
         //lever.addAction(() -> this.platform.triggerAction(), 1);
         //lever.addAction(() -> this.setViewScaleModifier(30), 1);
 

@@ -5,7 +5,7 @@ import main.game.actor.Actor;
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Ammo;
 import main.game.actor.entities.collectable.Coin;
-import main.game.actor.entities.switchers.SimpleLever;
+import main.game.actor.entities.switchers.Lever;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
@@ -22,7 +22,6 @@ import java.util.Arrays;
 public class Level1 extends Level {
 
 	private FinishActor finishActor;
-
 
 	public Level1(ActorGame game) {
 		super(game);
@@ -93,7 +92,7 @@ public class Level1 extends Level {
 
         Checkpoint checkpoint2 = new Checkpoint(this.game, new Vector(101f, 0));
 
-        SimpleLever lever = new SimpleLever(this.game, new Vector(99.5f, 0));
+        Lever lever = new Lever(this.game, new Vector(99.5f, 0));
         TriggeredPlatform platform4 = new TriggeredPlatform(this.game, new Vector(102.5f, -1), new Vector(0, 1), 50, 18, 5, 3, 1);
 
         lever.addAction(() -> platform4.triggerAction(), 1);
@@ -165,7 +164,7 @@ public class Level1 extends Level {
         TriggeredPlatform platform5 = new TriggeredPlatform(this.game, new Vector(158, 0), new Vector(0, -1),
                 11, 3, 10000, 1, 1, new Polygon(0, 0, 1, 0, 1, 11, 0, 11), 1, 11);
 
-        SimpleLever lever1 = new SimpleLever(this.game, new Vector(152, 0));
+        Lever lever1 = new Lever(this.game, new Vector(152, 0));
         lever1.addAction(() -> {
             for(Actor actor : lasers)
                 ((Laser) actor).switchState();
@@ -175,7 +174,7 @@ public class Level1 extends Level {
         TriggeredPlatform platform6 = new TriggeredPlatform(this.game, new Vector(215, 0), new Vector(0, -1),
                 11, 3, 10000, 1, 1, new Polygon(0, 0, 1, 0, 1, 11, 0, 11), 1, 11);
 
-        SimpleLever lever2 = new SimpleLever(this.game, new Vector(212, 0));
+        Lever lever2 = new Lever(this.game, new Vector(212, 0));
         lever2.addAction(() -> {
             for(Actor actor : lasers)
                 ((Laser) actor).switchState();
@@ -187,7 +186,7 @@ public class Level1 extends Level {
         TriggeredPlatform platform7 = new TriggeredPlatform(this.game, new Vector(225, -1), new Vector(0, 1),
                 30, 10, 5, 2, 1);
 
-        SimpleLever lever3 = new SimpleLever(this.game, new Vector(222, 0));
+        Lever lever3 = new Lever(this.game, new Vector(222, 0));
         lever3.addAction(() -> platform7.triggerAction(), 15);
 
         Coin smallCoin17 = new Coin(this.game, new Vector(225.5f, 6), false);
@@ -220,7 +219,7 @@ public class Level1 extends Level {
         Coin bigCoin4 = new Coin(this.game, new Vector(211, 39f), true);
         Coin bigCoin5 = new Coin(this.game, new Vector(213, 39f), true);
 
-        SimpleLever lever4 = new SimpleLever(this.game, new Vector(219.5f, 37));
+        Lever lever4 = new Lever(this.game, new Vector(219.5f, 37));
         lever4.addAction(() -> {
             platform9.triggerAction();
             platform10.triggerAction();
@@ -264,7 +263,6 @@ public class Level1 extends Level {
 
     @Override
     public void dispose() {
-
     }
 
 	@Override
