@@ -77,8 +77,8 @@ public class CharacterBike extends GameEntity {
         this.graphics.add(this.addGraphics(body, null, Color.BLACK, .15f, 1.f, DepthValue.PLAYER_MEDIUM.value));
         this.graphics.add(this.addGraphics(this.generateLimb(0), null, Color.BLACK, .15f, 1.f, DepthValue.PLAYER_LOW.value));
         this.graphics.add(this.addGraphics(this.generateLimb(1), null, Color.BLACK, .15f, 1.f, DepthValue.PLAYER_LOW.value));
-        this.graphics.add(this.addGraphics(this.generateLimb(2), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? DepthValue.PLAYER_DEAP.value : DepthValue.PLAYER_LOW.value));
-        this.graphics.add(this.addGraphics(this.generateLimb(3), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? DepthValue.PLAYER_LOW.value : DepthValue.PLAYER_DEAP.value));
+        this.graphics.add(this.addGraphics(this.generateLimb(2), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? DepthValue.PLAYER_DEEP.value : DepthValue.PLAYER_LOW.value));
+        this.graphics.add(this.addGraphics(this.generateLimb(3), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? DepthValue.PLAYER_LOW.value : DepthValue.PLAYER_DEEP.value));
     }
 
 	@Override

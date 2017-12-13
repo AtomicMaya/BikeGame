@@ -8,7 +8,11 @@ public enum Preset {
     Breezy(new String[]{"main.game.graphicalActors.Cloud", "main.game.graphicalActors.BlowingLeaf"},
             new Integer[]{10, 150},
             new Float[][]{new Float[]{-.25f, 0f, -.5f, 0f}, new Float[]{-0.5f, -0.05f, -3f, -0.5f}},
-            new Float[][]{new Float[]{1.5f, .5f, 3f, 1.5f}, new Float[]{.5f, .5f, .5f, .5f}});
+            new Float[][]{new Float[]{1.5f, .5f, 3f, 1.5f}, new Float[]{.5f, .5f, .5f, .5f}}),
+    Snowy(new String[]{"main.game.graphicalActors.Snowflake"},
+            new Integer[]{200},
+            new Float[][]{new Float[]{-0.25f, -0.05f, -2f, -0.5f}},
+            new Float[][]{new Float[]{.4f, .4f, .4f, .4f}});
 
     /** The {@linkplain GraphicalObjects} class names. */
     private ArrayList<String> objectNames;

@@ -43,7 +43,7 @@ public class Wheel extends GameEntity {
 	private void create() {
 		Circle circle = new Circle(radius - .05f);
 		this.build(circle, 20f, 1, false, ObjectGroup.WHEEL.group);
-		this.graphics = this.addGraphics("/res/images/wheel.png", this.radius * 2, this.radius * 2, new Vector(this.radius, this.radius), 1, DepthValue.PLAYER_DEAP.value);
+		this.graphics = this.addGraphics("/res/images/wheel.png", this.radius * 2, this.radius * 2, new Vector(this.radius, this.radius), 1, DepthValue.PLAYER_DEEP.value);
 		this.listener = new BasicContactListener();
 		this.addContactListener(this.listener);
 	}

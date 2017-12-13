@@ -66,7 +66,7 @@ public class Level2 extends Level {
                 46.814f, 0.4919f, 42.684f, -0.936f, 38.012f, 0.3375f, 32.762f, -0.318f, 28.786f, 1.1482f, 22.570f, -0.627f,
                 20.061f, 0.8393f, 15.583f, 0.3375f, 11.645f, -1.361f, 10.448f, 1.4184f, 5.8932f, -0.704f));
 
-        TriggeredPlatform platformDoor = new TriggeredPlatform(this.game, new Vector(-1, -1), null, 0, 0, 0, 0, 0, new Polygon(0, 0, 1, 0, 1, 7, 0, 7),1, 7);
+        TriggeredPlatform platformDoor = new TriggeredPlatform(this.game, new Vector(-2, -1), null, 0, 0, 0, 0, 0, new Polygon(0, 0, 1, 0, 1, 7, 0, 7),1, 7);
 
         Checkpoint checkpoint1 = new Checkpoint(this.game, new Vector(45, -12));
 

@@ -2,6 +2,7 @@ package main.game.levels;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.DepthValue;
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Ammo;
 import main.game.actor.entities.collectable.Coin;
@@ -10,6 +11,8 @@ import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.graphicalActors.GraphicalDrawer;
+import main.game.graphicalActors.Preset;
+import main.game.graphicalActors.Scenery;
 import main.game.graphics.ShapeGraphics;
 import main.math.Polygon;
 import main.math.Polyline;
@@ -123,8 +126,8 @@ public class Level1 extends Level {
                 118, 20, 118, -7, 119.0932f, -13.3424f, 122, -20, 180, -20, 180, 30));
 
         GraphicalDrawer drawer = new GraphicalDrawer();
-        drawer.addGraphics(new ShapeGraphics(new Polygon(0, 0, 65, 0, 65, 16, 0, 16), Color.decode("#d3d3d3"), null, 0, 1, -5), new Vector(107.5f, 50));
-        drawer.addGraphics(new ShapeGraphics(new Polygon(0, 0, 200, 0, 200, 100, 0, 100), Color.decode("#d3d3d3"), null, 0, 1, -5), new Vector(120, -5));
+        drawer.addGraphics(new ShapeGraphics(new Polygon(0, 0, 65, 0, 65, 16, 0, 16), Color.decode("#d3d3d3"), null, 0, 1, DepthValue.BACKGROUND_LOW.value), new Vector(107.5f, 50));
+        drawer.addGraphics(new ShapeGraphics(new Polygon(0, 0, 200, 0, 200, 100, 0, 100), Color.decode("#d3d3d3"), null, 0, 1, DepthValue.BACKGROUND_LOW.value), new Vector(120, -5));
 
         GravityWell gravityWell = new GravityWell(this.game, new Vector(107.5f, 50), new Vector(.1f, .06f), new Polygon(0, 0, 52.5f, 0, 52.5f, 10, 0, 10), 0);
 
@@ -227,6 +230,8 @@ public class Level1 extends Level {
 
         FinishActor finishActor = new FinishActor(this.game, new Vector(245,30));
 
+        Scenery scenery = new Scenery(this.game, Preset.Snowy);
+
         this.addActors(new ArrayList<>(Arrays.asList(terrain, insideTerrain)));
         this.addActors(new ArrayList<>(Arrays.asList(obstacle, obstacle1, obstacle2, obstacle3)));
         this.addActors(new ArrayList<>(Arrays.asList(platform, platform1, platform2, platform3, platform4, platform5,
@@ -246,6 +251,7 @@ public class Level1 extends Level {
         this.addActors(new ArrayList<>(Arrays.asList(boomBarrel, boomBarrel1, boomBarrel2)));
         this.addActor(drawer);
         this.addActor(finishActor);
+        this.addActor(scenery);
     }
 
     @Override
