@@ -9,7 +9,7 @@ import main.game.actor.entities.switchers.Lever;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
-import main.game.graphics.GraphicalDrawer;
+import main.game.graphicalStuff.GraphicalDrawer;
 import main.game.graphics.ShapeGraphics;
 import main.math.Polygon;
 import main.math.Polyline;

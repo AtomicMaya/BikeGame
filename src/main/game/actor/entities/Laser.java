@@ -204,7 +204,7 @@ public class Laser extends GameEntity {
             if (this.sensorActive && this.sensor.getSensorDetectionStatus()) {
                 this.game.getPayload().triggerDeath(false);
             }
-        }
+        
 
         if (!this.triggered) {
             this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);

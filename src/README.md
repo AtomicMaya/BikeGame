@@ -17,12 +17,15 @@ Mouse Button 1 - Fire the Weapon <br />
 Level Editor Controls :
 -
 
- <br />
+WASD or arrows - Move camera<br />
+CTRL when moving - acelerate the speed of the camera<br />
+M or Mouse button 2 - Open the menu to add actor to the game<br />
+
  
  Cheat guide :
  -
  Level 0 : <br />
- Jump down to the lower platform. <br />
+ Jump down to the lower field. <br />
  Jump up and pass the first checkpoint. <br />
  Switch directions. <br />
  Double jump carefully to attain the first platform. <br />

@@ -84,7 +84,7 @@ public class Level3 extends Level {
         TriggeredPlatform platform3 = new TriggeredPlatform(this.game, new Vector(50, -36), new Vector(0, 1), 50, 28, 5, 2, 2);
         TriggeredPlatform platform4 = new TriggeredPlatform(this.game, new Vector(50, -14), new Vector(-1, 0), 5, 1, 1000, 9, 2);
 
-        Bombarder bombarder1 = new Bombarder(this.game, new Vector(55, 10));
+        BoumBarder bombarder1 = new BoumBarder(this.game, new Vector(55, 10));
         bombarder1.setPath(new Vector(55, 10), new Vector(70, 10), 2);
 
         Lever lever1 = new Lever(this.game, new Vector(57, -35));
