@@ -1,15 +1,22 @@
 package main.game.levels;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.entities.*;
+import main.game.actor.entities.collectable.Coin;
 import main.game.actor.entities.switchers.Lever;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
+import main.game.graphicalActors.GraphicalDrawer;
+import main.game.graphicalActors.Preset;
+import main.game.graphicalActors.Scenery;
+import main.game.graphics.ShapeGraphics;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -82,6 +89,9 @@ public class Level2 extends Level {
         TriggeredPlatform platform3 = new TriggeredPlatform(this.game, new Vector(50, -36), new Vector(0, 1), 50, 28, 5, 2, 2);
         TriggeredPlatform platform4 = new TriggeredPlatform(this.game, new Vector(50, -14), new Vector(-1, 0), 5, 1, 1000, 9, 2);
 
+        GraphicalDrawer drawer = new GraphicalDrawer();
+        drawer.addGraphics(new ShapeGraphics(new Polygon(0, 0, 70, 0, 70, 30, 0, 30), Color.decode("#d3d3d3"), null, 0, 1, DepthValue.BACKGROUND_LOW.value), new Vector(-25, -16));
+
         BoumBarder boumbarder1 = new BoumBarder(this.game, new Vector(55, 10));
         boumbarder1.setPath(new Vector(55, 10), new Vector(70, 10), 2);
 
@@ -135,11 +145,9 @@ public class Level2 extends Level {
 
         Checkpoint checkpoint4 = new Checkpoint(this.game, new Vector(30, 45.75f));
 
-        BoumBarder boumbarder2 = new BoumBarder(this.game, new Vector(35, 70));
-        boumbarder2.setPath(new Vector(35, 70), new Vector(59, 70), .5f);
+        BoumBarder boumbarder2 = new BoumBarder(this.game, new Vector(35, 70), new Vector(59, 70), .5f, .2f, 1f, .7f);
 
-        BoumBarder boumbarder3 = new BoumBarder(this.game, new Vector(62, 55));
-        boumbarder3.setPath(new Vector(62, 70), new Vector(80, 70), .5f);
+        BoumBarder boumbarder3 = new BoumBarder(this.game, new Vector(62, 55), new Vector(80, 70), .5f, .2f, 1f, .7f);
 
         TriggeredPlatform platform12 = new TriggeredPlatform(this.game, new Vector(39.5f, 44.5f), null, 0, 0, 0, 0, 0);
 
@@ -147,16 +155,35 @@ public class Level2 extends Level {
 
         FinishActor finishActor = new FinishActor(this.game, new Vector(115, 50));
 
-        addActors(new ArrayList<>(Arrays.asList(terrain1, terrain2, obstacle1, obstacle2)));
+        Scenery scenery = new Scenery(this.game, Preset.Ash);
 
+        Coin smallCoin1 = new Coin(this.game, new Vector(58, -10), false);
+        Coin smallCoin2 = new Coin(this.game, new Vector(60, -10), false);
+        Coin smallCoin3 = new Coin(this.game, new Vector(62, -10), false);
+        Coin smallCoin4 = new Coin(this.game, new Vector(50.5f, 2), false);
+        Coin smallCoin5 = new Coin(this.game, new Vector(53.5f, 8), false);
+        Coin smallCoin6 = new Coin(this.game, new Vector(50.5f, 14), false);
+        Coin bigCoin1 = new Coin(this.game, new Vector(19, 35), true);
+        Coin bigCoin2 = new Coin(this.game, new Vector(21, 35), true);
+        Coin smallCoin7 = new Coin(this.game, new Vector(44, 52), false);
+        Coin smallCoin8 = new Coin(this.game, new Vector(48, 53), false);
+        Coin smallCoin9 = new Coin(this.game, new Vector(52, 53), false);
+        Coin smallCoin10 = new Coin(this.game, new Vector(56, 52), false);
+
+        addActors(new ArrayList<>(Arrays.asList(terrain1, terrain2, obstacle1, obstacle2)));
+        addActor(drawer);
         addActors(new ArrayList<>(Arrays.asList(checkpoint1, checkpoint2, checkpoint3, checkpoint4)));
         addActors(new ArrayList<>(Arrays.asList(platformDoor, platform1, platform2, platform3, platform4, platform5, platform6, platform7,
                 platform8, platform9, platform10, platform11, platform12)));
         addActors(new ArrayList<>(Arrays.asList(lever1, lever2, lever3, lever4)));
         addActors(new ArrayList<>(Arrays.asList(laser1, laser2, laser3)));
         addActors(new ArrayList<>(Arrays.asList(boumbarder1, boumbarder2, boumbarder3)));
+        addActors(new ArrayList<>(Arrays.asList(smallCoin1, smallCoin2, smallCoin3, smallCoin4, smallCoin5, smallCoin6,
+                smallCoin7, smallCoin8, smallCoin9, smallCoin10)));
+        addActor(bigCoin1); addActor(bigCoin2);
         addActor(liquid);
         addActor(finishActor);
+        addActor(scenery);
     }
 
     @Override

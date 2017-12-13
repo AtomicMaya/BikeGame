@@ -87,8 +87,8 @@ public class Coin extends GameEntity implements Collectable {
 			this.shape = new Polygon(0, 0, .75f, 0, .75f, .75f, 0, .75f);
 		}
 
-		for (ImageGraphics ig : graphics)
-			ig.setDepth(DepthValue.FRONT_OBSTACLE_LOW.value + .5f);
+		for (ImageGraphics graphics : graphics)
+			graphics.setDepth(DepthValue.FRONT_OBSTACLE_LOW.value + .5f);
 		this.build(this.shape, -1, -1, true, ObjectGroup.SENSOR.group);
 		this.sensor = new ProximitySensor(game, getPosition(), this.shape);
 		this.graphicsCounter = 0;
@@ -114,6 +114,7 @@ public class Coin extends GameEntity implements Collectable {
 		if (this.elapsedAnimationTime > this.animationTime)
 			this.elapsedAnimationTime = 0;
 		this.graphicsCounter = (int) (this.elapsedAnimationTime / this.animationTime * this.graphics.size());
+		if (this.graphicsCounter == this.graphics.size()) this.graphicsCounter = this.graphics.size() -1;
 
 	}
 

@@ -12,6 +12,10 @@ public enum Preset {
     Snowy(new String[]{"main.game.graphicalActors.Snowflake"},
             new Integer[]{200},
             new Float[][]{new Float[]{-0.25f, -0.05f, -2f, -0.5f}},
+            new Float[][]{new Float[]{.4f, .4f, .4f, .4f}}),
+    Ash(new String[]{"main.game.graphicalActors.Ash"},
+            new Integer[]{100},
+            new Float[][]{new Float[]{-0.5f, -0.05f, -2f, -0.5f}},
             new Float[][]{new Float[]{.4f, .4f, .4f, .4f}});
 
     /** The {@linkplain GraphicalObjects} class names. */

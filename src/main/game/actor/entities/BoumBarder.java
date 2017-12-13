@@ -55,15 +55,15 @@ public class BoumBarder extends Enemy {
 	 * @param endPosition final position of this {@linkplain BoumBarder}
 	 * @param time Time to make a way between startPosition and endPosition
 	 * @param minMissileSpawnTime minimum time to spawn a missile
-	 * @param maxMinMissileSpawnTime Maximum time to spawn a missile
+	 * @param maxMissileSpawnTime Maximum time to spawn a missile
 	 * @param missileProbabilitySpawn Probability to spawn a missile each second
 	 */
 	public BoumBarder(ActorGame game, Vector startPosition, Vector endPosition, float time, 
-			float minMissileSpawnTime, float maxMinMissileSpawnTime, float missileProbabilitySpawn) {
+			float minMissileSpawnTime, float maxMissileSpawnTime, float missileProbabilitySpawn) {
 		super(game, startPosition);
 		this.setPath(startPosition, endPosition, time);
 		this.minMissileSpawnTime = minMissileSpawnTime;
-		this.maxMissileSpawnTime = maxMinMissileSpawnTime;
+		this.maxMissileSpawnTime = maxMissileSpawnTime;
 		this.missilProbability = missileProbabilitySpawn;
 	}
 	

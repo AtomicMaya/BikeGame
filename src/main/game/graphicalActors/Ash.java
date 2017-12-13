@@ -6,8 +6,10 @@ import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
 
-/** A Cloud, that whizzes by in the sky. */
-public class Cloud implements GraphicalObjects {
+import java.util.Random;
+
+/** Ash particles, that make the world a bit catastrophic. */
+public class Ash implements GraphicalObjects {
 
     /** A {@linkplain String} that is the file path as referencefor drawing.*/
     private String graphics;
@@ -18,22 +20,22 @@ public class Cloud implements GraphicalObjects {
     /** The dimensions of the image. */
     private float length, height;
 
-    /** The time till this {@linkplain Cloud} resets */
+    /** The time till this {@linkplain Ash} resets */
     private float timeTillDeath, elapsedTime;
 
     /**
-     * Creates a new {@linkplain Cloud}.
+     * Creates a new {@linkplain Ash}.
      * @param position The position {@linkplain Vector}.
-     * @param shape The {@linkplain Rectangle} shape of the {@linkplain Cloud}.
-     * @param speed The speed {@linkplain Vector} of this {@linkplain Cloud}.
+     * @param shape The {@linkplain Rectangle} shape of the {@linkplain Ash}.
+     * @param speed The speed {@linkplain Vector} of this {@linkplain Ash}.
      */
-    public Cloud(Vector position, Rectangle shape, Vector speed) {
-        this.graphics = "./res/images/cloud.png";
+    public Ash(Vector position, Rectangle shape, Vector speed) {
+        this.graphics = "./res/images/ash.png";
         this.position = position;
         this.length = shape.getHeight();
         this.height = shape.getLength();
         this.speed = speed;
-        this.timeTillDeath = 10;
+        this.timeTillDeath = new Random().nextFloat() * 5;
     }
 
     @Override
