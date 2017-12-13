@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
 import main.io.Saveable;
@@ -15,7 +16,11 @@ import java.util.Random;
 
 /** Random Liquids such as Lava and Acid */
 public class Liquid extends GameEntity implements Saveable {
-    /** An {@linkplain ArrayList} of {@linkplain ImageGraphics} containing the graphical components of this liquid. */
+    
+	/** Used for save purpose */
+	private static final long serialVersionUID = 9050325927914605731L;
+
+	/** An {@linkplain ArrayList} of {@linkplain ImageGraphics} containing the graphical components of this liquid. */
     private transient ArrayList<ImageGraphics> graphics;
 
     /** The {@linkplain Liquid}'s associated {@linkplain BasicContactListener}. */
@@ -68,9 +73,9 @@ public class Liquid extends GameEntity implements Saveable {
         for (int l = 0; l < this.length; l++) {
             for (int h = 0; h < this.height; h++) {
                 if (h == this.height - 1 && !this.switched)
-                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.0.png" : "./res/images/acid.0.png", 1, 1, new Vector(-l, -h), 1, 2));
+                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.0.png" : "./res/images/acid.0.png", 1, 1, new Vector(-l, -h), 1, DepthValue.FRONT_OBSTACLE_LOW.value));
                 else if (!this.switched)
-                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.2.png" : "./res/images/acid.2.png", 1, 1, new Vector(-l, -h), 1, 2));
+                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.2.png" : "./res/images/acid.2.png", 1, 1, new Vector(-l, -h), 1, DepthValue.FRONT_OBSTACLE_LOW.value));
             }
         }
     }

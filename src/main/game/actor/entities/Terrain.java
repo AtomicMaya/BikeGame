@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ShapeGraphics;
 import main.math.Polygon;
@@ -62,7 +63,7 @@ public class Terrain extends GameEntity {
         float friction = this.type.friction;
 		this.build(shape, friction, -1, false, ObjectGroup.TERRAIN.group);
         this.graphics = this.addGraphics(shape, Color.decode(this.type.fillColor), Color.decode(this.type.outlineColor),
-                .2f, 1, 1);
+                .2f, 1, DepthValue.TERRAIN_MEDIUM.value);
 	}
 
 	@Override

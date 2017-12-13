@@ -10,6 +10,7 @@ import main.window.Canvas;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
 /** Use in the {@linkplain LevelEditor} to build and add a new {@linkplain Obstacle} */
@@ -125,7 +126,8 @@ public class ObstacleBuilder extends ActorBuilder {
 		if (points.size() < 3) 
 			return false;
 		Polygon p = new Polygon(points);
-		return 	p.getGeomArea().contains(getMousePosition().x, getMousePosition().y);
+		Area a = new Area(p.toPath());
+		return 	a.contains(getMousePosition().x, getMousePosition().y);
 	}
 
 }

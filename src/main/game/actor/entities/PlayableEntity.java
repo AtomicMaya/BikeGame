@@ -5,7 +5,7 @@ import main.game.actor.Actor;
 /** Represent the {@linkplain GameEntity} playable by the player. */
 public interface PlayableEntity extends Actor {
 
-	/**@param wasGravity whether this {@linkplain PlayableEntity} was killed by gravity. */
+	/** @param wasGravity whether this {@linkplain PlayableEntity} was killed by gravity. */
 	void triggerDeath(boolean wasGravity);
 
 	/** Tell to this {@linkplain PlayableEntity} that it has won. */
@@ -22,5 +22,8 @@ public interface PlayableEntity extends Actor {
 
 	/** @return whether this {@linkplain PlayableEntity} is looking right. */
     boolean isLookingRight();
+    
+    /** Add the given number of ammunitions to the weapon using the good type of ammos */
+    public void addAmmos(int quantity, int type);
 
 }

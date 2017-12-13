@@ -37,13 +37,15 @@ public class GameManager implements Graphics {
 	/** The {@linkplain ComplexBikeGame}, needed in some cases. */
 	private ComplexBikeGame gameLevel;
 
-	/** {@linkplain LevelEditor} from which the {@link levelEditorState} is set.*/
+	/**
+	 * {@linkplain LevelEditor} from which the {@link levelEditorState} is set.
+	 */
 	private LevelEditor levelEditor;
-	
+
 	// score management
 	/** Keep track of the current score */
 	private int score = 0;
-	
+
 	/** Score at the last {@linkplain Checkpoint} */
 	private int savedScore = 0;
 
@@ -134,8 +136,8 @@ public class GameManager implements Graphics {
 			game.setViewCandidate(b);
 			game.addActor(b);
 		}
-			
-		if (game.getPayload() == null && (startCheckpoint != null)) {
+
+		if (game.getPayload() == null && (startCheckpoint != null) && !game.isGameFrozen()) {
 			spawnBike();
 			// if bike is spawned, ckeck for bike death/win status in order to
 			// respawn one if needed
@@ -143,7 +145,6 @@ public class GameManager implements Graphics {
 			// victory stronger that death
 
 			if (game.getPayload().getVictoryStatus()) {
-
 				this.respawnTimer += deltaTime;
 
 				if (this.respawnTimer > this.timeToRespawn) {
@@ -159,21 +160,20 @@ public class GameManager implements Graphics {
 							break;
 						}
 						case saveState: {
-
+							this.messageDisplayed = this.backToMenu;
 							if (this.game.getKeyboard().get(KeyEvent.VK_ESCAPE).isPressed()) {
 								// TODO
 								restart();
 								this.gameLevel.goToMainMenu();
 								this.respawnTimer = 0;
 								this.messageDisplayed = "";
+								this.game.setGameFreezeStatus(true);
 							}
-							this.messageDisplayed = this.backToMenu;
-							this.game.setGameFreezeStatus(true);
 							break;
 						}
 						case levelEditorState: {
 							this.game.setGameFreezeStatus(false);
-							this.messageDisplayed = "";
+							this.messageDisplayed = "You won! You can continue editing.";
 							break;
 						}
 					}
@@ -190,7 +190,6 @@ public class GameManager implements Graphics {
 							break;
 						case saveState:
 							this.game.load(this.saveLoaded);
-
 							break;
 						case levelEditorState:
 							game.addActor(levelEditor.getActors());
@@ -204,10 +203,12 @@ public class GameManager implements Graphics {
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (this.respawnTimer > this.timeToRespawn)
+		if (this.respawnTimer > this.timeToRespawn) {
 			canvas.drawText(messageDisplayed, fontSize * game.getViewScale() / 20f,
-					Transform.I.translated(canvas.getPosition()), new Color(66, 241, 244), new Color(155, 18, 48), .02f,
-					false, false, new Vector(.5f, -2.5f * game.getViewScale() / 20f), 1, 42000);
+					Transform.I.translated(canvas.getPosition()), new Color(219, 207, 39), new Color(155, 18, 48), .02f,
+					true, false, new Vector(.5f, -2.5f * game.getViewScale() / 20f), 1, 42000);
+			System.out.println("splay");
+		}
 		if (!game.isGameFrozen()) {
 			scoreDisapplay.setText(scoreText + score);
 			scoreDisapplay.draw(canvas);
@@ -231,7 +232,7 @@ public class GameManager implements Graphics {
 
 	/** Method called by the {@linkplain SpawnCheckpoint} */
 	public void setStartCheckpoint(SpawnCheckpoint checkpoint) {
-//		System.out.println(checkpoint.getPosition());
+		// System.out.println(checkpoint.getPosition());
 		startCheckpoint = checkpoint;
 	}
 
@@ -246,11 +247,12 @@ public class GameManager implements Graphics {
 	/** Called at the reset of a level */
 	private void reset() {
 		game.destroyAllActors();
-//		game.getPayload().destroy();
-//		game.setPayload(null);
+		// game.getPayload().destroy();
+		// game.setPayload(null);
 		game.setViewCandidate(null);
 		messageDisplayed = "";
 		respawnTimer = 0;
+		saveLoaded = null;
 		resetScore();
 	}
 
@@ -261,7 +263,7 @@ public class GameManager implements Graphics {
 		game.addActor(nextPlayer);
 		game.setPayload(nextPlayer);
 		game.setViewCandidate(nextPlayer);
-
+System.out.println("bike spawned");
 	}
 
 	// score management
@@ -306,5 +308,17 @@ public class GameManager implements Graphics {
 	public void setGameState(LevelEditor levelEditor) {
 		this.gameState = levelEditorState;
 		this.levelEditor = levelEditor;
+	}
+	
+	/** @return the last {@linkplain Checkpoint} triggered */
+	public Checkpoint getLastCheckpoint() {
+		if (this.lastCheckpoint != null)
+			return this.lastCheckpoint;
+		else
+			return this.startCheckpoint;
+	}
+	
+	public String getSaveName() {
+		return saveLoaded;
 	}
 }

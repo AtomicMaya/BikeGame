@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
 import main.math.PrismaticConstraint;
@@ -19,7 +20,7 @@ public class Platform extends GameEntity {
         this.shape = shape;
 
         this.build(shape, 100.f, 1.f, false, ObjectGroup.TERRAIN.group);
-        this.graphics = addGraphics("./res/images/metal.3.png", width, height);
+        this.graphics = addGraphics("./res/images/metal.3.png", width, height, Vector.ZERO, 1, DepthValue.FRONT_OBSTACLE_MEDIUM.value);
     }
 
     /**

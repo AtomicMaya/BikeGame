@@ -4,9 +4,33 @@ import main.game.ActorGame;
 import main.game.actor.Actor;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class Save {
 
+	/**
+	 * Save all {@linkplain Actor}s given.
+	 * @param actorsToSave list of actors to save
+	 * @param saveName : The path to the folder to save the game.
+	 */
+	public static boolean save(ActorGame game, ArrayList<Actor> actorsToSave, String saveName) {
+		if (actorsToSave == null)
+			return false;
+		// if the save folder does not exist, create it
+		File folder = new File(game.getSaveDirectory() + saveName);
+		Save.deleteDirectory(folder);
+		folder.mkdirs();
+
+		int n = 0;
+		for (Actor a : actorsToSave) {
+			File file = new File(folder.getPath() + "/actor" + n + ".object");
+			if (Save.saveActor(a, file))
+			n++;
+		}
+		System.out.println("saved sucesfully " + (folder.listFiles().length - 1) + " actors");
+		return true;
+	}
+	
 	/**
 	 * Save an actor in a file
 	 * 
@@ -74,45 +98,50 @@ public class Save {
 		return null;
 	}
 
-//	public static void saveParameters(int viewCandidateNumber, int playerNumber, FileSystem fileSystem, File file) {
-//		try {
-//			if (!file.exists())
-//				file.createNewFile();
-//			OutputStream oos = fileSystem.write(file.getPath());
-//			String save = "viewCandidateNumber : <" + viewCandidateNumber + ">\n";
-//			save += "playerNumber : <" + playerNumber + ">";
-//
-//			oos.write(save.getBytes());
-//			oos.flush();
-//			oos.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+//	public static void saveParameters(Checkpoint lastCheckpoint, File file) {
+//		saveActor(lastCheckpoint, file);
 //	}
-
-//	public static int[] getParams(FileSystem fileSystem, File file) {
-//		int[] r = new int[2];
-//		if (file.exists())
+//
+//	public static Checkpoint loadCheckpoint(ActorGame game, File file) {
+//		 Checkpoint a = (Checkpoint) (readSavedActor(game, file));
+//		 return a;
+//	}
+	
+//	public static void saveCurrent(FileSystem fileSystem, String toSave, File file) {
+//		if (!file.exists())
 //			try {
-//				InputStream is = fileSystem.read(file.getPath());
-//				byte[] b = new byte[is.available()];
-//				is.read(b);
-//				is.close();
-//
-//				String s = new String(b);
-//				int start1 = s.indexOf('<') + 1;
-//				int stop1 = s.indexOf('>', start1);
-//				r[0] = Integer.parseInt(s.substring(start1, stop1));
-//
-//				int start2 = s.indexOf('<') + 1;
-//				int stop2 = s.indexOf('>', start1);
-//				r[1] = Integer.parseInt(s.substring(start2, stop2));
+//				file.createNewFile();
+//				OutputStream os = fileSystem.write(file.getPath());
+//				os.write(toSave.getBytes());
+//				os.close();
 //			} catch (IOException e) {
 //				e.printStackTrace();
 //			}
-//		return r;
-//
 //	}
+	
+	public static int[] getParams(FileSystem fileSystem, File file) {
+		int[] r = new int[2];
+		if (file.exists())
+			try {
+				InputStream is = fileSystem.read(file.getPath());
+				byte[] b = new byte[is.available()];
+				is.read(b);
+				is.close();
+
+				String s = new String(b);
+				int start1 = s.indexOf('<') + 1;
+				int stop1 = s.indexOf('>', start1);
+				r[0] = Integer.parseInt(s.substring(start1, stop1));
+
+				int start2 = s.indexOf('<') + 1;
+				int stop2 = s.indexOf('>', start1);
+				r[1] = Integer.parseInt(s.substring(start2, stop2));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		return r;
+
+	}
 
 	/**
 	 * @return the files in a folder

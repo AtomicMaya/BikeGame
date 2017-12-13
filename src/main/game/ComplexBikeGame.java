@@ -1,7 +1,7 @@
 package main.game;
 
-import main.game.GUI.menu.InGameMenu;
 import main.game.GUI.menu.MainMenu;
+import main.game.GUI.menu.PauseMenu;
 import main.game.actor.Actor;
 import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.levels.Level;
@@ -21,7 +21,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 	private int currentLevel = 0;
 	private boolean wasPlayed = false;
 
-	private InGameMenu ingameMenu;
+	private PauseMenu ingameMenu;
 	private MainMenu mainMenu;
 
 	@Override
@@ -29,7 +29,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 		super.begin(window, fileSystem);
 
 		this.levels = createLevelList();
-		this.ingameMenu = new InGameMenu(this, window);
+		this.ingameMenu = new PauseMenu(this, window);
 
 		this.mainMenu = new MainMenu(this, window);
 
@@ -98,7 +98,7 @@ public abstract class ComplexBikeGame extends ActorGame {
 		System.out.println("loading level");
 		this.levels.get(currentLevel).createAllActors();
 		super.addActor(levels.get(currentLevel).getActors());
-		super.addActor(levels.get(currentLevel));
+//		super.addActor(levels.get(currentLevel));
 
 		SpawnCheckpoint sc = levels.get(currentLevel).getSpawnCheckpoint();
 		if (!wasPlayed) {

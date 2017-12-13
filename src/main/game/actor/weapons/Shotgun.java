@@ -64,5 +64,6 @@ public class Shotgun extends PortableWeapon {
 			}
 		}
 	}
+	
 
 }

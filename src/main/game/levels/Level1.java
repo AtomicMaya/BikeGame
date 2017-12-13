@@ -128,7 +128,7 @@ public class Level1 extends Level {
 
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-        return new SpawnCheckpoint(this.game, new Vector(1, 0), null);
+        return new SpawnCheckpoint(this.game, new Vector(1, 0));
 	}
 
 }

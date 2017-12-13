@@ -132,6 +132,7 @@ public class CrateBuilder extends ActorBuilder {
 	@Override
 	public void edit() {
 		this.placed = false;
+		this.isDone = false;
 	}
 
 }

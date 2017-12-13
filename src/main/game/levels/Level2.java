@@ -1,7 +1,7 @@
 package main.game.levels;
 
 import main.game.ActorGame;
-import main.game.actor.entities.Bombarder;
+import main.game.actor.entities.MovingPlatform;
 import main.game.actor.entities.Terrain;
 import main.game.actor.entities.TerrainType;
 import main.game.actor.sensors.Checkpoint;
@@ -24,9 +24,12 @@ public class Level2 extends Level {
 		addActor(new FinishActor(game, new Vector(-40, 0)));
 		addActor(new Checkpoint(game, new Vector(-20, 0)));
 		
-		Bombarder b = new Bombarder(game, new Vector (-30, 3));
-		b.setPath(new Vector(-35, 5), new Vector(-20, 7), 3);
-		addActor(b);
+//		Bombarder b = new Bombarder(game, new Vector (-30, 3));
+//		b.setPath(new Vector(-35, 10), new Vector(-30, 7), 1f);
+//		addActor(b);
+		
+		addActor(new MovingPlatform(game, new Vector(-42, 5), new Vector(-30, 7), 1, 2));
+		addActor(new MovingPlatform(game, new Vector(-40, 3), new Vector(1, 0), 10, .1f, 1));
 	}
 
 	@Override

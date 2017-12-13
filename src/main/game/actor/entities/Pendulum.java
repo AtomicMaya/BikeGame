@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
@@ -33,7 +34,7 @@ class Weight extends GameEntity {
 		radius = Math.abs(radius);
 		this.build(new Circle(radius), 1, 1, false, ObjectGroup.OBSTACLE.group);
 		this.graphics = this.addGraphics("./res/images/stone.broken.11.png", radius * 2, radius * 2,
-				new Vector(.5f, .5f));
+				new Vector(.5f, .5f), 1, DepthValue.FRONT_OBSTACLE_MEDIUM.value);
 	}
 
     /**

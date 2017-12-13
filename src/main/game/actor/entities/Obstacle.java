@@ -1,14 +1,15 @@
 package main.game.actor.entities;
 
-import java.awt.Color;
-import java.util.List;
-
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.math.Polygon;
 import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
+import java.util.List;
 
 /** Create a new {@linkplain Obstacle} */
 public class Obstacle extends GameEntity {
@@ -18,6 +19,9 @@ public class Obstacle extends GameEntity {
 
 	/** List of all the {@linkplain Vector} points of this {@linkplain Obstacle}. */
 	private List<Vector> points;
+	
+	/** Default depth value for drawing */
+	private float depth = DepthValue.FRONT_OBSTACLE_MEDIUM.value;
 
 	/**
 	 * Create a new fixed {@linkplain Obstacle}
@@ -46,7 +50,12 @@ public class Obstacle extends GameEntity {
 	
 	@Override
 	public void draw(Canvas canvas) {
-		canvas.drawShape(new Polygon(points), getTransform(), new Color(196,196,188), Color.BLACK, .05f, 1, 2);
+		canvas.drawShape(new Polygon(points), getTransform(), new Color(196,196,188), Color.BLACK, .05f, 1, depth);
+	}
+	
+	/** Set the depth of drawing */
+	public void setDepth(float newDepth) {
+		this.depth = newDepth;
 	}
 
 }

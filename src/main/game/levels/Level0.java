@@ -8,10 +8,10 @@ import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.audio.Audio;
+import main.game.graphicalStuff.GraphicalDrawer;
 import main.game.graphicalStuff.Preset;
 import main.game.graphicalStuff.Scenery;
 import main.game.graphics.BetterTextGraphics;
-import main.game.graphics.GraphicalDrawer;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
@@ -141,6 +141,6 @@ public class Level0 extends Level {
 
 	@Override
 	public SpawnCheckpoint getSpawnCheckpoint() {
-		return new SpawnCheckpoint(this.game, new Vector(1, 0), null);
+		return new SpawnCheckpoint(this.game, new Vector(1, 0));
 	}
 }

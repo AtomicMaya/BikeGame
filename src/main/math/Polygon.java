@@ -5,7 +5,6 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Fixture;
 import org.jbox2d.dynamics.FixtureDef;
 
-import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.util.*;
 
@@ -188,11 +187,6 @@ public final class Polygon extends Shape {
     @Override
     public float getArea() {
         return area;
-    }
-
-    @Override
-    public Area getGeomArea() {
-	    return new Area(this.toPath());
     }
 
     @Override

@@ -2,6 +2,7 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.DepthValue;
 import main.game.graphics.ImageGraphics;
 import main.game.graphics.ShapeGraphics;
 import main.io.Saveable;
@@ -125,12 +126,12 @@ public abstract class GameEntity implements Actor, Saveable {
 
     /** @see #addGraphics(String, float, float, Vector, float, float) */
     public ImageGraphics addGraphics(String imagePath, float width, float height, Vector anchor) {
-        return this.addGraphics(imagePath, width, height, anchor, 1, 0);
+        return this.addGraphics(imagePath, width, height, anchor, 1, DepthValue.FRONT_OBSTACLE_MEDIUM.value);
     }
 
     /** @see #addGraphics(String, float, float, Vector, float, float) */
     public ImageGraphics addGraphics(String imagePath, float width, float height) {
-        return this.addGraphics(imagePath, width, height, Vector.ZERO, 1, 0);
+        return this.addGraphics(imagePath, width, height, Vector.ZERO, 1, DepthValue.FRONT_OBSTACLE_MEDIUM.value);
     }
 
 	/**

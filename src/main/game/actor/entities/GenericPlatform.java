@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
 import main.math.Constraint;
@@ -43,7 +44,7 @@ public class GenericPlatform extends GameEntity {
     private void create() {
         Polygon shape = new Polygon(0, 0, this.width, 0, this.width, this.height, 0, this.height);
         this.build(shape, 10f, 1f, false, ObjectGroup.OBSTACLE.group);
-        this.graphics = this.addGraphics("/res/images/metal.3.png", this.width, this.height, Vector.ZERO, .99f, 1);
+        this.graphics = this.addGraphics("/res/images/metal.3.png", this.width, this.height, Vector.ZERO, .99f, DepthValue.FRONT_OBSTACLE_MEDIUM.value);
     }
 
     @Override

@@ -23,9 +23,6 @@ public class Rocket extends Weapon {
     /** The size of the target. */
     private float targetSize = .75f;
 
-//    /** The target's position {@linkplain Vector}. */
-//    private Vector targetPos;
-
     /**
      * Creates a new {@linkplain Rocket}.
      * @param game The master {@linkplain ActorGame}.
@@ -41,18 +38,15 @@ public class Rocket extends Weapon {
         super.update(deltaTime);
 
         this.elapsedTime += deltaTime;
-        if (this.elapsedTime >this.maxTimeBlink)
+        if (this.elapsedTime > this.maxTimeBlink)
             this.elapsedTime = 0;
-        if (hasShot()) {
-//            this.targetPos = getOwner().getMouse().getPosition();
-        }
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if (isDeployed()) {		   //___
-        	// drawing of the target |+|
+        if (isDeployed()) {		   
+        	// drawing of the target red cross
             Image target = canvas.getImage(
                     (this.elapsedTime > this.maxTimeBlink / 2) ? "res/images/target.1.png" : "res/images/target.2.png");
             canvas.drawImage(target, Transform.I.scaled(this.targetSize).translated(-this.targetSize / 2, -this.targetSize / 2)
@@ -62,9 +56,9 @@ public class Rocket extends Weapon {
 
     @Override
     public void shoot() {
-        Vector spawn = new Vector((float) (Math.random() * getOwner().getViewScale() * 2 - getOwner().getViewScale()),
-                getOwner().getViewScale() + 3).add(getPlayer().getPosition());
-        getOwner().addActor(new Missile(getOwner(), spawn, getOwner().getMouse().getPosition()));
+        Vector spawn = new Vector((float) (Math.random() * this.getOwner().getViewScale() * 2 - this.getOwner().getViewScale()),
+        		this.getOwner().getViewScale() + 3).add(this.getPlayer().getPosition());
+        this.getOwner().addActor(new Missile(this.getOwner(), spawn, this.getOwner().getMouse().getPosition()));
     }
 
 }

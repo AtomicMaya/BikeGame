@@ -40,8 +40,8 @@ public class Program {
 			// Game game = new PolyLineGame();
 			// Game game = new CrateGame();
 
-//			Game game = new TestGame();
-			Game game = new BikeGame();
+			// Game game = new TestGame();
+			 Game game = new BikeGame();
 			if (game.begin(window, fileSystem)) {
 
 				// Use system clock to keep track of time progression
@@ -60,8 +60,7 @@ public class Program {
 					try {
 						int timeDiff = Math.max(0, (int) (1E9 / 300 - deltaTime));
 						Thread.sleep((int) (timeDiff / 1E6), (int) (timeDiff % 1E6));
-					} catch (InterruptedException ignored) {
-					}
+					} catch (InterruptedException ignored) {}
 
 					now = System.nanoTime();
 					deltaTime = (now - before) / 1E9f;
@@ -72,7 +71,7 @@ public class Program {
 						deltaTime = MAX_DELTA_TIME;
 
 					}
-//                    System.out.println(deltaTime);
+					// System.out.println(deltaTime);
 					// Let the game do its stuff
 					game.update(deltaTime);
 

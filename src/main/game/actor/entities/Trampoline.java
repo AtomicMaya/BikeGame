@@ -57,7 +57,7 @@ public class Trampoline implements Actor, Saveable {
 
         this.genericPlatform.setConstraint(Linker.attachWeldConstraint(this.game, this.anchor.getEntity(), this.genericPlatform.getEntity(), new Vector(-1, .5f),
                 0, 2.5f, 0));
-
+        this.genericPlatform.getEntity().getParts().get(0).setRestitution(5);
     }
 
 	@Override

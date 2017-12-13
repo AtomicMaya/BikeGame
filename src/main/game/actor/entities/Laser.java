@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.sensors.ProximitySensor;
 import main.game.audio.Audio;
 import main.game.graphics.ImageGraphics;
@@ -125,10 +126,10 @@ public class Laser extends GameEntity {
 		if (this.sensor != null)
             this.sensor.destroy();
 		this.sensor = new ProximitySensor(this.game,  this.startPosition, this.shape);
-		this.graphics = this.addGraphics(this.shape,  this.color,  this.color.darker(), .3f, 0, 1);
+		this.graphics = this.addGraphics(this.shape,  this.color,  this.color.darker(), .3f, 0, DepthValue.FRONT_OBSTACLE_LOW.value);
 
 		this.emitterGraphics = this.addGraphics("./res/images/blaster." + (this.direction + 1) + ".png", 1, 1,
-				new Vector(.5f, .5f), 1, 2);
+				new Vector(.5f, .5f), 1, DepthValue.FRONT_OBSTACLE_LOW.value);
 	}
 
 	@Override

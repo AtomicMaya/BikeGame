@@ -44,17 +44,13 @@ public class TrampolineBuilder extends ActorBuilder {
 				isDone = true;
 			}
 			trampoline.setPosition(position);
-		} else
-
-		if (isHovered() && isRightPressed())
-			isDone = false;
+		} 
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
 		if (trampoline != null)
 			trampoline.draw(canvas);
-
 	}
 
 	@Override
@@ -76,7 +72,7 @@ public class TrampolineBuilder extends ActorBuilder {
 
 	@Override
 	public boolean isHovered() {
-		return ExtendedMath.isInRectangle(position.sub(-.5f, -.5f), position.add(4.5f, .5f), getMousePosition());
+		return ExtendedMath.isInRectangle(position.add(-.5f, -.5f), position.add(6f, .5f), getMousePosition());
 	}
 
 	@Override

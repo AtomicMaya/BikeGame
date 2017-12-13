@@ -2,6 +2,7 @@ package main.game.graphicalStuff;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.io.Saveable;
 import main.math.Node;
 import main.math.Transform;
 import main.window.Canvas;
@@ -9,9 +10,9 @@ import main.window.Canvas;
 import java.util.Random;
 
 /** Displays a cool message when the {@linkplain main.game.actor.entities.PlayableEntity} dies. */
-public class EndGameGraphics extends Node implements Actor {
+public class EndGameGraphics extends Node implements Actor, Saveable {
     /** The master {@linkplain ActorGame}. */
-	private ActorGame game;
+	private transient ActorGame game;
 
 	/** The dimensions of this {@linkplain EndGameGraphics}. */
 	private float width, height;
@@ -37,6 +38,11 @@ public class EndGameGraphics extends Node implements Actor {
 		this.setParent(game.getCanvas());
 	}
 
+	@Override
+	public void reCreate(ActorGame game) {
+		this.setParent(game.getCanvas());
+	}
+	
 	@Override
 	public void update(float deltaTime) {
 		if (this.game.getPayload() != null)

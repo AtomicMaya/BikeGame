@@ -276,40 +276,42 @@ public class MainMenu extends FullScreenMenu {
 		// get the saves and create buttons to load them
 		File[] list = Save.availableSaves(getOwner());
 		for (int i = 0; i < list.length; i++) {
-			Vector position = new Vector(loadingSavePosition.x, -(i % maxNumberButtonsSave) * 2.4f + loadingSavePosition.y);
-			tempSaveButons.add(new GraphicalButton(getOwner(), position, list[i].getName(), 1.4f));
-			int p = i;
-			tempSaveButons.get(i).addOnClickAction(() -> {
-				// load a saves
-				if (!busy && waitBeforeClick > .5f) {
-					getOwner().destroyAllActors();
-
-					busy = true;
-
-					// problematic loading part
-					System.out.println("    - Going to load");
-					if (getOwner().load(list[p].getName())) {
-						getOwner().getGameManager().setGameState(game, list[p].getName());
-						System.out.println("    - loaded successfully");
-					} else
-						System.out.println("error");
-
-					System.out.println("    - Finish loading");
-					getOwner().setGameFreezeStatus(false);
-					this.setStatus(false);
-				}
-			});
-			tempSaveButons.get(i).forceShape(6, -1);
-			tempDeleteButons.add(new GraphicalButton(getOwner(), position.add(-1.5f, .6f), 1, 1));
-			tempDeleteButons.get(i).setNewGraphics("res/images/delete.png", "res/images/delete_hover.png");
-			tempDeleteButons.get(i).addOnClickAction(() -> {
-				Save.deleteDirectory(new File(list[p].getPath()));
-				createSaveButtons();
-			});
-			tempDeleteButons.get(i).setDepth(1337);
+			if (!list[i].getName().contains("temp")) {
+				Vector position = new Vector(loadingSavePosition.x, -(i % maxNumberButtonsSave) * 2.4f + loadingSavePosition.y);
+				tempSaveButons.add(new GraphicalButton(getOwner(), position, list[i].getName(), 1.4f));
+				int p = i;
+				tempSaveButons.get(i).addOnClickAction(() -> {
+					// load a saves
+					if (!busy && waitBeforeClick > .5f) {
+						getOwner().destroyAllActors();
+		
+						busy = true;
+		
+						// problematic loading part
+						System.out.println("    - Going to load");
+						if (getOwner().load(list[p].getName())) {
+							getOwner().getGameManager().setGameState(game, list[p].getName());
+							System.out.println("    - loaded successfully");
+						} else
+							System.out.println("error");
+		
+						System.out.println("    - Finish loading");
+						getOwner().setGameFreezeStatus(false);
+						this.setStatus(false);
+					}
+				});
+				tempSaveButons.get(i).forceShape(6, -1);
+				tempDeleteButons.add(new GraphicalButton(getOwner(), position.add(-1.5f, .6f), 1, 1));
+				tempDeleteButons.get(i).setNewGraphics("res/images/delete.png", "res/images/delete_hover.png");
+				tempDeleteButons.get(i).addOnClickAction(() -> {
+					Save.deleteDirectory(new File(list[p].getPath()));
+					createSaveButtons();
+				});
+				tempDeleteButons.get(i).setDepth(1337);
+			}
+			loadingSaveButtons.addAll(tempSaveButons);
+			deleteButons.addAll(tempDeleteButons);
 		}
-		loadingSaveButtons.addAll(tempSaveButons);
-		deleteButons.addAll(tempDeleteButons);
 	}
 
 }

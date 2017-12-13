@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
 import main.math.*;
@@ -42,7 +43,7 @@ public class Wheel extends GameEntity {
 	private void create() {
 		Circle circle = new Circle(radius - .05f);
 		this.build(circle, 20f, 1, false, ObjectGroup.WHEEL.group);
-		this.graphics = this.addGraphics("/res/images/wheel.png", this.radius * 2, this.radius * 2, new Vector(this.radius, this.radius), 1, 0);
+		this.graphics = this.addGraphics("/res/images/wheel.png", this.radius * 2, this.radius * 2, new Vector(this.radius, this.radius), 1, DepthValue.PLAYER_DEAP.value);
 		this.listener = new BasicContactListener();
 		this.addContactListener(this.listener);
 	}

@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ShapeGraphics;
 import main.math.BasicContactListener;
@@ -14,7 +15,11 @@ import java.util.Random;
 
 /** A Gravity Well, which affects all objects in the world space. */
 public class GravityWell extends GameEntity {
-    /** The associated {@linkplain BasicContactListener}*/
+	
+	/** Used for save purpose */
+	private static final long serialVersionUID = 4071553105347397192L;
+
+	/** The associated {@linkplain BasicContactListener}*/
     private BasicContactListener listener;
 
     /** The associated {@linkplain ParticleEmitter}'s emission time. */
@@ -61,7 +66,7 @@ public class GravityWell extends GameEntity {
         this.shape = shape;
         this.direction = direction;
         this.build(shape, -1, -1, true, ObjectGroup.SENSOR.group);
-        this.graphics = addGraphics(shape, Color.CYAN, null, 0, .1f, 0);
+        this.graphics = addGraphics(shape, Color.CYAN, null, 0, .1f, DepthValue.FRONT_OBSTACLE_DEAP.value);
         this.listener = new BasicContactListener();
         this.addContactListener(this.listener);
     }

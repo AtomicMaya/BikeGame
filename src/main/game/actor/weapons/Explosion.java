@@ -5,6 +5,7 @@ package main.game.actor.weapons;
 
 import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.actor.DepthValue;
 import main.game.actor.entities.GameEntity;
 import main.math.Node;
 import main.math.Transform;
@@ -15,6 +16,7 @@ import main.window.Image;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/** Draw an explosion graphics in the game, auto removed from the {@linkplain ActorGame} when finished */
 public class Explosion extends Node implements Actor {
 
 	/**
@@ -32,10 +34,18 @@ public class Explosion extends Node implements Actor {
 	/** The elapsed animation time. */
 	private float elapsedAnimationTime = 0;
 
+	/** Relative position of the explosion to its parent */
 	private Vector anchor;
 
+	/** The master {@linkplain ActorGame} */
 	private ActorGame game;
 
+	/** Create a new {@linkplain Explosion} graphics
+	 * @param game The master {@linkplain ActorGame}
+	 * @param anchor Relative position of the explosion to its parent
+	 * @param parent {@linkplain GameEntity} which spawn this {@linkplain Explosion} 
+	 * @param delay how much time to wait before the explosion
+	 * */
 	public Explosion(ActorGame game, Vector anchor, GameEntity parent, float delay) {
 		this.setParent(parent);
 		this.elapsedAnimationTime = -Math.abs(delay);
@@ -62,13 +72,12 @@ public class Explosion extends Node implements Actor {
 
 	@Override
 	public void update(float deltaTime) {
-
 		this.elapsedAnimationTime += deltaTime;
 		this.graphicsCounter = (int) Math
 				.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
 		if (this.graphicsCounter > this.boomGraphics.size() - 1) {
 			this.graphicsCounter = 0;
-			game.destroyActor(this);
+			this.game.destroyActor(this);
 		}
 	}
 
@@ -76,8 +85,8 @@ public class Explosion extends Node implements Actor {
 	public void draw(Canvas canvas) {
 		if (graphicsCounter >= 0) {
 			Image i = canvas.getImage(this.boomGraphics.get(this.graphicsCounter));
-			Transform t = new Transform(4, 0, getPosition().x + anchor.x - 2, 0, 4, getPosition().y + anchor.y - 2);
-			canvas.drawImage(i, t, 1, 100);
+			Transform t = new Transform(4, 0, getPosition().x + this.anchor.x - 2, 0, 4, getPosition().y + this.anchor.y - 2);
+			canvas.drawImage(i, t, 1, DepthValue.BACK_OBSTACLE_LOW.value);
 		}
 
 	}

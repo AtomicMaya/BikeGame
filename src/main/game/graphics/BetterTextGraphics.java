@@ -25,7 +25,7 @@ public class BetterTextGraphics extends Node implements Graphics {
 	private float letterRatio = 73f;
 	private float inBetweenCharOffset = 0;
 
-	private Canvas canvas;
+	private transient ActorGame game;
 
     /**
      * @param game : The {@linkplain ActorGame} instance where this will be displayed.
@@ -35,7 +35,7 @@ public class BetterTextGraphics extends Node implements Graphics {
      * @param alpha : A {@linkplain Float} representing the alpha value.
      */
     public BetterTextGraphics(ActorGame game, String text, float fontSize, Vector anchor, float alpha) {
-        this.canvas = game.getCanvas();
+        this.game = game;
         this.setRelativeTransform(Transform.I.translated(anchor));
         this.setText(text, fontSize);
         this.setAlpha(alpha);
@@ -148,7 +148,7 @@ public class BetterTextGraphics extends Node implements Graphics {
 
 		float offset = 0;
 		for (int i = 0; i < this.graphics.size(); i++) {
-			float letterWidth = this.canvas.getImage(this.graphics.get(i)).getWidth() / this.letterRatio;
+			float letterWidth = this.game.getCanvas().getImage(this.graphics.get(i)).getWidth() / this.letterRatio;
 			this.offsets.add(new Vector(offset, 0));
 			this.charSizes.add(new float[] { letterWidth * this.charSize, this.charSize });
 			offset += letterWidth * this.charSize + this.inBetweenCharOffset;

@@ -1,10 +1,13 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
+
+import java.awt.*;
 
 /** Represent an {@linkplain Enemy}, killable by the player */
 public abstract class Enemy extends GameEntity {
@@ -39,7 +42,7 @@ public abstract class Enemy extends GameEntity {
 	
 	@Override
 	public void draw(Canvas canvas) {
-//		canvas.drawShape(getHitbox(), getTransform(), Color.GREEN, null, 0, .4f, 20);
+		canvas.drawShape(getHitbox(), getTransform(), Color.GREEN, null, 0, .4f, DepthValue.PLAYER_LOW.value-.42f);
 		
 	}
 	@Override

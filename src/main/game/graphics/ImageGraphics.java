@@ -9,7 +9,7 @@ import main.window.Image;
 /**
  * Contains information to render a single image, which can be attached to any positionable.
  */
-public class ImageGraphics extends Node implements  Graphics {
+public class ImageGraphics extends Node implements Graphics {
 
     private String name;
     private float width;

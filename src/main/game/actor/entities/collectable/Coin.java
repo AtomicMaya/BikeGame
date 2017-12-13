@@ -1,6 +1,7 @@
 package main.game.actor.entities.collectable;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.actor.entities.GameEntity;
 import main.game.actor.sensors.ProximitySensor;
@@ -83,6 +84,8 @@ public class Coin extends GameEntity implements Collectable {
 			this.shape = new Polygon(0, 0, .75f, 0, .75f, .75f, 0, .75f);
 		}
 
+		for (ImageGraphics ig : graphics)
+			ig.setDepth(DepthValue.FRONT_OBSTACLE_LOW.value + .5f);
 		this.build(this.shape, -1, -1, true, ObjectGroup.SENSOR.group);
 		this.sensor = new ProximitySensor(game, getPosition(), this.shape);
 		this.graphicsCounter = 0;

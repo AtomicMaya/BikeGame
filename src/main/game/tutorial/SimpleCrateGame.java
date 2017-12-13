@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	18 nov. 2017
- */
 package main.game.tutorial;
 
 import main.game.Game;

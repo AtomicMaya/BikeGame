@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ShapeGraphics;
 import main.math.*;
@@ -13,9 +14,12 @@ import java.util.ArrayList;
 import static main.math.ExtendedMath.*;
 
 /** Represents the character and its animation, which we deemed too verbose to leave in the {@linkplain Bike} class. */
-
 public class CharacterBike extends GameEntity {
-    /** {@linkplain Vector}s representing the position of the head, the arm joint, the back, both arms,
+	
+	/** Used for save purpose */
+	private static final long serialVersionUID = 4383352254003980696L;
+
+	/** {@linkplain Vector}s representing the position of the head, the arm joint, the back, both arms,
      * both hands, both legs and both feet. */
 	private Vector headPos, armJointPos, backPos,
             lElbowPos, rElbowPos, lHandPos,
@@ -69,12 +73,12 @@ public class CharacterBike extends GameEntity {
         Circle head = new Circle(.35f, this.headPos.add(.1f * this.directionModifier, .1f));
         Polygon body = new Polygon(this.headPos, this.armJointPos, this.backPos);
         this.graphics = new ArrayList<>();
-        this.graphics.add(this.addGraphics(head, Color.decode("#f5c396"), Color.BLACK, .02f, 1.f, 10.1f));
-        this.graphics.add(this.addGraphics(body, null, Color.BLACK, .15f, 1.f, 10));
-        this.graphics.add(this.addGraphics(this.generateLimb(0), null, Color.BLACK, .15f, 1.f, 10));
-        this.graphics.add(this.addGraphics(this.generateLimb(1), null, Color.BLACK, .15f, 1.f, 10));
-        this.graphics.add(this.addGraphics(this.generateLimb(2), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? .9f : 1.1f));
-        this.graphics.add(this.addGraphics(this.generateLimb(3), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? 1.1f : .9f));
+        this.graphics.add(this.addGraphics(head, Color.decode("#f5c396"), Color.BLACK, .02f, 1.f, DepthValue.PLAYER_LOW.value+.1f));
+        this.graphics.add(this.addGraphics(body, null, Color.BLACK, .15f, 1.f, DepthValue.PLAYER_MEDIUM.value));
+        this.graphics.add(this.addGraphics(this.generateLimb(0), null, Color.BLACK, .15f, 1.f, DepthValue.PLAYER_LOW.value));
+        this.graphics.add(this.addGraphics(this.generateLimb(1), null, Color.BLACK, .15f, 1.f, DepthValue.PLAYER_LOW.value));
+        this.graphics.add(this.addGraphics(this.generateLimb(2), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? DepthValue.PLAYER_DEAP.value : DepthValue.PLAYER_LOW.value));
+        this.graphics.add(this.addGraphics(this.generateLimb(3), null, Color.BLUE.brighter().brighter(), .15f, 1.f, getDirectionModifier() == 1 ? DepthValue.PLAYER_LOW.value : DepthValue.PLAYER_DEAP.value));
     }
 
 	@Override
@@ -184,7 +188,7 @@ public class CharacterBike extends GameEntity {
 
 	/** Inverts all the xCoordinates on the x axis. */
 	public void invertX() {
-        this.directionModifier = this.directionModifier * -1;
+        this.directionModifier *= -1;
         this.headPos = this.headPos.mul(xInverted); this.armJointPos = this.armJointPos.mul(xInverted);
         this.backPos = this.backPos.mul(xInverted);
         this.lElbowPos = this.lElbowPos.mul(xInverted); this.lHandPos = this.lHandPos.mul(xInverted);

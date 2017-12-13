@@ -18,7 +18,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
-import java.util.LinkedList;
 import java.util.List;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
@@ -26,8 +25,8 @@ public class ActorGame implements Game {
     /** The Viewport properties. */
 	private Camera camera;
 
-	 /** A {@linkplain ArrayList<Actor>} containing all {@linkplain Actor}.*/
-     private LinkedList<Actor> actors = new LinkedList<Actor>();
+	 /** An {@linkplain ArrayList} containing all {@linkplain Actor}.*/
+     private ArrayList<Actor> actors = new ArrayList<Actor>();
 
     // main character of the game
     /** The main {@linkplain Actor} of this {@linkplain Game} */
@@ -54,9 +53,6 @@ public class ActorGame implements Game {
 	/** The given save directory : {@value}*/
 	private static final String saveDirectory = "saves/";
 
-	/** The player's score. */
-	private int score;
-
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
 		if (window == null)
@@ -71,7 +67,6 @@ public class ActorGame implements Game {
 		this.window = window;
 		this.fileSystem = fileSystem;
 
-		this.score = 0;
 		this.camera = new Camera(this, window);
 		this.gameManager = new GameManager(this);
 		return true;
@@ -114,6 +109,10 @@ public class ActorGame implements Game {
 		this.world.update(deltaTime);
 		this.camera.update(deltaTime);
 
+		// TODO remove
+		if (this.getKeyboard().get(KeyEvent.VK_4).isDown()) {
+			window.setRelativeTransform(Transform.I.scaled(40));
+		}
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
 			try {
 				this.actors.get(i).update(deltaTime);
@@ -336,29 +335,6 @@ public class ActorGame implements Game {
 	}
 
 	/**
-	 * Save all {@linkplain Actor}s of the current game.
-	 * @param saveName : The path to the folder to save the game.
-	 */
-	public void save(ArrayList<Actor> actorsToSave, String saveName) {
-
-		// if the save folder does not exist, create it
-		File folder = new File(saveDirectory + saveName);
-		Save.deleteDirectory(folder);
-		folder.mkdirs();
-
-		int n = 0;
-		for (Actor a : actorsToSave) {
-			File file = new File(folder.getPath() + "/actor" + n + ".object");
-			if (Save.saveActor(a, file))
-			n++;
-		}
-//		Save.saveParameters(viewCandidateNumber, playerNumber, this.fileSystem,
-//				new File(folder.getPath() + "/params.param"));
-
-		System.out.println("saved sucesfully " + (folder.listFiles().length - 1) + " actors");
-	}
-
-	/**
 	 * Load all saved {@linkplain Actor}s.
 	 * @param saveName : The name of the save to load.
 	 */
@@ -386,24 +362,30 @@ public class ActorGame implements Game {
 							toAdd.add(actor);
 					}
 				}
-
-//				int[] params = Save.getParams(fileSystem, new File(save.getPath() + "/params.param"));
-
-//				System.out.println("   - loading params");
-
-//				this.setViewCandidate(toAdd.get(params[0]));
-//				this.setPayload((PlayableEntity) toAdd.get(params[1]));
 				toAdd.add(new EndGameGraphics(this));
 				this.actorsToAdd.addAll(toAdd);
 				System.out.println(toAdd.size() + " actors loaded");
 				toAdd.clear();
 				return true;
 			}
-
 		}
 		System.out.println("Unexistant save");
 		return false;
 	}
+	
+//	public boolean saveCurrentActors() {
+//	
+//		Save.saveParameters(getGameManager().getLastCheckpoint(), new File(saveDirectory + "temp/params.object"));
+//		String s = 
+//		Save.saveCurrent(fileSystem, "", new File(saveDirectory + "temp/params.param"));
+//		return true;
+//	}
+	
+//	public boolean loadTempSave() {
+//		load("temp");
+//		Save.loadCheckpoint(this, new File(saveDirectory + "temp/params.object"));
+//		return true;
+//	}
 
 	/**
 	 * Sets the game's view candidate, to be followed by the camera.

@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.ObjectGroup;
 import main.game.actor.sensors.ProximitySensor;
 import main.math.Polygon;
@@ -139,9 +140,9 @@ public class Mine extends GameEntity {
 	@Override
 	public void draw(Canvas canvas) {
 		if (this.blowingUp)
-			this.sensor.addGraphics(this.boomGraphics.get(this.boomGraphicsCounter), 1.5f, 3).draw(canvas);
+			this.sensor.addGraphics(this.boomGraphics.get(this.boomGraphicsCounter), 1.5f, 3,Vector.ZERO, 1, DepthValue.FRONT_OBSTACLE_LOW.value + 0.5f).draw(canvas);
 		if (this.triggered)
-			this.addGraphics(this.stateGraphics.get(this.state ? 1 : 0), .5f, 1, Vector.ZERO, 1, 100).draw(canvas);
+			this.addGraphics(this.stateGraphics.get(this.state ? 1 : 0), .5f, 1, Vector.ZERO, 1, DepthValue.FRONT_OBSTACLE_LOW.value + 0.5f).draw(canvas);
 	}
 
 	@Override

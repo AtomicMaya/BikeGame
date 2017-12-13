@@ -22,9 +22,6 @@ public class HelloWorldGame implements Game {
 
 	private ImageGraphics bodyGraphics, bowGraphics;
 
-	private float alpha = 0f;
-	private boolean increasing = true;
-
 	// This event is raised when game has just started
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -42,12 +39,12 @@ public class HelloWorldGame implements Game {
 
 		bodyGraphics = new ImageGraphics("res/images/stone.broken.4.png", 1, 1);
 		bodyGraphics.setParent(body);
-		bodyGraphics.setAlpha(0.5f);
+		bodyGraphics.setAlpha(1.0f);
 		bodyGraphics.setDepth(0.0f);
 		bodyGraphics.setParent(body);
 
 		bowGraphics = new ImageGraphics("res/images/bow.png", 1, 1);
-		bowGraphics.setAlpha(0.5f);
+		bowGraphics.setAlpha(1.0f);
 		bowGraphics.setDepth(1.0f);
 
 		bowGraphics.setParent(body);
@@ -61,22 +58,7 @@ public class HelloWorldGame implements Game {
 	public void update(float deltaTime) {
 		window.setRelativeTransform(Transform.I.scaled(7.0f));
 
-		if (increasing) {
-			if (alpha < 2)
-				alpha += 0.01f;
-			else
-				increasing = false;
-		} else {
-			if (alpha > -1f)
-				alpha -= 0.01f;
-			else
-				increasing = true;
-		}
-
 		world.update(deltaTime);
-
-		bowGraphics.setAlpha(alpha);
-		bodyGraphics.setAlpha(1f - alpha);
 		
 		bodyGraphics.draw(window);
 		bowGraphics.draw(window);

@@ -1,10 +1,11 @@
 package main.game.graphicalStuff;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
 /** Allows the on-the-fly parametrization of {@linkplain GraphicalObjects}. */
-public enum Preset {
+public enum Preset implements Serializable {
     Breezy(new String[]{"main.game.graphicalStuff.Cloud", "main.game.graphicalStuff.BlowingLeaf"},
             new Integer[]{10, 150},
             new Float[][]{new Float[]{-.25f, 0f, -.5f, 0f}, new Float[]{-0.5f, -0.05f, -3f, -0.5f}},

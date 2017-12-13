@@ -1,6 +1,7 @@
 package main.game.actor.entities;
 
 import main.game.ActorGame;
+import main.game.actor.DepthValue;
 import main.game.actor.Linker;
 import main.game.actor.ObjectGroup;
 import main.game.actor.weapons.Rocket;
@@ -103,7 +104,7 @@ public class Bike extends GameEntity implements PlayableEntity {
         this.bikeFrame = new Polyline(-1.3f, .8f, -1.f, .9f, -1.f, .9f, -.7f, .8f, -.3f, .8f,
                 -.4f, 1.1f, -.3f, .7f, -1.f, 0.1f, -.25f, .2f, -1.f, 0.1f, -.3f, .7f, -.25f, .2f, .8f, .85f, -.3f, .7f,
                 .8f, .85f, 1.f, .85f, 1.f, 1.25f, 0.9f, 1.3f, 1.f, 1.25f, 1.f, .8f, 1.f, 0.1f, 1.f, .8f, 1.3f, .75f, 1.4f, .7f);
-        this.bikeFrameGraphic = this.addGraphics(this.bikeFrame, null, Color.decode("#58355e"), .1f, 1, 1);
+        this.bikeFrameGraphic = this.addGraphics(this.bikeFrame, null, Color.decode("#58355e"), .1f, 1, DepthValue.PLAYER_MEDIUM.value);
 
         this.leftWheel = new Wheel(this.game, new Vector(-1, 0).add(this.getPosition()), .5f);
         this.rightWheel = new Wheel(this.game, this.getPosition().add(new Vector(1, 0)), .5f);
@@ -164,7 +165,7 @@ public class Bike extends GameEntity implements PlayableEntity {
             this.lookRight = !this.lookRight;
             this.character.invertX();
             this.bikeFrame = new Polyline(invertXCoordinates(this.bikeFrame.getPoints(), xInverted));
-            this.bikeFrameGraphic = addGraphics(this.bikeFrame, null, Color.decode("#58355e"), .1f, 1.f, .0f);
+            this.bikeFrameGraphic = addGraphics(this.bikeFrame, null, Color.decode("#58355e"), .1f, 1.f, DepthValue.PLAYER_MEDIUM.value);
         }
 
         // Make the Bike jump.
@@ -203,12 +204,12 @@ public class Bike extends GameEntity implements PlayableEntity {
                 && (getOwner().getMouse().getMouseScrolledDown() || getOwner().getMouse().getMouseScrolledUp())) {
             this.swapWeapon();
         }
-
         if (getOwner().getKeyboard().get(KeyEvent.VK_F).isPressed()) {
             this.isWeaponDeployed = !this.isWeaponDeployed;
             this.weapons.get(this.activeWeapon).deploy(this.isWeaponDeployed);
         }
 
+        
         if (this.wonTheGame && this.lookRight)
             this.leftWheel.power(0);
         else if (this.wonTheGame && !this.lookRight)
@@ -292,5 +293,10 @@ public class Bike extends GameEntity implements PlayableEntity {
     @Override
     public boolean isLookingRight() {
         return this.lookRight;
+    }
+    
+    @Override
+    public void addAmmos(int quantity, int type) {
+    	// TODO
     }
 }

@@ -1,6 +1,10 @@
-package main.game.graphics;
+package main.game.graphicalStuff;
 
+import main.game.ActorGame;
 import main.game.actor.Actor;
+import main.game.graphics.Graphics;
+import main.game.graphics.ShapeGraphics;
+import main.io.Saveable;
 import main.math.Transform;
 import main.math.Vector;
 import main.window.Canvas;
@@ -8,10 +12,10 @@ import main.window.Canvas;
 import java.util.ArrayList;
 
 /** Use to draw "naked" {@linkplain Graphics}, {@linkplain Graphics} without parent */
-public class GraphicalDrawer implements Actor {
+public class GraphicalDrawer implements Actor, Saveable {
 
 	/** Storage for all the graphics */
-	private ArrayList<Graphics> graphics = new ArrayList<>();
+	private transient ArrayList<Graphics> graphics = new ArrayList<>();
 
 	@Override
 	public void draw(Canvas canvas) {
@@ -49,6 +53,11 @@ public class GraphicalDrawer implements Actor {
 	@Override
 	public Vector getVelocity() {
 		return null;
+	}
+
+	@Override
+	public void reCreate(ActorGame game) {
+		
 	}
 
 }

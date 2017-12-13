@@ -3,18 +3,14 @@ package main.game.actor.entities;
 import main.game.ActorGame;
 import main.game.actor.ObjectGroup;
 import main.game.graphics.ImageGraphics;
-import main.io.Saveable;
-import main.math.BasicContactListener;
-import main.math.Entity;
-import main.math.Polygon;
-import main.math.Vector;
+import main.math.*;
 import main.window.Canvas;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /** Creates an Exploding/Acid barrel */
-public class BoomBarrel extends GameEntity implements Saveable {
+public class BoomBarrel extends Enemy {
     /** Used for save purposes. */
     private static final long serialVersionUID = -1395668954465139357L;
 
@@ -52,7 +48,7 @@ public class BoomBarrel extends GameEntity implements Saveable {
      * @param explosive A {@linkplain boolean} whether this {@linkplain BoomBarrel} is explosive (true) or acid (false).
      */
     public BoomBarrel(ActorGame game, Vector position, boolean explosive) {
-        super(game, false, position);
+        super(game, position);
         this.explosive = explosive;
         this.create();
     }
@@ -149,8 +145,13 @@ public class BoomBarrel extends GameEntity implements Saveable {
         super.getOwner().destroyActor(this);
     }
 
-    /** Triggers the {@linkplain BoomBarrel}'s explosion. */
-    public void trigger() {
-        this.triggered = true;
-    }
+	@Override
+	public void kill() {
+		this.triggered = true;
+	}
+
+	@Override
+	protected Shape getHitbox() {
+		return new Polygon(0, 0, 1, 0, 1, 1.5f, 0, 1.5f);
+	}
 }
