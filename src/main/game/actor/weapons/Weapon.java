@@ -1,7 +1,3 @@
-/**
- *	Author: Clément Jeannet
- *	Date: 	10 déc. 2017
- */
 package main.game.actor.weapons;
 
 import main.game.ActorGame;
@@ -16,29 +12,58 @@ import main.window.Canvas;
 
 import java.awt.*;
 
-// TODO Finish Commenting.
+/** Represent a weapon */
 public abstract class Weapon implements Actor {
 
 	// general params
+	/** {@linkplain PlayableEntity} who own this {@linkplain Weapon} */
 	private PlayableEntity player;
+	
+	/** The master {@linkplain ActorGame} */
 	private ActorGame game;
 
 	// weapon params
+	/** Whether this weapon is deployed */
 	private boolean deployed = false;
+	
+	/** Actual number of ammo */
 	private int ammoCount;
+	
+	/** Shot time */
 	private float elapsedTime = 0, betweenShotTime;
+	
+	/** Whether it has shot */
 	private boolean hasShot = false;
 
 	// GUI stuff
+	/** Show ammo number */
 	private Comment amoNumber;
+	
+	/** Text for the {@linkplain Comment} {@link #amoNumber} */
 	private String amoText = " shots left";
+	
+	/** Absolute position on screen */
 	private Vector amoNumberPos = new Vector(17, 8);
 
+	/** Loading bar paramenetrs */
 	float loadWidth = 5, loadHeight = .2f, loadSizeDif = .05f;
+	
+	/** Shape of the red loading bar */
 	private Polygon loadingBackground = ExtendedMath.createRectangle(loadWidth, loadHeight);
+	
+	/** Shape of the right loading bar */
 	private Polygon loading = ExtendedMath.createRectangle(loadWidth, loadHeight);
+	
+	/** loading bar position */
 	private Vector loadingPos = new Vector(0, 9);
 
+	/** 
+	 * Create a new {@linkplain Weapon} 
+	 * @param game the master {@linkplain ActorGame}
+	 * @param player Owner of this {@linkplain Weapon}
+	 * @param initialAmmoNumber Initial number of ammo
+	 * @param betweenShotTime Time to wait between the shots
+	 * */
 	public Weapon(ActorGame game, PlayableEntity player, int initialAmmoNumber, float betweenShotTime) {
 		this.game = game;
 		this.player = player;
@@ -126,6 +151,7 @@ public abstract class Weapon implements Actor {
 		return player;
 	}
 
+	/** Whether this weapon has shot */
 	protected boolean hasShot() {
 		return this.hasShot;
 	}
@@ -139,6 +165,7 @@ public abstract class Weapon implements Actor {
 	 */
 	public void addAmmo(int quantity) {
 		this.ammoCount += quantity;
+		this.amoNumber.setText(this.amoText + this.ammoCount);
 	}
 
 	/** @return whether this weapon is deployed */
@@ -150,10 +177,12 @@ public abstract class Weapon implements Actor {
 		return elapsedTime;
 	}
 
+	/** Get the time to wait between the shots */
 	protected float getBetweenShotTime() {
 		return betweenShotTime;
 	}
 
+	/** Set whether this {@linkplain Weapon} is deployed */
 	public void deploy(boolean isDeployed) {
 		deployed = isDeployed;
 	}

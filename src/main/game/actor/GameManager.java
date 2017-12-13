@@ -204,7 +204,6 @@ public class GameManager implements Graphics {
 			canvas.drawText(this.messageDisplayed, fontSize * game.getViewScale() / 20f,
 					Transform.I.translated(canvas.getPosition()), new Color(219, 207, 39), new Color(155, 18, 48), .02f,
 					true, false, new Vector(.5f, -2.5f * game.getViewScale() / 20f), 1, 42000);
-			System.out.println("splay");
 		}
 		if (!game.isGameFrozen()) {
 			scoreDisapplay.setText(scoreText + score);

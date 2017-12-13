@@ -1,4 +1,8 @@
-**_'Simple' Bike Game Instructions_**
+**_'Simple' Bike Game Instructions_**<br />
+
+Launch our game :
+-
+Run Program.java, located in src.main
 
 Main Game Controls :
 -
@@ -18,7 +22,7 @@ Level Editor Controls :
 -
 
 WASD or arrows - Move camera<br />
-CTRL when moving - acelerate the speed of the camera<br />
+CTRL when moving - accelerate the speed of the camera<br />
 M or Mouse button 2 - Open the menu to add actor to the game<br />
 
  
@@ -67,5 +71,3 @@ M or Mouse button 2 - Open the menu to add actor to the game<br />
  
  <br /> <br />
  Level 2 (Boss Battle) :
-    
- 
