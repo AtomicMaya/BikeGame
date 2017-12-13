@@ -248,7 +248,7 @@ public class GameManager implements Graphics {
 		game.setViewCandidate(null);
 		messageDisplayed = "";
 		respawnTimer = 0;
-		saveLoaded = null;
+//		saveLoaded = null;
 		score = savedScore;
 	}
 

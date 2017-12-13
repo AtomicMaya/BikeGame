@@ -98,6 +98,7 @@ public class Coin extends GameEntity implements Collectable {
 	@Override
 	public void reCreate(ActorGame game) {
 		super.reCreate(game);
+		this.game = game;
 		this.create();
 	}
 
