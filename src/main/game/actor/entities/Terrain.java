@@ -45,7 +45,13 @@ public class Terrain extends GameEntity {
 		this.create();
 	}
 
-	/** @see #Terrain(ActorGame, Vector, Polyline, TerrainType) */
+    /**
+     * Create a {@linkplain Terrain}.
+     * @param game The {@linkplain ActorGame} where the {@linkplain Terrain} exists.
+     * @param position The position {@linkplain Vector} of the {@linkplain Terrain}.
+     * @param shape : The {@linkplain Shape} of the {@linkplain Terrain}.
+     * @param type : The {@linkplain TerrainType} of {@linkplain Terrain}.
+     */
 	public Terrain(ActorGame game, Vector position, Polygon shape, TerrainType type) {
         super(game, true, (position == null) ? Vector.ZERO : position);
         this.points = shape.getPoints();

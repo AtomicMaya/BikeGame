@@ -15,7 +15,7 @@ import java.util.Random;
 
 /** A Gravity Well, which affects all objects in the world space. */
 public class GravityWell extends GameEntity {
-	
+
 	/** Used for save purpose */
 	private static final long serialVersionUID = 4071553105347397192L;
 

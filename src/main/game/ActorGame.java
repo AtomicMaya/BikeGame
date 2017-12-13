@@ -5,7 +5,7 @@ import main.game.actor.Camera;
 import main.game.actor.GameManager;
 import main.game.actor.entities.GameEntity;
 import main.game.actor.entities.PlayableEntity;
-import main.game.graphicalStuff.EndGameGraphics;
+import main.game.graphicalActors.EndGameGraphics;
 import main.io.FileSystem;
 import main.io.Save;
 import main.math.*;
@@ -294,7 +294,7 @@ public class ActorGame implements Game {
 	 * @param start the origin of the segment
 	 * @param end the end point
 	 * @return start the origin of the segmentend the end point
-	 * @see {@linkplain World}
+	 * @see World
 	 */
 	public List<Impact> getImpacts(Vector start, Vector end) {
 		return world.trace(start, end);
@@ -337,6 +337,7 @@ public class ActorGame implements Game {
 	/**
 	 * Load all saved {@linkplain Actor}s.
 	 * @param saveName : The name of the save to load.
+     * @return whether the loading process succeeded.
 	 */
 	public boolean load(String saveName) {
 
@@ -372,15 +373,15 @@ public class ActorGame implements Game {
 		System.out.println("Unexistant save");
 		return false;
 	}
-	
+
 //	public boolean saveCurrentActors() {
-//	
+//
 //		Save.saveParameters(getGameManager().getLastCheckpoint(), new File(saveDirectory + "temp/params.object"));
-//		String s = 
+//		String s =
 //		Save.saveCurrent(fileSystem, "", new File(saveDirectory + "temp/params.param"));
 //		return true;
 //	}
-	
+
 //	public boolean loadTempSave() {
 //		load("temp");
 //		Save.loadCheckpoint(this, new File(saveDirectory + "temp/params.object"));

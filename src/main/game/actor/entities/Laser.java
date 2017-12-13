@@ -59,6 +59,9 @@ public class Laser extends GameEntity {
 	/** The {@linkplain Laser} emitter's graphical representation. */
 	private transient ImageGraphics emitterGraphics;
 
+	/** Whether this {@linkplain Laser} is triggered. */
+	private boolean triggered;
+
     /**
      * Creates a new {@linkplain Laser}.
      * @param game The master {@linkplain ActorGame}.
@@ -68,11 +71,11 @@ public class Laser extends GameEntity {
      * @param pulsateTime The duration of the {@linkplain Laser} beam's oscillation, which doesn't harm the Player.
      * @param laserTime The duration of the {@linkplain Laser} beam's output.
      * @param maxFires The maximum number of iterations, negative numbers are considered as infinite.
-     * @param direction The orientation of the laser.
+     * @param direction The orientation of the {@linkplain Laser}.
      * @param color The {@linkplain String} value of the {@linkplain Color}.
      */
 	public Laser(ActorGame game, Vector startPosition, float distance, float waitTime, float pulsateTime,
-			float laserTime, int maxFires, int direction, String color) {
+			float laserTime, int maxFires, int direction, String color, boolean triggered) {
 		super(game, true, startPosition);
 		this.game = game;
 		this.startPosition = startPosition;
@@ -93,13 +96,32 @@ public class Laser extends GameEntity {
 		this.oscillationCount = 0;
 		this.maxOscillationCount = 3.5f;
 		this.sensorActive = false;
+		this.triggered = triggered;
 
 		this.create();
 	}
 
-	/** @see #Laser(ActorGame, Vector, float, float, float, float, int, int, String) */
+    /**
+     * Creates a new {@linkplain Laser}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param startPosition The initial position {@linkplain Vector}.
+     * @param distance The distance of the {@linkplain Laser}.
+     * @param direction The orientation of the {@linkplain Laser}.
+     */
     public Laser(ActorGame game, Vector startPosition, float distance, int direction) {
-        this(game, startPosition, distance, 2, 2, 3, -1, direction, "#00FFFF");
+        this(game, startPosition, distance, 2, 2, 3, -1, direction, "#00FFFF", true);
+    }
+
+    /**
+     * Creates a new {@linkplain Laser}.
+     * @param game The master {@linkplain ActorGame}.
+     * @param startPosition The initial position {@linkplain Vector}.
+     * @param distance The distance of the {@linkplain Laser}.
+     * @param direction The orientation of the {@linkplain Laser}.
+     * @param triggered whether the {@linkplain Laser} is initially triggered.
+     */
+    public Laser(ActorGame game, Vector startPosition, float distance, int direction, boolean triggered) {
+        this(game, startPosition, distance, 2, 2, 3, -1, direction, "#00FFFF", triggered);
     }
 
 	/**
@@ -156,32 +178,37 @@ public class Laser extends GameEntity {
                     this.sensor.runAction(() -> new Audio(randomValue < this.secretProbability ? "./res/audio/easter_egg_1.wav": "./res/audio/laser.wav",
                             0, 20f), this.pulsateTime + this.laserTime);
 
-				// Make the laser oscillate, warning players that it is charging.
-				if (0 < this.oscillationCount && this.oscillationCount < this.maxOscillationCount) {
-					this.graphics = this.addGraphics(this.shape, this.color.brighter(), this.color.darker(), .3f, .2f,
-							1);
-				} else if (this.oscillationCount > this.maxOscillationCount) {
-					// Reset the counter.
-					this.oscillationCount = -this.maxOscillationCount;
-				} else {
-					this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
-				}
-			} else if (this.waitTime + this.pulsateTime < this.elapsedTime
-					&& this.elapsedTime < this.waitTime + this.pulsateTime + this.laserTime) {
-				this.sensorActive = true;
-				this.graphics = this.addGraphics(this.shape, this.color.brighter(), this.color.darker(), .3f, .5f, 1);
-			} else if (this.waitTime + this.pulsateTime + this.laserTime < this.elapsedTime) {
-				this.elapsedTime = 0;
-				this.sensorActive = false;
-				this.firesCount += 1;
-			}
-		} else {
-			this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
-		}
+                    // Make the laser oscillate, warning players that it is charging.
+                    if (0 < this.oscillationCount && this.oscillationCount < this.maxOscillationCount) {
+                        this.graphics = this.addGraphics(this.shape, this.color.brighter(), this.color.darker(), .4f, .2f,
+                                1);
+                    } else if (this.oscillationCount > this.maxOscillationCount) {
+                        // Reset the counter.
+                        this.oscillationCount = -this.maxOscillationCount;
+                    } else {
+                        this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
+                    }
+                } else if (this.waitTime + this.pulsateTime < this.elapsedTime
+                        && this.elapsedTime < this.waitTime + this.pulsateTime + this.laserTime) {
+                    this.sensorActive = true;
+                    this.graphics = this.addGraphics(this.shape, this.color.brighter(), this.color.darker(), .3f, .7f, 1);
+                } else if (this.waitTime + this.pulsateTime + this.laserTime < this.elapsedTime) {
+                    this.elapsedTime = 0;
+                    this.sensorActive = false;
+                    this.firesCount += 1;
+                }
+            } else {
+                this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
+            }
 
-		if (this.sensorActive && this.sensor.getSensorDetectionStatus()) {
-			this.game.getPayload().triggerDeath(false);
-		}
+            if (this.sensorActive && this.sensor.getSensorDetectionStatus()) {
+                this.game.getPayload().triggerDeath(false);
+            }
+        }
+
+        if (!this.triggered) {
+            this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
+        }
 	}
 
 	@Override
@@ -222,4 +249,8 @@ public class Laser extends GameEntity {
 		super.setPosition(position);
 		this.startPosition = position;
 	}
+
+	public void switchState() {
+	    this.triggered = !this.triggered;
+    }
 }

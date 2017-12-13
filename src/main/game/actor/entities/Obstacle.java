@@ -25,6 +25,7 @@ public class Obstacle extends GameEntity {
 
 	/**
 	 * Create a new fixed {@linkplain Obstacle}
+     * @param game The master {@linkplain ActorGame}.
 	 * @param position Position of this {@linkplain Obstacle}
 	 * @param shape {@linkplain Shape} of this {@linkplain Obstacle}
 	 */

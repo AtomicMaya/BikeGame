@@ -2,13 +2,14 @@ package main.game.actor.entities;
 
 import main.game.ActorGame;
 import main.game.actor.Linker;
+import main.game.actor.entities.switchers.Lever;
 import main.math.Circle;
 import main.math.Polygon;
 import main.math.Shape;
 import main.math.Vector;
 import main.window.Canvas;
 
-/** A {@linkplain GenericPlatform} that can be triggered by a {@linkplain main.game.actor.entities.switchers.SimpleLever}. */
+/** A {@linkplain GenericPlatform} that can be triggered by a {@linkplain Lever}. */
 public class TriggeredPlatform extends GameEntity {
 
     /** The displacement time. */
@@ -110,7 +111,7 @@ public class TriggeredPlatform extends GameEntity {
         this.platform.draw(canvas);
     }
 
-    /** Allows for a {@linkplain main.game.actor.entities.switchers.SimpleLever} to trigger this {@linkplain TriggeredPlatform}. */
+    /** Allows for a {@linkplain Lever} to trigger this {@linkplain TriggeredPlatform}. */
     public void triggerAction() {
         this.triggered = true;
     }

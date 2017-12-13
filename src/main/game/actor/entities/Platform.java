@@ -19,7 +19,7 @@ public class Platform extends GameEntity {
         super(game, true, position);
         this.shape = shape;
 
-        this.build(shape, 100.f, 1.f, false, ObjectGroup.TERRAIN.group);
+        this.build(shape, 100.f, 1.f, false, ObjectGroup.OBSTACLE.group);
         this.graphics = addGraphics("./res/images/metal.3.png", width, height, Vector.ZERO, 1, DepthValue.FRONT_OBSTACLE_MEDIUM.value);
     }
 

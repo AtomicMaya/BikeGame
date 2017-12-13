@@ -16,7 +16,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-/** A {@linkplain Menu} to add a {@linkplain Actor} to the game */
+/** A {@linkplain Menu} to add a {@linkplain main.game.actor.Actor} to the game */
 public class ActorMenu extends Menu {
 
 	/** Contains all the buttons of this {@linkplain ActorMenu}. */

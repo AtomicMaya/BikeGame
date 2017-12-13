@@ -64,8 +64,8 @@ public class LevelEditor implements Graphics {
 
 	/** {@linkplain ActorMenu}. */
 	private ActorMenu actorMenu;
-
-	/** @see Window. */
+	
+	/** @see Window */
 	private Window window;
 
 	/** Whether this {@linkplain LevelEditor} is open. */
@@ -402,7 +402,6 @@ public class LevelEditor implements Graphics {
 			this.playButton.update(deltaTime, z);
 			return;
 		}
-
 		// camera acceleration
 		if (this.game.getKeyboard().get(KeyEvent.VK_CONTROL).isDown()) {
 			this.currentCameraAcceleration += this.cameraAcceleration * deltaTime;
@@ -568,8 +567,7 @@ public class LevelEditor implements Graphics {
 	}
 
 	/**
-	 * Make sure we have a unique {@linkplain Terrain}
-	 * @param {@linkplain Terrain} to add to the game
+	 * Make sure we have a unique {@linkplain Terrain}.
 	 */
 	public void addGround() {
 		if (this.gb != null) {
@@ -681,9 +679,7 @@ public class LevelEditor implements Graphics {
 		this.open = true;
 	}
 
-	/**
-	 * Set the status of this {@linkplain LevelEditor} to false, and destroy it
-	 */
+	/** Set the status of this {@linkplain LevelEditor} to false, and destroy it */
 	public void close() {
 		this.open = false;
 		this.destroy();

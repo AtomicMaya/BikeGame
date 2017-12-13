@@ -28,6 +28,7 @@ public class BetterTextGraphics extends Node implements Graphics {
 	private transient ActorGame game;
 
     /**
+     * Creates a new {@linkplain BetterTextGraphics}.
      * @param game : The {@linkplain ActorGame} instance where this will be displayed.
      * @param text : A {@linkplain String} containing the text to be displayed
      * @param fontSize : A {@linkplain Float} representing the font size.
@@ -41,7 +42,13 @@ public class BetterTextGraphics extends Node implements Graphics {
         this.setAlpha(alpha);
     }
 
-    /** @see #BetterTextGraphics(ActorGame, String, float, Vector, float) */
+    /**
+     * Creates a new {@linkplain BetterTextGraphics}.
+     * @param game : The {@linkplain ActorGame} instance where this will be displayed.
+     * @param text : A {@linkplain String} containing the text to be displayed
+     * @param fontSize : A {@linkplain Float} representing the font size.
+     * @param anchor : A position {@linkplain Vector}, where this should be anchored.
+     */
 	public BetterTextGraphics(ActorGame game, String text, float fontSize, Vector anchor) {
         this(game, text, fontSize, anchor, 1f);
 	}

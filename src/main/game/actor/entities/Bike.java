@@ -155,9 +155,9 @@ public class Bike extends GameEntity implements PlayableEntity {
 
         // Tilt the Bike
         if (this.game.getKeyboard().get(KeyEvent.VK_A).isDown()) {
-            this.getEntity().applyAngularForce(10.0f);
+            this.getEntity().applyAngularForce(20.0f);
         } else if (this.game.getKeyboard().get(KeyEvent.VK_D).isDown()) {
-            this.getEntity().applyAngularForce(-10.f);
+            this.getEntity().applyAngularForce(-20.f);
         }
 
         // Switch the orientation of the Bike.
@@ -263,6 +263,7 @@ public class Bike extends GameEntity implements PlayableEntity {
                     (float) Math.PI / 2, (float) Math.PI, 1.5f, .1f, 1, .3f, 0xFFFFFF00, 0xFFFF0000, 2, 10));
             this.game.addActor(new ParticleEmitter(this.game, this.getPosition().add(3, 8), null, 200,
                     (float) Math.PI / 2, (float) Math.PI, 1.5f, .1f, 1, .3f, 0xFFADFF2F, 0x00551A8B, 2, 10));
+            this.character.triggerHappiness();
         }
         this.wonTheGame = true;
     }

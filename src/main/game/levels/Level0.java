@@ -3,15 +3,15 @@ package main.game.levels;
 import main.game.ActorGame;
 import main.game.actor.entities.*;
 import main.game.actor.entities.collectable.Coin;
-import main.game.actor.entities.switchers.SimpleLever;
+import main.game.actor.entities.switchers.Lever;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
 import main.game.audio.Audio;
-import main.game.graphicalStuff.GraphicalDrawer;
-import main.game.graphicalStuff.Preset;
-import main.game.graphicalStuff.Scenery;
+import main.game.graphicalActors.Preset;
+import main.game.graphicalActors.Scenery;
 import main.game.graphics.BetterTextGraphics;
+import main.game.graphics.GraphicalDrawer;
 import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
@@ -61,7 +61,7 @@ public class Level0 extends Level {
                 0, 0, 0, 0, 0, new Polygon(.0f, .0f, 6.f, .0f, 6.f, 1.f, .0f, 1.f), 6, 1);
 
         Terrain muddyTerrain = new Terrain(this.game, new Vector(130, 7), new Polygon(0, 0, 20, 4, 20, 0), TerrainType.MUD);
-        SimpleLever lever = new SimpleLever(this.game, new Vector(94, 6));
+        Lever lever = new Lever(this.game, new Vector(94, 6));
 
         TriggeredPlatform triggeredPlatform = new TriggeredPlatform(this.game, new Vector(100, 5), new Vector(1, 0),
                 25, 14, 3, 4, 10);
@@ -126,7 +126,6 @@ public class Level0 extends Level {
 
     @Override
     public void dispose() {
-        if (this.backgroundAudio != null) this.backgroundAudio.destroy();
     }
 
     @Override

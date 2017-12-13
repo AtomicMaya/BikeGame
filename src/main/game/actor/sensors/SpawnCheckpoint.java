@@ -11,8 +11,9 @@ public class SpawnCheckpoint extends Checkpoint {
 
 	/**
 	 * Create a new {@linkplain SpawnCheckpoint}.
-	 * @param player The {@linkplain PlayableEntity} of the game, if null will default to a {@linkplain main.game.actor.entities.Bike}.
-	 */
+	 * @param game The master {@linkplain ActorGame}
+     * @param position The initial position {@linkplain Vector}.
+     */
 	public SpawnCheckpoint(ActorGame game, Vector position) {
 		super(game, position, "./res/images/flag.blue.png", "./res/images/flag.blue.png");
 		this.create();

@@ -46,6 +46,7 @@ public class Mine extends GameEntity {
      * Creates a new {@linkplain Mine} .
      * @param game The master {@linkplain ActorGame}.
      * @param position The initial position {@linkplain Vector}.
+     * @param delay When the {@linkplain Mine} should explode.
      */
 	public Mine(ActorGame game, Vector position, float delay) {
 		super(game, true, position);
@@ -59,6 +60,11 @@ public class Mine extends GameEntity {
 		this.create();
 	}
 
+    /**
+     * Creates a new {@linkplain Mine} .
+     * @param game The master {@linkplain ActorGame}.
+     * @param position The initial position {@linkplain Vector}.
+     */
 	public Mine(ActorGame game, Vector position) {
 	    this(game, position, 1.1f);
     }

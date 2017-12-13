@@ -12,7 +12,7 @@ import main.window.Canvas;
 import java.awt.*;
 import java.util.ArrayList;
 
-/** Button wich can be clicked to execute an action */
+/** Button which can be clicked to execute an action */
 public class GraphicalButton extends GUIComponent {
 
 	/** Path to the images */
@@ -63,8 +63,9 @@ public class GraphicalButton extends GUIComponent {
 	/** 
 	 * Create a new {@linkplain GraphicalButton}
 	 * @param game The master {@linkplain ActorGame}
-	 * @param text Text to display
-	 * @param fontSize Font size
+     * @param position The initial position {@linkplain Vector}.
+	 * @param text Text to display.
+	 * @param fontSize Font size.
 	 * */
 	public GraphicalButton(ActorGame game, Vector position, String text, float fontSize) {
 		super(game, position);
@@ -78,6 +79,7 @@ public class GraphicalButton extends GUIComponent {
 	/** 
 	 * Create a new {@linkplain GraphicalButton}
 	 * @param game The master {@linkplain ActorGame}
+     * @param position The initial position {@linkplain Vector}.
 	 * @param width With of the {@linkplain GraphicalButton}
 	 * @param height Height of the {@linkplain GraphicalButton}
 	 * */
@@ -144,10 +146,9 @@ public class GraphicalButton extends GUIComponent {
 	}
 
 	/**
-	 * Sets new graphics to the button
-	 * 
-	 * @param idleGraphics : Graphics when the button is Idle
-	 * @param hoverGraphics : Graphics when the button is Hovered
+	 * Sets new graphics to the button.
+	 * @param idleGraphics Graphics when the button is Idle.
+	 * @param hoverGraphics Graphics when the button is Hovered.
 	 */
 	public void setNewGraphics(String idleGraphics, String hoverGraphics) {
 		this.idleGraphics = idleGraphics;
@@ -155,10 +156,9 @@ public class GraphicalButton extends GUIComponent {
 	}
 
 	/**
-	 * Adds runnable actions to this button
-	 * 
-	 * @param action : the action to run
-	 * @param expirationTime : When this button shouldn't be considered busy
+	 * Adds runnable actions to this button.
+	 * @param action The action to run
+	 * @param expirationTime When this button shouldn't be considered busy
 	 * anymore.
 	 */
 	public void addOnClickAction(Runnable action, float expirationTime) {
