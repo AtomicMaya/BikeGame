@@ -20,9 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Level1 extends Level {
-
-    private FinishActor finishActor;
-
     public Level1(ActorGame game) {
         super(game);
     }
@@ -228,7 +225,7 @@ public class Level1 extends Level {
             boomBarrel2.setPosition(new Vector(223.5f, 75f));
         }, 10);
 
-        this.finishActor = new FinishActor(this.game, new Vector(245,30));
+        FinishActor finishActor = new FinishActor(this.game, new Vector(245,30));
 
         this.addActors(new ArrayList<>(Arrays.asList(terrain, insideTerrain)));
         this.addActors(new ArrayList<>(Arrays.asList(obstacle, obstacle1, obstacle2, obstacle3)));
@@ -248,7 +245,7 @@ public class Level1 extends Level {
         this.addActor(gravityWell);
         this.addActors(new ArrayList<>(Arrays.asList(boomBarrel, boomBarrel1, boomBarrel2)));
         this.addActor(drawer);
-        this.addActor(this.finishActor);
+        this.addActor(finishActor);
     }
 
     @Override
