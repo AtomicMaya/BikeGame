@@ -167,16 +167,17 @@ public class Laser extends GameEntity {
     public void update(float deltaTime) {
     	super.update(deltaTime);
         this.sensor.update(deltaTime);
-        if(this.firesCount != this.maxFires || maxFires >= 0) {
-            this.elapsedTime += deltaTime;
-            float randomValue = new Random().nextFloat();
-            if (this.elapsedTime < this.waitTime) {
-                this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
-            } else if (this.waitTime < this.elapsedTime && this.elapsedTime < waitTime + pulsateTime) {
-                this.oscillationCount += 1;
-                if(!this.sensor.isOccupied())
-                    this.sensor.runAction(() -> new Audio(randomValue < this.secretProbability ? "./res/audio/easter_egg_1.wav": "./res/audio/laser.wav",
-                            0, 20f), this.pulsateTime + this.laserTime);
+        if (this.triggered) {
+            if (this.firesCount != this.maxFires || this.maxFires >= 0) {
+                this.elapsedTime += deltaTime;
+                float randomValue = new Random().nextFloat();
+                if (this.elapsedTime < this.waitTime) {
+                    this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
+                } else if (this.waitTime < this.elapsedTime && this.elapsedTime < waitTime + pulsateTime) {
+                    this.oscillationCount += 1;
+                    if (!this.sensor.isOccupied())
+                        this.sensor.runAction(() -> new Audio(randomValue < this.secretProbability ? "./res/audio/easter_egg_1.wav" : "./res/audio/laser.wav",
+                                0, 30f), this.pulsateTime + this.laserTime);
 
                     // Make the laser oscillate, warning players that it is charging.
                     if (0 < this.oscillationCount && this.oscillationCount < this.maxOscillationCount) {
@@ -204,8 +205,8 @@ public class Laser extends GameEntity {
             if (this.sensorActive && this.sensor.getSensorDetectionStatus()) {
                 this.game.getPayload().triggerDeath(false);
             }
-        
 
+        }
         if (!this.triggered) {
             this.graphics = this.addGraphics(this.shape, null, null, .3f, 0, 1);
         }

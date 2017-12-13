@@ -44,7 +44,7 @@ public class Cloud implements GraphicalObjects {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawImage(canvas.getImage(this.graphics), Transform.I.translated(this.position).scaled(this.length, this.height), 1, DepthValue.BACKGROUND_DEAP.value);
+        canvas.drawImage(canvas.getImage(this.graphics), Transform.I.translated(this.position).scaled(this.length, this.height), 1, DepthValue.BACKGROUND_DEEP.value);
     }
 
     @Override

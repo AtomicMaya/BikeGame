@@ -62,7 +62,7 @@ public class Crate extends GameEntity {
     private void create() {
         this.imagePath = (this.imagePath == null || !this.imagePath.equals("")) ? "res/images/crate.1.png" : this.imagePath;
         this.build(new Polygon(0, 0, 0, this.height, this.width, this.height, this.width, 0));
-        this.graphic = this.addGraphics(this.imagePath, this.width, this.height, Vector.ZERO, 1, DepthValue.FRONT_OBSTACLE_DEAP.value);
+        this.graphic = this.addGraphics(this.imagePath, this.width, this.height, Vector.ZERO, 1, DepthValue.FRONT_OBSTACLE_DEEP.value);
     }
 
     /**

@@ -105,6 +105,6 @@ public class Particle implements Graphics {
 
     @Override
     public void draw(Canvas canvas) {
-        canvas.drawShape(shape, Transform.I.translated(this.position), Color.decode(this.getColor(this.currentColor)), null, 0f, this.getAlpha(this.currentColor), DepthValue.FRONT_OBSTACLE_DEAP.value-.05f);
+        canvas.drawShape(shape, Transform.I.translated(this.position), Color.decode(this.getColor(this.currentColor)), null, 0f, this.getAlpha(this.currentColor), DepthValue.FRONT_OBSTACLE_DEEP.value-.05f);
     }
 }

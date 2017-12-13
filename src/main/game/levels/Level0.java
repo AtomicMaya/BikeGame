@@ -7,7 +7,6 @@ import main.game.actor.entities.switchers.Lever;
 import main.game.actor.sensors.Checkpoint;
 import main.game.actor.sensors.FinishActor;
 import main.game.actor.sensors.SpawnCheckpoint;
-import main.game.audio.Audio;
 import main.game.graphicalActors.GraphicalDrawer;
 import main.game.graphicalActors.Preset;
 import main.game.graphicalActors.Scenery;
@@ -16,10 +15,8 @@ import main.math.Polygon;
 import main.math.Polyline;
 import main.math.Vector;
 
-/** The Tutorial Level
- */
+/** The Tutorial Level */
 public class Level0 extends Level {
-    private Audio backgroundAudio;
 
     public Level0(ActorGame game) {
         super(game);
@@ -27,23 +24,9 @@ public class Level0 extends Level {
 
     @Override
     public void createAllActors() {
-        Polyline groundBody = new Polyline(-30, -1000,
-                -30.f, -7.f,
-                -5, 0,
-                20.f, 0.f,
-                22.5f, -9.f,
-                60.f, -7.f,
-                61.f, -4.f,
-                75.f, -3.f,
-                88, 6,
-                100.f, 6.f,
-                100.f, -2.f,
-                130.f, -2.f,
-                130.f, 7.f,
-                150.f, 7.f,
-                150.f, 11.f,
-                200.f, 11.f,
-                200, -1000);
+        Polyline groundBody = new Polyline(-30, -200, -30.f, -7.f, -5, 0, 20.f, 0.f, 22.5f, -9.f, 60.f, -7.f,
+                61.f, -4.f, 75.f, -3.f, 88, 6, 100.f, 6.f, 100.f, -2.f, 130.f, -2.f, 130.f, 7.f, 150.f, 7.f,
+                150.f, 11.f, 200.f, 11.f, 200, -200);
 
         Terrain terrain = new Terrain(this.game, null, groundBody, TerrainType.NORMAL);
 
@@ -103,8 +86,6 @@ public class Level0 extends Level {
         graphicsDrawer.addGraphics(btgCoin);
         graphicsDrawer.addGraphics(btgMud);
         graphicsDrawer.addGraphics(btgFinish);
-
-        //this.backgroundAudio = new Audio("./res/audio/chiptune_energetic.wav", 10f);
 
         Scenery scenery = new Scenery(this.game, Preset.Breezy);
 
