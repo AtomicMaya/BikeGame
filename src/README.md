@@ -24,7 +24,9 @@ Level Editor Controls :
 WASD or arrows - Move camera<br />
 CTRL when moving - accelerate the speed of the camera<br />
 M or Mouse button 2 - Open the menu to add actor to the game<br />
-
+DELETE - delete current actor<br />
+ENTER  - confirm actor editing<br />
+Mouse click 1 on a existing actor to edit it<br />
  
  Cheat guide :
  -
