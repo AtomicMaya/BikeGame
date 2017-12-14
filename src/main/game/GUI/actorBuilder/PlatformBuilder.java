@@ -142,7 +142,7 @@ public class PlatformBuilder extends ActorBuilder {
 	@Override
 	public void reCreate() {
 
-		platform.destroy();
+		this.destroy();
 		platform = new MovingPlatform(getOwner(), start, evolution, distance, timeToGo.getNumber(),
 				waitTime.getNumber());
 
@@ -155,7 +155,8 @@ public class PlatformBuilder extends ActorBuilder {
 
 	@Override
 	public void destroy() {
-		this.platform.destroy();
+	    if (this.platform != null)
+		    this.platform.destroy();
 	}
 
 	@Override

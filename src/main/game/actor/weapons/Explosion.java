@@ -77,7 +77,7 @@ public class Explosion extends Node implements Actor {
 		this.graphicsCounter = (int) Math
 				.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
 		if (this.graphicsCounter > this.boomGraphics.size() - 1) {
-		    new Audio("./res/audio/explosion.wav");
+		    new Audio("./res/audio/explosion.wav", 0, 30);
 			this.graphicsCounter = 0;
 			this.game.destroyActor(this);
 		}

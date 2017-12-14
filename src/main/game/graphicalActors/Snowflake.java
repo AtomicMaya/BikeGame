@@ -59,6 +59,7 @@ public class Snowflake implements GraphicalObjects {
         if (this.elapsedAnimationTime > this.animationTime)
             this.elapsedAnimationTime = 0;
         this.graphicsCounter = ((int) (this.elapsedAnimationTime / this.animationTime * this.file.size()));
+        if (this.graphicsCounter > this.file.size() - 1) this.graphicsCounter = this.file.size() -1;
         this.elapsedTime += deltaTime;
     }
 
