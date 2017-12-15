@@ -76,19 +76,20 @@ public class Explosion extends Node implements Actor {
 		this.elapsedAnimationTime += deltaTime;
 		this.graphicsCounter = (int) Math
 				.floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
+		if(this.graphicsCounter == (this.boomGraphics.size() - 1) / 2)
+            new Audio("./res/audio/explosion.wav", 0, 20);
+
 		if (this.graphicsCounter > this.boomGraphics.size() - 1) {
-		    new Audio("./res/audio/explosion.wav", 0, 30);
-			this.graphicsCounter = 0;
 			this.game.destroyActor(this);
 		}
 	}
 
 	@Override
 	public void draw(Canvas canvas) {
-		if (graphicsCounter >= 0) {
-			Image i = canvas.getImage(this.boomGraphics.get(this.graphicsCounter));
-			Transform t = new Transform(4, 0, getPosition().x + this.anchor.x - 2, 0, 4, getPosition().y + this.anchor.y - 2);
-			canvas.drawImage(i, t, 1, DepthValue.BACK_OBSTACLE_LOW.value);
+		if (this.graphicsCounter >= 0 && this.graphicsCounter < this.boomGraphics.size()) {
+			Image image = canvas.getImage(this.boomGraphics.get(this.graphicsCounter));
+			Transform transform = new Transform(4, 0, getPosition().x + this.anchor.x - 2, 0, 4, getPosition().y + this.anchor.y - 2);
+			canvas.drawImage(image, transform, 1, DepthValue.BACK_OBSTACLE_LOW.value);
 		}
 
 	}

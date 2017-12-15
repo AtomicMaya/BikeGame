@@ -123,7 +123,7 @@ public class BoomBarrel extends Enemy {
         this.graphicsCounter = (int) Math
                 .floor(this.elapsedAnimationTime / this.animationTime * this.boomGraphics.size());
         if (this.graphicsCounter > this.boomGraphics.size() - 1) {
-            new Audio("/res/audio/explosion.wav", 0 , 30);
+            new Audio("/res/audio/explosion.wav", 0 , 20);
             if (this.triggeredByPlayer)
                 this.getOwner().getPayload().triggerDeath(false);
             this.destroy();
