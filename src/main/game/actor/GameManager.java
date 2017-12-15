@@ -19,14 +19,18 @@ import java.awt.event.KeyEvent;
 
 public class GameManager implements Graphics {
 
-	/** Tell {@link this} that the last thing loaded is a {@linkplain main.game.levels.Level} */
+	/**
+	 * Tell {@link this} that the last thing loaded is a
+	 * {@linkplain main.game.levels.Level}
+	 */
 	private static final int levelState = 0;
 
 	/** Tell {@link this} that the last thing loaded is a saved game */
 	private static final int saveState = 1;
 
 	/**
-	 * Tell {@linkplain GameManager} that the last thing loaded is a {@linkplain LevelEditor}.
+	 * Tell {@linkplain GameManager} that the last thing loaded is a
+	 * {@linkplain LevelEditor}.
 	 */
 	private static final int levelEditorState = 2;
 
@@ -36,7 +40,10 @@ public class GameManager implements Graphics {
 	/** The {@linkplain ComplexBikeGame}, needed in some cases. */
 	private ComplexBikeGame gameLevel;
 
-	/** {@linkplain LevelEditor} from which the {@linkplain #levelEditorState} is set.*/
+	/**
+	 * {@linkplain LevelEditor} from which the {@linkplain #levelEditorState} is
+	 * set.
+	 */
 	private LevelEditor levelEditor;
 
 	// score management
@@ -105,9 +112,10 @@ public class GameManager implements Graphics {
 	 */
 	private int gameState = -1;
 
-	/** Create a new {@linkplain GameManager}.
-     * @param game The master {@linkplain ActorGame}.
-     */
+	/**
+	 * Create a new {@linkplain GameManager}.
+	 * @param game The master {@linkplain ActorGame}.
+	 */
 	public GameManager(ActorGame game) {
 		this.game = game;
 		this.scoreDisapplay = new BetterTextGraphics(game, this.scoreText + this.score, 1f, this.scorePos);
@@ -121,18 +129,23 @@ public class GameManager implements Graphics {
 	 */
 	public void update(float deltaTime) {
 		// TODO supress thoses
-		if (game.getPayload() != null && game.getKeyboard().get(KeyEvent.VK_9).isPressed())
-			System.out.println("player start : death: " + game.getPayload().getDeathStatus() + " win : "
-					+ game.getPayload().getVictoryStatus());
+
+		if (game.isCheatModeActivated()) {
+			if (game.getPayload() != null && game.getKeyboard().get(KeyEvent.VK_9).isPressed())
+				System.out.println("player start : death: " + game.getPayload().getDeathStatus() + " win : "
+						+ game.getPayload().getVictoryStatus());
+			
+			if (game.getKeyboard().get(KeyEvent.VK_8).isPressed()) {
+				game.getPayload().destroy();
+				Bike b = new Bike(game, game.getMouse().getPosition());
+				game.setPayload(b);
+				game.setViewCandidate(b);
+				game.addActor(b);
+			}
+		}
 
 		// spawn a bike if payload is not defind, which happend at the start of
 		// a game or after a reset
-		if (game.getKeyboard().get(KeyEvent.VK_8).isPressed()) {
-			Bike b = new Bike(game, game.getMouse().getPosition());
-			game.setPayload(b);
-			game.setViewCandidate(b);
-			game.addActor(b);
-		}
 
 		if (game.getPayload() == null && (startCheckpoint != null) && !game.isGameFrozen()) {
 			spawnBike();
@@ -216,8 +229,10 @@ public class GameManager implements Graphics {
 
 	// respawn management
 	/**
-	 * Give to this {@linkplain GameManager} the last triggered {@linkplain Checkpoint} by the payload.
-     * @param checkpoint The last triggered {@linkplain Checkpoint} by the payload.
+	 * Give to this {@linkplain GameManager} the last triggered
+	 * {@linkplain Checkpoint} by the payload.
+	 * @param checkpoint The last triggered {@linkplain Checkpoint} by the
+	 * payload.
 	 */
 	public void setLastCheckpoint(Checkpoint checkpoint) {
 		if (lastCheckpoint != null)
@@ -226,9 +241,11 @@ public class GameManager implements Graphics {
 		savedScore = score;
 	}
 
-	/** Method called by the {@linkplain SpawnCheckpoint}
-     * @param checkpoint The {@linkplain SpawnCheckpoint} that called the method.
-     */
+	/**
+	 * Method called by the {@linkplain SpawnCheckpoint}
+	 * @param checkpoint The {@linkplain SpawnCheckpoint} that called the
+	 * method.
+	 */
 	public void setStartCheckpoint(SpawnCheckpoint checkpoint) {
 		startCheckpoint = checkpoint;
 	}
@@ -248,7 +265,7 @@ public class GameManager implements Graphics {
 		game.setViewCandidate(null);
 		messageDisplayed = "";
 		respawnTimer = 0;
-//		saveLoaded = null;
+		// saveLoaded = null;
 		score = savedScore;
 	}
 

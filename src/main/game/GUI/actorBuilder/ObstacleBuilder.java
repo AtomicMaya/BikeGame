@@ -64,7 +64,7 @@ public class ObstacleBuilder extends ActorBuilder {
 				 else if (points.contains(tempPos))
 					points.remove(tempPos);
 			}
-			if (placed && getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
+			if (placed && points.size()>2 && getOwner().getKeyboard().get(KeyEvent.VK_ENTER).isPressed()) {
 				isDone = true;			
 			}
 		}
@@ -81,18 +81,20 @@ public class ObstacleBuilder extends ActorBuilder {
 	
 	@Override
 	public void draw(Canvas canvas) {
-		if (points.size() > 2)
+		if (points.isEmpty()) 
+			canvas.drawShape(new Circle(.1f), Transform.I.translated(getHalfFlooredMousePosition()), new Color(85, 255, 66), null, 0, 1, 15);
+
+		else if (points.size() > 2)
 			canvas.drawShape(new Polygon(points), Transform.I.translated(position), new Color(196, 196, 188),
 					Color.BLACK, .05f, 1, 2);
 		else if (points.size() > 1)
 				canvas.drawShape(new Polyline(points.get(0).add(position), points.get(1).add(position)), Transform.I, Color.green, Color.green, .1f, .8f, 2);
 		
 		if (!isDone) {
-			for (Vector v : points)
-				canvas.drawShape(new Circle(.1f), Transform.I.translated(v.add(position)), new Color(22, 84, 44).brighter(), null, 0, 1, 15);
-		}
 			
-
+			for (Vector v : points)
+				canvas.drawShape(new Circle(.1f), Transform.I.translated(v.add(position)), new Color(85, 255, 66), null, 0, 1, 15);
+		}	
 	}
 
 	@Override
@@ -116,8 +118,6 @@ public class ObstacleBuilder extends ActorBuilder {
 	@Override
 	public void edit() {
 		isDone = false;
-//		placed = false;
-
 	}
 
 	@Override
@@ -126,7 +126,9 @@ public class ObstacleBuilder extends ActorBuilder {
 			return false;
 		Polygon p = new Polygon(points);
 		Area a = new Area(p.toPath());
-		return 	a.contains(getMousePosition().x, getMousePosition().y);
+		Vector mousPos = getMousePosition().sub(position);
+				
+		return a.contains(mousPos.x, mousPos.y);
 	}
 
 }

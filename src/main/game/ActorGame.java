@@ -1,6 +1,5 @@
 package main.game;
 
-
 import main.game.actor.Actor;
 import main.game.actor.Camera;
 import main.game.actor.GameManager;
@@ -23,36 +22,45 @@ import java.util.List;
 
 /** Represent a {@linkplain Game}, with its {@linkplain Actor}s */
 public class ActorGame implements Game {
-    /** The Viewport properties. */
+	/** The Viewport properties. */
 	private Camera camera;
 
-	 /** An {@linkplain ArrayList} containing all {@linkplain Actor}.*/
-     private ArrayList<Actor> actors = new ArrayList<Actor>();
+	/** An {@linkplain ArrayList} containing all {@linkplain Actor}. */
+	private ArrayList<Actor> actors = new ArrayList<Actor>();
 
-    // main character of the game
-    /** The main {@linkplain Actor} of this {@linkplain Game} */
+	// main character of the game
+	/** The main {@linkplain Actor} of this {@linkplain Game} */
 	private PlayableEntity player;
 
 	/** The {@linkplain World} created with the game */
 	private World world;
 
-	/** The {@linkplain Window} where to draw the {@linkplain main.game.graphics.Graphics}. */
+	/**
+	 * The {@linkplain Window} where to draw the
+	 * {@linkplain main.game.graphics.Graphics}.
+	 */
 	private Window window;
 
 	/** The global {@linkplain FileSystem}. */
 	private FileSystem fileSystem;
 
-    /** Whether the game is frozen. */
+	/** Whether the game is frozen. */
 	private boolean gameFrozen = false;
 
-	/** {@linkplain ArrayList<Actor>} containing {@linkplain Actor}s to add and to remove from the {@linkplain Game}.*/
+	/**
+	 * {@linkplain ArrayList<Actor>} containing {@linkplain Actor}s to add and
+	 * to remove from the {@linkplain Game}.
+	 */
 	private ArrayList<Actor> actorsToRemove = new ArrayList<>(), actorsToAdd = new ArrayList<>();
 
 	// actor to manage checkpoint, reload, ...
 	private GameManager gameManager;
 
-	/** The given save directory : {@value}*/
+	/** The given save directory : {@value} */
 	private static final String saveDirectory = "saves/";
+
+	/** Whether the cheat mod is activated */
+	private boolean cheatModActivated = false;
 
 	@Override
 	public boolean begin(Window window, FileSystem fileSystem) {
@@ -61,7 +69,6 @@ public class ActorGame implements Game {
 		if (fileSystem == null)
 			throw new NullPointerException("FileSystem is null");
 
-		
 		this.world = new World();
 		this.world.setGravity(new Vector(0, -9.81f));
 
@@ -75,14 +82,21 @@ public class ActorGame implements Game {
 
 	@Override
 	public void update(float deltaTime) {
-		
-		this.gameManager.update(deltaTime);
-		if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
-			System.out.println("actors size : "+actors.size() + " world entities : " + world.getEntities().size());
 
-		if (this.getKeyboard().get(KeyEvent.VK_7).isPressed())
-			System.out.println("frozen game :  "+isGameFrozen());
-		
+		this.gameManager.update(deltaTime);
+
+		if (this.getKeyboard().get(KeyEvent.VK_CONTROL).isDown() && this.getKeyboard().get(KeyEvent.VK_SHIFT).isDown()
+				&& this.getKeyboard().get(KeyEvent.VK_C).isPressed())
+			cheatModActivated = !cheatModActivated;
+
+		if (this.cheatModActivated) {
+			if (this.getKeyboard().get(KeyEvent.VK_0).isPressed())
+				System.out
+						.println("actors size : " + actors.size() + " world entities : " + world.getEntities().size());
+
+			if (this.getKeyboard().get(KeyEvent.VK_7).isPressed())
+				System.out.println("frozen game :  " + isGameFrozen());
+		}
 		if (!this.actorsToRemove.isEmpty()) {
 			for (int i = 0; i < this.actorsToRemove.size(); i++) {
 				this.actorsToRemove.get(i).destroy();
@@ -102,7 +116,7 @@ public class ActorGame implements Game {
 
 		// TODO remove
 		if (this.getKeyboard().get(KeyEvent.VK_6).isDown()) {
-			for (int i = 0;i<150;i++)
+			for (int i = 0; i < 150; i++)
 				this.world.update(deltaTime);
 		}
 		this.world.update(deltaTime);
@@ -115,7 +129,9 @@ public class ActorGame implements Game {
 		for (int i = this.actors.size() - 1; i >= 0; i--) {
 			try {
 				this.actors.get(i).update(deltaTime);
-			} catch (ConcurrentModificationException e) { e.printStackTrace(); }
+			} catch (ConcurrentModificationException e) {
+				e.printStackTrace();
+			}
 		}
 		this.gameManager.draw(this.window);
 		for (Actor actor : this.actors)
@@ -153,7 +169,7 @@ public class ActorGame implements Game {
 	}
 
 	/**
-     * Adds an {@linkplain Actor} to the game.
+	 * Adds an {@linkplain Actor} to the game.
 	 * @param actor An {@linkplain Actor} to be added in the game.
 	 */
 	public void addActor(Actor actor) {
@@ -162,7 +178,7 @@ public class ActorGame implements Game {
 	}
 
 	/**
-     * Adds several {@linkplain Actor}s to the game.
+	 * Adds several {@linkplain Actor}s to the game.
 	 * @param actors A list of {@linkplain Actor}s to be added to the game.
 	 */
 	public void addActor(List<Actor> actors) {
@@ -194,7 +210,7 @@ public class ActorGame implements Game {
 	 * Destroy all stored {@linkplain Actor}s.
 	 */
 	public void destroyAllActors() {
-		// destroy all entities in the world	
+		// destroy all entities in the world
 		while (world.getEntities().size() > 0)
 			world.getEntities().get(0).destroy();
 		this.destroyActor(actors);
@@ -212,21 +228,22 @@ public class ActorGame implements Game {
 			}
 		}
 	}
-//
-//	/**
-//	 * @param actorsToKeep A list of {@linkplain Actor}s to keep in the game.
-//	 */
-//	public void destroyAllActorsExcept(ArrayList<Actor> actorsToKeep) {
-//		for (Actor actor : this.actors) {
-//			if (!actorsToKeep.contains(actor)) {
-//				this.actorsToRemove.add(actor);
-//			}
-//		}
-//	}
+	//
+	// /**
+	// * @param actorsToKeep A list of {@linkplain Actor}s to keep in the game.
+	// */
+	// public void destroyAllActorsExcept(ArrayList<Actor> actorsToKeep) {
+	// for (Actor actor : this.actors) {
+	// if (!actorsToKeep.contains(actor)) {
+	// this.actorsToRemove.add(actor);
+	// }
+	// }
+	// }
 
 	/**
 	 * Create a new {@linkplain Entity} in the world.
-	 * @param position A position {@linkplain Vector} given to the {@linkplain Entity}.
+	 * @param position A position {@linkplain Vector} given to the
+	 * {@linkplain Entity}.
 	 * @param fixed Whether the {@linkplain Entity} can move or not.
 	 * @return a new {@linkplain Entity}.
 	 */
@@ -276,7 +293,7 @@ public class ActorGame implements Game {
 		return this.world.createPointConstraintBuilder();
 	}
 
-	/** @return a new {@linkplain WeldConstraintBuilder}.*/
+	/** @return a new {@linkplain WeldConstraintBuilder}. */
 	public WeldConstraintBuilder createWeldConstraintBuilder() {
 		return this.world.createWeldConstraintBuilder();
 	}
@@ -334,7 +351,7 @@ public class ActorGame implements Game {
 	/**
 	 * Load all saved {@linkplain Actor}s.
 	 * @param saveName : The name of the save to load.
-     * @return whether the loading process succeeded.
+	 * @return whether the loading process succeeded.
 	 */
 	public boolean load(String saveName) {
 
@@ -363,19 +380,22 @@ public class ActorGame implements Game {
 		return false;
 	}
 
-//	public boolean saveCurrentActors() {
-//
-//		Save.saveParameters(getGameManager().getLastCheckpoint(), new File(saveDirectory + "temp/params.object"));
-//		String s =
-//		Save.saveCurrent(fileSystem, "", new File(saveDirectory + "temp/params.param"));
-//		return true;
-//	}
+	// public boolean saveCurrentActors() {
+	//
+	// Save.saveParameters(getGameManager().getLastCheckpoint(), new
+	// File(saveDirectory + "temp/params.object"));
+	// String s =
+	// Save.saveCurrent(fileSystem, "", new File(saveDirectory +
+	// "temp/params.param"));
+	// return true;
+	// }
 
-//	public boolean loadTempSave() {
-//		load("temp");
-//		Save.loadCheckpoint(this, new File(saveDirectory + "temp/params.object"));
-//		return true;
-//	}
+	// public boolean loadTempSave() {
+	// load("temp");
+	// Save.loadCheckpoint(this, new File(saveDirectory +
+	// "temp/params.object"));
+	// return true;
+	// }
 
 	/**
 	 * Sets the game's view candidate, to be followed by the camera.
@@ -419,6 +439,11 @@ public class ActorGame implements Game {
 
 	public GameManager getGameManager() {
 		return gameManager;
+	}
+
+	/** @return whether the cheat mode is activated */
+	public boolean isCheatModeActivated() {
+		return this.cheatModActivated;
 	}
 
 }

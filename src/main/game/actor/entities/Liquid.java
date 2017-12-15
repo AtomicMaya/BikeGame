@@ -58,8 +58,7 @@ public class Liquid extends GameEntity implements Saveable {
         this.length = shape.getPoints().get(2).x;
         this.height = shape.getPoints().get(2).y;
 
-        this.listener = new BasicContactListener();
-        this.addContactListener(this.listener);
+       
         this.create();
     }
 
@@ -68,6 +67,8 @@ public class Liquid extends GameEntity implements Saveable {
      * constructor to avoid duplication with the method {@linkplain #reCreate(ActorGame)}
      */
     private void create() {
+    	this.listener = new BasicContactListener();
+        this.addContactListener(this.listener);
         this.random = new Random();
         this.graphics = new ArrayList<>();
         for (int l = 0; l < this.length; l++) {
