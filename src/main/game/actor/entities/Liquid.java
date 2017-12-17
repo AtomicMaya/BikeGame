@@ -14,7 +14,7 @@ import main.window.Canvas;
 import java.util.ArrayList;
 import java.util.Random;
 
-/** Random Liquids such as Lava and Acid */
+/** Liquids such as Lava and Acid */
 public class Liquid extends GameEntity implements Saveable {
     
 	/** Used for save purpose */
@@ -74,9 +74,9 @@ public class Liquid extends GameEntity implements Saveable {
         for (int l = 0; l < this.length; l++) {
             for (int h = 0; h < this.height; h++) {
                 if (h == this.height - 1 && !this.switched)
-                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.0.png" : "./res/images/acid.0.png", 1, 1, new Vector(-l, -h), 1, DepthValue.FRONT_OBSTACLE_LOW.value));
+                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.0.png" : "./res/images/acid.0.png", 1, 1, new Vector(-l, -h), 1, DepthValue.BACK_OBSTACLE_MEDIUM.value));
                 else if (!this.switched)
-                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.2.png" : "./res/images/acid.2.png", 1, 1, new Vector(-l, -h), 1, DepthValue.FRONT_OBSTACLE_LOW.value));
+                    this.graphics.add(this.addGraphics(this.isLava ? "./res/images/lava.2.png" : "./res/images/acid.2.png", 1, 1, new Vector(-l, -h), 1, DepthValue.BACK_OBSTACLE_MEDIUM.value));
             }
         }
     }

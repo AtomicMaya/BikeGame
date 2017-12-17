@@ -27,6 +27,7 @@ public enum DepthValue {
 	
 	BUTTON_BG(42000),
 	BUTTON_TEXT(42042) ;
+
 	public final float value;
 	
 	DepthValue(float value){

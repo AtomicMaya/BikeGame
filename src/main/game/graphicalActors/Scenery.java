@@ -74,7 +74,9 @@ public class Scenery implements Actor {
                     this.graphics.add((GraphicalObjects) Class.forName(classPaths.get(counter))
                             .getConstructor(Vector.class, Rectangle.class, Vector.class)
                             .newInstance(position, new Rectangle(sizeX, sizeY), new Vector(randSpeedX, randSpeedY)));
-                } catch (NoSuchMethodException|ClassNotFoundException|InstantiationException|IllegalAccessException|InvocationTargetException ignored) { }
+                } catch (NoSuchMethodException|ClassNotFoundException|InstantiationException|IllegalAccessException|InvocationTargetException exception) {
+                    System.out.println("Wrong Constructor ?");
+                }
             }
             counter += 1;
         }
